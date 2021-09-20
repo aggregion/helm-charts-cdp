@@ -1,0 +1,38 @@
+apiVersion: v1
+entries:
+  aggregion-cdp:
+  - apiVersion: v2
+    appVersion: 1.16.0
+    created: "2021-09-20T17:03:38.73332291Z"
+    description: A Helm chart for Kubernetes to deploy Aggregion CDP
+    digest: daf4a91aac0ae82879d3a65e878ffc7ae1261a58c172c11d9b628cdcf69d8c00
+    name: aggregion-cdp
+    type: application
+    urls:
+    - https://aggregion.github.io/helm-charts-cdp/charts/aggregion-cdp-0.1.14.tgz
+    version: 0.1.14
+  aggregion-dc:
+  - apiVersion: v2
+    appVersion: 1.16.0
+    created: "2021-09-20T17:03:38.734499301Z"
+    description: A Helm chart for Kubernetes to install Deploy Controller
+    digest: b189923213ec8118c399e67ad8020c18d0c457f2fc71fce2b2310cf71ef177c4
+    name: aggregion-dc
+    type: application
+    urls:
+    - https://aggregion.github.io/helm-charts-cdp/charts/aggregion-dc-0.1.0.tgz
+    version: 0.1.0
+  aggregion-externals:
+  - apiVersion: v2
+    appVersion: 1.16.0
+    created: "2021-09-20T17:03:38.735637489Z"
+    description: |
+      A Helm chart for Kubernetes to deploy single instance of clickhouse, mongo, rabbitmq and redis.
+      It's not recommend to use it in the production. Use charts from official rep for this purpose.
+    digest: 8651dfae3db9278f76fbab5a5ab6ebdf9e30514c9271427fcc2319307988f096
+    name: aggregion-externals
+    type: application
+    urls:
+    - https://aggregion.github.io/helm-charts-cdp/charts/aggregion-externals-0.1.0.tgz
+    version: 0.1.0
+generated: "2021-09-20T17:03:38.731187845Z"
