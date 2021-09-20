@@ -54,7 +54,16 @@ TODO
 
 ## DC Configuration through API
 
-TODO
+1. Download the latest `deploy-controller` binary.
+1. On your choise: use ingress or make a port forward to DC pod on the 8080 port.
+1. Register platform agent:
+```
+$ ./deploy-controller --dc "http://admin:admin@DOMAIN:8080" platform register selectel k8s "http://<<<service name in kubernetes for agent>>>" "<<< secret from agentk8s.configs.authJwtSecret >>>"
+```
+1. Register datalab templates:
+```
+$ ./deploy-controller --dc "http://admin:admin@DOMAIN:8080" appdatalab loadtemplates persist ./templates/k8s"
+```
 
 
 ## TODO
