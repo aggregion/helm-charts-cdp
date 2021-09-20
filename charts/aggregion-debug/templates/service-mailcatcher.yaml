@@ -1,0 +1,22 @@
+{{- if .Values.mailcatcher.enabled }}
+{{- $mailcatcherName := include "svcs.mailcatcher.fullname" . }}
+apiVersion: v1
+kind: Service
+metadata:
+  name: "{{ $mailcatcherName }}"
+  labels:
+    {{- include "svcs.mailcatcher.labels" . | nindent 4 }}
+spec:
+  type: {{ .Values.mailcatcher.service.type }}
+  ports:
+    - port: {{ .Values.mailcatcher.service.http.port }}
+      targetPort: http
+      protocol: TCP
+      name: http
+    - port: {{ .Values.mailcatcher.service.smtp.port }}
+      targetPort: smtp
+      protocol: TCP
+      name: smtp
+  selector:
+    {{- include "svcs.mailcatcher.selectorLabels" . | nindent 4 }}
+{{- end }}

@@ -1,0 +1,66 @@
+{{- if .Values.mailcatcher.enabled }}
+{{- $mailcatcherName := include "svcs.mailcatcher.fullname" . }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: "{{ $mailcatcherName }}"
+  labels:
+    {{- include "svcs.mailcatcher.labels" . | nindent 4 }}
+spec:
+  replicas: 1 # force 1 instance
+  selector:
+    matchLabels:
+      {{- include "svcs.mailcatcher.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+    {{- with .Values.mailcatcher.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}
+      labels:
+        {{- include "svcs.mailcatcher.selectorLabels" . | nindent 8 }}
+    spec:
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      serviceAccountName: {{ include "svcs.serviceAccountName" . }}
+      securityContext:
+        {{- toYaml .Values.mailcatcher.podSecurityContext | nindent 8 }}
+      containers:
+        - name: "mailcatcher"
+          securityContext:
+            {{- toYaml .Values.mailcatcher.securityContext | nindent 12 }}
+          image: "{{ .Values.mailcatcher.image.repository }}:{{ .Values.mailcatcher.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.mailcatcher.image.pullPolicy }}
+          ports:
+            - name: smtp
+              containerPort: {{ .Values.mailcatcher.listenSmtpPort }}
+              protocol: TCP
+            - name: http
+              containerPort: {{ .Values.mailcatcher.listenHttpPort }}
+              protocol: TCP
+          # livenessProbe:
+          #   httpGet:
+          #     path: /
+          #     port: http
+          # readinessProbe:
+          #   httpGet:
+          #     path: /
+          #     port: http
+          resources:
+            {{- toYaml .Values.mailcatcher.resources | nindent 12 }}
+      restartPolicy: {{ .Values.mailcatcher.restartPolicy }}
+      {{- with .Values.mailcatcher.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.mailcatcher.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.mailcatcher.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+{{- end }}

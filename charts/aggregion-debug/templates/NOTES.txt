@@ -1,0 +1,8 @@
+{{- $mailcatcherName := include "svcs.mailcatcher.fullname" . }}
+
+Installed services:
+
+{{ if .Values.mailcatcher.enabled }}
+mailcatcher smtp://{{ $mailcatcherName }}:{{ .Values.mailcatcher.service.smtp.port }}
+mailcatcher YOUR ingress
+{{ end }}

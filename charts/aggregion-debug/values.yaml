@@ -1,0 +1,54 @@
+# Default values for aggregion-debug.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+imagePullSecrets: []
+
+serviceAccount:
+  create: false
+  annotations: {}
+  name: "default"
+
+mailcatcher:
+  enabled: false
+  nameOverride: ""
+  fullnameOverride: ""
+  restartPolicy: Always
+  image:
+    repository: "dockage/mailcatcher"
+    pullPolicy: IfNotPresent
+    tag: "0.6.5"
+  service:
+    http:
+      type: ClusterIP
+      port: 8080
+    smtp:
+      type: ClusterIP
+      port: 1025
+  listenSmtpPort: 1025
+  listenHttpPort: 1080
+  securityContext: {}
+  podAnnotations: {}
+  podSecurityContext: {}
+  resources: {}
+  # limits:
+  #   cpu: 100m
+  #   memory: 128Mi
+  # requests:
+  #   cpu: 100m
+  #   memory: 128Mi
+  nodeSelector: {}
+  tolerations: []
+  affinity: {}
+
+  ingress:
+    enabled: true
+    annotations:
+      kubernetes.io/ingress.class: nginx
+    hosts:
+      - host: mailcatcher.local
+        paths:
+          - "/"
+    tls: []
+    #  - secretName: chart-example-tls
+    #    hosts:
+    #      - enclave.local
