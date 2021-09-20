@@ -12,8 +12,9 @@ spec:
   backoffLimit: 10
   template:
     metadata:
-    {{- with .Values.backend.podAnnotations }}
       annotations:
+        "helm.sh/hook": post-install
+    {{- with .Values.backend.dbseed.podAnnotations }}
         {{- toYaml . | nindent 8 }}
     {{- end }}
       labels:

@@ -92,6 +92,7 @@ backend:
 
   dbseed:
     enabled: false
+    podAnnotations: {}
     image:
       repository: registry.aggregion.com/dmp-seed
       tag: latest
