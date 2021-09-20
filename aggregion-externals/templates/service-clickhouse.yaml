@@ -1,0 +1,18 @@
+{{- if .Values.clickhouse.enabled }}
+{{- $clickhouseName := include "exts.clickhouse.fullname" . }}
+apiVersion: v1
+kind: Service
+metadata:
+  name: "{{ $clickhouseName }}"
+  labels:
+    {{- include "exts.clickhouse.labels" . | nindent 4 }}
+spec:
+  type: {{ .Values.clickhouse.service.type }}
+  ports:
+    - port: {{ .Values.clickhouse.service.port }}
+      targetPort: service
+      protocol: TCP
+      name: service
+  selector:
+    {{- include "exts.clickhouse.selectorLabels" . | nindent 4 }}
+{{- end }}

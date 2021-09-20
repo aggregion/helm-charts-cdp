@@ -1,0 +1,18 @@
+{{- if .Values.nats.enabled }}
+{{- $natsName := include "exts.nats.fullname" . }}
+apiVersion: v1
+kind: Service
+metadata:
+  name: "{{ $natsName }}"
+  labels:
+    {{- include "exts.nats.labels" . | nindent 4 }}
+spec:
+  type: {{ .Values.nats.service.type }}
+  ports:
+    - port: {{ .Values.nats.service.port }}
+      targetPort: service
+      protocol: TCP
+      name: service
+  selector:
+    {{- include "exts.nats.selectorLabels" . | nindent 4 }}
+{{- end }}

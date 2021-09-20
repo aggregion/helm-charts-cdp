@@ -1,0 +1,18 @@
+{{- if .Values.mongo.enabled }}
+{{- $mongoName := include "exts.mongo.fullname" . }}
+apiVersion: v1
+kind: Service
+metadata:
+  name: "{{ $mongoName }}"
+  labels:
+    {{- include "exts.mongo.labels" . | nindent 4 }}
+spec:
+  type: {{ .Values.mongo.service.type }}
+  ports:
+    - port: {{ .Values.mongo.service.port }}
+      targetPort: service
+      protocol: TCP
+      name: service
+  selector:
+    {{- include "exts.mongo.selectorLabels" . | nindent 4 }}
+{{- end }}

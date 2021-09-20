@@ -1,0 +1,68 @@
+{{- if .Values.agentk8s.enabled }}
+{{- $agentName := include "dctl.agentk8s.fullname" . }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: "{{ $agentName }}"
+  {{- with .Values.agentk8s.annotations }}
+  annotations:
+      {{- toYaml . | nindent 6 }}
+  {{- end }}
+  labels:
+    {{- include "dctl.agentk8s.labels" . | nindent 4 }}
+spec:
+  replicas: {{ .Values.agentk8s.replicaCount }}
+  selector:
+    matchLabels:
+      {{- include "dctl.agentk8s.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+    {{- with .Values.agentk8s.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}
+      labels:
+        {{- include "dctl.agentk8s.selectorLabels" . | nindent 8 }}
+    spec:
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      restartPolicy: {{ .Values.agentk8s.restartPolicy }}
+      {{- if .Values.agentk8s.updateStrategy }}
+      updateStrategy:
+        type: {{ .Values.agentk8s.updateStrategy }}
+      {{- end }}
+      serviceAccountName: "{{ include "dctl.serviceAccountName" . }}-agent-k8s"
+      securityContext:
+        {{- toYaml .Values.agentk8s.podSecurityContext | nindent 8 }}
+      containers:
+        - name: "agent"
+          securityContext:
+            {{- toYaml .Values.agentk8s.securityContext | nindent 12 }}
+          image: "{{ .Values.agentk8s.image.repository }}:{{ .Values.agentk8s.image.tag }}"
+          imagePullPolicy: "{{ .Values.agentk8s.image.pullPolicy }}"
+          ports:
+            - name: httpagent
+              containerPort: 20100
+          envFrom:
+            - configMapRef:
+                name: "{{ $agentName }}-config"
+            - secretRef:
+                name: "{{ $agentName }}-secrets"
+          resources:
+            {{- toYaml .Values.agentk8s.resources | nindent 12 }}
+          command: ["yarn", "run", "start:k8s-agent:prod"]
+      {{- with .Values.agentk8s.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.agentk8s.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.agentk8s.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+{{- end }}

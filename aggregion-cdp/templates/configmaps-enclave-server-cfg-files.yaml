@@ -1,0 +1,67 @@
+{{- $name := "enclave" }}
+{{- $enclaveName := include "cdp.enclave.fullname" . }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ $enclaveName }}-config-files
+  labels:
+    {{- include "cdp.enclave.labels" . | nindent 4 }}
+data:
+  local.json: |
+    {
+      "server": {
+        "auth": {
+          "disableAuthentication": {{ not .Values.backend.configs.enclaveAuthEnabled }}
+          {{- if .Values.backend.configs.enclaveAuthEnabled }}
+          ,
+          "scriptExecPolicy": {
+            "type": "stub"
+          },
+          "knownTrust": [{
+            "type": "secret",
+            "tickets": {
+              "type": "single",
+              "value": "{{ .Values.backend.configs.enclaveAuthValue }}"
+            },
+            "name": "{{ .Values.backend.configs.enclaveDmpAuthId }}",
+            "secret": "{{ .Values.backend.configs.enclaveAuthSecret }}"
+          }],
+          "otherTrust": {
+            "type": "ecds",
+            "tickets": {
+              "type": "dynamic",
+              "expiration": 1000
+            },
+            "privateKey": "/var/keys/auth-key.pem",
+            "publicKeyLoader": {
+              "type": "eos",
+              "nodes": [
+                "{{ .Values.backend.configs.eosNodeUrl }}"
+              ]
+            }
+          }
+          {{- end }}
+        }
+      },
+      "remoteEnclaveProvider": {
+        "type": "http",
+        "serviceSourceProvider": {
+          "type": "mock",
+          "services": [
+          {{- range $index, $value := .Values.providerLinks }}
+            {{- if $index -}}
+            ,
+            {{- end -}}
+            {
+              "service": "enclave-service",
+              "version": "1",
+              "description": "enclave-service",
+              "protocol": "default",
+              "provider": "{{ $value.name }}",
+              "endpoint": "{{ $value.url }}"
+            }
+          {{- end }}
+          ]
+        }
+      }
+    }

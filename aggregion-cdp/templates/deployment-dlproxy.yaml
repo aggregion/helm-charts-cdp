@@ -1,0 +1,77 @@
+{{- $name := "backend" }}
+{{- $backendName := include "cdp.backend.fullname" . }}
+
+{{- $datalabProxyName := printf "%s-dlproxy" $backendName }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: "{{ $datalabProxyName }}"
+  {{- with .Values.backend.annotations }}
+  annotations:
+      {{- toYaml . | nindent 6 }}
+  {{- end }}
+  labels:
+    {{- include "cdp.backend.labels" . | nindent 4 }}
+spec:
+  replicas: {{ .Values.backend.datalabProxy.replicaCount }}
+  selector:
+    matchLabels:
+      {{- include "cdp.selectorLabels.explicitly" (list . $datalabProxyName) | nindent 6 }}
+  template:
+    metadata:
+    {{- with .Values.backend.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}
+      labels:
+        {{- include "cdp.selectorLabels.explicitly" (list . $datalabProxyName) | nindent 8 }}
+    spec:
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      restartPolicy: {{ .Values.backend.restartPolicy }}
+      serviceAccountName: {{ include "cdp.serviceAccountName" . }}
+      securityContext:
+        {{- toYaml .Values.backend.datalabProxy.podSecurityContext | nindent 8 }}
+      containers:
+        - name: "backend-dlproxy"
+          securityContext:
+            {{- toYaml .Values.backend.datalabProxy.securityContext | nindent 12 }}
+          image: "{{ .Values.backend.datalabProxy.image.repository }}:{{ .Values.backend.datalabProxy.image.tag }}"
+          imagePullPolicy: {{ .Values.backend.datalabProxy.image.pullPolicy }}
+          ports:
+            - name: httpproxy
+              containerPort: {{ .Values.backend.datalabProxy.listenPort }}
+              protocol: TCP
+          # livenessProbe:
+          #   httpGet:
+          #     path: /
+          #     port: http
+          # readinessProbe:
+          #   httpGet:
+          #     path: /
+          #     port: http
+          resources:
+            {{- toYaml .Values.backend.datalabProxy.resources | nindent 12 }}
+          volumeMounts:
+            - mountPath: /etc/nginx/conf.d
+              name: local-config-volume
+
+      volumes:
+        - name: local-config-volume
+          configMap:
+            name: "{{ $datalabProxyName }}-config-files"
+
+      {{- with .Values.backend.datalabProxy.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.backend.datalabProxy.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.backend.datalabProxy.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}

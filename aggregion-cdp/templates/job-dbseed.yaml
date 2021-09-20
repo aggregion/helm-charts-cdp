@@ -1,0 +1,54 @@
+{{- if .Values.backend.dbseed.enabled -}}
+{{- $name := "backend" -}}
+{{- $backendName := include "cdp.backend.fullname" . -}}
+{{- $dbseedName := printf "%s-dbseed" $backendName -}}
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: "{{ $dbseedName }}"
+  labels:
+    {{- include "cdp.backend.labels" . | nindent 4 }}
+spec:
+  backoffLimit: 10
+  template:
+    metadata:
+    {{- with .Values.backend.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}
+      labels:
+        {{- include "cdp.selectorLabels.explicitly" (list . $dbseedName) | nindent 8 }}
+    spec:
+      containers:
+        - name: "dbseed"
+          image: "{{ .Values.backend.dbseed.image.repository }}:{{ .Values.backend.dbseed.image.tag }}"
+          args: ["sh" , "-e" , "-c" , "npm run seed-ch && npm run seed-mongo"]
+          env:
+            - name: SEED_ENABLE_ONLY_ONCE_MODE
+              value: "{{ .Values.backend.dbseed.once }}"
+            - name: NODE_ENV
+              value: "{{ .Values.backend.dbseed.useConfig }}"
+            - name: SEED_USERS_AND_ACCOUNTS
+              value: "{{ .Values.backend.dbseed.accountsAndUsers }}"
+            - name: SEED_NUMBEROFCUSTOMERS
+              value: "{{ .Values.backend.dbseed.numberOfCustomers }}"
+            - name: CH_HOST
+              value: "{{ .Values.backend.configs.clickhouseHost }}"
+            - name: CH_DB
+              value: "{{ .Values.backend.configs.clickhouseDb }}"
+            - name: MONGO_URI
+              value: "{{ .Values.backend.configs.mongoUrl }}"
+            - name: DATAPROVIDER_ACCOUNT_NAME
+              value: "{{ .Values.backend.configs.accountName }}"
+            - name: DATAPROVIDER_ACCOUNT_PROVIDERNAME
+              value: "{{ .Values.backend.configs.providerName }}"
+          resources:
+            requests:
+              memory: "256Mi"
+          imagePullPolicy: {{ .Values.backend.dbseed.image.pullPolicy }}
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      restartPolicy: OnFailure
+{{- end }}

@@ -1,0 +1,17 @@
+{{- if .Values.agentk8s.enabled }}
+{{- $agentName := include "dctl.agentk8s.fullname" . }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: "{{ $agentName }}-config"
+  labels:
+    {{- include "dctl.agentk8s.labels" . | nindent 4 }}
+data:
+  APP_K8S_CONFIG_TYPE: "cluster"
+  DUMP_PATH: "{{ .Values.agentk8s.configs.dumpPath }}"
+  DUMMY_MODE: "{{ .Values.agentk8s.configs.dummyMode }}"
+  APP_AUTH_WHITE_IP_LIST: "{{ .Values.agentk8s.configs.whitelistIp }}"
+  APP_AUTH_CLIENT_IP_HEADER: "{{ .Values.agentk8s.configs.clientIpHeader }}"
+  APP_K8S_BLACKLIST_NAMESPACES: "{{ .Values.agentk8s.configs.blacklistNamespaces }}"
+  APP_K8S_WHITELIST_NAMESPACES: "{{ .Values.agentk8s.configs.whitelistNamespaces }}"
+{{- end }}

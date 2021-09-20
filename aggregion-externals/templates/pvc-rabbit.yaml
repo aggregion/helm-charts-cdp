@@ -1,0 +1,13 @@
+{{- if .Values.rabbit.enabled }}
+{{- $rabbitName := include "exts.rabbit.fullname" . }}
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: "{{ $rabbitName }}-claim"
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: "{{ .Values.rabbit.storageSize }}"
+{{- end }}

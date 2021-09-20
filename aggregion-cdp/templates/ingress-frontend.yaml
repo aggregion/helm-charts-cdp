@@ -1,0 +1,70 @@
+{{- if .Values.frontend.ingress.enabled -}}
+{{- $frontendName := include "cdp.frontend.fullname" . -}}
+{{- $frontendPort := .Values.frontend.service.port -}}
+{{- $backendName := include "cdp.backend.fullname" . -}}
+{{- $backendPort := .Values.backend.service.api.port -}}
+{{- $datalabProxyName := printf "%s-dlproxy" $backendName -}}
+{{- $datalabProxyPort := .Values.backend.service.datalabProxy.port -}}
+{{- if semverCompare ">=1.14-0" .Capabilities.KubeVersion.GitVersion -}}
+apiVersion: networking.k8s.io/v1beta1
+{{- else -}}
+apiVersion: extensions/v1beta1
+{{- end }}
+kind: Ingress
+metadata:
+  name: "{{ $frontendName }}"
+  labels:
+    {{- include "cdp.frontend.labels" . | nindent 4 }}
+  {{- with .Values.frontend.ingress.annotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+spec:
+  {{- if .Values.frontend.ingress.tls }}
+  tls:
+    {{- range .Values.frontend.ingress.tls }}
+    - hosts:
+        {{- range .hosts }}
+        - {{ . | quote }}
+        {{- end }}
+      secretName: {{ .secretName }}
+    {{- end }}
+  {{- end }}
+  rules:
+    {{- range .Values.frontend.ingress.hosts }}
+    - host: {{ .host | quote }}
+      http:
+        paths:
+          - path: "/graphql"
+            backend:
+              serviceName: "{{ $backendName }}"
+              servicePort: {{ $backendPort }}
+          - path: "/graphql-subscriptions"
+            backend:
+              serviceName: "{{ $backendName }}"
+              servicePort: {{ $backendPort }}
+          - path: "/files"
+            backend:
+              serviceName: "{{ $backendName }}"
+              servicePort: {{ $backendPort }}
+          - path: "/enclave"
+            backend:
+              serviceName: "{{ $backendName }}"
+              servicePort: {{ $backendPort }}
+          - path: "/status"
+            backend:
+              serviceName: "{{ $backendName }}"
+              servicePort: {{ $backendPort }}
+          - path: "/datalab/vm"
+            backend:
+              serviceName: "{{ $datalabProxyName }}"
+              servicePort: {{ $datalabProxyPort }}
+          - path: "/auth/datalab"
+            backend:
+              serviceName: "{{ $backendName }}"
+              servicePort: {{ $backendPort }}
+          - backend:
+              serviceName: "{{ $frontendName }}"
+              servicePort: {{ $frontendPort }}
+    {{- end }}
+  {{- end }}

@@ -1,0 +1,29 @@
+{{- $natsName := include "exts.nats.fullname" . }}
+{{- $redisName := include "exts.redis.fullname" . }}
+{{- $rabbitName := include "exts.rabbit.fullname" . }}
+{{- $mongoName := include "exts.mongo.fullname" . }}
+{{- $postgresName := include "exts.postgres.fullname" . }}
+{{- $clickhouseName := include "exts.clickhouse.fullname" . }}
+
+Installed services:
+
+{{ if .Values.rabbit.enabled }}
+RABBIT:     amqp://{{ $rabbitName }}:{{ .Values.rabbit.service.port }}
+{{ end }}
+{{ if .Values.nats.enabled }}
+NATS:       nats://{{ $natsName }}:{{ .Values.nats.service.port }}
+{{ end }}
+{{ if .Values.redis.enabled }}
+REDIS:      redis://{{ $redisName }}:{{ .Values.redis.service.port }}
+{{ end }}
+{{ if .Values.mongo.enabled }}
+MONGO:      mongodb://{{ $mongoName }}:{{ .Values.mongo.service.port }}
+{{ end }}
+{{ if .Values.postgres.enabled }}
+POSTGRES:   {{ $postgresName }}:{{ .Values.postgres.service.port }}
+{{ end }}
+{{ if .Values.clickhouse.enabled }}
+CLICKHOUSE: {{ $clickhouseName }}:{{ .Values.clickhouse.service.port }}
+{{ end }}
+
+Attention, it's not recommend to use it in production. Use charts from official rep for this purpose.

@@ -1,0 +1,26 @@
+{{- if .Values.agentk8s.enabled -}}
+{{- if .Values.serviceAccount.create -}}
+apiVersion: rbac.authorization.k8s.io/v1beta1
+kind: ClusterRoleBinding
+metadata:
+  name: "{{ include "dctl.name" . }}-{{ include "dctl.serviceAccountName" . }}-{{ .Values.serviceAccount.role }}-binding"
+  labels:
+    {{- include "dctl.labels" . | nindent 4 }}
+  {{- with .Values.serviceAccount.annotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  {{- if .Values.serviceAccount.role }}
+  name: "{{ include "dctl.name" . }}-{{ .Values.serviceAccount.role }}"
+  {{- else }}
+  name: cluster-admin
+  {{- end }}
+subjects:
+  - kind: ServiceAccount
+    name: "{{ include "dctl.serviceAccountName" . }}-agent-k8s"
+    namespace: "{{ .Release.Namespace }}"
+{{- end }}
+{{- end }}

@@ -1,0 +1,247 @@
+{{- if .Values.dc.enabled -}}
+{{- $dcName := include "dctl.dc.fullname" . }}
+{{- $tykAppConfigs := (list "auth.json" "provision.json" "platform.json" "deployer-app.json" "deployer-datalab.json" "trigger.json") }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: "{{ $dcName }}"
+  {{- with .Values.dc.annotations }}
+  annotations:
+      {{- toYaml . | nindent 6 }}
+  {{- end }}
+  labels:
+    {{- include "dctl.dc.labels" . | nindent 4 }}
+spec:
+  replicas: {{ .Values.dc.replicaCount }}
+  selector:
+    matchLabels:
+      {{- include "dctl.dc.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+    {{- with .Values.dc.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}
+      labels:
+        {{- include "dctl.dc.selectorLabels" . | nindent 8 }}
+    spec:
+      hostAliases:
+        - ip: "127.0.0.1"
+          hostnames: ["apigw", "auth", "deployer-app", "deployer-datalab", "platform", "provision", "trigger", "vcsint"]
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      restartPolicy: {{ .Values.dc.restartPolicy }}
+      {{- if .Values.dc.updateStrategy }}
+      updateStrategy:
+        type: {{ .Values.dc.updateStrategy }}
+      {{- end }}
+      serviceAccountName: "{{ include "dctl.serviceAccountName" . }}"
+      securityContext:
+        {{- toYaml .Values.dc.podSecurityContext | nindent 8 }}
+      containers:
+        - name: "apigw"
+          securityContext:
+            {{- toYaml .Values.dc.securityContext | nindent 12 }}
+          image: "{{ .Values.dc.apiGw.image.repository }}:{{ .Values.dc.apiGw.image.tag }}"
+          imagePullPolicy: "{{ .Values.dc.apiGw.image.pullPolicy }}"
+          envFrom:
+            - configMapRef:
+                name: "{{ $dcName }}-config"
+            - secretRef:
+                name: "{{ $dcName }}-secrets"
+          ports:
+            - name: http
+              containerPort: 8080
+          resources:
+            {{- toYaml .Values.dc.resources | nindent 12 }}
+          volumeMounts:
+            - mountPath: "/opt/tyk-gateway/tyk.conf"
+              subPath: "tyk.conf"
+              name: dc-config-volume
+            - mountPath: "/opt/tyk-gateway/policies/policies.json"
+              subPath: "policies.json"
+              name: dc-config-volume
+            {{- range $tykAppConfigs }}
+            - mountPath: "/opt/tyk-gateway/apps-templates/{{ . }}"
+              subPath: "{{ . }}"
+              name: dc-config-volume
+            {{- end }}
+
+        - name: "auth"
+          securityContext:
+            {{- toYaml .Values.dc.securityContext | nindent 12 }}
+          image: "{{ .Values.dc.image.repository }}:{{ .Values.dc.image.tag }}"
+          imagePullPolicy: "{{ .Values.dc.image.pullPolicy }}"
+          env:
+            - name: DATABASE_DB
+              value: "{{ .Values.dc.auth.databaseDb | default .Values.dc.configs.databaseDb }}"
+            - name: DATABASE_SCHEMA
+              value: "{{ .Values.dc.auth.databaseSchema }}"
+            - name: APP_AUTH_ADMIN_USERNAME
+              value: "{{ .Values.dc.configs.initAdminUsername }}"
+            - name: APP_AUTH_ADMIN_PASSWORD
+              value: "{{ .Values.dc.configs.initAdminPassword }}"
+          envFrom:
+            - configMapRef:
+                name: "{{ $dcName }}-config"
+            - secretRef:
+                name: "{{ $dcName }}-secrets"
+          resources:
+            {{- toYaml .Values.dc.resources | nindent 12 }}
+          command: ["yarn", "run", "start:auth:prod"]
+
+        {{- if .Values.dc.deployerApp.enabled }}
+        - name: "deployer-app"
+          securityContext:
+            {{- toYaml .Values.dc.securityContext | nindent 12 }}
+          image: "{{ .Values.dc.image.repository }}:{{ .Values.dc.image.tag }}"
+          imagePullPolicy: "{{ .Values.dc.image.pullPolicy }}"
+          env:
+            - name: DATABASE_DB
+              value: "{{ .Values.dc.deployerApp.databaseDb | default .Values.dc.configs.databaseDb }}"
+            - name: DATABASE_SCHEMA
+              value: "{{ .Values.dc.deployerApp.databaseSchema }}"
+          envFrom:
+            - configMapRef:
+                name: "{{ $dcName }}-config"
+            - secretRef:
+                name: "{{ $dcName }}-secrets"
+          resources:
+            {{- toYaml .Values.dc.resources | nindent 12 }}
+          command: ["yarn", "run", "start:deployer-app:prod"]
+        {{- end }}
+
+        {{- if .Values.dc.deployerDatalab.enabled }}
+        - name: "deployer-datalab"
+          securityContext:
+            {{- toYaml .Values.dc.securityContext | nindent 12 }}
+          image: "{{ .Values.dc.image.repository }}:{{ .Values.dc.image.tag }}"
+          imagePullPolicy: "{{ .Values.dc.image.pullPolicy }}"
+          env:
+            - name: DATABASE_DB
+              value: "{{ .Values.dc.deployerDatalab.databaseDb | default .Values.dc.configs.databaseDb }}"
+            - name: DATABASE_SCHEMA
+              value: "{{ .Values.dc.deployerDatalab.databaseSchema }}"
+          envFrom:
+            - configMapRef:
+                name: "{{ $dcName }}-config"
+            - secretRef:
+                name: "{{ $dcName }}-secrets"
+          resources:
+            {{- toYaml .Values.dc.resources | nindent 12 }}
+          command: ["yarn", "run", "start:deployer-datalab:prod"]
+        {{- end }}
+
+        - name: "platform"
+          securityContext:
+            {{- toYaml .Values.dc.securityContext | nindent 12 }}
+          image: "{{ .Values.dc.image.repository }}:{{ .Values.dc.image.tag }}"
+          imagePullPolicy: "{{ .Values.dc.image.pullPolicy }}"
+          env:
+            - name: DATABASE_DB
+              value: "{{ .Values.dc.platform.databaseDb | default .Values.dc.configs.databaseDb }}"
+            - name: DATABASE_SCHEMA
+              value: "{{ .Values.dc.platform.databaseSchema }}"
+          envFrom:
+            - configMapRef:
+                name: "{{ $dcName }}-config"
+            - secretRef:
+                name: "{{ $dcName }}-secrets"
+          resources:
+            {{- toYaml .Values.dc.resources | nindent 12 }}
+          command: ["yarn", "run", "start:platform:prod"]
+
+        - name: "provision"
+          securityContext:
+            {{- toYaml .Values.dc.securityContext | nindent 12 }}
+          image: "{{ .Values.dc.image.repository }}:{{ .Values.dc.image.tag }}"
+          imagePullPolicy: "{{ .Values.dc.image.pullPolicy }}"
+          env:
+            - name: DATABASE_DB
+              value: "{{ .Values.dc.provision.databaseDb | default .Values.dc.configs.databaseDb }}"
+            - name: DATABASE_SCHEMA
+              value: "{{ .Values.dc.provision.databaseSchema }}"
+            - name: APP_TEMPLATES_DEFAULTPARAMS
+              value: {{ .Values.dc.configs.paramsDefaults | toJson | toJson }}
+            - name: APP_TEMPLATES_OVERWRITEPARAMS
+              value: {{ .Values.dc.configs.paramsOverwrite | toJson | toJson }}
+          envFrom:
+            - configMapRef:
+                name: "{{ $dcName }}-config"
+            - secretRef:
+                name: "{{ $dcName }}-secrets"
+          resources:
+            {{- toYaml .Values.dc.resources | nindent 12 }}
+          command: ["yarn", "run", "start:provision:prod"]
+
+        {{- if .Values.dc.trigger.enabled }}
+        - name: "trigger"
+          securityContext:
+            {{- toYaml .Values.dc.securityContext | nindent 12 }}
+          image: "{{ .Values.dc.image.repository }}:{{ .Values.dc.image.tag }}"
+          imagePullPolicy: "{{ .Values.dc.image.pullPolicy }}"
+          env:
+            - name: DATABASE_DB
+              value: "{{ .Values.dc.trigger.databaseDb | default .Values.dc.configs.databaseDb }}"
+            - name: DATABASE_SCHEMA
+              value: "{{ .Values.dc.trigger.databaseSchema }}"
+          envFrom:
+            - configMapRef:
+                name: "{{ $dcName }}-config"
+            - secretRef:
+                name: "{{ $dcName }}-secrets"
+          resources:
+            {{- toYaml .Values.dc.resources | nindent 12 }}
+          command: ["yarn", "run", "start:trigger:prod"]
+        {{- end }}
+
+        {{- if .Values.dc.vcsint.enabled }}
+        - name: "vcsint"
+          securityContext:
+            {{- toYaml .Values.dc.securityContext | nindent 12 }}
+          image: "{{ .Values.dc.image.repository }}:{{ .Values.dc.image.tag }}"
+          imagePullPolicy: "{{ .Values.dc.image.pullPolicy }}"
+          env:
+            - name: DATABASE_DB
+              value: "{{ .Values.dc.vcsint.databaseDb | default .Values.dc.configs.databaseDb }}"
+            - name: DATABASE_SCHEMA
+              value: "{{ .Values.dc.vcsint.databaseSchema }}"
+          envFrom:
+            - configMapRef:
+                name: "{{ $dcName }}-config"
+            - secretRef:
+                name: "{{ $dcName }}-secrets"
+          resources:
+            {{- toYaml .Values.dc.resources | nindent 12 }}
+          command: ["yarn", "run", "start:vcsint:prod"]
+        {{- end }}
+
+      volumes:
+        - name: dc-config-volume
+          configMap:
+            name: "{{ $dcName }}-config-files"
+            items:
+              - key: "tyk.conf"
+                path: "tyk.conf"
+              - key: "policies-policies.json"
+                path: "policies.json"
+            {{- range $tykAppConfigs }}
+              - key: "apps-templates-{{ . }}"
+                path: "{{ . }}"
+            {{- end }}
+
+      {{- with .Values.dc.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.dc.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.dc.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+{{- end }}

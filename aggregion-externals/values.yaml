@@ -1,0 +1,178 @@
+# Default values for aggregion-externals.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+imagePullSecrets: []
+
+serviceAccount:
+  create: false
+  annotations: {}
+  name: "default"
+
+clickhouse:
+  enabled: false
+  nameOverride: ""
+  fullnameOverride: ""
+  storageSize: "256G"
+  restartPolicy: Always
+  image:
+    repository: "yandex/clickhouse-server"
+    pullPolicy: IfNotPresent
+    tag: "20.8.18.32"
+  service:
+    type: ClusterIP
+    port: 8123
+  listenPort: 8123
+  securityContext: {}
+  podAnnotations: {}
+  podSecurityContext: {}
+  resources: {}
+  # limits:
+  #   cpu: 100m
+  #   memory: 128Mi
+  # requests:
+  #   cpu: 100m
+  #   memory: 128Mi
+  nodeSelector: {}
+  tolerations: []
+  affinity: {}
+
+mongo:
+  enabled: false
+  nameOverride: ""
+  fullnameOverride: ""
+  storageSize: "64G"
+  restartPolicy: Always
+  image:
+    repository: "mongo"
+    pullPolicy: IfNotPresent
+    tag: "4.4.5"
+  service:
+    type: ClusterIP
+    port: 27017
+  listenPort: 27017
+  securityContext: {}
+  podAnnotations: {}
+  podSecurityContext: {}
+  resources: {}
+  # limits:
+  #   cpu: 100m
+  #   memory: 128Mi
+  # requests:
+  #   cpu: 100m
+  #   memory: 128Mi
+  nodeSelector: {}
+  tolerations: []
+  affinity: {}
+
+postgres:
+  enabled: false
+  nameOverride: ""
+  fullnameOverride: ""
+  storageSize: "64G"
+  restartPolicy: Always
+  image:
+    repository: "postgres"
+    pullPolicy: IfNotPresent
+    tag: "13"
+  configs:
+    initPassword: "postgres"
+  service:
+    type: ClusterIP
+    port: 5432
+  listenPort: 5432
+  securityContext: {}
+  podAnnotations: {}
+  podSecurityContext: {}
+  resources: {}
+  # limits:
+  #   cpu: 100m
+  #   memory: 128Mi
+  # requests:
+  #   cpu: 100m
+  #   memory: 128Mi
+  nodeSelector: {}
+  tolerations: []
+  affinity: {}
+
+rabbit:
+  enabled: false
+  nameOverride: ""
+  fullnameOverride: ""
+  storageSize: "64G"
+  restartPolicy: Always
+  image:
+    repository: "rabbitmq"
+    pullPolicy: IfNotPresent
+    tag: "3.8.14-management-alpine"
+  service:
+    type: ClusterIP
+    port: 5672
+  listenPort: 5672
+  securityContext: {}
+  podAnnotations: {}
+  podSecurityContext: {}
+  resources: {}
+  # limits:
+  #   cpu: 100m
+  #   memory: 128Mi
+  # requests:
+  #   cpu: 100m
+  #   memory: 128Mi
+  nodeSelector: {}
+  tolerations: []
+  affinity: {}
+
+redis:
+  enabled: false
+  nameOverride: ""
+  fullnameOverride: ""
+  storageSize: "10G"
+  restartPolicy: Always
+  image:
+    repository: "redis"
+    pullPolicy: IfNotPresent
+    tag: "6.2.1-alpine3.13"
+  service:
+    type: ClusterIP
+    port: 6379
+  listenPort: 6379
+  securityContext: {}
+  podAnnotations: {}
+  podSecurityContext: {}
+  resources: {}
+  # limits:
+  #   cpu: 100m
+  #   memory: 128Mi
+  # requests:
+  #   cpu: 100m
+  #   memory: 128Mi
+  nodeSelector: {}
+  tolerations: []
+  affinity: {}
+
+nats:
+  enabled: false
+  nameOverride: ""
+  fullnameOverride: ""
+  restartPolicy: Always
+  image:
+    repository: "nats"
+    pullPolicy: IfNotPresent
+    tag: "2.2-alpine3.13"
+  service:
+    type: ClusterIP
+    port: 4222
+  listenPort: 4222
+  securityContext: {}
+  podAnnotations: {}
+  podSecurityContext: {}
+  resources: {}
+  # limits:
+  #   cpu: 100m
+  #   memory: 128Mi
+  # requests:
+  #   cpu: 100m
+  #   memory: 128Mi
+  nodeSelector: {}
+  tolerations: []
+  affinity: {}

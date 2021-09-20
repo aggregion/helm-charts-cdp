@@ -1,0 +1,7 @@
+Installed:
+{{- if .Values.agentk8s.enabled }}
+  Agent K8S.
+{{- end }}
+{{- if .Values.dc.enabled }}
+  Deploy-Controller.
+{{- end }}

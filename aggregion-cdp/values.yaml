@@ -1,0 +1,320 @@
+# Default values for aggregion-cdp.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+imagePullSecrets:
+  - name: aggregionregistry
+
+# all available providers
+providers: ["demo"]
+providerLinks:
+    # this config url is used for accessing to another enclaves
+  - name: demo
+    url: http://demo
+
+serviceAccount:
+  create: false
+  annotations: {}
+  name: "default"
+
+frontend:
+  replicaCount: 1
+  annotations:
+    reloader.stakater.com/auto: "true"
+  image:
+    repository: registry.aggregion.com/dmp-frontend
+    pullPolicy: IfNotPresent
+    tag: "develop"
+  restartPolicy: Always
+  nameOverride: ""
+  fullnameOverride: ""
+  podAnnotations: {}
+  podSecurityContext: {}
+  securityContext: {}
+    # capabilities:
+    #   drop:
+    #   - ALL
+    # readOnlyRootFilesystem: true
+    # runAsNonRoot: true
+    # runAsUser: 1000
+  configs:
+    listenPort: 5000
+  service:
+    type: ClusterIP
+    port: 5000
+  ingress:
+    enabled: true
+    annotations:
+      kubernetes.io/ingress.class: nginx
+      nginx.ingress.kubernetes.io/proxy-body-size: 128000m
+    hosts:
+      - host: demo.local
+    tls: []
+    #  - secretName: chart-example-tls
+    #    hosts:
+    #      - chart-example.local
+  resources: {}
+    # limits:
+    #   cpu: 100m
+    #   memory: 128Mi
+    # requests:
+    #   cpu: 100m
+    #   memory: 128Mi
+  nodeSelector: {}
+  tolerations: []
+  affinity: {}
+
+backend:
+  replicaCount: 1
+  annotations:
+    reloader.stakater.com/auto: "true"
+
+  image:
+    repository: registry.aggregion.com/dmp-backend
+    pullPolicy: IfNotPresent
+    tag: "develop"
+
+  crond:
+    image:
+      repository: "registry.aggregion.com/cron-curl"
+      tag: "0.0.1"
+      pullPolicy: IfNotPresent
+    resources: {}
+
+  datalabProxy:
+    replicaCount: 1
+    listenPort: 8080
+    image:
+      repository: nginx
+      tag: 1.19-alpine
+      pullPolicy: IfNotPresent
+    resources: {}
+
+  dbseed:
+    enabled: false
+    image:
+      repository: registry.aggregion.com/dmp-seed
+      tag: latest
+      pullPolicy: IfNotPresent
+    useConfig: retailer
+    once: 1
+    numberOfCustomers: 0
+    accountsAndUsers: 0
+    resources: {}
+
+  configs:
+    # infrastructure dependencies
+    mongoUrl: "mongo://mongo:27017/dmp"
+    rabbitmqUrl: "amqp://rabbit"
+    redisHost: redis
+    redisPort: 6379
+    redisPassword: ""
+    redisPrefix: "agg:"
+    clickhouseHost: "clickhouse"
+    clickhousePort: 8123
+    clickhouseDb: "dmp"
+
+    # could be disabled
+    cache: "redis"
+
+    # current debug is only for api service
+    debugEnabled: false
+    logLevel: "debug"
+    migrationEnabled: true
+    # services to be enabled or not
+    serviceMatchingStatusWatcherEnabled: true
+    serviceMatchingStatusResponseWatcherEnabled: true
+    serviceDatasetUploaderEnabled: true
+    serviceBlockchainUpdaterEnabled: true
+    serviceSegmentsEnabled: true
+    serviceBcCheckerEnabled: true
+    serviceBcSyncerEnabled: true
+    serviceCrondEnabled: true
+    servicePanelSegmentUploaderEnabled: false
+
+    # used to communicate between dmp
+    dmpSecret: "secret"
+    jwtSecret: "c2VjcmV0"
+    baseUrl: "http://aggregion-cdp.com"
+    alarmEmail: "alarm@aggregion-cdp.com"
+    supportEmail: "support@aggregion-cdp.com"
+    # it's whole encoded as json, see source code of dmp-backend :)
+    email:
+      enabled: true
+      transport: "smtp"
+      from: "support@aggregion-cdp.com"
+      smtp:
+        host: "aggregion-cdp.com"
+        port: 1025
+        auth:
+          user: "username"
+          pass: "password"
+    providerName: "demo"
+    accountName: "demo"
+    eosNodeUrl: "http://testnet.blockchain.dmp.aggregion.com:9999"
+    # usually fixed and equals aggregiondmp
+    eosOrgId: "aggregiondmp"
+    # usually for aggregiondmp
+    eosWalletPub: "EOS696B5YTMyVmMLnmN7C7oWWZ5SANf3NJ8nGWr1SN3MuEN7qZgM5" # < fake
+    # usually for aggregiondmp
+    eosWalletPk: "5KXVjVEen9RbprvmVHaLmTmFtMe87G21JnV6CqSGLuyAAbgQ7uY" # < fake
+    # for current provider, this is account in blockchain (should be exists)
+    eosWalletOwnerOrgId: "orgId"
+    # for current provider
+    eosWalletOwnerPub: "EOS696B5YTMyVmMLnmN7C7oWWZ5SANf3NJ8nGWr1SN3MuEN7qZgM5" # < fake
+    # for current provider
+    eosWalletOwnerPk: "5KXVjVEen9RbprvmVHaLmTmFtMe87G21JnV6CqSGLuyAAbgQ7uY" # < fake
+    # for current provider, public key must be registered in blockchain (simply, use aggregion-contract-cli tool)
+    # (example is a fake key)
+    eosDecryptPk: |-
+      -----BEGIN PRIVATE KEY-----
+      MIGEAgEAMBAGByqGSM49AgEGBSuBBAAKBG0wawIBAQQgAkIy7noMPV1IY09CPEa9
+      fU6aTvCK1+O1L8toHOyFEyihRANCAATMacBoCdh0UHeoPdPQ6CPjOO4bqw8Y/OZC
+      mVLgsXfn4qwdAKMLaMkKVsxs/ZaIN3pPmIz+FMeuShp8imoWcoGM
+      -----END PRIVATE KEY-----
+
+    httpSchema: "http"
+    dictMode: "global"
+    reportDefaultGoodsDirectory: "aggregion"
+
+    # url to enclave service (could be externalized), override default url (targeting inside namespace)
+    # enclaveEndpoint: "http://enclave.company.com:8321/v1"
+
+    enclaveAuthEnabled: false
+    enclaveDmpAuthId: "LOCAL"
+    # single value for signing
+    enclaveAuthValue: "dmFsdWU="
+    # secret for hmac
+    enclaveAuthSecret: "c2VjcmV0"
+
+    # credentials to access deploy controller
+    datalabUsername: admin
+    # credentials to access deploy controller
+    datalabPassword: admin
+    # namespace of templates
+    datalabTemplates: persist
+    # registered platform id
+    datalabPlatformId: selectel
+    # domain suffix
+    datalabOverwriteDomain: "localhost"
+    # who can access s3 interface of minio in datalab
+    datalabWhiteIps: ""
+    # url to deploy controller
+    datalabApiUrl: "http://deploy-controller.deploy-controller.svc.cluster.local:5010/api"
+    datalabApiVersion: "0.2.0"
+    # back reference to dmp api
+    datalabAuthUrl: "http://datalab-auth-helper.datalab-auth-helper.svc.cluster.local:19000/"
+    listenPort: 15432
+
+  restartPolicy: Always
+  nameOverride: ""
+  fullnameOverride: ""
+  podAnnotations: {}
+  podSecurityContext: {}
+  securityContext: {}
+    # capabilities:
+    #   drop:
+    #   - ALL
+    # readOnlyRootFilesystem: true
+    # runAsNonRoot: true
+    # runAsUser: 1000
+  service:
+    api:
+      type: ClusterIP
+      port: 8080
+    datalabProxy:
+      type: ClusterIP
+      port: 8080
+
+  resources:
+    api: {}
+    migration: {}
+    matchingStatusWatcher: {}
+    matchingStatusResponseWatcher: {}
+    datasetUploader: {}
+    blockchainUpdater: {}
+    segments: {}
+    bcChecker: {}
+    bcSyncer: {}
+    crond: {}
+    panelSegmentUploader: {}
+      # limits:
+      #   cpu: 100m
+      #   memory: 128Mi
+      # requests:
+      #   cpu: 100m
+      #   memory: 128Mi
+  nodeSelector: {}
+  tolerations: []
+  affinity: {}
+
+enclave:
+  replicaCount: 1
+  annotations:
+    reloader.stakater.com/auto: "true"
+
+  hostname: "enclave"
+  sgxDevice: ""
+  sconeCas: ""
+  sconeLas: ""
+  scripts:
+    auditory: "sha256-1dbdf66d12ed88c56682a533bf8b703211a004743e7b6c9393bc70461175f7ba"
+    datalab: "sha256-4be860062a8440188600ee3c57d65c59aa3a7d23feee022ab87c4b85386cfe89"
+    segment: "sha256-eee58a0d585b02731979815f5985e9d08b8aa328b41c5b5954f67dde1344eed3"
+    segmentCriteries: "sha256-af951a1b4078a926671d7fbcb244f0a4f6d6cb221d321cdb5ba569bb84a55f46"
+    statistics: "sha256-652c1df657735c02ff329216dd0d935a529447facdcf5919db54ab873067ebc7"
+  imageServer:
+    repository: registry.aggregion.com/enclave-server-nodejs
+    pullPolicy: IfNotPresent
+    tag: "main"
+  imageServices:
+    repository: registry.aggregion.com/enclave-external-services
+    pullPolicy: IfNotPresent
+    tag: "develop"
+  configs:
+    # the key (pair with public key) is used to authenticate another enclaves
+    authPrivateKey: "PrivateKeyBody"
+    listenPort: 8321
+  restartPolicy: Always
+  nameOverride: ""
+  fullnameOverride: ""
+  podAnnotations: {}
+  podSecurityContext: {}
+  securityContext: {}
+    # capabilities:
+    #   drop:
+    #   - ALL
+    # readOnlyRootFilesystem: true
+    # runAsNonRoot: true
+    # runAsUser: 1000
+  service:
+    type: ClusterIP
+    port: 8321
+
+  ingress:
+    enabled: true
+    annotations:
+      kubernetes.io/ingress.class: nginx
+      nginx.ingress.kubernetes.io/proxy-body-size: 128000m
+      nginx.ingress.kubernetes.io/proxy-read-timeout: "3600"
+      nginx.ingress.kubernetes.io/proxy-send-timeout: "3600"
+    hosts:
+      - host: enclave.local
+        paths:
+          - "/"
+    tls: []
+    #  - secretName: chart-example-tls
+    #    hosts:
+    #      - enclave.local
+  resources:
+    server: {}
+    services: {}
+      # limits:
+      #   cpu: 100m
+      #   memory: 128Mi
+      # requests:
+      #   cpu: 100m
+      #   memory: 128Mi
+  nodeSelector: {}
+  tolerations: []
+  affinity: {}

@@ -1,0 +1,72 @@
+{{- if .Values.clickhouse.enabled }}
+{{- $clickhouseName := include "exts.clickhouse.fullname" . }}
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: "{{ $clickhouseName }}"
+  labels:
+    {{- include "exts.clickhouse.labels" . | nindent 4 }}
+spec:
+  replicas: 1 # force 1 instance
+  serviceName: "{{ $clickhouseName }}"
+  selector:
+    matchLabels:
+      {{- include "exts.clickhouse.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+    {{- with .Values.clickhouse.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}
+      labels:
+        {{- include "exts.clickhouse.selectorLabels" . | nindent 8 }}
+    spec:
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      serviceAccountName: {{ include "exts.serviceAccountName" . }}
+      securityContext:
+        {{- toYaml .Values.clickhouse.podSecurityContext | nindent 8 }}
+      containers:
+        - name: "clickhouse"
+          securityContext:
+            {{- toYaml .Values.clickhouse.securityContext | nindent 12 }}
+          image: "{{ .Values.clickhouse.image.repository }}:{{ .Values.clickhouse.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.clickhouse.image.pullPolicy }}
+          ports:
+            - name: service
+              containerPort: {{ .Values.clickhouse.listenPort }}
+              protocol: TCP
+          # livenessProbe:
+          #   httpGet:
+          #     path: /
+          #     port: http
+          # readinessProbe:
+          #   httpGet:
+          #     path: /
+          #     port: http
+          volumeMounts:
+            - name: data
+              mountPath: /var/lib/clickhouse
+              subPath: clickhouse-data
+          resources:
+            {{- toYaml .Values.clickhouse.resources | nindent 12 }}
+      restartPolicy: {{ .Values.clickhouse.restartPolicy }}
+      volumes:
+        - name: data
+          persistentVolumeClaim:
+            claimName: "{{ $clickhouseName }}-claim"
+      {{- with .Values.clickhouse.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.clickhouse.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.clickhouse.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+{{- end }}

@@ -1,0 +1,59 @@
+{{- $backendName := include "cdp.backend.fullname" . }}
+{{- $enclaveName := include "cdp.enclave.fullname" . }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: "{{ $backendName }}-config-files"
+  labels:
+    {{- include "cdp.backend.labels" . | nindent 4 }}
+data:
+  account.wallet: |
+    {
+      "orgId": "{{ .Values.backend.configs.eosOrgId }}",
+      "publicKey": "{{ .Values.backend.configs.eosWalletPub }}",
+      "privateKey": "{{ .Values.backend.configs.eosWalletPk }}"
+    }
+  local.json: |
+    {
+      "eos": {
+        "initiateOrgId": "{{ .Values.backend.configs.eosOrgId }}",
+        "walletsPath": "/home/node/app/eos-wallet"
+      },
+      "integrations": {
+        "deployController": {
+          "datalabvmClient": {
+            "credentials": {
+              "username": "{{ .Values.backend.configs.datalabUsername }}",
+              "password": "{{ .Values.backend.configs.datalabPassword }}"
+            },
+            "apiUrl": "{{ .Values.backend.configs.datalabApiUrl }}",
+            "apiVersion": "{{ .Values.backend.configs.datalabApiVersion }}",
+            "clusterId": "{{ .Values.backend.configs.datalabPlatformId }}",
+            "overwriteDomain": "{{ .Values.backend.configs.datalabOverwriteDomain }}",
+            "templatesPrefix": "{{ .Values.backend.configs.datalabTemplates }}",
+            "s3WhitelistIps": "{{ .Values.backend.configs.datalabWhiteIps }}",
+            "authUrl": "{{ .Values.backend.configs.datalabAuthUrl }}"
+          }
+        }
+      },
+      "enclave": {
+        "auth": {
+          "enabled": {{ .Values.backend.configs.enclaveAuthEnabled }},
+          "id": "{{ .Values.backend.configs.enclaveDmpAuthId }}",
+          "ticket": {
+            "type": "single",
+            "value": "{{ .Values.backend.configs.enclaveAuthValue }}",
+            "secret": "{{ .Values.backend.configs.enclaveAuthSecret }}"
+          }
+        }
+      },
+      "cache": {
+        "type": "{{ .Values.backend.configs.cache }}",
+        "redis": {
+          "port": {{ .Values.backend.configs.redisPort }},
+          "password": "{{ .Values.backend.configs.redisPassword }}",
+          "host": "{{ .Values.backend.configs.redisHost }}",
+          "keyPrefix": "{{ .Values.backend.configs.redisPrefix }}"
+        }
+      }
+    }

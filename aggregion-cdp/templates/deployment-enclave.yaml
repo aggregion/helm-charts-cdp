@@ -1,0 +1,108 @@
+{{- $name := "enclave" }}
+{{- $enclaveName := include "cdp.enclave.fullname" . }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: "{{ $enclaveName }}"
+  {{- with .Values.enclave.annotations }}
+  annotations:
+      {{- toYaml . | nindent 6 }}
+  {{- end }}
+  labels:
+    {{- include "cdp.enclave.labels" . | nindent 4 }}
+spec:
+  replicas: {{ .Values.enclave.replicaCount }}
+  selector:
+    matchLabels:
+      {{- include "cdp.enclave.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+    {{- with .Values.enclave.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}
+      labels:
+        {{- include "cdp.enclave.selectorLabels" . | nindent 8 }}
+    spec:
+      hostname: "{{ .Values.enclave.hostname }}"
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      restartPolicy: {{ .Values.enclave.restartPolicy }}
+      {{- if .Values.enclave.updateStrategy }}
+      updateStrategy:
+        type: {{ .Values.enclave.updateStrategy }}
+      {{- end }}
+      serviceAccountName: {{ include "cdp.serviceAccountName" . }}
+      securityContext:
+        {{- toYaml .Values.enclave.podSecurityContext | nindent 8 }}
+      containers:
+        - name: "enclave-server"
+          securityContext:
+            {{- toYaml .Values.enclave.securityContext | nindent 12 }}
+          image: "{{ .Values.enclave.imageServer.repository }}:{{ .Values.enclave.imageServer.tag }}"
+          imagePullPolicy: {{ .Values.enclave.imageServer.pullPolicy }}
+          ports:
+            - name: httpenclave
+              containerPort: {{ .Values.enclave.configs.listenPort }}
+              protocol: TCP
+          envFrom:
+            - configMapRef:
+                name: "{{ $enclaveName }}-config"
+            - secretRef:
+                name: "{{ $enclaveName }}-secrets"
+          # livenessProbe:
+          # readinessProbe:
+          resources:
+            {{- toYaml .Values.enclave.resources.server | nindent 12 }}
+          volumeMounts:
+            - mountPath: /tmp
+              name: tmp
+            - mountPath: /opt/enclave/config/local.json
+              subPath: local.json
+              name: local-config-volume
+            - mountPath: /var/keys/auth-key.pem
+              subPath: auth-key.pem
+              name: local-secrets-volume
+
+        - name: "enclave-services"
+          securityContext:
+            {{- toYaml .Values.enclave.securityContext | nindent 12 }}
+          image: "{{ .Values.enclave.imageServices.repository }}:{{ .Values.enclave.imageServices.tag }}"
+          imagePullPolicy: {{ .Values.enclave.imageServer.pullPolicy }}
+          envFrom:
+            - configMapRef:
+                name: "{{ $enclaveName }}-services-config"
+            - secretRef:
+                name: "{{ $enclaveName }}-services-secrets"
+          # livenessProbe:
+          # readinessProbe:
+          resources:
+            {{- toYaml .Values.enclave.resources.services | nindent 12 }}
+          volumeMounts:
+            - mountPath: /tmp
+              name: tmp
+
+      volumes:
+        - name: tmp
+          hostPath:
+            path: "/tmp/{{ $enclaveName }}"
+        - name: local-config-volume
+          configMap:
+            name: "{{ $enclaveName }}-config-files"
+        - name: local-secrets-volume
+          secret:
+            secretName: "{{ $enclaveName }}-file-secrets"
+      {{- with .Values.enclave.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.enclave.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.enclave.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}

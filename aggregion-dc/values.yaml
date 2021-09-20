@@ -1,0 +1,131 @@
+# Default values for aggregion-dc.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+replicaCount: 1
+imagePullSecrets:
+  - name: aggregionregistry
+serviceAccount:
+  create: true
+  role: permissionless
+  annotations: {}
+  name: "deploy-controller"
+
+agentk8s:
+  enabled: true
+  annotations: {}
+  image:
+    repository: registry.aggregion.com/deploy-controller-re
+    pullPolicy: IfNotPresent
+    tag: "latest"
+  configs:
+    dumpPath: ""
+    dummyMode: false
+    authJwtSecret: ""
+    whitelistIp: ""
+    clientIpHeader: ""
+    blacklistNamespaces: ""
+    whitelistNamespaces: ""
+  nameOverride: ""
+  fullnameOverride: ""
+  podAnnotations: {}
+  podSecurityContext: {}
+  securityContext: {}
+  resources: {}
+  nodeSelector: {}
+  tolerations: []
+  affinity: {}
+  service:
+    type: ClusterIP
+    port: 20100
+  ingress:
+    enabled: false
+    annotations:
+      kubernetes.io/ingress.class: nginx
+      nginx.ingress.kubernetes.io/proxy-body-size: 32m
+    hosts:
+      - host: chart-example.local
+        paths: []
+    tls: []
+
+dc:
+  enabled: true
+  annotations: {}
+  image:
+    repository: registry.aggregion.com/deploy-controller-re
+    pullPolicy: IfNotPresent
+    tag: "latest"
+  configs:
+    cipherSecret: ""
+    authJwtSecret: ""
+    tykGwSecret: ""
+    initAdminUsername: "admin"
+    initAdminPassword: "admin"
+    databaseHost: "postgres"
+    databaseDb: "postgres"
+    databaseUsername: "postgres"
+    databasePassword: "postgres"
+    databasePort: 5432
+    gwRedisHost: "redis"
+    gwRedisPort: "6379"
+    gwRedisPassword: ""
+    gwRedisDb: 1
+    redisUrl: "redis://redis:6379"
+    natsUrl: "nats://nats:4222"
+    paramsDefaults: {}
+    paramsOverwrite: {}
+
+  nameOverride: ""
+  fullnameOverride: ""
+  podAnnotations: {}
+  podSecurityContext: {}
+  securityContext: {}
+  resources: {}
+  nodeSelector: {}
+  tolerations: []
+  affinity: {}
+
+  apiGw:
+    image:
+      repository: registry.aggregion.com/deploy-controller-apigw
+      pullPolicy: IfNotPresent
+      tag: "latest"
+
+  auth:
+    databaseSchema: 'auth'
+
+  deployerApp:
+    enabled: false
+    databaseSchema: 'deployer_app'
+
+  deployerDatalab:
+    enabled: false
+    databaseSchema: 'deployer_datalab'
+
+  platform:
+    databaseSchema: 'platform'
+
+  provision:
+    databaseSchema: 'provision'
+
+  trigger:
+    enabled: false
+    databaseSchema: 'trigger'
+
+  vcsint:
+    enabled: false
+    databaseSchema: 'vcsint'
+
+  service:
+    type: ClusterIP
+    port: 8080
+
+  ingress:
+    enabled: true
+    annotations:
+      kubernetes.io/ingress.class: nginx
+      nginx.ingress.kubernetes.io/proxy-body-size: 32m
+    hosts:
+      - host: chart-example.local
+        paths: []
+    tls: []

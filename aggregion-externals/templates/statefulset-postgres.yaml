@@ -1,0 +1,75 @@
+{{- if .Values.postgres.enabled }}
+{{- $postgresName := include "exts.postgres.fullname" . }}
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: "{{ $postgresName }}"
+  labels:
+    {{- include "exts.postgres.labels" . | nindent 4 }}
+spec:
+  replicas: 1 # force 1 instance
+  serviceName: "{{ $postgresName }}"
+  selector:
+    matchLabels:
+      {{- include "exts.postgres.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+    {{- with .Values.postgres.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}
+      labels:
+        {{- include "exts.postgres.selectorLabels" . | nindent 8 }}
+    spec:
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      serviceAccountName: {{ include "exts.serviceAccountName" . }}
+      securityContext:
+        {{- toYaml .Values.postgres.podSecurityContext | nindent 8 }}
+      containers:
+        - name: "postgres"
+          securityContext:
+            {{- toYaml .Values.postgres.securityContext | nindent 12 }}
+          image: "{{ .Values.postgres.image.repository }}:{{ .Values.postgres.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.postgres.image.pullPolicy }}
+          env:
+            - name: POSTGRES_PASSWORD
+              value: "{{ .Values.postgres.configs.initPassword }}"
+          ports:
+            - name: service
+              containerPort: {{ .Values.postgres.listenPort }}
+              protocol: TCP
+          # livenessProbe:
+          #   httpGet:
+          #     path: /
+          #     port: http
+          # readinessProbe:
+          #   httpGet:
+          #     path: /
+          #     port: http
+          volumeMounts:
+            - name: data
+              mountPath: /var/lib/postgresql/data
+              subPath: postgres-data
+          resources:
+            {{- toYaml .Values.postgres.resources | nindent 12 }}
+      restartPolicy: {{ .Values.postgres.restartPolicy }}
+      volumes:
+        - name: data
+          persistentVolumeClaim:
+            claimName: "{{ $postgresName }}-claim"
+      {{- with .Values.postgres.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.postgres.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.postgres.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+{{- end }}

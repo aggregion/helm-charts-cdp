@@ -1,0 +1,14 @@
+{{- if .Values.dc.enabled }}
+{{- $dcName := include "dctl.dc.fullname" . }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: "{{ $dcName }}-config"
+  labels:
+    {{- include "dctl.dc.labels" . | nindent 4 }}
+data:
+  DATABASE_HOST: "{{ .Values.dc.configs.databaseHost }}"
+  DATABASE_PORT: "{{ .Values.dc.configs.databasePort }}"
+  APP_PLATFORM_URL: "http://platform:20200"
+  APP_PROVISION_URL: "http://provision:20300"
+{{- end }}

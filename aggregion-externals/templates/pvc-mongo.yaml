@@ -1,0 +1,13 @@
+{{- if .Values.mongo.enabled }}
+{{- $mongoName := include "exts.mongo.fullname" . }}
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: "{{ $mongoName }}-claim"
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: "{{ .Values.mongo.storageSize }}"
+{{- end }}

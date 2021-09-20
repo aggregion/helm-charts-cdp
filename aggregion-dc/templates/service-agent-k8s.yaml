@@ -1,0 +1,17 @@
+{{- if .Values.agentk8s.enabled }}
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "dctl.agentk8s.fullname" . }}
+  labels:
+    {{- include "dctl.agentk8s.labels" . | nindent 4 }}
+spec:
+  type: {{ .Values.agentk8s.service.type }}
+  ports:
+    - port: {{ .Values.agentk8s.service.port }}
+      targetPort: httpagent
+      protocol: TCP
+      name: httpagent
+  selector:
+    {{- include "dctl.agentk8s.selectorLabels" . | nindent 4 }}
+{{- end }}

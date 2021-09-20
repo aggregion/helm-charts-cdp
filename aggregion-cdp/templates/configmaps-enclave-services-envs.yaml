@@ -1,0 +1,15 @@
+{{- $backendName := include "cdp.backend.fullname" . }}
+{{- $enclaveName := include "cdp.enclave.fullname" . }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ $enclaveName }}-services-config
+  labels:
+    {{- include "cdp.enclave.labels" . | nindent 4 }}
+data:
+  SERVER_PORT: "8322"
+  TMP_DIR: "/tmp"
+  CH_TYPE: "real"
+  CH_HOST: "{{ .Values.backend.configs.clickhouseHost }}"
+  CH_PORT: "{{ .Values.backend.configs.clickhousePort }}"
+  CH_DATABASE_NAME: "{{ .Values.backend.configs.clickhouseDb }}"

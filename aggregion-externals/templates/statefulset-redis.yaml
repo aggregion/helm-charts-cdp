@@ -1,0 +1,72 @@
+{{- if .Values.redis.enabled }}
+{{- $redisName := include "exts.redis.fullname" . }}
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: "{{ $redisName }}"
+  labels:
+    {{- include "exts.redis.labels" . | nindent 4 }}
+spec:
+  replicas: 1 # force 1 instance
+  serviceName: "{{ $redisName }}"
+  selector:
+    matchLabels:
+      {{- include "exts.redis.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+    {{- with .Values.redis.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}
+      labels:
+        {{- include "exts.redis.selectorLabels" . | nindent 8 }}
+    spec:
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      serviceAccountName: {{ include "exts.serviceAccountName" . }}
+      securityContext:
+        {{- toYaml .Values.redis.podSecurityContext | nindent 8 }}
+      containers:
+        - name: "redis"
+          securityContext:
+            {{- toYaml .Values.redis.securityContext | nindent 12 }}
+          image: "{{ .Values.redis.image.repository }}:{{ .Values.redis.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.redis.image.pullPolicy }}
+          ports:
+            - name: service
+              containerPort: {{ .Values.redis.listenPort }}
+              protocol: TCP
+          # livenessProbe:
+          #   httpGet:
+          #     path: /
+          #     port: http
+          # readinessProbe:
+          #   httpGet:
+          #     path: /
+          #     port: http
+          volumeMounts:
+            - name: data
+              mountPath: /data
+              subPath: redis-data
+          resources:
+            {{- toYaml .Values.redis.resources | nindent 12 }}
+      restartPolicy: {{ .Values.redis.restartPolicy }}
+      volumes:
+        - name: data
+          persistentVolumeClaim:
+            claimName: "{{ $redisName }}-claim"
+      {{- with .Values.redis.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.redis.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.redis.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+{{- end }}

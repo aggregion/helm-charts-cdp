@@ -1,0 +1,74 @@
+{{- $name := "frontend" }}
+{{- $backendName := include "cdp.backend.fullname" . }}
+{{- $frontendName := include "cdp.frontend.fullname" . }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: "{{ $frontendName }}"
+  {{- with .Values.frontend.annotations }}
+  annotations:
+      {{- toYaml . | nindent 6 }}
+  {{- end }}
+  labels:
+    {{- include "cdp.frontend.labels" . | nindent 4 }}
+spec:
+  replicas: {{ .Values.frontend.replicaCount }}
+  selector:
+    matchLabels:
+      {{- include "cdp.frontend.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+    {{- with .Values.frontend.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}
+      labels:
+        {{- include "cdp.frontend.selectorLabels" . | nindent 8 }}
+    spec:
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      restartPolicy: {{ .Values.frontend.restartPolicy }}
+      {{- if .Values.frontend.updateStrategy }}
+      updateStrategy:
+        type: {{ .Values.frontend.updateStrategy }}
+      {{- end }}
+      serviceAccountName: {{ include "cdp.serviceAccountName" . }}
+      securityContext:
+        {{- toYaml .Values.frontend.podSecurityContext | nindent 8 }}
+      containers:
+        - name: "frontend"
+          securityContext:
+            {{- toYaml .Values.frontend.securityContext | nindent 12 }}
+          image: "{{ .Values.frontend.image.repository }}:{{ .Values.frontend.image.tag }}"
+          imagePullPolicy: {{ .Values.frontend.image.pullPolicy }}
+          envFrom:
+            - configMapRef:
+                name: "{{ $backendName }}-config"
+          ports:
+            - name: http
+              containerPort: {{ .Values.frontend.configs.listenPort }}
+              protocol: TCP
+          # livenessProbe:
+          #   httpGet:
+          #     path: /
+          #     port: http
+          # readinessProbe:
+          #   httpGet:
+          #     path: /
+          #     port: http
+          resources:
+            {{- toYaml .Values.frontend.resources | nindent 12 }}
+      {{- with .Values.frontend.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.frontend.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.frontend.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}

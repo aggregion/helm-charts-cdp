@@ -1,0 +1,17 @@
+{{- $backendName := include "cdp.backend.fullname" . }}
+{{- $datalabProxyName := printf "%s-dlproxy" $backendName }}
+apiVersion: v1
+kind: Service
+metadata:
+  name: "{{ include "cdp.backend.fullname" . }}-dlproxy"
+  labels:
+    {{- include "cdp.selectorLabels.explicitly" (list . $datalabProxyName) | nindent 4 }}
+spec:
+  type: {{ .Values.backend.service.datalabProxy.type }}
+  ports:
+    - port: {{ .Values.backend.service.datalabProxy.port }}
+      targetPort: httpproxy
+      protocol: TCP
+      name: httpproxy
+  selector:
+    {{- include "cdp.selectorLabels.explicitly" (list . $datalabProxyName) | nindent 4 }}

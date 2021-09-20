@@ -1,0 +1,18 @@
+{{- if .Values.redis.enabled }}
+{{- $redisName := include "exts.redis.fullname" . }}
+apiVersion: v1
+kind: Service
+metadata:
+  name: "{{ $redisName }}"
+  labels:
+    {{- include "exts.redis.labels" . | nindent 4 }}
+spec:
+  type: {{ .Values.redis.service.type }}
+  ports:
+    - port: {{ .Values.redis.service.port }}
+      targetPort: service
+      protocol: TCP
+      name: service
+  selector:
+    {{- include "exts.redis.selectorLabels" . | nindent 4 }}
+{{- end }}

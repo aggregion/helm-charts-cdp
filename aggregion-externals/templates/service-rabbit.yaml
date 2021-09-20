@@ -1,0 +1,18 @@
+{{- if .Values.rabbit.enabled }}
+{{- $rabbitName := include "exts.rabbit.fullname" . }}
+apiVersion: v1
+kind: Service
+metadata:
+  name: "{{ $rabbitName }}"
+  labels:
+    {{- include "exts.rabbit.labels" . | nindent 4 }}
+spec:
+  type: {{ .Values.rabbit.service.type }}
+  ports:
+    - port: {{ .Values.rabbit.service.port }}
+      targetPort: service
+      protocol: TCP
+      name: service
+  selector:
+    {{- include "exts.rabbit.selectorLabels" . | nindent 4 }}
+{{- end }}

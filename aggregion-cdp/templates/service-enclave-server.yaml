@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "cdp.enclave.fullname" . }}
+  labels:
+    {{- include "cdp.enclave.labels" . | nindent 4 }}
+spec:
+  type: {{ .Values.enclave.service.type }}
+  ports:
+    - port: {{ .Values.enclave.service.port }}
+      targetPort: httpenclave
+      protocol: TCP
+      name: httpenclave
+  selector:
+    {{- include "cdp.enclave.selectorLabels" . | nindent 4 }}
