@@ -1,0 +1,22 @@
+name: release-chart
+
+on:
+  push:
+    branches:
+      - develop
+      - master
+    tags:
+      - '*'
+
+jobs:
+  release-chart:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Publish Helm chart
+        uses: stefanprodan/helm-gh-pages@master
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          linting: 'off'
+          branch: gh-pages
+          target_dir: charts
