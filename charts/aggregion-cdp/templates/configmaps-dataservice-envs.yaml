@@ -1,0 +1,29 @@
+{{- $dataServiceName := include "cdp.dataservice.fullname" . }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ $dataServiceName }}-config
+  labels:
+    {{- include "cdp.dataservice.labels" . | nindent 4 }}
+data:
+  APP_NAME: {{ .Values.dataservice.environment.appName | quote }}
+  LOG_LEVEL: {{ .Values.dataservice.environment.logLevel | quote  }}
+  LOG_PRETTY_PRINT: {{ .Values.dataservice.environment.logPrettyPrint | quote  }}
+  NODE_ENV: {{ .Values.dataservice.environment.nodeEnv | quote  }}
+  PORT: {{ .Values.dataservice.environment.port | quote }}
+  MONGO_DB_URI: {{ .Values.dataservice.environment.mongoDbUri | quote  }}
+  MONGO_DB_URI_TEST: {{ .Values.dataservice.environment.mongoDbUriTest | quote  }}
+  MONGO_DEBUG: {{ .Values.dataservice.environment.mongoDebug | quote  }}
+  TOKEN_EXPIRATION_TIME_IN_SEC: {{ .Values.dataservice.environment.tokenExpirationTimeInSec | quote  }}
+  TOKEN_SECRET_KEY: {{ .Values.dataservice.environment.tokenSecretKey | quote  }}
+  TOKEN_ISSUER: {{ .Values.dataservice.environment.tokenIssuer | quote  }}
+  BLOCKCHAIN_NODE_URL: {{ .Values.dataservice.environment.blockchainNodeUrl | quote  }}
+  BLOCKCHAIN_WALLET_ORG_ID: {{ .Values.dataservice.environment.blockchainWalletOrgId | quote  }}
+  BLOCKCHAIN_WALLET_PUBLIC_KEY: {{ .Values.dataservice.environment.blockchainWalletPublicKey | quote  }}
+  BLOCKCHAIN_WALLET_PRIVATE_KEY: {{ .Values.dataservice.environment.blockchainWalletPrivateKey | quote  }}
+  BCMQ_ORG_DECRYPT_KEY: {{ .Values.dataservice.environment.bcmqOrgDecryptKey | quote  }}
+  BCMQ_POLLING_INTERVAL: {{ .Values.dataservice.environment.bcmqPollingInterval | quote  }}
+  TRINO_HOST: {{ .Values.dataservice.environment.trinoHost | quote  }}
+  TRINO_PORT: {{ .Values.dataservice.environment.trinoPort | quote }}
+  RABBITMQ_URI: {{ .Values.dataservice.environment.rabbitmqUri | quote  }}
+

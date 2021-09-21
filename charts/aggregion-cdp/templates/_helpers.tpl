@@ -45,6 +45,10 @@ If release name contains chart name it will be used as a full name.
 {{- printf "%s" (include "cdp.fullname" (list . "enclave")) }}
 {{- end }}
 
+{{- define "cdp.dataservice.fullname" -}}
+{{- printf "%s" (include "cdp.fullname" (list . "dataservice")) }}
+{{- end }}
+
 {{/*
 Common labels
 */}}
@@ -77,6 +81,10 @@ app.kubernetes.io/managed-by: {{ .Release.Service }}
 {{- include "cdp.component.labels" (list . "enclave") }}
 {{- end }}
 
+{{- define "cdp.dataservice.labels" -}}
+{{- include "cdp.component.labels" (list . "dataservice") }}
+{{- end }}
+
 {{/*
 Selector labels
 */}}
@@ -100,6 +108,10 @@ app.kubernetes.io/instance: "{{ .Release.Name }}"
 
 {{- define "cdp.frontend.selectorLabels" -}}
 {{- include "cdp.selectorLabels" (list . "frontend") }}
+{{- end }}
+
+{{- define "cdp.dataservice.selectorLabels" -}}
+{{- include "cdp.selectorLabels" (list . "dataservice") }}
 {{- end }}
 
 {{- define "cdp.selectorLabels.explicitly" -}}
