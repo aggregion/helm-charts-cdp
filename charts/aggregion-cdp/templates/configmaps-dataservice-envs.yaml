@@ -26,4 +26,3 @@ data:
   TRINO_HOST: {{ .Values.dataservice.config.trinoHost | quote  }}
   TRINO_PORT: {{ .Values.dataservice.config.trinoPort | quote }}
   RABBITMQ_URI: {{ .Values.dataservice.config.rabbitmqUri | quote  }}
-
