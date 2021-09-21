@@ -43,7 +43,7 @@ spec:
           imagePullPolicy: {{ .Values.dataservice.imageApi.pullPolicy }}
           ports:
             - name: httpapi
-              containerPort: {{ .Values.dataservice.environment.port }}
+              containerPort: {{ .Values.dataservice.config.port }}
           args:
             - npm
             - run
@@ -59,8 +59,6 @@ spec:
           
           image: "{{ .Values.dataservice.imageApi.repository }}:{{ .Values.dataservice.imageApi.tag }}"
           imagePullPolicy: {{ .Values.dataservice.imageApi.pullPolicy }}
-          ports:
-            - containerPort: {{ .Values.dataservice.environment.port }}
           args:
             - npm
             - run
@@ -76,12 +74,25 @@ spec:
           
           image: "{{ .Values.dataservice.imageApi.repository }}:{{ .Values.dataservice.imageApi.tag }}"
           imagePullPolicy: {{ .Values.dataservice.imageApi.pullPolicy }}
-          ports:
-            - containerPort: {{ .Values.dataservice.environment.port }}
           args:
             - npm
             - run
             - start:worker:dataset-updater:prod
+          
+          envFrom:
+            - configMapRef:
+                name: "{{ $dataServiceName }}-config"
+
+        - name: "instance-syncer"
+          securityContext:
+            {{- toYaml .Values.dataservice.securityContext | nindent 12 }}
+          
+          image: "{{ .Values.dataservice.imageApi.repository }}:{{ .Values.dataservice.imageApi.tag }}"
+          imagePullPolicy: {{ .Values.dataservice.imageApi.pullPolicy }}
+          args:
+            - npm
+            - run
+            - start:worker:instance-syncer:prod
           
           envFrom:
             - configMapRef:

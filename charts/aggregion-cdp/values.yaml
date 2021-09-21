@@ -350,7 +350,7 @@ dataservice:
   service:
     type: ClusterIP
     port: 80
-  environment:
+  config:
     appName: dataservice-api
     logLevel: trace
     logPrettyPrint: true
