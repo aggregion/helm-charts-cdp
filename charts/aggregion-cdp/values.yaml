@@ -120,6 +120,8 @@ backend:
 
     # current debug is only for api service
     debugEnabled: false
+    # could be enabled if you need access from standalone enclave instance (outside of cluster)
+    accessFromFrontendEnabled: false
     logLevel: "debug"
     migrationEnabled: true
     # services to be enabled or not
@@ -133,9 +135,11 @@ backend:
     serviceCrondEnabled: true
     servicePanelSegmentUploaderEnabled: false
 
-    # used to communicate between dmp
+    # used to communicate between dmp and enclave
     dmpSecret: "secret"
+    # api auth
     jwtSecret: "c2VjcmV0"
+    # should be like as frontend ingress host
     baseUrl: "http://aggregion-cdp.com"
     alarmEmail: "alarm@aggregion-cdp.com"
     supportEmail: "support@aggregion-cdp.com"
@@ -152,8 +156,9 @@ backend:
           pass: "password"
     providerName: "demo"
     accountName: "demo"
+    # testnet or prodnet
     eosNodeUrl: "http://testnet.blockchain.dmp.aggregion.com:9999"
-    # usually fixed and equals aggregiondmp
+    # usually fixed value and equals aggregiondmp
     eosOrgId: "aggregiondmp"
     # usually for aggregiondmp
     eosWalletPub: "EOS696B5YTMyVmMLnmN7C7oWWZ5SANf3NJ8nGWr1SN3MuEN7qZgM5" # < fake
@@ -175,11 +180,12 @@ backend:
       -----END PRIVATE KEY-----
 
     httpSchema: "http"
+
     dictMode: "global"
     reportDefaultGoodsDirectory: "aggregion"
 
-    # url to enclave service (could be externalized), override default url (targeting inside namespace)
-    # enclaveEndpoint: "http://enclave.company.com:8321/v1"
+    # url to enclave service (could be placed outside cluster)
+    # enclaveEndpoint: "http://enclave.from.outside.cluster.com:8321/v1"
 
     enclaveAuthEnabled: false
     enclaveDmpAuthId: "LOCAL"
@@ -250,6 +256,8 @@ backend:
   affinity: {}
 
 enclave:
+  # should be false when enclave deployed outside of cluster, as standalone instance
+  enabled: true
   replicaCount: 1
   annotations:
     reloader.stakater.com/auto: "true"

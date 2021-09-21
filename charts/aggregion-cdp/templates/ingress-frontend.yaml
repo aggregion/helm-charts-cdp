@@ -47,14 +47,18 @@ spec:
             backend:
               serviceName: "{{ $backendName }}"
               servicePort: {{ $backendPort }}
+          {{- if $.Values.backend.configs.accessFromFrontendEnabled }}
           - path: "/enclave"
             backend:
               serviceName: "{{ $backendName }}"
               servicePort: {{ $backendPort }}
+          {{- end }}
+          {{- if $.Values.backend.configs.debugEnabled }}
           - path: "/status"
             backend:
               serviceName: "{{ $backendName }}"
               servicePort: {{ $backendPort }}
+          {{- end }}
           - path: "/datalab/vm"
             backend:
               serviceName: "{{ $datalabProxyName }}"

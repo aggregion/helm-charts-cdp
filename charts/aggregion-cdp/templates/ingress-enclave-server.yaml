@@ -1,3 +1,4 @@
+{{- if .Values.enclave.enabled }}
 {{- if .Values.enclave.ingress.enabled -}}
 {{- $enclaveName := include "cdp.enclave.fullname" . -}}
 {{- $enclavePort := .Values.enclave.service.port -}}
@@ -39,3 +40,4 @@ spec:
           {{- end }}
     {{- end }}
   {{- end }}
+{{- end }}

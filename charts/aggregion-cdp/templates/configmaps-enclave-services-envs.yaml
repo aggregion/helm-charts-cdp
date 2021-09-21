@@ -1,3 +1,4 @@
+{{- if .Values.enclave.enabled }}
 {{- $backendName := include "cdp.backend.fullname" . }}
 {{- $enclaveName := include "cdp.enclave.fullname" . }}
 apiVersion: v1
@@ -13,3 +14,4 @@ data:
   CH_HOST: "{{ .Values.backend.configs.clickhouseHost }}"
   CH_PORT: "{{ .Values.backend.configs.clickhousePort }}"
   CH_DATABASE_NAME: "{{ .Values.backend.configs.clickhouseDb }}"
+{{- end }}

@@ -1,3 +1,4 @@
+{{- if .Values.enclave.enabled }}
 {{- $name := "enclave" }}
 {{- $enclaveName := include "cdp.enclave.fullname" . }}
 apiVersion: v1
@@ -65,3 +66,4 @@ data:
         }
       }
     }
+{{- end }}

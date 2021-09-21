@@ -1,3 +1,4 @@
+{{- if .Values.enclave.enabled }}
 {{- $backendName := include "cdp.backend.fullname" . }}
 {{- $enclaveName := include "cdp.enclave.fullname" . }}
 apiVersion: v1
@@ -24,3 +25,4 @@ data:
   SERVICES_HOST: "localhost"
   SERVICES_PORT: "8322"
   DMP_BASE_URL: "http://{{ $backendName }}:{{ .Values.backend.service.api.port }}"
+{{- end }}
