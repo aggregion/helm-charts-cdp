@@ -347,6 +347,9 @@ dataservice:
     tag: master
   tolerations: []
   affinity: {}
+  service:
+    type: ClusterIP
+    port: 80
   environment:
     appName: dataservice-api
     logLevel: trace

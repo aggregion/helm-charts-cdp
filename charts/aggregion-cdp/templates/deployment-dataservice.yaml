@@ -42,7 +42,8 @@ spec:
           image: "{{ .Values.dataservice.imageApi.repository }}:{{ .Values.dataservice.imageApi.tag }}"
           imagePullPolicy: {{ .Values.dataservice.imageApi.pullPolicy }}
           ports:
-            - containerPort: {{ .Values.dataservice.environment.port }}
+            - name: httpapi
+              containerPort: {{ .Values.dataservice.environment.port }}
           args:
             - npm
             - run

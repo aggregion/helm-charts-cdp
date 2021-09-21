@@ -1,0 +1,17 @@
+{{- if .Values.dataservice.enabled }}
+apiVersion: v1
+kind: Service
+metadata:
+  name: "{{ include "cdp.dataservice.fullname" . }}"
+  labels:
+    {{- include "cdp.dataservice.labels" . | nindent 4 }}
+spec:
+  type: {{ .Values.dataservice.service.type }}
+  ports:
+    - port: {{ .Values.dataservice.service.port }}
+      targetPort: httpapi
+      protocol: TCP
+      name: httpapi
+  selector:
+    {{- include "cdp.dataservice.selectorLabels" . | nindent 4 }}
+{{- end }}
