@@ -334,7 +334,7 @@ enclave:
 dataservice:
   enabled: true
   replicaCount: 1
-  nameOverride: "/"
+  nameOverride: ""
   annotations:
     reloader.stakater.com/auto: "true"
   podAnnotations: {}
