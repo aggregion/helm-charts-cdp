@@ -18,10 +18,9 @@ data:
   TOKEN_EXPIRATION_TIME_IN_SEC: {{ .Values.dataservice.config.tokenExpirationTimeInSec | quote  }}
   TOKEN_SECRET_KEY: {{ .Values.dataservice.config.tokenSecretKey | quote  }}
   TOKEN_ISSUER: {{ .Values.dataservice.config.tokenIssuer | quote  }}
-  BLOCKCHAIN_NODE_URL: {{ .Values.dataservice.config.blockchainNodeUrl | quote  }}
-  BLOCKCHAIN_WALLET_ORG_ID: {{ .Values.dataservice.config.blockchainWalletOrgId | quote  }}
-  BLOCKCHAIN_WALLET_PUBLIC_KEY: {{ .Values.dataservice.config.blockchainWalletPublicKey | quote  }}
-  BLOCKCHAIN_WALLET_PRIVATE_KEY: {{ .Values.dataservice.config.blockchainWalletPrivateKey | quote  }}
+  BLOCKCHAIN_NODE_URL: {{ .Values.backend.configs.eosNodeUrl | quote  }}
+  BLOCKCHAIN_WALLET_ORG_ID: {{ .Values.backend.configs.eosWalletOwnerOrgId | quote  }}
+  BLOCKCHAIN_WALLET_PUBLIC_KEY: {{ .Values.backend.configs.eosWalletOwnerPub | quote  }}
   BCMQ_ORG_DECRYPT_KEY: {{ .Values.dataservice.config.bcmqOrgDecryptKey | quote  }}
   BCMQ_POLLING_INTERVAL: {{ .Values.dataservice.config.bcmqPollingInterval | quote  }}
   TRINO_HOST: {{ .Values.dataservice.config.trinoHost | quote  }}
