@@ -12,6 +12,8 @@ providerLinks:
   - name: demo
     url: http://demo
 
+nameOverride: ""
+
 serviceAccount:
   create: false
   annotations: {}
@@ -327,3 +329,41 @@ enclave:
   nodeSelector: {}
   tolerations: []
   affinity: {}
+
+
+dataservice:
+  enabled: true
+  replicaCount: 1
+  nameOverride: ""
+  annotations:
+    reloader.stakater.com/auto: "true"
+  podAnnotations: {}
+  restartPolicy: Always
+  updateStrategy: null
+  securityContext: {}
+  imageApi:
+    repository: registry.aggregion.com/dataservice-api
+    pullPolicy: IfNotPresent
+    tag: master
+  tolerations: []
+  affinity: {}
+  service:
+    type: ClusterIP
+    port: 80
+  config:
+    appName: dataservice-api
+    logLevel: trace
+    logPrettyPrint: true
+    nodeEnv: development
+    port: 9045
+    mongoDbUri: mongodb://127.0.0.1:27017/ds-api
+    mongoDbUriTest: mongodb://agg-dev:18005/ds-api-tests
+    mongoDebug: true
+    tokenExpirationTimeInSec: 2678400
+    tokenSecretKey: data_access_token_secret_key
+    tokenIssuer: local_provider_name
+    bcmqOrgDecryptKey: it_doesn_not_matter
+    bcmqPollingInterval: 200
+    trinoHost: localhost
+    trinoPort: 8080
+    rabbitmqUri: amqp://127.0.0.1

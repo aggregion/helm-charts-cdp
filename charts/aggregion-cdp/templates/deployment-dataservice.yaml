@@ -1,0 +1,117 @@
+{{- if .Values.dataservice.enabled }}
+{{- $dataServiceName := include "cdp.dataservice.fullname" . }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: "{{ $dataServiceName }}"
+  {{- with .Values.dataservice.annotations }}
+  annotations:
+      {{- toYaml . | nindent 6 }}
+  {{- end }}
+  labels:
+    {{- include "cdp.dataservice.labels" . | nindent 4 }}
+spec:
+  replicas: {{ .Values.dataservice.replicaCount }}
+  selector:
+    matchLabels:
+      {{- include "cdp.dataservice.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      {{- with .Values.dataservice.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      labels:
+        {{- include "cdp.dataservice.selectorLabels" . | nindent 8 }}
+    spec:
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      restartPolicy: {{ .Values.dataservice.restartPolicy }}
+      {{- if .Values.dataservice.updateStrategy }}
+      updateStrategy:
+        type: {{ .Values.dataservice.updateStrategy }}
+      {{- end }}
+      serviceAccountName: {{ include "cdp.serviceAccountName" . }}
+      containers:
+        - name: "dataservice-api"
+          securityContext:
+            {{- toYaml .Values.dataservice.securityContext | nindent 12 }}
+          
+          image: "{{ .Values.dataservice.imageApi.repository }}:{{ .Values.dataservice.imageApi.tag }}"
+          imagePullPolicy: {{ .Values.dataservice.imageApi.pullPolicy }}
+          ports:
+            - name: httpapi
+              containerPort: {{ .Values.dataservice.config.port }}
+          args:
+            - npm
+            - run
+            - start:prod
+          
+          envFrom:
+            - configMapRef:
+                name: "{{ $dataServiceName }}-config"
+            - secretRef:
+                name: "{{ $dataServiceName }}-secrets"
+
+        - name: "dataset-syncer"
+          securityContext:
+            {{- toYaml .Values.dataservice.securityContext | nindent 12 }}
+          
+          image: "{{ .Values.dataservice.imageApi.repository }}:{{ .Values.dataservice.imageApi.tag }}"
+          imagePullPolicy: {{ .Values.dataservice.imageApi.pullPolicy }}
+          args:
+            - npm
+            - run
+            - start:worker:dataset-syncer:prod
+          
+          envFrom:
+            - configMapRef:
+                name: "{{ $dataServiceName }}-config"
+            - secretRef:
+                name: "{{ $dataServiceName }}-secrets"
+
+        - name: "dataset-updater"
+          securityContext:
+            {{- toYaml .Values.dataservice.securityContext | nindent 12 }}
+          
+          image: "{{ .Values.dataservice.imageApi.repository }}:{{ .Values.dataservice.imageApi.tag }}"
+          imagePullPolicy: {{ .Values.dataservice.imageApi.pullPolicy }}
+          args:
+            - npm
+            - run
+            - start:worker:dataset-updater:prod
+          
+          envFrom:
+            - configMapRef:
+                name: "{{ $dataServiceName }}-config"
+            - secretRef:
+                name: "{{ $dataServiceName }}-secrets"
+
+        - name: "instance-syncer"
+          securityContext:
+            {{- toYaml .Values.dataservice.securityContext | nindent 12 }}
+          
+          image: "{{ .Values.dataservice.imageApi.repository }}:{{ .Values.dataservice.imageApi.tag }}"
+          imagePullPolicy: {{ .Values.dataservice.imageApi.pullPolicy }}
+          args:
+            - npm
+            - run
+            - start:worker:instance-syncer:prod
+          
+          envFrom:
+            - configMapRef:
+                name: "{{ $dataServiceName }}-config"
+            - secretRef:
+                name: "{{ $dataServiceName }}-secrets"
+      
+      {{- with .Values.dataservice.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.dataservice.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+{{- end }}
