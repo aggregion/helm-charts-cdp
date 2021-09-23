@@ -206,6 +206,9 @@ backend:
     datalabPlatformId: selectel
     # default pvc size for datalab vm is 50G
     datalabStorageSizeGb: "50"
+    # limitations for vm
+    datalabCpuLimit: "2"
+    datalabMemoryLimitGb: "8"
     # the namespace of dmp where it was deployed
     datalabDmpNamespace: "default"
     # domain suffix

@@ -33,7 +33,9 @@ data:
             "templatesPrefix": "{{ .Values.backend.configs.datalabTemplates }}",
             "s3WhitelistIps": "{{ .Values.backend.configs.datalabWhiteIps }}",
             "authUrl": "{{ .Values.backend.configs.datalabAuthUrl }}",
-            "storageSizeGb": "{{ .Values.backend.configs.datalabStorageSizeGb }}"",
+            "storageSizeGb": "{{ .Values.backend.configs.datalabStorageSizeGb }}",
+            "cpuLimit": "{{ .Values.backend.configs.datalabCpuLimit }}",
+            "memoryLimitGb": "{{ .Values.backend.configs.datalabMemoryLimit }}",
             "dmpNamespace": "{{ .Values.backend.configs.datalabDmpNamespace }}"
           }
         }
