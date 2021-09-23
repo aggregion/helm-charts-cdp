@@ -35,7 +35,7 @@ data:
             "authUrl": "{{ .Values.backend.configs.datalabAuthUrl }}",
             "storageSizeGb": "{{ .Values.backend.configs.datalabStorageSizeGb }}",
             "cpuLimit": "{{ .Values.backend.configs.datalabCpuLimit }}",
-            "memoryLimitGb": "{{ .Values.backend.configs.datalabMemoryLimit }}",
+            "memoryLimitGb": "{{ .Values.backend.configs.datalabMemoryLimitGb }}",
             "dmpNamespace": "{{ .Values.backend.configs.datalabDmpNamespace }}"
           }
         }
