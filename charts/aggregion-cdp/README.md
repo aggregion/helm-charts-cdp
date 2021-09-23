@@ -11,6 +11,10 @@ Example installation
 ```
 $ kubectl create ns somens
 ```
+1. Add the label `name` for created namespace with value of the same name as namespace.
+```
+$ kubectl label namespace somns name=somens
+```
 1. Add secret for registry. Use appropriated method from `../../k8s-registry-secret` in this repository.
 1. Deploy externals to `somens` namespace. Use `aggregion-externals` chart for that (clickhouse, mongo, redis, rabbit).
    For production it would be better to use official repositories or use bare metal installation in fault-tolerance mode.
