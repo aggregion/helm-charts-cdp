@@ -32,7 +32,9 @@ data:
             "overwriteDomain": "{{ .Values.backend.configs.datalabOverwriteDomain }}",
             "templatesPrefix": "{{ .Values.backend.configs.datalabTemplates }}",
             "s3WhitelistIps": "{{ .Values.backend.configs.datalabWhiteIps }}",
-            "authUrl": "{{ .Values.backend.configs.datalabAuthUrl }}"
+            "authUrl": "{{ .Values.backend.configs.datalabAuthUrl }}",
+            "storageSizeGb": "{{ .Values.backend.configs.datalabStorageSizeGb }}"",
+            "dmpNamespace": "{{ .Values.backend.configs.datalabDmpNamespace }}"
           }
         }
       },

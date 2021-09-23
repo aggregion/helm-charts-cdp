@@ -204,6 +204,10 @@ backend:
     datalabTemplates: persist
     # registered platform id
     datalabPlatformId: selectel
+    # default pvc size for datalab vm is 50G
+    datalabStorageSizeGb: "50"
+    # the namespace of dmp where it was deployed
+    datalabDmpNamespace: "default"
     # domain suffix
     datalabOverwriteDomain: "localhost"
     # who can access s3 interface of minio in datalab
