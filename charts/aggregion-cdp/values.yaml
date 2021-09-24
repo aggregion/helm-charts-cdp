@@ -225,10 +225,7 @@ backend:
   restartPolicy: Always
   nameOverride: ""
   fullnameOverride: ""
-  podAnnotations:
-    prometheus.io/scrape: "true"
-    prometheus.io/path: /metrics
-    prometheus.io/port: 8321
+  podAnnotations: {}
   podSecurityContext: {}
   securityContext: {}
     # capabilities:
@@ -299,7 +296,10 @@ enclave:
   restartPolicy: Always
   nameOverride: ""
   fullnameOverride: ""
-  podAnnotations: {}
+  podAnnotations: 
+    prometheus.io/scrape: "true"
+    prometheus.io/path: /metrics
+    prometheus.io/port: 8321
   podSecurityContext: {}
   securityContext: {}
     # capabilities:
