@@ -36,3 +36,4 @@ data:
   DICTS_VENDORS: "{{ .Values.backend.configs.dictMode }}"
   SUPPORT_EMAIL: "{{ .Values.backend.configs.supportEmail }}"
   BASE_URL: "{{ .Values.backend.configs.baseUrl }}"
+  DATA_SERVICE_TOKEN: "{{ .Values.backend.configs.dataServiceToken }}"
