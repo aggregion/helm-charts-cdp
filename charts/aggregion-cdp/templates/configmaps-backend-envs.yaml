@@ -1,5 +1,6 @@
 {{- $backendName := include "cdp.backend.fullname" . }}
 {{- $enclaveName := include "cdp.enclave.fullname" . }}
+{{- $dataserviceName := include "cdp.dataservice.fullname" . }}
 apiVersion: v1
 kind: ConfigMap
 metadata:
@@ -36,4 +37,5 @@ data:
   DICTS_VENDORS: "{{ .Values.backend.configs.dictMode }}"
   SUPPORT_EMAIL: "{{ .Values.backend.configs.supportEmail }}"
   BASE_URL: "{{ .Values.backend.configs.baseUrl }}"
+  DATA_SERVICE_ENDPOINT: "http://{{ $dataserviceName }}:{{ .Values.dataservice.service.port }}/api/"
   DATA_SERVICE_TOKEN: "{{ .Values.backend.configs.dataServiceToken }}"
