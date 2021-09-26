@@ -115,6 +115,10 @@ spec:
             - run
             - start:prod
 
+          ports:
+            - name: atlas-syncer-port
+              containerPort: {{ .Values.dataservice.configAtlasSyncer.port }}
+
           envFrom:
             - configMapRef:
                 name: "{{ $dataServiceName }}-atlas-syncer-config"
