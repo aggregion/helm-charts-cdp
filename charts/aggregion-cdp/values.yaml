@@ -358,11 +358,21 @@ dataservice:
     repository: registry.aggregion.com/dataservice-api
     pullPolicy: IfNotPresent
     tag: master
+  imageAtlasEntitySyncer:
+    repository: registry.aggregion.com/atlas-entity-syncer
+    pullPolicy: IfNotPresent
+    tag: latest
   tolerations: []
   affinity: {}
   service:
     type: ClusterIP
     port: 80
+  configAtlasSyncer:
+    port: 80
+    username: "admin"
+    password: "atlasR0cks!"
+    atlasBaseUrl: "http://5.188.130.169:21000"
+    rabbitmqUrl: "amqp://127.0.0.1"
   config:
     appName: dataservice-api
     logLevel: trace
@@ -379,4 +389,4 @@ dataservice:
     bcmqPollingInterval: 200
     trinoHost: localhost
     trinoPort: 8080
-    rabbitmqUri: amqp://127.0.0.1
+    rabbitmqUri: "amqp://127.0.0.1"
