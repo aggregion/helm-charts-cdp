@@ -12,7 +12,7 @@ data:
   ATLAS_BASE_URL: "{{ .Values.dataservice.configAtlasSyncer.atlasBaseUrl }}"
   ATLAS_USERNAME: "{{ .Values.dataservice.configAtlasSyncer.username }}"
   ATLAS_PASSWORD: "{{ .Values.dataservice.configAtlasSyncer.password }}"
-  DATASERVICE_BASE_URL: "http://{{ $dataserviceName }}:{{ .Values.dataservice.service.port }}/api"
+  DATASERVICE_BASE_URL: "http://{{$dataServiceName}}:{{ .Values.dataservice.service.port }}/api"
   DATASERVICE_TOKEN: "{{ .Values.backend.configs.dataServiceToken }}"
   RABBITMQ_URL: "{{ .Values.dataservice.configAtlasSyncer.rabbitmqUrl }}"
   DATASET_QUEUE_NAME: "datasets"
