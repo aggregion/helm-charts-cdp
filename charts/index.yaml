@@ -3,6 +3,16 @@ entries:
   aggregion-cdp:
   - apiVersion: v2
     appVersion: 1.16.0
+    created: "2021-09-26T17:32:08.557592282Z"
+    description: A Helm chart for Kubernetes to deploy Aggregion CDP
+    digest: f71a4f9d872d08c11f06b42b3436af7b575529c53df322852dd3bf208063571f
+    name: aggregion-cdp
+    type: application
+    urls:
+    - https://aggregion.github.io/helm-charts-cdp/charts/aggregion-cdp-0.1.29.tgz
+    version: 0.1.29
+  - apiVersion: v2
+    appVersion: 1.16.0
     created: "2021-09-26T17:28:04.776045187Z"
     description: A Helm chart for Kubernetes to deploy Aggregion CDP
     digest: fe0740da0397ea8bc9940b4c944d2cafc153eed9f5a66b3cf80df665204c5dec
@@ -154,9 +164,9 @@ entries:
   aggregion-dc:
   - apiVersion: v2
     appVersion: 1.16.0
-    created: "2021-09-26T17:28:04.777555976Z"
+    created: "2021-09-26T17:32:08.558476896Z"
     description: A Helm chart for Kubernetes to install Deploy Controller
-    digest: 02334fa3e65e4bed52a4922dc3504ca22686909652b000ae42aafd15763e704f
+    digest: 6bb38451838ba8176995986472cf2f5802daa19219b876fcb0e8fb56f86ea961
     name: aggregion-dc
     type: application
     urls:
@@ -165,11 +175,11 @@ entries:
   aggregion-debug:
   - apiVersion: v2
     appVersion: 1.16.0
-    created: "2021-09-26T17:28:04.778087873Z"
+    created: "2021-09-26T17:32:08.558879602Z"
     description: |
       A Helm chart for Kubernetes to deploy single instance of clickhouse, mongo, rabbitmq and redis.
       It's not recommend to use it in the production. Use charts from official rep for this purpose.
-    digest: 66a3a43c73c9887eb5cb709bcf08ea8cbfb5706974fee861fcceda6e9d0333c2
+    digest: 8fa65b14126219929980d07f0e28973b4aedbbb934d50628afbb78dd857e6180
     name: aggregion-debug
     type: application
     urls:
@@ -178,14 +188,14 @@ entries:
   aggregion-externals:
   - apiVersion: v2
     appVersion: 1.16.0
-    created: "2021-09-26T17:28:04.779204065Z"
+    created: "2021-09-26T17:32:08.559672815Z"
     description: |
       A Helm chart for Kubernetes to deploy single instance of clickhouse, mongo, rabbitmq and redis.
       It's not recommend to use it in the production. Use charts from official rep for this purpose.
-    digest: 34986aae76342dfd29efd1ce4ce71edef54fb22c1b5004c228f999565122670a
+    digest: c8700a0b00535602dad8c177fcefb5e448360aba2ff78d80535df041b31f0d46
     name: aggregion-externals
     type: application
     urls:
     - https://aggregion.github.io/helm-charts-cdp/charts/aggregion-externals-0.1.0.tgz
     version: 0.1.0
-generated: "2021-09-26T17:28:04.773643704Z"
+generated: "2021-09-26T17:32:08.555421849Z"
