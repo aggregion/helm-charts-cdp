@@ -116,7 +116,7 @@ spec:
             - start:prod
 
           ports:
-            - name: atlas-syncer-port
+            - name: atlassyncport
               containerPort: {{ .Values.dataservice.configAtlasSyncer.port }}
 
           envFrom:
