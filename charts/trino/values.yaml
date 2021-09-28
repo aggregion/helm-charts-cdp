@@ -1,0 +1,88 @@
+# Default values for trino.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+imagePullSecrets:
+  - name: aggregionregistry
+
+image:
+  repository: registry.aggregion.com/trinodb/trino
+  pullPolicy: IfNotPresent
+  # Overrides the image tag whose default is the chart version.
+  tag: latest
+
+# bin path in image
+trinoBinPath: "/usr/lib/trino/bin/run-trino"
+
+catalog:
+  dataservice:
+    # give it from dataservice-api/cli like node ./src/cli/index.js token gen -i '<<< ISSUER_NAME/PROVIDER_NAME >>>'
+    token: ""
+    # URL to instances endpoint
+    instancesEndpoint: "http://dataservice-api:5000/instances"
+  # How often check updates (in seconds)
+  reconciliationInterval: "1"
+  # First signal is interrupt, send kill signal if no reaction (default 1800, in seconds)
+  killTimeout: "0"
+  path: "/etc/trino/catalog"
+  templates: "/templates"
+  loglevel: "info"
+
+server:
+  workers: 0
+  node:
+    environment: production
+    dataDir: /data/trino
+    pluginDir: /usr/lib/trino/plugin
+  log:
+    trino:
+      level: INFO
+  config:
+    path: /etc/trino
+    http:
+      port: 8080
+    query:
+      maxMemory: "4GB"
+      maxMemoryPerNode: "1GB"
+      maxTotalMemoryPerNode: "2GB"
+    memory:
+      heapHeadroomPerNode: "1GB"
+  jvm:
+    maxHeapSize: "8G"
+    gcMethod:
+      type: "UseG1GC"
+      g1:
+        heapRegionSize: "32M"
+
+additionalNodeProperties: {}
+
+additionalJVMConfig: {}
+
+additionalConfigProperties: {}
+
+additionalLogProperties: {}
+
+securityContext:
+  runAsUser: 1000
+  runAsGroup: 1000
+
+service:
+  type: ClusterIP
+  port: 8080
+
+resources: {}
+  # We usually recommend not to specify default resources and to leave this as a conscious
+  # choice for the user. This also increases chances charts run on environments with little
+  # resources, such as Minikube. If you do want to specify resources, uncomment the following
+  # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
+  # limits:
+  #   cpu: 100m
+  #   memory: 128Mi
+  # requests:
+  #   cpu: 100m
+  #   memory: 128Mi
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}
