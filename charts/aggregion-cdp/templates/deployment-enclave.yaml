@@ -54,7 +54,14 @@ spec:
             - secretRef:
                 name: "{{ $enclaveName }}-secrets"
           # livenessProbe:
-          # readinessProbe:
+          readinessProbe:
+            failureThreshold: 5
+            httpGet:
+              path: /healthcheck
+              port: {{ .Values.enclave.configs.listenPort }}
+            initialDelaySeconds: 10
+            timeoutSeconds: 3
+            periodSeconds: 5
           resources:
             {{- toYaml .Values.enclave.resources.server | nindent 12 }}
           volumeMounts:

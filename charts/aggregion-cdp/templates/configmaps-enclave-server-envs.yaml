@@ -25,6 +25,6 @@ data:
   CH_DATABASE_NAME: "{{ .Values.backend.configs.clickhouseDb }}"
   SERVICES_HOST: "localhost"
   SERVICES_PORT: "8322"
-  DMP_BASE_URL: "http://{{ $backendName }}:{{ .Values.backend.service.api.port }}"
+  DMP_BASE_URL: "http://{{ $backendName }}:{{ .Values.backend.service.api.port }}/enclave"
   DATASERVICE_BASE_URL: "http://{{ $dataserviceName }}:{{ .Values.dataservice.service.port }}"
 {{- end }}

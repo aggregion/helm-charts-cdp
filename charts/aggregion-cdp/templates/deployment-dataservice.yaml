@@ -105,6 +105,23 @@ spec:
                 name: "{{ $dataServiceName }}-config"
             - secretRef:
                 name: "{{ $dataServiceName }}-secrets"
+        
+        - name: "atlas-entity-syncer"
+          securityContext:
+            {{- toYaml .Values.dataservice.securityContext | nindent 12 }}
+          image: "{{ .Values.dataservice.imageAtlasEntitySyncer.repository }}:{{ .Values.dataservice.imageAtlasEntitySyncer.tag }}"
+          args:
+            - npm
+            - run
+            - start:prod
+
+          ports:
+            - name: atlassyncport
+              containerPort: {{ .Values.dataservice.configAtlasSyncer.port }}
+
+          envFrom:
+            - configMapRef:
+                name: "{{ $dataServiceName }}-atlas-syncer-config"
       
       {{- with .Values.dataservice.affinity }}
       affinity:

@@ -1,0 +1,20 @@
+{{- if .Values.dataservice.enabled }}
+{{- $dataServiceName := include "cdp.dataservice.fullname" . }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ $dataServiceName }}-atlas-syncer-config
+  labels:
+    {{- include "cdp.dataservice.labels" . | nindent 4 }}
+data:
+  PORT: "{{ .Values.dataservice.configAtlasSyncer.port }}"
+  OWNER_ORG_ID: "{{ .Values.backend.configs.eosWalletOwnerOrgId }}"
+  ATLAS_BASE_URL: "{{ .Values.dataservice.configAtlasSyncer.atlasBaseUrl }}"
+  ATLAS_USERNAME: "{{ .Values.dataservice.configAtlasSyncer.username }}"
+  ATLAS_PASSWORD: "{{ .Values.dataservice.configAtlasSyncer.password }}"
+  DATASERVICE_BASE_URL: "http://{{$dataServiceName}}:{{ .Values.dataservice.service.port }}/api"
+  DATASERVICE_TOKEN: "{{ .Values.backend.configs.dataServiceToken }}"
+  RABBITMQ_URL: "{{ .Values.dataservice.configAtlasSyncer.rabbitmqUrl }}"
+  DATASET_QUEUE_NAME: "datasets"
+  INSTANCE_QUEUE_NAME: "instances"
+{{- end}}
