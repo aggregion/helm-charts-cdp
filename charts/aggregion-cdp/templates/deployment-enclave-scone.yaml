@@ -1,4 +1,4 @@
-{{- if and (.Values.enclave.enabled) (not (.Values.enclave.sgx.enabled)) }}
+{{- if and (.Values.enclave.enabled) (.Values.enclave.scone.enabled) }}
 {{- $name := "enclave" }}
 {{- $enclaveName := include "cdp.enclave.fullname" . }}
 apiVersion: apps/v1
@@ -41,7 +41,10 @@ spec:
       containers:
         - name: "enclave-server"
           securityContext:
+            privileged: true
+            {{- if .Values.enclave.securityContext }}
             {{- toYaml .Values.enclave.securityContext | nindent 12 }}
+            {{- end }}
           image: "{{ .Values.enclave.imageServer.repository }}:{{ .Values.enclave.imageServer.tag }}"
           imagePullPolicy: {{ .Values.enclave.imageServer.pullPolicy }}
           ports:
@@ -53,13 +56,24 @@ spec:
                 name: "{{ $enclaveName }}-config"
             - secretRef:
                 name: "{{ $enclaveName }}-secrets"
+          env:
+          {{- if .Values.enclave.scone.debug }}
+            - name: SCONE_VERSION
+              value: '1'
+            - name: SCONE_LOG
+              value: '7'
+          {{- end }}
+            - name: SCONE_MODE
+              value: hw
+            - name: LAS_ADDR
+              value: "{{ .Values.enclave.scone.lasAddr }}"
           # livenessProbe:
           readinessProbe:
             failureThreshold: 5
             httpGet:
               path: /healthcheck
               port: {{ .Values.enclave.configs.listenPort }}
-            initialDelaySeconds: 10
+            initialDelaySeconds: 60
             timeoutSeconds: 3
             periodSeconds: 5
           resources:
@@ -67,12 +81,14 @@ spec:
           volumeMounts:
             - mountPath: /tmp
               name: tmp
-            - mountPath: /opt/enclave/config/local.json
+            - mountPath: /config/local.json
               subPath: local.json
               name: local-config-volume
             - mountPath: /var/keys/auth-key.pem
               subPath: auth-key.pem
               name: local-secrets-volume
+            - mountPath: "{{ .Values.enclave.sgx.device }}"
+              name: dev-sgx
 
         - name: "enclave-services"
           securityContext:
@@ -102,7 +118,10 @@ spec:
         - name: local-secrets-volume
           secret:
             secretName: "{{ $enclaveName }}-file-secrets"
-      {{- with .Values.enclave.nodeSelector }}
+        - name: dev-sgx
+          hostPath:
+            path: "{{ .Values.enclave.sgx.device }}"
+      {{- with .Values.enclave.sgx.nodeWithSgxSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
       {{- end }}

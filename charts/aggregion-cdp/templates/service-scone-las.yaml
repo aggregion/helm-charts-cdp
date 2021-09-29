@@ -1,0 +1,18 @@
+{{- if and (.Values.enclave.enabled) (.Values.enclave.scone.enabled) }}
+apiVersion: v1
+kind: Service
+metadata:
+  name: "{{ include "cdp.enclave.fullname" . }}-scone-las"
+  labels:
+    {{- include "cdp.enclave.labels" . | nindent 4 }}
+spec:
+  type: NodePort
+  externalName: "{{ .Values.enclave.scone.lasServiceExternalName }}"
+  ports:
+    - port: {{ .Values.enclave.scone.lasPort }}
+      targetPort: lasport
+      protocol: TCP
+      name: lasport
+  selector:
+    name: "{{ include "cdp.enclave.fullname" . }}-scone-las"
+{{- end }}

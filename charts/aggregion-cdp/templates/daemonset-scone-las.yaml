@@ -1,0 +1,88 @@
+{{- if and (.Values.enclave.enabled) (.Values.enclave.scone.enabled) }}
+{{- $name := "enclave" }}
+{{- $enclaveName := include "cdp.enclave.fullname" . }}
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: "{{ $enclaveName }}-scone-las"
+  labels:
+    name: "{{ $enclaveName }}-scone-las"
+    {{- include "cdp.enclave.labels" . | nindent 4 }}
+  {{- with .Values.enclave.scone.lasAnnotations }}
+  annotations:
+      {{- toYaml . | nindent 6 }}
+  {{- end }}
+spec:
+  selector:
+    matchLabels:
+      name: "{{ $enclaveName }}-scone-las"
+  template:
+    metadata:
+    {{- with .Values.enclave.scone.lasPodAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}
+      labels:
+        name: "{{ $enclaveName }}-scone-las"
+    spec:
+      hostNetwork: true
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      restartPolicy: {{ .Values.enclave.scone.lasRestartPolicy }}
+      {{- if .Values.enclave.scone.lasUpdateStrategy }}
+      updateStrategy:
+        type: {{ .Values.enclave.scone.lasUpdateStrategy }}
+      {{- end }}
+      serviceAccountName: {{ include "cdp.serviceAccountName" . }}
+      securityContext:
+        {{- toYaml .Values.enclave.scone.lasPodSecurityContext | nindent 8 }}
+      containers:
+        - name: las
+          image: sconecuratedimages/las-scone:latest
+          image: "{{ .Values.enclave.scone.lasImage.repository }}:{{ .Values.enclave.scone.lasImage.tag }}"
+          imagePullPolicy: "{{ .Values.enclave.scone.lasImage.pullPolicy }}"
+          securityContext:
+            privileged: true
+            {{- if .Values.enclave.scone.lasSecurityContext }}
+            {{- toYaml .Values.enclave.scone.lasSecurityContext | nindent 12 }}
+            {{- end }}
+          env:
+            - name: SCONE_MODE
+              value: hw
+          {{- if .Values.enclave.scone.debug }}
+            - name: SCONE_VERSION
+              value: '1'
+            - name: SCONE_LOG
+              value: '7'
+          {{- end }}
+          {{- if .Values.enclave.scone.lasEnvs }}
+            {{- toYaml .Values.enclave.scone.lasEnvs | nindent 12 }}
+          {{- end }}
+          ports:
+            - containerPort: {{ .Values.enclave.scone.lasPort }}
+              hostPort: {{ .Values.enclave.scone.lasPort }}
+              name: lasport
+          volumeMounts:
+            - mountPath: "{{ .Values.enclave.sgx.device }}"
+              name: dev-sgx
+          resources:
+            {{- toYaml .Values.enclave.resources.las | nindent 12 }}
+      volumes:
+        - name: dev-sgx
+          hostPath:
+            path: "{{ .Values.enclave.sgx.device }}"
+      {{- with .Values.enclave.sgx.nodeWithSgxSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.enclave.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.enclave.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+{{- end }}
