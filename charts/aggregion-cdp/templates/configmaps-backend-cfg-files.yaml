@@ -15,6 +15,11 @@ data:
     }
   local.json: |
     {
+      "auth": {
+        "localAccessPolicy": {
+          "enabled": {{ .Values.backend.configs.authLocalAccessPolicyEnabled }}
+        }
+      },
       "eos": {
         "initiateOrgId": "{{ .Values.backend.configs.eosOrgId }}",
         "walletsPath": "/home/node/app/eos-wallet"
