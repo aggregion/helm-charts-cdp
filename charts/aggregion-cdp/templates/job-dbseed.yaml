@@ -24,6 +24,11 @@ spec:
         - name: "dbseed"
           image: "{{ .Values.backend.dbseed.image.repository }}:{{ .Values.backend.dbseed.image.tag }}"
           args: ["sh" , "-e" , "-c" , "npm run seed-ch && npm run seed-mongo"]
+          envFrom:
+            - configMapRef:
+                name: "{{ $backendName }}-config"
+            - secretRef:
+                name: "{{ $backendName }}-secrets"
           env:
             - name: SEED_ENABLE_ONLY_ONCE_MODE
               value: "{{ .Values.backend.dbseed.once }}"
@@ -35,10 +40,10 @@ spec:
               value: "{{ .Values.backend.dbseed.numberOfCustomers }}"
             - name: CH_HOST
               value: "{{ .Values.backend.configs.clickhouseHost }}"
+            - name: CH_PORT
+              value: "{{ .Values.backend.configs.clickhousePort }}"
             - name: CH_DB
               value: "{{ .Values.backend.configs.clickhouseDb }}"
-            - name: MONGO_URI
-              value: "{{ .Values.backend.configs.mongoUrl }}"
             - name: DATAPROVIDER_ACCOUNT_NAME
               value: "{{ .Values.backend.configs.accountName }}"
             - name: DATAPROVIDER_ACCOUNT_PROVIDERNAME

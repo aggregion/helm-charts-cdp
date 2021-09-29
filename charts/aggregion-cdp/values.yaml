@@ -107,7 +107,7 @@ backend:
 
   configs:
     # infrastructure dependencies
-    mongoUrl: "mongo://mongo:27017/dmp"
+    mongoUrl: "mongodb://mongo:27017/dmp"
     rabbitmqUrl: "amqp://rabbit"
     redisHost: redis
     redisPort: 6379
@@ -116,6 +116,8 @@ backend:
     clickhouseHost: "clickhouse"
     clickhousePort: 8123
     clickhouseDb: "dmp"
+    clickhouseUser: "default"
+    clickhousePassword: ""
 
     # could be disabled
     cache: "redis"
