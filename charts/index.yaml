@@ -3,6 +3,16 @@ entries:
   aggregion-cdp:
   - apiVersion: v2
     appVersion: 1.16.0
+    created: "2021-09-29T16:16:19.705514254Z"
+    description: A Helm chart for Kubernetes to deploy Aggregion CDP
+    digest: db5202c7d3c08e0420048dd3ff894fc1569d26ef6fbf308cc8888243c612ed0d
+    name: aggregion-cdp
+    type: application
+    urls:
+    - https://aggregion.github.io/helm-charts-cdp/charts/aggregion-cdp-0.1.32.tgz
+    version: 0.1.32
+  - apiVersion: v2
+    appVersion: 1.16.0
     created: "2021-09-29T10:33:35.738671204Z"
     description: A Helm chart for Kubernetes to deploy Aggregion CDP
     digest: 79224579873a6580f0727bdad08a5f699e2daca5669b1e867e66f0f4118e68f5
@@ -184,9 +194,9 @@ entries:
   aggregion-dc:
   - apiVersion: v2
     appVersion: 1.16.0
-    created: "2021-09-29T10:33:35.739860616Z"
+    created: "2021-09-29T16:16:19.707342067Z"
     description: A Helm chart for Kubernetes to install Deploy Controller
-    digest: 91ef7ec960fc8fcecba7b3d3ef6e52141be28cc51a3ba9046bbb545952c6d9da
+    digest: a60177c967869c2877104dfc8b0a690459e2868c59c1e331a9366784a0b6797b
     name: aggregion-dc
     type: application
     urls:
@@ -195,11 +205,11 @@ entries:
   aggregion-debug:
   - apiVersion: v2
     appVersion: 1.16.0
-    created: "2021-09-29T10:33:35.740407321Z"
+    created: "2021-09-29T16:16:19.708009672Z"
     description: |
       A Helm chart for Kubernetes to deploy single instance of clickhouse, mongo, rabbitmq and redis.
       It's not recommend to use it in the production. Use charts from official rep for this purpose.
-    digest: 6b8988bad75bb5d28a33bd8fe4d583c50a54a897d2f35f97e7917d5725aaaf90
+    digest: 000e66296c9d084e5026cc77c9e47a8b1ab4138b23b635d8ffdd936d8bef1fc8
     name: aggregion-debug
     type: application
     urls:
@@ -208,11 +218,11 @@ entries:
   aggregion-externals:
   - apiVersion: v2
     appVersion: 1.16.0
-    created: "2021-09-29T10:33:35.74236314Z"
+    created: "2021-09-29T16:16:19.709289582Z"
     description: |
       A Helm chart for Kubernetes to deploy single instance of clickhouse, mongo, rabbitmq and redis.
       It's not recommend to use it in the production. Use charts from official rep for this purpose.
-    digest: dfcbb0310fddf583e1921e1bf530397c2e214c80c02b9f53a3eeafc79176453a
+    digest: 8ec373039cd026e3aaf2566aa1a492a3dbded2c79a1fb4e1fedfd2e6a9ca38b8
     name: aggregion-externals
     type: application
     urls:
@@ -221,9 +231,9 @@ entries:
   trino:
   - apiVersion: v2
     appVersion: "355"
-    created: "2021-09-29T10:33:35.743675853Z"
+    created: "2021-09-29T16:16:19.709944187Z"
     description: Fast distributed SQL query engine for big data analytics
-    digest: 8e5ea85ed71f1eccbba11520f41ee536da01346aa9f15da43f542885d3ec4bf7
+    digest: 72fdd14196e418012d846e5e5037942d57122d3f435311fb975b2d705d7dec73
     home: https://trino.io/
     icon: https://trino.io/assets/trino.png
     maintainers:
@@ -236,4 +246,4 @@ entries:
     urls:
     - https://aggregion.github.io/helm-charts-cdp/charts/trino-0.2.0.tgz
     version: 0.2.0
-generated: "2021-09-29T10:33:35.736165179Z"
+generated: "2021-09-29T16:16:19.703233837Z"
