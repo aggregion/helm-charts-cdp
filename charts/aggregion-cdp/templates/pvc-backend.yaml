@@ -7,7 +7,7 @@ metadata:
     {{- include "cdp.backend.labels" . | nindent 4 }}
 spec:
   accessModes:
-    - ReadWriteOnce
+    {{- toYaml .Values.backend.pvc.accessModes | nindent 4 }}
   resources:
     requests:
       storage: "{{ .Values.backend.configs.dataStorageSize }}"

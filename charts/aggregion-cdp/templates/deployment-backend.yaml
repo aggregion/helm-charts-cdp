@@ -32,7 +32,7 @@ spec:
       restartPolicy: {{ .Values.backend.restartPolicy }}
       {{- if .Values.backend.updateStrategy }}
       updateStrategy:
-        type: {{ .Values.backend.updateStrategy }}
+        {{- toYaml .Values.backend.updateStrategy | nindent 8 }}
       {{- end }}
       serviceAccountName: {{ include "cdp.serviceAccountName" . }}
       securityContext:

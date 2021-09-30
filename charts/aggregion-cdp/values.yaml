@@ -250,6 +250,13 @@ backend:
       type: ClusterIP
       port: 8080
 
+  pvc:
+    accessModes:
+      - ReadWriteOnce
+
+  updateStrategy:
+    type: Recreate
+
   resources:
     api: {}
     migration: {}
