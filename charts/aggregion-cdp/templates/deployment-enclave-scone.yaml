@@ -31,10 +31,6 @@ spec:
         {{- toYaml . | nindent 8 }}
       {{- end }}
       restartPolicy: {{ .Values.enclave.restartPolicy }}
-      {{- if .Values.enclave.updateStrategy }}
-      updateStrategy:
-        type: {{ .Values.enclave.updateStrategy }}
-      {{- end }}
       serviceAccountName: {{ include "cdp.serviceAccountName" . }}
       securityContext:
         {{- toYaml .Values.enclave.podSecurityContext | nindent 8 }}
@@ -133,4 +129,8 @@ spec:
       tolerations:
         {{- toYaml . | nindent 8 }}
       {{- end }}
+  {{- if .Values.enclave.updateStrategy }}
+  strategy:
+    {{- toYaml .Values.enclave.updateStrategy | nindent 4 }}
+  {{- end }}
 {{- end }}

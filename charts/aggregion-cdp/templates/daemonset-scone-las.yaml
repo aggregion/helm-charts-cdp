@@ -31,10 +31,6 @@ spec:
         {{- toYaml . | nindent 8 }}
       {{- end }}
       restartPolicy: {{ .Values.enclave.scone.lasRestartPolicy }}
-      {{- if .Values.enclave.scone.lasUpdateStrategy }}
-      updateStrategy:
-        type: {{ .Values.enclave.scone.lasUpdateStrategy }}
-      {{- end }}
       serviceAccountName: {{ include "cdp.serviceAccountName" . }}
       securityContext:
         {{- toYaml .Values.enclave.scone.lasPodSecurityContext | nindent 8 }}
@@ -85,4 +81,8 @@ spec:
       tolerations:
         {{- toYaml . | nindent 8 }}
       {{- end }}
+  {{- if .Values.enclave.scone.lasUpdateStrategy }}
+  updateStrategy:
+    {{- toYaml .Values.enclave.scone.lasUpdateStrategy | nindent 4 }}
+  {{- end }}
 {{- end }}
