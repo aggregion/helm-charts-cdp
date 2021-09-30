@@ -122,6 +122,7 @@ backend:
     # could be disabled
     cache: "redis"
 
+    dataStorageSize: "10G"
     # current debug is only for api service
     debugEnabled: false
     # could be enabled if you need access from standalone enclave instance (outside of cluster)

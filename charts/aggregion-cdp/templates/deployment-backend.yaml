@@ -68,6 +68,9 @@ spec:
             - mountPath: "/home/node/app/eos-wallet/{{ $eosWalletPath }}.wallet"
               subPath: "account.wallet"
               name: local-config-volume
+            - name: data
+              mountPath: /data/datalabscripts
+              subPath: datalabscripts-data
 
         {{- if .Values.backend.configs.migrationEnabled }}
         - name: "backend-migration"
@@ -354,6 +357,9 @@ spec:
         {{- end }}
 
       volumes:
+        - name: data
+          persistentVolumeClaim:
+            claimName: "{{ $backendName }}-claim"
         - name: tmp
           hostPath:
             path: "/tmp/{{ $backendName }}"
