@@ -30,10 +30,6 @@ spec:
         {{- toYaml . | nindent 8 }}
       {{- end }}
       restartPolicy: {{ .Values.frontend.restartPolicy }}
-      {{- if .Values.frontend.updateStrategy }}
-      updateStrategy:
-        type: {{ .Values.frontend.updateStrategy }}
-      {{- end }}
       serviceAccountName: {{ include "cdp.serviceAccountName" . }}
       securityContext:
         {{- toYaml .Values.frontend.podSecurityContext | nindent 8 }}
@@ -72,3 +68,7 @@ spec:
       tolerations:
         {{- toYaml . | nindent 8 }}
       {{- end }}
+  {{- if .Values.frontend.updateStrategy }}
+  strategy:
+    {{- toYaml .Values.frontend.updateStrategy | nindent 4 }}
+  {{- end }}

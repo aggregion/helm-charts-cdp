@@ -30,10 +30,6 @@ spec:
         {{- toYaml . | nindent 8 }}
       {{- end }}
       restartPolicy: {{ .Values.backend.restartPolicy }}
-      {{- if .Values.backend.updateStrategy }}
-      updateStrategy:
-        type: {{ .Values.backend.updateStrategy }}
-      {{- end }}
       serviceAccountName: {{ include "cdp.serviceAccountName" . }}
       securityContext:
         {{- toYaml .Values.backend.podSecurityContext | nindent 8 }}
@@ -68,6 +64,9 @@ spec:
             - mountPath: "/home/node/app/eos-wallet/{{ $eosWalletPath }}.wallet"
               subPath: "account.wallet"
               name: local-config-volume
+            - name: data
+              mountPath: /data/datalabscripts
+              subPath: datalabscripts-data
 
         {{- if .Values.backend.configs.migrationEnabled }}
         - name: "backend-migration"
@@ -266,6 +265,8 @@ spec:
           envFrom:
             - configMapRef:
                 name: "{{ $backendName }}-config"
+            - secretRef:
+                name: "{{ $backendName }}-secrets"
           resources:
             {{- toYaml .Values.backend.resources.bcChecker | nindent 12 }}
           volumeMounts:
@@ -285,6 +286,8 @@ spec:
           envFrom:
             - configMapRef:
                 name: "{{ $backendName }}-config"
+            - secretRef:
+                name: "{{ $backendName }}-secrets"
           resources:
             {{- toYaml .Values.backend.resources.bcSyncer | nindent 12 }}
           volumeMounts:
@@ -303,6 +306,8 @@ spec:
           envFrom:
             - configMapRef:
                 name: "{{ $backendName }}-config"
+            - secretRef:
+                name: "{{ $backendName }}-secrets"
           env:
             - name: "CRON_STRINGS"
               value: "*/5 * * * * curl http://localhost:9050"
@@ -348,6 +353,9 @@ spec:
         {{- end }}
 
       volumes:
+        - name: data
+          persistentVolumeClaim:
+            claimName: "{{ $backendName }}-claim"
         - name: tmp
           hostPath:
             path: "/tmp/{{ $backendName }}"
@@ -372,3 +380,7 @@ spec:
       tolerations:
         {{- toYaml . | nindent 8 }}
       {{- end }}
+  {{- if .Values.backend.updateStrategy }}
+  strategy:
+    {{- toYaml .Values.backend.updateStrategy | nindent 4 }}
+  {{- end }}

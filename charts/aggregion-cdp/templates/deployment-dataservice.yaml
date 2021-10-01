@@ -29,16 +29,12 @@ spec:
         {{- toYaml . | nindent 8 }}
       {{- end }}
       restartPolicy: {{ .Values.dataservice.restartPolicy }}
-      {{- if .Values.dataservice.updateStrategy }}
-      updateStrategy:
-        type: {{ .Values.dataservice.updateStrategy }}
-      {{- end }}
       serviceAccountName: {{ include "cdp.serviceAccountName" . }}
       containers:
         - name: "dataservice-api"
           securityContext:
             {{- toYaml .Values.dataservice.securityContext | nindent 12 }}
-          
+
           image: "{{ .Values.dataservice.imageApi.repository }}:{{ .Values.dataservice.imageApi.tag }}"
           imagePullPolicy: {{ .Values.dataservice.imageApi.pullPolicy }}
           ports:
@@ -48,7 +44,7 @@ spec:
             - npm
             - run
             - start:prod
-          
+
           envFrom:
             - configMapRef:
                 name: "{{ $dataServiceName }}-config"
@@ -58,14 +54,14 @@ spec:
         - name: "dataset-syncer"
           securityContext:
             {{- toYaml .Values.dataservice.securityContext | nindent 12 }}
-          
+
           image: "{{ .Values.dataservice.imageApi.repository }}:{{ .Values.dataservice.imageApi.tag }}"
           imagePullPolicy: {{ .Values.dataservice.imageApi.pullPolicy }}
           args:
             - npm
             - run
             - start:worker:dataset-syncer:prod
-          
+
           envFrom:
             - configMapRef:
                 name: "{{ $dataServiceName }}-config"
@@ -75,14 +71,14 @@ spec:
         - name: "dataset-updater"
           securityContext:
             {{- toYaml .Values.dataservice.securityContext | nindent 12 }}
-          
+
           image: "{{ .Values.dataservice.imageApi.repository }}:{{ .Values.dataservice.imageApi.tag }}"
           imagePullPolicy: {{ .Values.dataservice.imageApi.pullPolicy }}
           args:
             - npm
             - run
             - start:worker:dataset-updater:prod
-          
+
           envFrom:
             - configMapRef:
                 name: "{{ $dataServiceName }}-config"
@@ -92,20 +88,20 @@ spec:
         - name: "instance-syncer"
           securityContext:
             {{- toYaml .Values.dataservice.securityContext | nindent 12 }}
-          
+
           image: "{{ .Values.dataservice.imageApi.repository }}:{{ .Values.dataservice.imageApi.tag }}"
           imagePullPolicy: {{ .Values.dataservice.imageApi.pullPolicy }}
           args:
             - npm
             - run
             - start:worker:instance-syncer:prod
-          
+
           envFrom:
             - configMapRef:
                 name: "{{ $dataServiceName }}-config"
             - secretRef:
                 name: "{{ $dataServiceName }}-secrets"
-        
+
         - name: "atlas-entity-syncer"
           securityContext:
             {{- toYaml .Values.dataservice.securityContext | nindent 12 }}
@@ -122,7 +118,7 @@ spec:
           envFrom:
             - configMapRef:
                 name: "{{ $dataServiceName }}-atlas-syncer-config"
-      
+
       {{- with .Values.dataservice.affinity }}
       affinity:
         {{- toYaml . | nindent 8 }}
@@ -131,4 +127,8 @@ spec:
       tolerations:
         {{- toYaml . | nindent 8 }}
       {{- end }}
+  {{- if .Values.dataservice.updateStrategy }}
+  strategy:
+    {{- toYaml .Values.dataservice.updateStrategy | nindent 4 }}
+  {{- end }}
 {{- end }}

@@ -107,7 +107,7 @@ backend:
 
   configs:
     # infrastructure dependencies
-    mongoUrl: "mongo://mongo:27017/dmp"
+    mongoUrl: "mongodb://mongo:27017/dmp"
     rabbitmqUrl: "amqp://rabbit"
     redisHost: redis
     redisPort: 6379
@@ -116,10 +116,13 @@ backend:
     clickhouseHost: "clickhouse"
     clickhousePort: 8123
     clickhouseDb: "dmp"
+    clickhouseUser: "default"
+    clickhousePassword: ""
 
     # could be disabled
     cache: "redis"
 
+    dataStorageSize: "10G"
     # current debug is only for api service
     debugEnabled: false
     # could be enabled if you need access from standalone enclave instance (outside of cluster)
@@ -136,6 +139,8 @@ backend:
     serviceBcSyncerEnabled: true
     serviceCrondEnabled: true
     servicePanelSegmentUploaderEnabled: false
+    # control access policy module
+    authLocalAccessPolicyEnabled: false
     # used to communicate between dmp and enclave
     dmpSecret: "secret"
     # api auth
@@ -241,6 +246,13 @@ backend:
       type: ClusterIP
       port: 8080
 
+  pvc:
+    accessModes:
+      - ReadWriteOnce
+
+  updateStrategy:
+    type: Recreate
+
   resources:
     api: {}
     migration: {}
@@ -271,9 +283,28 @@ enclave:
     reloader.stakater.com/auto: "true"
 
   hostname: "enclave"
-  sgxDevice: ""
-  sconeCas: ""
-  sconeLas: ""
+  sgx:
+    nodeWithSgxSelector: {}
+    device: "/dev/sgx"
+  scone:
+    enabled: false
+    debug: false
+    espApiKey: ""
+    espAddr: "http://esp"
+    lasImage:
+      repository: "registry.aggregion.com/sconecuratedimages/aggregion"
+      pullPolicy: "IfNotPresent"
+      tag: "las-scone4.2.1"
+    lasEnvs: []
+    lasPort: 18766
+    lasServiceExternalName: "las"
+    lasAddr: "las:18766"
+    lasAnnotations: {}
+    lasPodAnnotations: {}
+    lasRestartPolicy: "Always"
+    lasUpdateStrategy: null
+    lasPodSecurityContext: {}
+    lasSecurityContext: {}
   scripts:
     auditory: "sha256-1dbdf66d12ed88c56682a533bf8b703211a004743e7b6c9393bc70461175f7ba"
     datalab: "sha256-4be860062a8440188600ee3c57d65c59aa3a7d23feee022ab87c4b85386cfe89"
@@ -295,7 +326,7 @@ enclave:
   restartPolicy: Always
   nameOverride: ""
   fullnameOverride: ""
-  podAnnotations: 
+  podAnnotations:
     prometheus.io/scrape: "true"
     prometheus.io/path: /metrics
     prometheus.io/port: "8321"
@@ -329,6 +360,7 @@ enclave:
   resources:
     server: {}
     services: {}
+    las: {}
       # limits:
       #   cpu: 100m
       #   memory: 128Mi

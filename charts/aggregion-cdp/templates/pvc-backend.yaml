@@ -1,0 +1,13 @@
+{{- $backendName := include "cdp.backend.fullname" . }}
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: "{{ $backendName }}-claim"
+  labels:
+    {{- include "cdp.backend.labels" . | nindent 4 }}
+spec:
+  accessModes:
+    {{- toYaml .Values.backend.pvc.accessModes | nindent 4 }}
+  resources:
+    requests:
+      storage: "{{ .Values.backend.configs.dataStorageSize }}"

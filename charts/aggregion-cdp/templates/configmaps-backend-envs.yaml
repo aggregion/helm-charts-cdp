@@ -11,7 +11,6 @@ data:
   API_ENDPOINT: "http://{{ $backendName }}:{{ .Values.backend.service.api.port }}/graphql"
   FILES_ENDPOINT: "http://{{ $backendName }}:{{ .Values.backend.service.api.port }}/"
   SERVER_PORT: "{{ .Values.backend.configs.listenPort }}"
-  MONGODB_URI: "{{ .Values.backend.configs.mongoUrl }}"
   LOG_LEVEL: "{{ .Values.backend.configs.logLevel }}"
   ALARM_NOTIFICATION_EMAIL: "{{ .Values.backend.configs.alarmEmail }}"
   CLICKHOUSE_HOST: "{{ .Values.backend.configs.clickhouseHost }}"
@@ -30,7 +29,6 @@ data:
   ENCLAVE_SCRIPTS_STATISTIC: "{{ .Values.enclave.scripts.statistics }}"
   ENCLAVE_DMP_API_SECRET: "{{ .Values.backend.configs.dmpSecret }}"
   ENCLAVE_KNOWN_PROVIDERS: '{{ .Values.providers | toJson }}'
-  RABBITMQ_URI: "{{ .Values.backend.configs.rabbitmqUrl }}"
   EMAIL_NOTIFICATIONS: '{{ .Values.backend.configs.email | toJson }}'
   CALC_REPORT_DEFAULT_GOODS_DIRECTORY: "{{ .Values.backend.configs.reportDefaultGoodsDirectory }}"
   DICTS_BRANDS: "{{ .Values.backend.configs.dictMode }}"
