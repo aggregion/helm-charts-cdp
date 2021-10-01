@@ -136,10 +136,6 @@ backend:
     serviceBcSyncerEnabled: true
     serviceCrondEnabled: true
     servicePanelSegmentUploaderEnabled: false
-
-    # dataservice
-    dataServiceToken: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0eXBlIjoiRGF0YSBBY2Nlc3MgVG9rZW4gZm9yIHRoZSBhdXRob3JpemF0aW9uIGluIHRoZSBsb2NhbCBwcm92aWRlciBlbnZpcm9ubWVudCIsImlhdCI6MTYzMjY2MDY1OCwiaXNzIjoic3RhZ2VfcHJvdmlkZXIifQ.DLh9HQHXXTZuGSRrXf9uk6QBiikOHztcZ2aNC7x6wKg"
-
     # used to communicate between dmp and enclave
     dmpSecret: "secret"
     # api auth
@@ -374,6 +370,7 @@ dataservice:
     atlasBaseUrl: "http://5.188.130.169:21000"
     rabbitmqUrl: "amqp://127.0.0.1"
   config:
+    accessToken: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0eXBlIjoiRGF0YSBBY2Nlc3MgVG9rZW4gZm9yIHRoZSBhdXRob3JpemF0aW9uIGluIHRoZSBsb2NhbCBwcm92aWRlciBlbnZpcm9ubWVudCIsImlhdCI6MTYzMjY2MDY1OCwiaXNzIjoic3RhZ2VfcHJvdmlkZXIifQ.DLh9HQHXXTZuGSRrXf9uk6QBiikOHztcZ2aNC7x6wKg"
     appName: dataservice-api
     logLevel: trace
     logPrettyPrint: true
