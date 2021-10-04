@@ -1,0 +1,99 @@
+{{- if .Values.hadoop.enabled }}
+{{- $hadoopName := include "exts.hadoop.fullname" . }}
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: "{{ $hadoopName }}"
+  labels:
+    {{- include "exts.hadoop.labels" . | nindent 4 }}
+spec:
+  replicas: 1
+  serviceName: "{{ $hadoopName }}"
+  selector:
+    matchLabels:
+      {{- include "exts.hadoop.selectorLabels" . | nindent 6 }}
+  updateStrategy:
+    {{- toYaml .Values.hadoop.updateStrategy | nindent 4 }}
+  podManagementPolicy: {{ .Values.hadoop.podManagementPolicy }}
+  template:
+    metadata:
+    {{- with .Values.hadoop.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}
+      labels:
+        {{- include "exts.hadoop.selectorLabels" . | nindent 8 }}
+    spec:
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      # serviceAccountName: {{/* include "exts.serviceAccountName" . */}}
+      securityContext:
+        {{- toYaml .Values.hadoop.podSecurityContext | nindent 8 }}
+      containers:
+        - name: "hadoop"
+          securityContext:
+            {{- toYaml .Values.hadoop.securityContext | nindent 12 }}
+          image: "{{ .Values.hadoop.image.repository }}:{{ .Values.hadoop.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.hadoop.image.pullPolicy }}
+          command: {{ .Values.hadoop.command }}
+          ports:
+            - name: client
+              containerPort: {{ .Values.hadoop.listenPort }}
+              protocol: TCP
+          volumeMounts:
+            - name: data
+              mountPath: /data
+              # subPath: hadoop-data
+            - name: name
+              mountPath: /name
+              # subPath: hadoop-name
+          resources:
+            {{- toYaml .Values.hadoop.resources | nindent 12 }}
+      initContainers:
+        - name: "hadoop-init"
+          image: "{{ .Values.hadoopInit.image.repository }}:{{ .Values.hadoopInit.image.tag | default .Chart.AppVersion }}"
+          command: {{ .Values.hadoopInit.command }}
+          resources:
+            {{- toYaml .Values.hadoopInit.resources | nindent 12 }}
+          volumeMounts:
+            - name: data
+              mountPath: /data
+              # subPath: hadoop-data
+            - name: name
+              mountPath: /name
+              # subPath: hadoop-name
+            - name: hdfs
+              mountPath: /home/hdfs
+              # subPath: hadoop-hdfs
+            - name: yarn
+              mountPath: /home/yarn
+              # subPath: hadoop-yarn
+      restartPolicy: {{ .Values.hadoop.restartPolicy }}
+      volumes:
+        - name: data
+          persistentVolumeClaim:
+            claimName: "{{ $hadoopName }}-data-claim"
+        - name: name
+          persistentVolumeClaim:
+            claimName: "{{ $hadoopName }}-name-claim"
+        - name: hdfs
+          persistentVolumeClaim:
+            claimName: "{{ $hadoopName }}-hdfs-claim"
+        - name: yarn
+          persistentVolumeClaim:
+            claimName: "{{ $hadoopName }}-yarn-claim"
+      {{- with .Values.hadoop.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.hadoop.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.hadoop.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+{{- end }}

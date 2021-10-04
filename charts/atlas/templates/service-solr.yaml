@@ -1,0 +1,19 @@
+{{- if .Values.solr.enabled }}
+{{- $solrName := include "exts.solr.fullname" . }}
+apiVersion: v1
+kind: Service
+metadata:
+  name: "{{ $solrName }}"
+  labels:
+    {{- include "exts.solr.labels" . | nindent 4 }}
+spec:
+  type: {{ .Values.solr.service.type }}
+  ports:
+    - port: {{ .Values.solr.listenPort }}
+      targetPort: client
+      protocol: TCP
+      name: client
+
+  selector:
+    {{- include "exts.solr.selectorLabels" . | nindent 4 }}
+{{- end }}

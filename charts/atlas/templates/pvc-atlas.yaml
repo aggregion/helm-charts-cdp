@@ -1,0 +1,13 @@
+{{- if .Values.atlas.enabled }}
+{{- $atlasName := include "exts.atlas.fullname" . }}
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: "{{ $atlasName }}-claim"
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: "{{ .Values.atlas.storageSize }}"
+{{- end }}

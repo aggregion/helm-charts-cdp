@@ -1,0 +1,18 @@
+{{- if .Values.atlas.enabled }}
+{{- $atlasName := include "exts.atlas.fullname" . }}
+apiVersion: v1
+kind: Service
+metadata:
+  name: "{{ $atlasName }}"
+  labels:
+    {{- include "exts.atlas.labels" . | nindent 4 }}
+spec:
+  type: {{ .Values.atlas.service.type }}
+  ports:
+    - port: {{ .Values.atlas.service.port }}
+      targetPort: client
+      protocol: TCP
+      name: client
+  selector:
+    {{- include "exts.atlas.selectorLabels" . | nindent 4 }}
+{{- end }}

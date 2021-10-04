@@ -1,0 +1,13 @@
+{{- if .Values.zookeeper.enabled }}
+{{- $zookeeperName := include "exts.zookeeper.fullname" . }}
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: "{{ $zookeeperName }}-claim"
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: "{{ .Values.zookeeper.storageSize }}"
+{{- end }}

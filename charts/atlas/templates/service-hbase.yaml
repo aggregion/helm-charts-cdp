@@ -1,0 +1,28 @@
+{{- if .Values.hbase.enabled }}
+{{- $hbaseName := include "exts.hbase.fullname" . }}
+apiVersion: v1
+kind: Service
+metadata:
+  name: "{{ $hbaseName }}"
+  labels:
+    {{- include "exts.hbase.labels" . | nindent 4 }}
+spec:
+  type: {{ .Values.hbase.service.type }}
+  ports:
+    - port: {{ .Values.hbaseMaster.listenPort }}
+      targetPort: clientMaster
+      protocol: TCP
+      name: clientMaster
+    - port: {{ .Values.hbaseRegion.listenPort }}
+      targetPort: clientRegion
+      protocol: TCP
+      name: clientRegion
+    - port: {{ .Values.hbase.service.regionserverPort }}
+      targetPort: clientRegionInfo
+      protocol: TCP
+      name: clientRegionInfo
+    
+    
+  selector:
+    {{- include "exts.hbase.selectorLabels" . | nindent 4 }}
+{{- end }}

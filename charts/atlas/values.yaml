@@ -1,0 +1,266 @@
+# Default values for aggregion-externals.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+imagePullSecrets: []
+
+serviceAccount:
+  create: false
+  annotations: {}
+  name: "default"
+
+atlas:
+  enabled: false
+  nameOverride: ""
+  fullnameOverride: ""
+  storageSize: "10G"
+  restartPolicy: Always
+  updateStrategy:
+    type: RollingUpdate
+  podManagementPolicy: OrderedReady
+  image:
+    repository: "aggregion/atlas"
+    pullPolicy: IfNotPresent
+    tag: "latest"
+  service:
+    type: ClusterIP
+    port: 21000
+  listenPort: 21000
+  securityContext: {}
+  podAnnotations: {}
+  podSecurityContext: {}
+  resources:
+    requests:
+      memory: "2Gi"
+  nodeSelector: {}
+  tolerations: []
+  affinity: {}
+
+cassandra:
+  enabled: false # should depends on "atlas"
+  nameOverride: ""
+  fullnameOverride: ""
+  storageSize: "10G"
+  restartPolicy: Always
+  updateStrategy:
+    type: RollingUpdate
+  podManagementPolicy: OrderedReady
+  image:
+    repository: "cassandra"
+    pullPolicy: IfNotPresent
+    tag: "3.11.11"
+  service:
+    type: ClusterIP
+    port: 9160
+  listenPort: 9160
+  securityContext: {}
+  podAnnotations: {}
+  podSecurityContext: {}
+  resources:
+    requests:
+      memory: "2Gi"
+      cpu: "0.5"
+  nodeSelector: {}
+  tolerations: []
+  affinity: {}
+
+hadoop:
+  enabled: false # should depends on "atlas"
+  nameOverride: ""
+  fullnameOverride: ""
+  dataStorageSize: "10G"
+  nameStorageSize: "4G"
+  hdfsStorageSize: "4G"
+  yarnStorageSize: "4G"
+  restartPolicy: Always
+  updateStrategy:
+    type: RollingUpdate
+  podManagementPolicy: OrderedReady
+  image:
+    repository: "registry.aggregion.com/atlas/hadoop"
+    pullPolicy: Always
+    tag: "latest"
+  service:
+    type: ClusterIP
+    port: 9000
+  listenPort: 9000
+  securityContext: {}
+  podAnnotations: {}
+  podSecurityContext: {}
+  resources:
+    requests:
+      memory: "2Gi"
+      cpu: "0.5"
+  nodeSelector: {}
+  tolerations: []
+  affinity: {}
+  command: "[\"sh\", \"-c\", \"/home/atlas/scripts/atlas-hadoop-setup.sh; /home/atlas/scripts/atlas-hadoop.sh\"]"
+
+hadoopInit:
+  enabled: false # should depends on "hadoop"
+  image:
+    repository: "busybox"
+    pullPolicy: IfNotPresent
+    tag: "latest"
+  command: "[\"sh\", \"-c\", \"mkdir -p /data && mkdir -p /name && chown -R 1000:1000 /data && chown -R 1000:1000 /home/hdfs && chown -R 1000:1000 /name && chown -R 1001:1000 /home/yarn\"]"
+  resources:
+    limits:
+      cpu: "0.2"
+      memory: 200Mi
+
+hbase:
+  enabled: false # should depends on "atlas"
+  nameOverride: ""
+  fullnameOverride: ""
+  restartPolicy: Always
+  updateStrategy:
+    type: RollingUpdate
+  podManagementPolicy: OrderedReady
+  podAnnotations: {}
+  podSecurityContext: {}
+  service:
+    type: ClusterIP
+    masterPort: 16000
+    masterInfoPort: 16010
+    regionserverPort: 16020
+    regionserverInfoPort: 16030
+  nodeSelector: {}
+  tolerations: []
+  affinity: {}
+
+hbaseMaster:
+  storageSize: "1G"
+  image:
+    repository: "aggregion/hbase"
+    pullPolicy: Always
+    tag: "latest"
+  listenPort: 16010
+  securityContext: {}
+  resources:
+    requests:
+      memory: "2Gi"
+      cpu: "0.5"
+
+hbaseRegion:
+  storageSize: "1G"
+  image:
+    repository: "aggregion/hbase"
+    pullPolicy: Always
+    tag: "latest"
+  listenPort: 16010
+  securityContext: {}
+  resources:
+    requests:
+      memory: "2Gi"
+      cpu: "0.5"
+
+kafka:
+  enabled: false # should depends on "atlas"
+  nameOverride: ""
+  fullnameOverride: ""
+  storageSize: "10G"
+  restartPolicy: Always
+  updateStrategy:
+    type: RollingUpdate
+  podManagementPolicy: OrderedReady
+  image:
+    repository: "docker.io/bitnami/kafka"
+    pullPolicy: Always
+    tag: "2"
+  service:
+    type: ClusterIP
+    port: 9092
+  listenPort: 9092
+  securityContext: {}
+  podAnnotations: {}
+  podSecurityContext: {}
+  resources:
+    requests:
+      memory: "2Gi"
+  nodeSelector: {}
+  tolerations: []
+  affinity: {}
+
+kafkaInit:
+  enabled: false # should depends on "hadoop"
+  image:
+    repository: "busybox"
+    pullPolicy: IfNotPresent
+    tag: "latest"
+  command: "[\"sh\", \"-c\", \"mkdir -p /bitnami && chown -R 1001:0 /bitnami\"]"
+  resources:
+    limits:
+      cpu: "0.2"
+      memory: 200Mi
+
+solr:
+  enabled: false # should depends on "atlas"
+  nameOverride: ""
+  fullnameOverride: ""
+  storageSize: "10G"
+  restartPolicy: Always
+  updateStrategy:
+    type: RollingUpdate
+  podManagementPolicy: OrderedReady
+  image:
+    repository: "registry.aggregion.com/atlas/solr"
+    pullPolicy: Always
+    tag: "latest"
+  service:
+    type: ClusterIP
+    port: 8983
+  listenPort: 8983
+  securityContext: {}
+  podAnnotations: {}
+  podSecurityContext: {}
+  resources:
+    requests:
+      memory: "2Gi"
+      cpu: "0.5"
+  nodeSelector: {}
+  tolerations: []
+  affinity: {}
+
+solrInit:
+  enabled: false # depends on "hadoop"
+  image:
+    repository: "busybox"
+    pullPolicy: IfNotPresent
+    tag: "latest"
+  command: "[\"sh\", \"-c\", \"mkdir -p /vol-path && chown -R 8983:8983 /vol-path\"]"
+  resources:
+    limits:
+      cpu: "0.2"
+      memory: 200Mi
+
+zookeeper:
+  enabled: false # should depends on "atlas"
+  replicas: 3
+  nameOverride: ""
+  fullnameOverride: ""
+  storageSize: "10G"
+  restartPolicy: Always
+  updateStrategy:
+    type: RollingUpdate
+  podManagementPolicy: OrderedReady
+  image:
+    repository: "aggregion/kubernetes-zookeeper"
+    pullPolicy: Always
+    tag: "1.0-3.4.10"
+  service:
+    type: ClusterIP
+    serverPort: 2888
+    clientPort: 2181
+    leaderElectionPort: 3888
+  serverListenPort: 2888
+  clientListenPort: 2181
+  leaderElectionListenPort: 3888
+  securityContext: {}
+  podAnnotations: {}
+  podSecurityContext: {}
+  resources:
+    requests:
+      memory: "1Gi"
+      cpu: "0.5"
+  nodeSelector: {}
+  tolerations: []
+  affinity: {}

@@ -1,0 +1,13 @@
+{{- if .Values.cassandra.enabled }}
+{{- $cassandraName := include "exts.cassandra.fullname" . }}
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: "{{ $cassandraName }}-claim"
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: "{{ .Values.cassandra.storageSize }}"
+{{- end }}

@@ -1,0 +1,13 @@
+{{- if .Values.hadoop.enabled }}
+{{- $hadoopName := include "exts.hadoop.fullname" . }}
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: "{{ $hadoopName }}-name-claim"
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: "{{ .Values.hadoop.nameStorageSize }}"
+{{- end }}

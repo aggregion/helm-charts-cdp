@@ -1,0 +1,76 @@
+{{- if .Values.atlas.enabled }}
+{{- $atlasName := include "exts.atlas.fullname" . }}
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: "{{ $atlasName }}"
+  labels:
+    {{- include "exts.atlas.labels" . | nindent 4 }}
+spec:
+  replicas: 1
+  serviceName: "{{ $atlasName }}"
+  selector:
+    matchLabels:
+      {{- include "exts.atlas.selectorLabels" . | nindent 6 }}
+  updateStrategy:
+    {{- toYaml .Values.atlas.updateStrategy | nindent 4 }}
+  podManagementPolicy: {{ .Values.atlas.podManagementPolicy }}
+  template:
+    metadata:
+    {{- with .Values.atlas.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}
+      labels:
+        {{- include "exts.atlas.selectorLabels" . | nindent 8 }}
+    spec:
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      # serviceAccountName: {{/* include "exts.serviceAccountName" . */}}
+      securityContext:
+        {{- toYaml .Values.atlas.podSecurityContext | nindent 8 }}
+      containers:
+        - name: "atlas"
+          securityContext:
+            {{- toYaml .Values.atlas.securityContext | nindent 12 }}
+          image: "{{ .Values.atlas.image.repository }}:{{ .Values.atlas.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.atlas.image.pullPolicy }}
+          ports:
+            - name: client
+              containerPort: {{ .Values.atlas.listenPort }}
+              protocol: TCP
+          volumeMounts:
+            - name: data
+              mountPath: /opt/atlas/data
+              # subPath: atlas-data
+          resources:
+            {{- toYaml .Values.atlas.resources | nindent 12 }}
+          env: # need refactoring
+            - name: ZOOKEEPER_HOST
+              value: "zk-0.zk-hs.{{ .Release.Name }}.svc.cluster.local,zk-1.zk-hs.{{ .Release.Name }}.svc.cluster.local,zk-2.zk-hs.{{ .Release.Name }}.svc.cluster.local"
+            - name: CASSANDRA_HOST
+              value: "cassandra-0.cassandra-server.{{ .Release.Name }}.svc.cluster.local"
+            - name: SOLR_HOST
+              value: "solr-0.solr-server.{{ .Release.Name }}.svc.cluster.local"
+            - name: KAFKA_HOST
+              value: "kafka-0.kafka-server.{{ .Release.Name }}.svc.cluster.local"
+      restartPolicy: {{ .Values.atlas.restartPolicy }}
+      volumes:
+        - name: data
+          persistentVolumeClaim:
+            claimName: "{{ $atlasName }}-claim"
+      {{- with .Values.atlas.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.atlas.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.atlas.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+{{- end }}

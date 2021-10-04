@@ -1,0 +1,13 @@
+{{- if .Values.hbase.enabled }}
+{{- $hbaseName := include "exts.hbase.fullname" . }}
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: "{{ $hbaseName }}-regionserver-claim"
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: "{{ .Values.hbaseRegion.storageSize }}"
+{{- end }}

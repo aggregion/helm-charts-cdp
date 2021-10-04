@@ -1,0 +1,13 @@
+{{- if .Values.solr.enabled }}
+{{- $solrName := include "exts.solr.fullname" . }}
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: "{{ $solrName }}-claim"
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: "{{ .Values.solr.storageSize }}"
+{{- end }}
