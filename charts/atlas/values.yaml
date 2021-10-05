@@ -37,7 +37,7 @@ atlas:
   affinity: {}
 
 cassandra:
-  enabled: false # should depends on "atlas"
+  # enabled: false # should depends on "atlas"
   nameOverride: ""
   fullnameOverride: ""
   storageSize: "10G"
@@ -66,7 +66,7 @@ cassandra:
   affinity: {}
 
 hadoop:
-  enabled: false # should depends on "atlas"
+  # enabled: false # should depends on "atlas"
   nameOverride: ""
   fullnameOverride: ""
   dataStorageSize: "10G"
@@ -99,7 +99,7 @@ hadoop:
   command: "[\"sh\", \"-c\", \"/home/atlas/scripts/atlas-hadoop-setup.sh; /home/atlas/scripts/atlas-hadoop.sh\"]"
 
 hadoopInit:
-  enabled: false # should depends on "hadoop"
+  # enabled: false # should depends on "hadoop"
   image:
     repository: "busybox"
     pullPolicy: IfNotPresent
@@ -111,7 +111,7 @@ hadoopInit:
       memory: 200Mi
 
 hbase:
-  enabled: false # should depends on "atlas"
+  # enabled: false # should depends on "atlas"
   nameOverride: ""
   storageClass: ""
   fullnameOverride: ""
@@ -158,7 +158,7 @@ hbaseRegion:
       cpu: "0.5"
 
 kafka:
-  enabled: false # should depends on "atlas"
+  # enabled: false # should depends on "atlas"
   nameOverride: ""
   fullnameOverride: ""
   storageSize: "10G"
@@ -186,7 +186,7 @@ kafka:
   affinity: {}
 
 kafkaInit:
-  enabled: false # should depends on "hadoop"
+  # enabled: false # should depends on "hadoop"
   image:
     repository: "busybox"
     pullPolicy: IfNotPresent
@@ -198,7 +198,7 @@ kafkaInit:
       memory: 200Mi
 
 solr:
-  enabled: false # should depends on "atlas"
+  # enabled: false # should depends on "atlas"
   nameOverride: ""
   fullnameOverride: ""
   storageSize: "10G"
@@ -227,7 +227,7 @@ solr:
   affinity: {}
 
 solrInit:
-  enabled: false # depends on "hadoop"
+  # enabled: false # depends on "hadoop"
   image:
     repository: "busybox"
     pullPolicy: IfNotPresent
@@ -239,7 +239,7 @@ solrInit:
       memory: 200Mi
 
 zookeeper:
-  enabled: false # should depends on "atlas"
+  # enabled: false # should depends on "atlas"
   replicas: 3
   nameOverride: ""
   fullnameOverride: ""

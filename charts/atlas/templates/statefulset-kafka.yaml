@@ -1,4 +1,4 @@
-{{- if .Values.kafka.enabled }}
+{{- if .Values.atlas.enabled }}
 {{- $kafkaName := include "exts.kafka.fullname" . }}
 {{- $zookeeperName := include "exts.zookeeper.fullname" . }}
 apiVersion: apps/v1

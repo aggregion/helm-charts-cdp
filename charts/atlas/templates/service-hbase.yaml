@@ -1,4 +1,4 @@
-{{- if .Values.hbase.enabled }}
+{{- if .Values.atlas.enabled }}
 {{- $hbaseName := include "exts.hbase.fullname" . }}
 apiVersion: v1
 kind: Service
@@ -21,8 +21,8 @@ spec:
       targetPort: clientRegionInfo
       protocol: TCP
       name: clientRegionInfo
-    
-    
+
+
   selector:
     {{- include "exts.hbase.selectorLabels" . | nindent 4 }}
 {{- end }}

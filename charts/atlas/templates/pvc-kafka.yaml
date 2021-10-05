@@ -1,4 +1,4 @@
-{{- if .Values.kafka.enabled }}
+{{- if .Values.atlas.enabled }}
 {{- $kafkaName := include "exts.kafka.fullname" . }}
 apiVersion: v1
 kind: PersistentVolumeClaim

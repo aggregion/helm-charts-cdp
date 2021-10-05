@@ -1,4 +1,4 @@
-{{- if .Values.cassandra.enabled }}
+{{- if .Values.atlas.enabled }}
 {{- $cassandraName := include "exts.cassandra.fullname" . }}
 apiVersion: apps/v1
 kind: StatefulSet

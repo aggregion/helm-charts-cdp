@@ -1,4 +1,4 @@
-{{- if .Values.hbase.enabled }}
+{{- if .Values.atlas.enabled }}
 {{- $hbaseName := include "exts.hbase.fullname" . }}
 {{- $hadoopName := include "exts.hadoop.fullname" . }}
 {{- $zookeeperName := include "exts.zookeeper.fullname" . }}

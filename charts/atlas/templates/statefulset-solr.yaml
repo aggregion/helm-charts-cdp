@@ -1,4 +1,4 @@
-{{- if .Values.solr.enabled }}
+{{- if .Values.atlas.enabled }}
 {{- $solrName := include "exts.solr.fullname" . }}
 {{- $zookeeperName := include "exts.zookeeper.fullname" . }}
 apiVersion: apps/v1

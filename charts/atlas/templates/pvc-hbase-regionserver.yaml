@@ -1,4 +1,4 @@
-{{- if .Values.hbase.enabled }}
+{{- if .Values.atlas.enabled }}
 {{- $hbaseName := include "exts.hbase.fullname" . }}
 apiVersion: v1
 kind: PersistentVolumeClaim
