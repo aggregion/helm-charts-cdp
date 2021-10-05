@@ -1,5 +1,6 @@
 {{- if .Values.atlas.enabled }}
 {{- $atlasName := include "exts.atlas.fullname" . }}
+{{- $zookeeperName := include "exts.zookeeper.fullname" . }}
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
@@ -49,7 +50,7 @@ spec:
             {{- toYaml .Values.atlas.resources | nindent 12 }}
           env: # need refactoring
             - name: ZOOKEEPER_HOST
-              value: "zk-0.zk-hs.{{ .Release.Name }}.svc.cluster.local,zk-1.zk-hs.{{ .Release.Name }}.svc.cluster.local,zk-2.zk-hs.{{ .Release.Name }}.svc.cluster.local"
+              value: "zookeeper-0.{{ $zookeeperName }}.{{ .Release.Namespace }}.svc.cluster.local,zookeeper-1.{{ $zookeeperName }}.{{ .Release.Namespace }}.svc.cluster.local,zookeeper-2.{{ $zookeeperName }}.{{ .Release.Namespace }}.svc.cluster.local"
             - name: CASSANDRA_HOST
               value: "cassandra-0.cassandra-server.{{ .Release.Name }}.svc.cluster.local"
             - name: SOLR_HOST
