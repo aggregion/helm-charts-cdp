@@ -1,8 +1,8 @@
-{{- if .Values.agentk8s.enabled -}}
-{{- if .Values.agentk8s.ingress.enabled -}}
+{{- if and .Values.agentk8s.enabled .Values.agentk8s.ingress.enabled -}}
 {{- $agentName := include "dctl.agentk8s.fullname" . }}
-{{- $agentPort := .Values.agentk8s.service.port }}
-{{- if semverCompare ">=1.14-0" .Capabilities.KubeVersion.GitVersion -}}
+{{- if semverCompare ">=1.22-0" .Capabilities.KubeVersion.GitVersion -}}
+apiVersion: networking.k8s.io/v1
+{{- else if semverCompare ">=1.14-0" .Capabilities.KubeVersion.GitVersion -}}
 apiVersion: networking.k8s.io/v1beta1
 {{- else -}}
 apiVersion: extensions/v1beta1
@@ -34,10 +34,18 @@ spec:
         paths:
           {{- range .paths }}
           - path: {{ . }}
+            {{- if semverCompare ">=1.22-0" $.Capabilities.KubeVersion.GitVersion}}
+            pathType: "Prefix"
+            backend:
+              service:
+                name: "{{ $agentName }}"
+                port:
+                  name: "httpagent"
+            {{- else }}
             backend:
               serviceName: "{{ $agentName }}"
-              servicePort: {{ $agentPort }}
+              servicePort: "httpagent"
+            {{- end }}
           {{- end }}
     {{- end }}
-  {{- end }}
 {{- end }}

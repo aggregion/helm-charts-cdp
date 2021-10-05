@@ -21,10 +21,13 @@ agentk8s:
   configs:
     dumpPath: ""
     dummyMode: false
-    authJwtSecret: ""
+    # secret for connection
+    authJwtSecret: "HwasXWkVyA8mSu6iMs5Gdh2ArhkLOJ2LHspIa+KDZQ=="
     whitelistIp: ""
     clientIpHeader: ""
+    # disallowed namespaces
     blacklistNamespaces: ""
+    # allowed namespaces
     whitelistNamespaces: ""
   nameOverride: ""
   fullnameOverride: ""
@@ -56,9 +59,13 @@ dc:
     pullPolicy: IfNotPresent
     tag: "latest"
   configs:
-    cipherSecret: ""
-    authJwtSecret: ""
-    tykGwSecret: ""
+    # secret for encryption data in database
+    cipherSecret: "POnxPkRD/ycb04I/vYHXDNjDW0+IzzQzn8jx6n4O2w=="
+    # jwt hmac secret for auth service
+    authJwtSecret: "QFoF+N4rcCsX9VEfvLD5ZdRmVZdy7VG1iq4h7ocpiw=="
+    # secret for tyk gateway
+    tykGwSecret: "GsvgfdPU22FTvLSda4A9qFK2oqJ9UFcX8eJaL19fqg=="
+    # initial credentials for admin user, could be changed with using of CLI tool
     initAdminUsername: "admin"
     initAdminPassword: "admin"
     databaseHost: "postgres"
@@ -72,7 +79,9 @@ dc:
     gwRedisDb: 1
     redisUrl: "redis://redis:6379"
     natsUrl: "nats://nats:4222"
+    # pre-definied common values for tamplates
     paramsDefaults: {}
+    # overwrited common values for templates
     paramsOverwrite: {}
 
   nameOverride: ""
