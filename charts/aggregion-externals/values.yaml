@@ -13,6 +13,7 @@ clickhouse:
   nameOverride: ""
   fullnameOverride: ""
   storageSize: "256G"
+  storageClass: ""
   restartPolicy: Always
   image:
     repository: "yandex/clickhouse-server"
@@ -41,6 +42,7 @@ mongo:
   nameOverride: ""
   fullnameOverride: ""
   storageSize: "64G"
+  storageClass: ""
   restartPolicy: Always
   image:
     repository: "mongo"
@@ -69,6 +71,7 @@ postgres:
   nameOverride: ""
   fullnameOverride: ""
   storageSize: "64G"
+  storageClass: ""
   restartPolicy: Always
   image:
     repository: "postgres"
@@ -99,6 +102,7 @@ rabbit:
   nameOverride: ""
   fullnameOverride: ""
   storageSize: "64G"
+  storageClass: ""
   restartPolicy: Always
   image:
     repository: "rabbitmq"
@@ -127,6 +131,7 @@ redis:
   nameOverride: ""
   fullnameOverride: ""
   storageSize: "10G"
+  storageClass: ""
   restartPolicy: Always
   image:
     repository: "redis"
