@@ -58,7 +58,7 @@ spec:
               value: "{{ $cassandraName }}-0.{{ $cassandraName }}.{{ .Release.Namespace }}.svc.cluster.local"
             - name: SOLR_HOST
               value: "{{ $solrName }}-0.{{ $solrName }}.{{ .Release.Namespace }}.svc.cluster.local"
-            - name: KAFKA_HOST`
+            - name: KAFKA_HOST
               value: "{{ $kafkaName }}-0.{{ $kafkaName }}.{{ .Release.Namespace }}.svc.cluster.local"
       restartPolicy: {{ .Values.atlas.restartPolicy }}
       volumes:

@@ -18,9 +18,9 @@ spec:
       protocol: TCP
       name: client
     - port: {{ .Values.zookeeper.leaderElectionListenPort }}
-      targetPort: leaderElection
+      targetPort: leader-election
       protocol: TCP
-      name: leaderElection
+      name: leader-election
 
   selector:
     {{- include "exts.zookeeper.selectorLabels" . | nindent 4 }}

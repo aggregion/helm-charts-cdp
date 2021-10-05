@@ -67,21 +67,21 @@ spec:
             - name: SERVICE_PRECONDITION
               value: "{{ $hadoopName }}-0.{{ $hadoopName }}.{{ .Release.Namespace }}.svc.cluster.local:{{ .Values.hadoop.service.port }} {{ $zookeeperName }}-0.{{ $zookeeperName }}.{{ .Release.Namespace }}.svc.cluster.local {{ $zookeeperName }}-1.{{ $zookeeperName }}.{{ .Release.Namespace }}.svc.cluster.local {{ $zookeeperName }}-2.{{ $zookeeperName }}.{{ .Release.Namespace }}.svc.cluster.local"
           ports:
-            - name: clientMaster
+            - name: client
               containerPort: {{ .Values.hbaseMaster.listenPort }}
               protocol: TCP
           volumeMounts:
-            - name: master
+            - name: masterdata
               mountPath: /hbase
               # subPath: hbase-master
-        - name: "hbase-regionserver"
+        - name: "hbase-rgn"
           securityContext:
             {{- toYaml .Values.hbaseRegion.securityContext | nindent 12 }}
           image: "{{ .Values.hbaseRegion.image.repository }}:{{ .Values.hbaseRegion.image.tag | default .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.hbaseRegion.image.pullPolicy }}
           resources:
             {{- toYaml .Values.hbaseRegion.resources | nindent 12 }}
-          env:
+          env: # need refactor
             - name: HBASE_CONF_hbase_rootdir
               value: "hdfs://{{ $hadoopName }}-0.{{ $hadoopName }}.{{ .Release.Namespace }}.svc.cluster.local:{{ .Values.hadoop.service.port }}/hbase"
             - name: HBASE_CONF_hbase_cluster_distributed
@@ -109,21 +109,24 @@ spec:
             - name: SERVICE_PRECONDITION
               value: "{{ $hadoopName }}-0.{{ $hadoopName }}.{{ .Release.Namespace }}.svc.cluster.local:{{ .Values.hadoop.service.port }} {{ $zookeeperName }}-0.{{ $zookeeperName }}.{{ .Release.Namespace }}.svc.cluster.local {{ $zookeeperName }}-1.{{ $zookeeperName }}.{{ .Release.Namespace }}.svc.cluster.local {{ $zookeeperName }}-2.{{ $zookeeperName }}.{{ .Release.Namespace }}.svc.cluster.local localhost:{{ .Values.hbaseRegion.listenPort }}"
           ports:
-            - name: clientRegion
+            - name: client
               containerPort: {{ .Values.hbaseRegion.listenPort }}
               protocol: TCP
-            - name: clientRegionInfo
+            - name: client-rgn-info
               containerPort: {{ .Values.hbase.service.regionserverPort }}
               protocol: TCP
           volumeMounts:
-            - name: regionserver
+            - name: rgndata
               mountPath: /hbase
-              # subPath: hbase-regionserver
+              # subPath: hbase-rgn
       restartPolicy: {{ .Values.hbase.restartPolicy }}
       volumes:
-        - name: data
+        - name: masterdata
           persistentVolumeClaim:
             claimName: "{{ $hbaseName }}-master-claim"
+        - name: rgndata
+          persistentVolumeClaim:
+            claimName: "{{ $hbaseName }}-rgn-claim"
       {{- with .Values.hbase.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}

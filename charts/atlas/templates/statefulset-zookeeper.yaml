@@ -47,7 +47,7 @@ spec:
           --conf_dir=/opt/zookeeper/conf \
           --client_port={{ .Values.zookeeper.clientListenPort }} \
           --election_port={{ .Values.zookeeper.leaderElectionListenPort }} \
-          --server_port={{ .Values.zookeeper.serverPort }} \
+          --server_port={{ .Values.zookeeper.service.serverPort }} \
           --tick_time=2000 \
           --init_limit=10 \
           --sync_limit=5 \
@@ -81,19 +81,15 @@ spec:
             - name: client
               containerPort: {{ .Values.zookeeper.clientListenPort }}
               protocol: TCP
-            - name: leaderElection
+            - name: leader-election
               containerPort: {{ .Values.zookeeper.leaderElectionListenPort }}
               protocol: TCP
           volumeMounts:
-            - name: data
+            - name: datadir
               mountPath: /var/lib/zookeeper
               # subPath: zookeeper-data
           resources:
             {{- toYaml .Values.zookeeper.resources | nindent 12 }}
-      volumes:
-        - name: data
-          persistentVolumeClaim:
-            claimName: "{{ $zookeeperName }}-claim"
       {{- with .Values.zookeeper.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
@@ -106,4 +102,16 @@ spec:
       tolerations:
         {{- toYaml . | nindent 8 }}
       {{- end }}
+  volumeClaimTemplates:
+    - metadata:
+        name: "datadir"
+      spec:
+        {{- if .Values.zookeeper.storageClass }}
+        storageClassName: "{{ .Values.zookeeper.storageClass }}"
+        {{- end }}
+        accessModes:
+          - ReadWriteOnce
+        resources:
+          requests:
+            storage: "{{ .Values.zookeeper.storageSize }}"
 {{- end }}

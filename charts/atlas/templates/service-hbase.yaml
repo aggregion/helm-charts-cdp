@@ -10,17 +10,13 @@ spec:
   type: {{ .Values.hbase.service.type }}
   ports:
     - port: {{ .Values.hbaseMaster.listenPort }}
-      targetPort: clientMaster
+      targetPort: client
       protocol: TCP
-      name: clientMaster
-    - port: {{ .Values.hbaseRegion.listenPort }}
-      targetPort: clientRegion
-      protocol: TCP
-      name: clientRegion
+      name: client
     - port: {{ .Values.hbase.service.regionserverPort }}
-      targetPort: clientRegionInfo
+      targetPort: client-rgn-info
       protocol: TCP
-      name: clientRegionInfo
+      name: client-rgn-info
 
 
   selector:
