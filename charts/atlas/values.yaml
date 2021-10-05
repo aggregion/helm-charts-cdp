@@ -21,7 +21,7 @@ atlas:
   podManagementPolicy: OrderedReady
   image:
     repository: "aggregion/atlas"
-    pullPolicy: IfNotPresent
+    pullPolicy: Always
     tag: "latest"
   service:
     type: ClusterIP
