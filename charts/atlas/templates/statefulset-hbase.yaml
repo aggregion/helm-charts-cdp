@@ -1,5 +1,7 @@
 {{- if .Values.hbase.enabled }}
 {{- $hbaseName := include "exts.hbase.fullname" . }}
+{{- $hadoopName := include "exts.hadoop.fullname" . }}
+{{- $zookeeperName := include "exts.zookeeper.fullname" . }}
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
@@ -41,17 +43,17 @@ spec:
             {{- toYaml .Values.hbaseMaster.resources | nindent 12 }}
           env: # need refactor
             - name: HBASE_CONF_hbase_rootdir
-              value: "hdfs://hadoop-0.hadoop-server.{{ .Release.Name }}.svc.cluster.local:{{ .Values.hadoop.service.port }}/hbase"
+              value: "hdfs://{{ $hadoopName }}-0.{{ $hadoopName }}.{{ .Release.Namespace }}.svc.cluster.local:{{ .Values.hadoop.service.port }}/hbase"
             - name: HBASE_CONF_hbase_cluster_distributed
               value: "true"
             - name: HBASE_CONF_hbase_zookeeper_quorum
-              value: "zk-0.zk-hs.{{ .Release.Name }}.svc.cluster.local,zk-1.zk-hs.{{ .Release.Name }}.svc.cluster.local,zk-2.zk-hs.{{ .Release.Name }}.svc.cluster.local"
+              value: "{{ $zookeeperName }}-0.{{ $zookeeperName }}.{{ .Release.Namespace }}.svc.cluster.local,{{ $zookeeperName }}-1.{{ $zookeeperName }}.{{ .Release.Namespace }}.svc.cluster.local,{{ $zookeeperName }}-2.{{ $zookeeperName }}.{{ .Release.Namespace }}.svc.cluster.local"
             - name: HBASE_CONF_zookeeper_znode_parent
               value: "/hbase"
             - name: HBASE_CONF_hbase_master
-              value: "hbase-0.hbase-server.{{ .Release.Name }}.svc.cluster.local:{{ .Values.hbase.service.masterPort }}"
+              value: "{{ $hbaseName }}-0.{{ $hbaseName }}.{{ .Release.Namespace }}.svc.cluster.local:{{ .Values.hbase.service.masterPort }}"
             - name: HBASE_CONF_hbase_master_hostname
-              value: "hbase-0.hbase-server.{{ .Release.Name }}.svc.cluster.local"
+              value: "{{ $hbaseName }}-0.{{ $hbaseName }}.{{ .Release.Namespace }}.svc.cluster.local"
             - name: HBASE_CONF_hbase_master_port
               value: "{{ .Values.hbase.service.masterPort }}"
             - name: HBASE_CONF_hbase_master_info_port
@@ -63,7 +65,7 @@ spec:
             - name: HBASE_MANAGES_ZK
               value: "false"
             - name: SERVICE_PRECONDITION
-              value: "hadoop-0.hadoop-server.{{ .Release.Name }}.svc.cluster.local:{{ .Values.hadoop.service.port }} zk-0.zk-hs.{{ .Release.Name }}.svc.cluster.local:{{ .Values.zookeeper.clientListenPort }} zk-1.zk-hs.{{ .Release.Name }}.svc.cluster.local:{{ .Values.zookeeper.clientListenPort }} zk-2.zk-hs.{{ .Release.Name }}.svc.cluster.local:{{ .Values.zookeeper.clientListenPort }}"
+              value: "{{ $hadoopName }}-0.{{ $hadoopName }}.{{ .Release.Namespace }}.svc.cluster.local:{{ .Values.hadoop.service.port }} {{ $zookeeperName }}-0.{{ $zookeeperName }}.{{ .Release.Namespace }}.svc.cluster.local {{ $zookeeperName }}-1.{{ $zookeeperName }}.{{ .Release.Namespace }}.svc.cluster.local {{ $zookeeperName }}-2.{{ $zookeeperName }}.{{ .Release.Namespace }}.svc.cluster.local"
           ports:
             - name: clientMaster
               containerPort: {{ .Values.hbaseMaster.listenPort }}
@@ -81,17 +83,17 @@ spec:
             {{- toYaml .Values.hbaseRegion.resources | nindent 12 }}
           env:
             - name: HBASE_CONF_hbase_rootdir
-              value: "hdfs://hadoop-0.hadoop-server.{{ .Release.Name }}.svc.cluster.local:{{ .Values.hadoop.service.port }}/hbase"
+              value: "hdfs://{{ $hadoopName }}-0.{{ $hadoopName }}.{{ .Release.Namespace }}.svc.cluster.local:{{ .Values.hadoop.service.port }}/hbase"
             - name: HBASE_CONF_hbase_cluster_distributed
               value: "true"
             - name: HBASE_CONF_hbase_zookeeper_quorum
-              value: "zk-0.zk-hs.{{ .Release.Name }}.svc.cluster.local,zk-1.zk-hs.{{ .Release.Name }}.svc.cluster.local,zk-2.zk-hs.{{ .Release.Name }}.svc.cluster.local"
+              value: "{{ $zookeeperName }}-0.{{ $zookeeperName }}.{{ .Release.Namespace }}.svc.cluster.local,{{ $zookeeperName }}-1.{{ $zookeeperName }}.{{ .Release.Namespace }}.svc.cluster.local,{{ $zookeeperName }}-2.{{ $zookeeperName }}.{{ .Release.Namespace }}.svc.cluster.local"
             - name: HBASE_CONF_zookeeper_znode_parent
               value: "/hbase"
             - name: HBASE_CONF_hbase_master
-              value: "hbase-master-0.hbase-server.{{ .Release.Name }}.svc.cluster.local:{{ .Values.hbase.service.masterPort }}"
+              value: "{{ $hbaseName }}-0.{{ $hbaseName }}.{{ .Release.Namespace }}.svc.cluster.local:{{ .Values.hbase.service.masterPort }}"
             - name: HBASE_CONF_hbase_master_hostname
-              value: "hbase-0.hbase-server.{{ .Release.Name }}.svc.cluster.local"
+              value: "{{ $hbaseName }}-0.{{ $hbaseName }}.{{ .Release.Namespace }}.svc.cluster.local"
             - name: HBASE_CONF_hbase_master_port
               value: "{{ .Values.hbase.service.masterPort }}"
             - name: HBASE_CONF_hbase_master_info_port
@@ -105,7 +107,7 @@ spec:
             - name: MODE
               value: "region"
             - name: SERVICE_PRECONDITION
-              value: "hadoop-0.hadoop-server.{{ .Release.Name }}.svc.cluster.local:{{ .Values.hadoop.service.port }} zk-0.zk-hs.{{ .Release.Name }}.svc.cluster.local:{{ .Values.zookeeper.clientListenPort }} zk-1.zk-hs.{{ .Release.Name }}.svc.cluster.local:{{ .Values.zookeeper.clientListenPort }} zk-2.zk-hs.{{ .Release.Name }}.svc.cluster.local:{{ .Values.zookeeper.clientListenPort }} localhost:{{ .Values.hbaseRegion.listenPort }}"
+              value: "{{ $hadoopName }}-0.{{ $hadoopName }}.{{ .Release.Namespace }}.svc.cluster.local:{{ .Values.hadoop.service.port }} {{ $zookeeperName }}-0.{{ $zookeeperName }}.{{ .Release.Namespace }}.svc.cluster.local {{ $zookeeperName }}-1.{{ $zookeeperName }}.{{ .Release.Namespace }}.svc.cluster.local {{ $zookeeperName }}-2.{{ $zookeeperName }}.{{ .Release.Namespace }}.svc.cluster.local localhost:{{ .Values.hbaseRegion.listenPort }}"
           ports:
             - name: clientRegion
               containerPort: {{ .Values.hbaseRegion.listenPort }}

@@ -1,5 +1,6 @@
 {{- if .Values.solr.enabled }}
 {{- $solrName := include "exts.solr.fullname" . }}
+{{- $zookeeperName := include "exts.zookeeper.fullname" . }}
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
@@ -49,7 +50,7 @@ spec:
             {{- toYaml .Values.solr.resources | nindent 12 }}
           env: # need refactoring
             - name: ZK_HOST
-              value: "zk-0.zk-hs.{{ .Release.Name }}.svc.cluster.local,zk-1.zk-hs.{{ .Release.Name }}.svc.cluster.local,zk-2.zk-hs.{{ .Release.Name }}.svc.cluster.local"
+              value: "{{ $zookeeperName }}-0.{{ $zookeeperName }}.{{ .Release.Namespace }}.svc.cluster.local,{{ $zookeeperName }}-1.{{ $zookeeperName }}.{{ .Release.Namespace }}.svc.cluster.local,{{ $zookeeperName }}-2.{{ $zookeeperName }}.{{ .Release.Namespace }}.svc.cluster.local"
       initContainers:
         - name: solr-init
           image: "{{ .Values.solrInit.image.repository }}:{{ .Values.solrInit.image.tag | default .Chart.AppVersion }}"

@@ -1,6 +1,9 @@
 {{- if .Values.atlas.enabled }}
 {{- $atlasName := include "exts.atlas.fullname" . }}
 {{- $zookeeperName := include "exts.zookeeper.fullname" . }}
+{{- $cassandraName := include "exts.cassandra.fullname" . }}
+{{- $solrName := include "exts.solr.fullname" . }}
+{{- $kafkaName := include "exts.kafka.fullname" . }}
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
@@ -50,13 +53,13 @@ spec:
             {{- toYaml .Values.atlas.resources | nindent 12 }}
           env: # need refactoring
             - name: ZOOKEEPER_HOST
-              value: "zookeeper-0.{{ $zookeeperName }}.{{ .Release.Namespace }}.svc.cluster.local,zookeeper-1.{{ $zookeeperName }}.{{ .Release.Namespace }}.svc.cluster.local,zookeeper-2.{{ $zookeeperName }}.{{ .Release.Namespace }}.svc.cluster.local"
+              value: "{{ $zookeeperName }}-0.{{ $zookeeperName }}.{{ .Release.Namespace }}.svc.cluster.local,{{ $zookeeperName }}-1.{{ $zookeeperName }}.{{ .Release.Namespace }}.svc.cluster.local,{{ $zookeeperName }}-2.{{ $zookeeperName }}.{{ .Release.Namespace }}.svc.cluster.local"
             - name: CASSANDRA_HOST
-              value: "cassandra-0.cassandra-server.{{ .Release.Name }}.svc.cluster.local"
+              value: "{{ $cassandraName }}-0.{{ $cassandraName }}.{{ .Release.Namespace }}.svc.cluster.local"
             - name: SOLR_HOST
-              value: "solr-0.solr-server.{{ .Release.Name }}.svc.cluster.local"
-            - name: KAFKA_HOST
-              value: "kafka-0.kafka-server.{{ .Release.Name }}.svc.cluster.local"
+              value: "{{ $solrName }}-0.{{ $solrName }}.{{ .Release.Namespace }}.svc.cluster.local"
+            - name: KAFKA_HOST`
+              value: "{{ $kafkaName }}-0.{{ $kafkaName }}.{{ .Release.Namespace }}.svc.cluster.local"
       restartPolicy: {{ .Values.atlas.restartPolicy }}
       volumes:
         - name: data
