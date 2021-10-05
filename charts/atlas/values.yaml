@@ -13,6 +13,7 @@ atlas:
   nameOverride: ""
   fullnameOverride: ""
   storageSize: "10G"
+  storageClass: ""
   restartPolicy: Always
   updateStrategy:
     type: RollingUpdate
@@ -40,6 +41,7 @@ cassandra:
   nameOverride: ""
   fullnameOverride: ""
   storageSize: "10G"
+  storageClass: ""
   restartPolicy: Always
   updateStrategy:
     type: RollingUpdate
@@ -71,6 +73,7 @@ hadoop:
   nameStorageSize: "4G"
   hdfsStorageSize: "4G"
   yarnStorageSize: "4G"
+  storageClass: ""
   restartPolicy: Always
   updateStrategy:
     type: RollingUpdate
@@ -110,6 +113,7 @@ hadoopInit:
 hbase:
   enabled: false # should depends on "atlas"
   nameOverride: ""
+  storageClass: ""
   fullnameOverride: ""
   restartPolicy: Always
   updateStrategy:
@@ -158,6 +162,7 @@ kafka:
   nameOverride: ""
   fullnameOverride: ""
   storageSize: "10G"
+  storageClass: ""
   restartPolicy: Always
   updateStrategy:
     type: RollingUpdate
@@ -197,6 +202,7 @@ solr:
   nameOverride: ""
   fullnameOverride: ""
   storageSize: "10G"
+  storageClass: ""
   restartPolicy: Always
   updateStrategy:
     type: RollingUpdate
@@ -238,6 +244,7 @@ zookeeper:
   nameOverride: ""
   fullnameOverride: ""
   storageSize: "10G"
+  storageClass: ""
   restartPolicy: Always
   updateStrategy:
     type: RollingUpdate

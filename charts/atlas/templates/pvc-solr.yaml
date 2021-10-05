@@ -5,6 +5,9 @@ kind: PersistentVolumeClaim
 metadata:
   name: "{{ $solrName }}-claim"
 spec:
+  {{- if .Values.solr.storageClass }}
+  storageClassName: "{{ .Values.solr.storageClass }}"
+  {{- end }}
   accessModes:
     - ReadWriteOnce
   resources:

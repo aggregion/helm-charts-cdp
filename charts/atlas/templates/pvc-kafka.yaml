@@ -5,6 +5,9 @@ kind: PersistentVolumeClaim
 metadata:
   name: "{{ $kafkaName }}-claim"
 spec:
+  {{- if .Values.kafka.storageClass }}
+  storageClassName: "{{ .Values.kafka.storageClass }}"
+  {{- end }}
   accessModes:
     - ReadWriteOnce
   resources:

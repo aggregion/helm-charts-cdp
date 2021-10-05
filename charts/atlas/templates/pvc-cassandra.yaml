@@ -5,6 +5,9 @@ kind: PersistentVolumeClaim
 metadata:
   name: "{{ $cassandraName }}-claim"
 spec:
+  {{- if .Values.cassandra.storageClass }}
+  storageClassName: "{{ .Values.cassandra.storageClass }}"
+  {{- end }}
   accessModes:
     - ReadWriteOnce
   resources:

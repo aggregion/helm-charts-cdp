@@ -5,6 +5,9 @@ kind: PersistentVolumeClaim
 metadata:
   name: "{{ $hadoopName }}-data-claim"
 spec:
+  {{- if .Values.hadoop.storageClass }}
+  storageClassName: "{{ .Values.hadoop.storageClass }}"
+  {{- end }}
   accessModes:
     - ReadWriteOnce
   resources:
