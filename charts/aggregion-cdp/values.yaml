@@ -392,8 +392,8 @@ dataservice:
     repository: registry.aggregion.com/atlas-entity-syncer
     pullPolicy: IfNotPresent
     tag: latest
-  imageBusybox:
-    repository: busybox
+  imageJobRunner:
+    repository: curlimages/curl
     pullPolicy: IfNotPresent
     tag: latest
   tolerations: []

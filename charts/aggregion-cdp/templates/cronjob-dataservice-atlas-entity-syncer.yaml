@@ -18,12 +18,12 @@ spec:
         spec:
           containers:
           - name: aesync
-            image: "{{ .Values.dataservice.imageBusybox.repository }}:{{ .Values.dataservice.imageBusybox.tag }}"
-            imagePullPolicy: {{ .Values.dataservice.imageBusybox.pullPolicy }}
+            image: "{{ .Values.dataservice.imageJobRunner.repository }}:{{ .Values.dataservice.imageJobRunner.tag }}"
+            imagePullPolicy: {{ .Values.dataservice.imageJobRunner.pullPolicy }}
             command:
             - /bin/sh
             - -c
-            - wget "http://{{ include "cdp.dataservice.fullname" . }}:{{ .Values.dataservice.serviceAtlasSyncer.port }}" -O - -q
+            - curl http://{{ include "cdp.dataservice.fullname" . }}:{{ .Values.dataservice.serviceAtlasSyncer.port }}
           restartPolicy: OnFailure
           {{- with .Values.imagePullSecrets }}
           imagePullSecrets:
