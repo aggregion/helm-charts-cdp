@@ -1,0 +1,16 @@
+{{- if .Values.atlas.enabled }}
+{{- $kafkaName := include "exts.kafka.fullname" . }}
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: "{{ $kafkaName }}-claim"
+spec:
+  {{- if .Values.kafka.storageClass }}
+  storageClassName: "{{ .Values.kafka.storageClass }}"
+  {{- end }}
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: "{{ .Values.kafka.storageSize }}"
+{{- end }}

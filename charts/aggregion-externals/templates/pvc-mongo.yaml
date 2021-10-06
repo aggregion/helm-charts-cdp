@@ -5,6 +5,9 @@ kind: PersistentVolumeClaim
 metadata:
   name: "{{ $mongoName }}-claim"
 spec:
+  {{- if .Values.mongo.storageClass }}
+  storageClassName: "{{ .Values.mongo.storageClass }}"
+  {{- end }}
   accessModes:
     - ReadWriteOnce
   resources:

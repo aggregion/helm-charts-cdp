@@ -1,0 +1,16 @@
+{{- if .Values.atlas.enabled }}
+{{- $solrName := include "exts.solr.fullname" . }}
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: "{{ $solrName }}-claim"
+spec:
+  {{- if .Values.solr.storageClass }}
+  storageClassName: "{{ .Values.solr.storageClass }}"
+  {{- end }}
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: "{{ .Values.solr.storageSize }}"
+{{- end }}

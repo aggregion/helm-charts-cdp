@@ -5,6 +5,9 @@ kind: PersistentVolumeClaim
 metadata:
   name: "{{ $postgresName }}-claim"
 spec:
+  {{- if .Values.postgres.storageClass }}
+  storageClassName: "{{ .Values.postgres.storageClass }}"
+  {{- end }}
   accessModes:
     - ReadWriteOnce
   resources:

@@ -1,0 +1,142 @@
+{{- if .Values.atlas.enabled }}
+{{- $hbaseName := include "exts.hbase.fullname" . }}
+{{- $hadoopName := include "exts.hadoop.fullname" . }}
+{{- $zookeeperName := include "exts.zookeeper.fullname" . }}
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: "{{ $hbaseName }}"
+  labels:
+    {{- include "exts.hbase.labels" . | nindent 4 }}
+spec:
+  replicas: 1
+  serviceName: "{{ $hbaseName }}"
+  selector:
+    matchLabels:
+      {{- include "exts.hbase.selectorLabels" . | nindent 6 }}
+  updateStrategy:
+    {{- toYaml .Values.hbase.updateStrategy | nindent 4 }}
+  podManagementPolicy: {{ .Values.hbase.podManagementPolicy }}
+  template:
+    metadata:
+    {{- with .Values.hbase.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}
+      labels:
+        {{- include "exts.hbase.selectorLabels" . | nindent 8 }}
+    spec:
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      # serviceAccountName: {{/* include "exts.serviceAccountName" . */}}
+      securityContext:
+        {{- toYaml .Values.hbase.podSecurityContext | nindent 8 }}
+      containers:
+        - name: "hbase-master"
+          securityContext:
+            {{- toYaml .Values.hbaseMaster.securityContext | nindent 12 }}
+          image: "{{ .Values.hbaseMaster.image.repository }}:{{ .Values.hbaseMaster.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.hbaseMaster.image.pullPolicy }}
+          resources:
+            {{- toYaml .Values.hbaseMaster.resources | nindent 12 }}
+          env: # need refactor
+            - name: HBASE_CONF_hbase_rootdir
+              value: "hdfs://{{ $hadoopName }}-0.{{ $hadoopName }}.{{ .Release.Namespace }}.svc.cluster.local:{{ .Values.hadoop.service.port }}/hbase"
+            - name: HBASE_CONF_hbase_cluster_distributed
+              value: "true"
+            - name: HBASE_CONF_hbase_zookeeper_quorum
+              value: "{{ $zookeeperName }}-0.{{ $zookeeperName }}.{{ .Release.Namespace }}.svc.cluster.local,{{ $zookeeperName }}-1.{{ $zookeeperName }}.{{ .Release.Namespace }}.svc.cluster.local,{{ $zookeeperName }}-2.{{ $zookeeperName }}.{{ .Release.Namespace }}.svc.cluster.local"
+            - name: HBASE_CONF_zookeeper_znode_parent
+              value: "/hbase"
+            - name: HBASE_CONF_hbase_master
+              value: "{{ $hbaseName }}-0.{{ $hbaseName }}.{{ .Release.Namespace }}.svc.cluster.local:{{ .Values.hbase.service.masterPort }}"
+            - name: HBASE_CONF_hbase_master_hostname
+              value: "{{ $hbaseName }}-0.{{ $hbaseName }}.{{ .Release.Namespace }}.svc.cluster.local"
+            - name: HBASE_CONF_hbase_master_port
+              value: "{{ .Values.hbase.service.masterPort }}"
+            - name: HBASE_CONF_hbase_master_info_port
+              value: "{{ .Values.hbase.service.masterInfoPort }}"
+            - name: HBASE_CONF_hbase_regionserver_port
+              value: "{{ .Values.hbase.service.regionserverPort }}"
+            - name: HBASE_CONF_hbase_regionserver_info_port
+              value: "{{ .Values.hbase.service.regionserverInfoPort }}"
+            - name: HBASE_MANAGES_ZK
+              value: "false"
+            - name: SERVICE_PRECONDITION
+              value: "{{ $hadoopName }}-0.{{ $hadoopName }}.{{ .Release.Namespace }}.svc.cluster.local:{{ .Values.hadoop.service.port }} {{ $zookeeperName }}-0.{{ $zookeeperName }}.{{ .Release.Namespace }}.svc.cluster.local {{ $zookeeperName }}-1.{{ $zookeeperName }}.{{ .Release.Namespace }}.svc.cluster.local {{ $zookeeperName }}-2.{{ $zookeeperName }}.{{ .Release.Namespace }}.svc.cluster.local"
+          ports:
+            - name: client
+              containerPort: {{ .Values.hbaseMaster.listenPort }}
+              protocol: TCP
+          volumeMounts:
+            - name: masterdata
+              mountPath: /hbase
+              # subPath: hbase-master
+        - name: "hbase-rgn"
+          securityContext:
+            {{- toYaml .Values.hbaseRegion.securityContext | nindent 12 }}
+          image: "{{ .Values.hbaseRegion.image.repository }}:{{ .Values.hbaseRegion.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.hbaseRegion.image.pullPolicy }}
+          resources:
+            {{- toYaml .Values.hbaseRegion.resources | nindent 12 }}
+          env: # need refactor
+            - name: HBASE_CONF_hbase_rootdir
+              value: "hdfs://{{ $hadoopName }}-0.{{ $hadoopName }}.{{ .Release.Namespace }}.svc.cluster.local:{{ .Values.hadoop.service.port }}/hbase"
+            - name: HBASE_CONF_hbase_cluster_distributed
+              value: "true"
+            - name: HBASE_CONF_hbase_zookeeper_quorum
+              value: "{{ $zookeeperName }}-0.{{ $zookeeperName }}.{{ .Release.Namespace }}.svc.cluster.local,{{ $zookeeperName }}-1.{{ $zookeeperName }}.{{ .Release.Namespace }}.svc.cluster.local,{{ $zookeeperName }}-2.{{ $zookeeperName }}.{{ .Release.Namespace }}.svc.cluster.local"
+            - name: HBASE_CONF_zookeeper_znode_parent
+              value: "/hbase"
+            - name: HBASE_CONF_hbase_master
+              value: "{{ $hbaseName }}-0.{{ $hbaseName }}.{{ .Release.Namespace }}.svc.cluster.local:{{ .Values.hbase.service.masterPort }}"
+            - name: HBASE_CONF_hbase_master_hostname
+              value: "{{ $hbaseName }}-0.{{ $hbaseName }}.{{ .Release.Namespace }}.svc.cluster.local"
+            - name: HBASE_CONF_hbase_master_port
+              value: "{{ .Values.hbase.service.masterPort }}"
+            - name: HBASE_CONF_hbase_master_info_port
+              value: "{{ .Values.hbase.service.masterInfoPort }}"
+            - name: HBASE_CONF_hbase_regionserver_port
+              value: "{{ .Values.hbase.service.regionserverPort }}"
+            - name: HBASE_CONF_hbase_regionserver_info_port
+              value: "{{ .Values.hbase.service.regionserverInfoPort }}"
+            - name: HBASE_MANAGES_ZK
+              value: "false"
+            - name: MODE
+              value: "region"
+            - name: SERVICE_PRECONDITION
+              value: "{{ $hadoopName }}-0.{{ $hadoopName }}.{{ .Release.Namespace }}.svc.cluster.local:{{ .Values.hadoop.service.port }} {{ $zookeeperName }}-0.{{ $zookeeperName }}.{{ .Release.Namespace }}.svc.cluster.local {{ $zookeeperName }}-1.{{ $zookeeperName }}.{{ .Release.Namespace }}.svc.cluster.local {{ $zookeeperName }}-2.{{ $zookeeperName }}.{{ .Release.Namespace }}.svc.cluster.local localhost:{{ .Values.hbaseRegion.listenPort }}"
+          ports:
+            - name: client
+              containerPort: {{ .Values.hbaseRegion.listenPort }}
+              protocol: TCP
+            - name: client-rgn-info
+              containerPort: {{ .Values.hbase.service.regionserverPort }}
+              protocol: TCP
+          volumeMounts:
+            - name: rgndata
+              mountPath: /hbase
+              # subPath: hbase-rgn
+      restartPolicy: {{ .Values.hbase.restartPolicy }}
+      volumes:
+        - name: masterdata
+          persistentVolumeClaim:
+            claimName: "{{ $hbaseName }}-master-claim"
+        - name: rgndata
+          persistentVolumeClaim:
+            claimName: "{{ $hbaseName }}-rgn-claim"
+      {{- with .Values.hbase.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.hbase.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.hbase.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+{{- end }}

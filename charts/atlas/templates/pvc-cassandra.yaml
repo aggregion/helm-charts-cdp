@@ -1,0 +1,16 @@
+{{- if .Values.atlas.enabled }}
+{{- $cassandraName := include "exts.cassandra.fullname" . }}
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: "{{ $cassandraName }}-claim"
+spec:
+  {{- if .Values.cassandra.storageClass }}
+  storageClassName: "{{ .Values.cassandra.storageClass }}"
+  {{- end }}
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: "{{ .Values.cassandra.storageSize }}"
+{{- end }}

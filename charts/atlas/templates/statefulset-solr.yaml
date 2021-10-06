@@ -1,0 +1,81 @@
+{{- if .Values.atlas.enabled }}
+{{- $solrName := include "exts.solr.fullname" . }}
+{{- $zookeeperName := include "exts.zookeeper.fullname" . }}
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: "{{ $solrName }}"
+  labels:
+    {{- include "exts.solr.labels" . | nindent 4 }}
+spec:
+  replicas: 1
+  serviceName: "{{ $solrName }}"
+  selector:
+    matchLabels:
+      {{- include "exts.solr.selectorLabels" . | nindent 6 }}
+  updateStrategy:
+    {{- toYaml .Values.solr.updateStrategy | nindent 4 }}
+  podManagementPolicy: {{ .Values.solr.podManagementPolicy }}
+  template:
+    metadata:
+    {{- with .Values.solr.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}
+      labels:
+        {{- include "exts.solr.selectorLabels" . | nindent 8 }}
+    spec:
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      # serviceAccountName: {{/* include "exts.serviceAccountName" . */}}
+      securityContext:
+        {{- toYaml .Values.solr.podSecurityContext | nindent 8 }}
+      containers:
+        - name: "solr"
+          securityContext:
+            {{- toYaml .Values.solr.securityContext | nindent 12 }}
+          image: "{{ .Values.solr.image.repository }}:{{ .Values.solr.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.solr.image.pullPolicy }}
+          ports:
+            - name: client
+              containerPort: {{ .Values.solr.listenPort }}
+              protocol: TCP
+          volumeMounts:
+            - name: data
+              mountPath: /var/solr/data
+              # subPath: solr-data
+          resources:
+            {{- toYaml .Values.solr.resources | nindent 12 }}
+          env: # need refactoring
+            - name: ZK_HOST
+              value: "{{ $zookeeperName }}-0.{{ $zookeeperName }}.{{ .Release.Namespace }}.svc.cluster.local,{{ $zookeeperName }}-1.{{ $zookeeperName }}.{{ .Release.Namespace }}.svc.cluster.local,{{ $zookeeperName }}-2.{{ $zookeeperName }}.{{ .Release.Namespace }}.svc.cluster.local"
+      initContainers:
+        - name: solr-init
+          image: "{{ .Values.solrInit.image.repository }}:{{ .Values.solrInit.image.tag | default .Chart.AppVersion }}"
+          command: {{ .Values.solrInit.command }}
+          resources:
+            {{- toYaml .Values.solrInit.resources | nindent 12 }}
+          volumeMounts:
+            - name: data
+              mountPath: /vol-path
+              # subPath: solr-data
+      restartPolicy: {{ .Values.solr.restartPolicy }}
+      volumes:
+        - name: data
+          persistentVolumeClaim:
+            claimName: "{{ $solrName }}-claim"
+      {{- with .Values.solr.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.solr.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.solr.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+{{- end }}

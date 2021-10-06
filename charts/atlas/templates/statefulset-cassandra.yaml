@@ -1,0 +1,70 @@
+{{- if .Values.atlas.enabled }}
+{{- $cassandraName := include "exts.cassandra.fullname" . }}
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: "{{ $cassandraName }}"
+  labels:
+    {{- include "exts.cassandra.labels" . | nindent 4 }}
+spec:
+  replicas: 1
+  serviceName: "{{ $cassandraName }}"
+  selector:
+    matchLabels:
+      {{- include "exts.cassandra.selectorLabels" . | nindent 6 }}
+  updateStrategy:
+    {{- toYaml .Values.cassandra.updateStrategy | nindent 4 }}
+  podManagementPolicy: {{ .Values.cassandra.podManagementPolicy }}
+  template:
+    metadata:
+    {{- with .Values.cassandra.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}
+      labels:
+        {{- include "exts.cassandra.selectorLabels" . | nindent 8 }}
+    spec:
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      # serviceAccountName: {{/* include "exts.serviceAccountName" . */}}
+      securityContext:
+        {{- toYaml .Values.cassandra.podSecurityContext | nindent 8 }}
+      containers:
+        - name: "cassandra"
+          securityContext:
+            {{- toYaml .Values.cassandra.securityContext | nindent 12 }}
+          image: "{{ .Values.cassandra.image.repository }}:{{ .Values.cassandra.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.cassandra.image.pullPolicy }}
+          ports:
+            - name: client
+              containerPort: {{ .Values.cassandra.listenPort }}
+              protocol: TCP
+          volumeMounts:
+            - name: data
+              mountPath: /var/lib/cassandra/data
+              # subPath: cassandra-data
+          resources:
+            {{- toYaml .Values.cassandra.resources | nindent 12 }}
+          env: # need refactoring
+            - name: CASSANDRA_START_RPC
+              value: "true"
+      restartPolicy: {{ .Values.cassandra.restartPolicy }}
+      volumes:
+        - name: data
+          persistentVolumeClaim:
+            claimName: "{{ $cassandraName }}-claim"
+      {{- with .Values.cassandra.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.cassandra.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.cassandra.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+{{- end }}

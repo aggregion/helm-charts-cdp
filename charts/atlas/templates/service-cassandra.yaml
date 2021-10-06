@@ -1,0 +1,18 @@
+{{- if .Values.atlas.enabled }}
+{{- $cassandraName := include "exts.cassandra.fullname" . }}
+apiVersion: v1
+kind: Service
+metadata:
+  name: "{{ $cassandraName }}"
+  labels:
+    {{- include "exts.cassandra.labels" . | nindent 4 }}
+spec:
+  type: {{ .Values.cassandra.service.type }}
+  ports:
+    - port: {{ .Values.cassandra.service.port }}
+      targetPort: client
+      protocol: TCP
+      name: client
+  selector:
+    {{- include "exts.cassandra.selectorLabels" . | nindent 4 }}
+{{- end }}

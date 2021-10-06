@@ -1,0 +1,117 @@
+{{- if .Values.atlas.enabled }}
+{{- $zookeeperName := include "exts.zookeeper.fullname" . }}
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: "{{ $zookeeperName }}"
+  labels:
+    {{- include "exts.zookeeper.labels" . | nindent 4 }}
+spec:
+  replicas: {{ .Values.zookeeper.replicas }}
+  serviceName: "{{ $zookeeperName }}"
+  selector:
+    matchLabels:
+      {{- include "exts.zookeeper.selectorLabels" . | nindent 6 }}
+  updateStrategy:
+    {{- toYaml .Values.zookeeper.updateStrategy | nindent 4 }}
+  podManagementPolicy: {{ .Values.zookeeper.podManagementPolicy }}
+  template:
+    metadata:
+    {{- with .Values.zookeeper.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}
+      labels:
+        {{- include "exts.zookeeper.selectorLabels" . | nindent 8 }}
+    spec:
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      # serviceAccountName: {{/* include "exts.serviceAccountName" . */}}
+      securityContext:
+        {{- toYaml .Values.zookeeper.podSecurityContext | nindent 8 }}
+      containers:
+        - name: "zookeeper"
+          securityContext:
+            {{- toYaml .Values.zookeeper.securityContext | nindent 12 }}
+          image: "{{ .Values.zookeeper.image.repository }}:{{ .Values.zookeeper.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.zookeeper.image.pullPolicy }}
+          command:
+            - sh
+            - -c
+            - "start-zookeeper \
+          --servers={{ .Values.zookeeper.replicas }} \
+          --data_dir=/var/lib/zookeeper/data \
+          --data_log_dir=/var/lib/zookeeper/data/log \
+          --conf_dir=/opt/zookeeper/conf \
+          --client_port={{ .Values.zookeeper.clientListenPort }} \
+          --election_port={{ .Values.zookeeper.leaderElectionListenPort }} \
+          --server_port={{ .Values.zookeeper.service.serverPort }} \
+          --tick_time=2000 \
+          --init_limit=10 \
+          --sync_limit=5 \
+          --heap=512M \
+          --max_client_cnxns=60 \
+          --snap_retain_count=3 \
+          --purge_interval=12 \
+          --max_session_timeout=40000 \
+          --min_session_timeout=4000 \
+          --log_level=INFO"
+          readinessProbe:
+            exec:
+              command:
+                - sh
+                - -c
+                - "zookeeper-ready {{ .Values.zookeeper.clientListenPort }}"
+            initialDelaySeconds: 10
+            timeoutSeconds: 5
+          livenessProbe:
+            exec:
+              command:
+                - sh
+                - -c
+                - "zookeeper-ready {{ .Values.zookeeper.clientListenPort }}"
+            initialDelaySeconds: 10
+            timeoutSeconds: 5
+          ports:
+            - name: server
+              containerPort: {{ .Values.zookeeper.serverListenPort }}
+              protocol: TCP
+            - name: client
+              containerPort: {{ .Values.zookeeper.clientListenPort }}
+              protocol: TCP
+            - name: leader-election
+              containerPort: {{ .Values.zookeeper.leaderElectionListenPort }}
+              protocol: TCP
+          volumeMounts:
+            - name: datadir
+              mountPath: /var/lib/zookeeper
+              # subPath: zookeeper-data
+          resources:
+            {{- toYaml .Values.zookeeper.resources | nindent 12 }}
+      {{- with .Values.zookeeper.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.zookeeper.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.zookeeper.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+  volumeClaimTemplates:
+    - metadata:
+        name: "datadir"
+      spec:
+        {{- if .Values.zookeeper.storageClass }}
+        storageClassName: "{{ .Values.zookeeper.storageClass }}"
+        {{- end }}
+        accessModes:
+          - ReadWriteOnce
+        resources:
+          requests:
+            storage: "{{ .Values.zookeeper.storageSize }}"
+{{- end }}

@@ -1,0 +1,19 @@
+{{- if .Values.atlas.enabled }}
+{{- $kafkaName := include "exts.kafka.fullname" . }}
+apiVersion: v1
+kind: Service
+metadata:
+  name: "{{ $kafkaName }}"
+  labels:
+    {{- include "exts.kafka.labels" . | nindent 4 }}
+spec:
+  type: {{ .Values.kafka.service.type }}
+  ports:
+    - port: {{ .Values.kafka.listenPort }}
+      targetPort: client
+      protocol: TCP
+      name: client
+
+  selector:
+    {{- include "exts.kafka.selectorLabels" . | nindent 4 }}
+{{- end }}

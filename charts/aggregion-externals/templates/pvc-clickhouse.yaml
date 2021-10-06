@@ -5,6 +5,9 @@ kind: PersistentVolumeClaim
 metadata:
   name: "{{ $clickhouseName }}-claim"
 spec:
+  {{- if .Values.clickhouse.storageClass }}
+  storageClassName: "{{ .Values.clickhouse.storageClass }}"
+  {{- end }}
   accessModes:
     - ReadWriteOnce
   resources:

@@ -1,0 +1,91 @@
+{{- if .Values.atlas.enabled }}
+{{- $kafkaName := include "exts.kafka.fullname" . }}
+{{- $zookeeperName := include "exts.zookeeper.fullname" . }}
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: "{{ $kafkaName }}"
+  labels:
+    {{- include "exts.kafka.labels" . | nindent 4 }}
+spec:
+  replicas: 1
+  serviceName: "{{ $kafkaName }}"
+  selector:
+    matchLabels:
+      {{- include "exts.kafka.selectorLabels" . | nindent 6 }}
+  updateStrategy:
+    {{- toYaml .Values.kafka.updateStrategy | nindent 4 }}
+  podManagementPolicy: {{ .Values.kafka.podManagementPolicy }}
+  template:
+    metadata:
+    {{- with .Values.kafka.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}
+      labels:
+        {{- include "exts.kafka.selectorLabels" . | nindent 8 }}
+    spec:
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      # serviceAccountName: {{/* include "exts.serviceAccountName" . */}}
+      securityContext:
+        {{- toYaml .Values.kafka.podSecurityContext | nindent 8 }}
+      containers:
+        - name: "kafka"
+          securityContext:
+            {{- toYaml .Values.kafka.securityContext | nindent 12 }}
+          image: "{{ .Values.kafka.image.repository }}:{{ .Values.kafka.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.kafka.image.pullPolicy }}
+          ports:
+            - name: client
+              containerPort: {{ .Values.kafka.listenPort }}
+              protocol: TCP
+          volumeMounts:
+            - name: data
+              mountPath: /bitnami
+              # subPath: kafka-data
+          resources:
+            {{- toYaml .Values.kafka.resources | nindent 12 }}
+          env: # need refactoring
+            - name: KAFKA_CFG_ZOOKEEPER_CONNECT
+              value: "{{ $zookeeperName }}-0.{{ $zookeeperName }}.{{ .Release.Namespace }}.svc.cluster.local,{{ $zookeeperName }}-1.{{ $zookeeperName }}.{{ .Release.Namespace }}.svc.cluster.local,{{ $zookeeperName }}-2.{{ $zookeeperName }}.{{ .Release.Namespace }}.svc.cluster.local"
+            - name: ALLOW_PLAINTEXT_LISTENER
+              value: "yes"
+            - name: KAFKA_BROKER_ID
+              value: "1"
+            - name: KAFKA_ADVERTISED_HOST_NAME
+              value: "{{ $kafkaName }}-0.{{ $kafkaName }}.{{ .Release.Namespace }}.svc.cluster.local"
+            - name: KAFKA_ADVERTISED_PORT
+              value: "{{ .Values.kafka.listenPort }}"
+            - name: ALLOW_ANONYMOUS_LOGIN
+              value: "yes"
+      initContainers:
+        - name: kafka-init
+          image: "{{ .Values.kafkaInit.image.repository }}:{{ .Values.kafkaInit.image.tag | default .Chart.AppVersion }}"
+          command: {{ .Values.kafkaInit.command }}
+          resources:
+            {{- toYaml .Values.kafkaInit.resources | nindent 12 }}
+          volumeMounts:
+            - name: data
+              mountPath: /bitnami
+              # subPath: kafka-data
+      restartPolicy: {{ .Values.kafka.restartPolicy }}
+      volumes:
+        - name: data
+          persistentVolumeClaim:
+            claimName: "{{ $kafkaName }}-claim"
+      {{- with .Values.kafka.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.kafka.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.kafka.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+{{- end }}
