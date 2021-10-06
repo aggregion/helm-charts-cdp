@@ -23,7 +23,7 @@ spec:
             command:
             - /bin/sh
             - -c
-            - curl http://{{ include "cdp.dataservice.fullname" . }}:{{ .Values.dataservice.serviceAtlasSyncer.port }}
+            - "curl http://{{ include "cdp.dataservice.fullname" . }}:{{ .Values.dataservice.serviceAtlasSyncer.port }} || true"
           restartPolicy: OnFailure
           {{- with .Values.imagePullSecrets }}
           imagePullSecrets:
