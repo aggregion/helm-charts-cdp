@@ -9,7 +9,7 @@ fi
 [ -z "$3" ] && echo 'ERROR: Empty password' && exit 0
 [ -z "$4" ] && echo 'ERROR: Empty host' && exit 0
 
-kubectl \
+/cygdrive/e/projects/kubectl/kubectl.exe \
         $KUBE_CONFIG -n "${1}" create secret docker-registry "${NAME:-aggregionregistry}" \
         --docker-username="${2}"                           \
         --docker-password="${3}"                           \
