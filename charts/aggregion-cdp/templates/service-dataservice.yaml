@@ -12,6 +12,10 @@ spec:
       targetPort: httpapi
       protocol: TCP
       name: httpapi
+    - port: {{ .Values.dataservice.configAtlasSyncer.port }}
+      targetPort: httpsyncer
+      protocol: TCP
+      name: httpsyncer
   selector:
     {{- include "cdp.dataservice.selectorLabels" . | nindent 4 }}
 {{- end }}
