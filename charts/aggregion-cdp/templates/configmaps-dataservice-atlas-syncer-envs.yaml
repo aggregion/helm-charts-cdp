@@ -17,4 +17,5 @@ data:
   RABBITMQ_URL: "{{ .Values.dataservice.configAtlasSyncer.rabbitmqUrl }}"
   DATASET_QUEUE_NAME: "datasets"
   INSTANCE_QUEUE_NAME: "instances"
+  LOG_LEVEL: {{ .Values.dataservice.config.logLevel | quote }}
 {{- end}}
