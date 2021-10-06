@@ -8,22 +8,22 @@ metadata:
     {{- include "cdp.dataservice.labels" . | nindent 4 }}
 data:
   APP_NAME: {{ .Values.dataservice.config.appName | quote }}
-  LOG_LEVEL: {{ .Values.dataservice.config.logLevel | quote  }}
-  LOG_PRETTY_PRINT: {{ .Values.dataservice.config.logPrettyPrint | quote  }}
-  NODE_ENV: {{ .Values.dataservice.config.nodeEnv | quote  }}
+  LOG_LEVEL: {{ .Values.dataservice.config.logLevel | quote }}
+  LOG_PRETTY_PRINT: {{ .Values.dataservice.config.logPrettyPrint | quote }}
+  NODE_ENV: {{ .Values.dataservice.config.nodeEnv | quote }}
   PORT: {{ .Values.dataservice.config.port | quote }}
-  MONGO_DB_URI: {{ .Values.dataservice.config.mongoDbUri | quote  }}
-  MONGO_DB_URI_TEST: {{ .Values.dataservice.config.mongoDbUriTest | quote  }}
-  MONGO_DEBUG: {{ .Values.dataservice.config.mongoDebug | quote  }}
-  TOKEN_EXPIRATION_TIME_IN_SEC: {{ .Values.dataservice.config.tokenExpirationTimeInSec | quote  }}
-  TOKEN_SECRET_KEY: {{ .Values.dataservice.config.tokenSecretKey | quote  }}
-  TOKEN_ISSUER: {{ .Values.dataservice.config.tokenIssuer | quote  }}
-  BLOCKCHAIN_NODE_URL: {{ .Values.backend.configs.eosNodeUrl | quote  }}
-  BLOCKCHAIN_WALLET_ORG_ID: {{ .Values.backend.configs.eosWalletOwnerOrgId | quote  }}
-  BLOCKCHAIN_WALLET_PUBLIC_KEY: {{ .Values.backend.configs.eosWalletOwnerPub | quote  }}
-  BCMQ_ORG_DECRYPT_KEY: {{ .Values.dataservice.config.bcmqOrgDecryptKey | quote  }}
-  BCMQ_POLLING_INTERVAL: {{ .Values.dataservice.config.bcmqPollingInterval | quote  }}
-  TRINO_HOST: {{ .Values.dataservice.config.trinoHost | quote  }}
+  MONGO_DB_URI: {{ .Values.dataservice.config.mongoDbUri | quote }}
+  MONGO_DB_URI_TEST: {{ .Values.dataservice.config.mongoDbUriTest | quote }}
+  MONGO_DEBUG: {{ .Values.dataservice.config.mongoDebug | quote }}
+  TOKEN_EXPIRATION_TIME_IN_SEC: {{ .Values.dataservice.config.tokenExpirationTimeInSec | quote }}
+  TOKEN_SECRET_KEY: {{ .Values.dataservice.config.tokenSecretKey | quote }}
+  TOKEN_ISSUER: {{ .Values.dataservice.config.tokenIssuer | quote }}
+  BLOCKCHAIN_NODE_URL: {{ .Values.backend.configs.eosNodeUrl | quote }}
+  BLOCKCHAIN_WALLET_ORG_ID: {{ .Values.backend.configs.eosWalletOwnerOrgId | quote }}
+  BLOCKCHAIN_WALLET_PUBLIC_KEY: {{ .Values.backend.configs.eosWalletOwnerPub | quote }}
+  BCMQ_ORG_DECRYPT_KEY: {{ .Values.dataservice.config.bcmqOrgDecryptKey | quote }}
+  BCMQ_POLLING_INTERVAL: {{ .Values.dataservice.config.bcmqPollingInterval | quote }}
+  TRINO_HOST: {{ .Values.dataservice.config.trinoHost | quote }}
   TRINO_PORT: {{ .Values.dataservice.config.trinoPort | quote }}
-  RABBITMQ_URI: {{ .Values.dataservice.config.rabbitmqUri | quote  }}
+  RABBITMQ_URI: {{ .Values.dataservice.config.rabbitmqUri | quote }}
 {{- end }}
