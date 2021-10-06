@@ -23,7 +23,7 @@ spec:
             command:
             - /bin/sh
             - -c
-            - wget http://{{ include "cdp.dataservice.fullname" . }}:{{ .Values.dataservice.serviceAtlasSyncer.port }}/ -O - -q
+            - wget "http://{{ include "cdp.dataservice.fullname" . }}:{{ .Values.dataservice.serviceAtlasSyncer.port }}" -O - -q
           restartPolicy: OnFailure
           {{- with .Values.imagePullSecrets }}
           imagePullSecrets:
