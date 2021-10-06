@@ -60,6 +60,18 @@ spec:
               value: "{{ $solrName }}-0.{{ $solrName }}.{{ .Release.Namespace }}.svc.cluster.local"
             - name: KAFKA_HOST
               value: "{{ $kafkaName }}-0.{{ $kafkaName }}.{{ .Release.Namespace }}.svc.cluster.local"
+            - name: ATLAS_USER_ADMIN_LOGIN
+              value: "{{ .Values.atlas.users.admin.login }}"
+            - name: ATLAS_USER_ADMIN_PASSWORD
+              value: "{{ .Values.atlas.users.admin.password }}"
+            - name: ATLAS_USER_DST_LOGIN
+              value: "{{ .Values.atlas.users.datasteward.login }}"
+            - name: ATLAS_USER_DST_PASSWORD
+              value: "{{ .Values.atlas.users.datasteward.password }}"
+            - name: ATLAS_USER_DSCI_LOGIN
+              value: "{{ .Values.atlas.users.datascientist.login }}"
+            - name: ATLAS_USER_DSCI_PASSWORD
+              value: "{{ .Values.atlas.users.datascientist.password }}"
       restartPolicy: {{ .Values.atlas.restartPolicy }}
       volumes:
         - name: data

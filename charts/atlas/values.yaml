@@ -36,6 +36,16 @@ atlas:
   nodeSelector: {}
   tolerations: []
   affinity: {}
+  users:
+    admin:
+      login: admin
+      password: admin
+    datasteward:
+      login: datasteward
+      password: datasteward
+    datascientist:
+      login: datascientist
+      password: datascientist
 
 cassandra:
   # enabled: false # should depends on "atlas"
