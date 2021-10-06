@@ -4,6 +4,8 @@ apiVersion: batch/v1
 kind: CronJob
 metadata:
   name: "{{ $dataServiceName }}-atlas-entity-syncer"
+  labels:
+    {{- include "cdp.dataservice.labels" . | nindent 4 }}
 spec:
   schedule: "{{ .Values.dataservice.configAtlasSyncer.cronjob.schedule }}"
   jobTemplate:
