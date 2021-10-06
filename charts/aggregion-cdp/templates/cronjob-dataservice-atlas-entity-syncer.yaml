@@ -7,7 +7,7 @@ apiVersion: batch/v1beta1
 {{- end }}
 kind: CronJob
 metadata:
-  name: "{{ $dataServiceName }}-atlas-entity-syncer"
+  name: "{{ $dataServiceName }}-aesync" # atlas-entity-syncer
   labels:
     {{- include "cdp.dataservice.labels" . | nindent 4 }}
 spec:
@@ -17,7 +17,7 @@ spec:
       template:
         spec:
           containers:
-          - name: atlas-entity-syncer
+          - name: aesync
             image: "{{ .Values.dataservice.imageBusybox.repository }}:{{ .Values.dataservice.imageBusybox.tag }}"
             imagePullPolicy: {{ .Values.dataservice.imageBusybox.pullPolicy }}
             command:
