@@ -394,9 +394,12 @@ dataservice:
   affinity: {}
   service:
     type: ClusterIP
-    port: 80
+    port: 80 # external
+  serviceAtlasSyncer:
+    type: ClusterIP
+    port: 8090 # external
   configAtlasSyncer:
-    port: 8090
+    port: 8090 # internal
     username: "admin"
     password: "atlasR0cks!"
     atlasBaseUrl: "http://5.188.130.169:21000"
@@ -407,7 +410,7 @@ dataservice:
     logLevel: trace
     logPrettyPrint: true
     nodeEnv: development
-    port: 9045
+    port: 9045 # internal
     mongoDbUri: mongodb://127.0.0.1:27017/ds-api
     mongoDbUriTest: mongodb://agg-dev:18005/ds-api-tests
     mongoDebug: true
