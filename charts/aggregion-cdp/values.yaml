@@ -390,6 +390,10 @@ dataservice:
     repository: registry.aggregion.com/atlas-entity-syncer
     pullPolicy: IfNotPresent
     tag: latest
+  imageBusybox:
+    repository: busybox
+    pullPolicy: IfNotPresent
+    tag: latest
   tolerations: []
   affinity: {}
   service:
@@ -404,6 +408,8 @@ dataservice:
     password: "atlasR0cks!"
     atlasBaseUrl: "http://5.188.130.169:21000"
     rabbitmqUrl: "amqp://127.0.0.1"
+    cronjob:
+      schedule: "*/5 * * * *"
   config:
     accessToken: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0eXBlIjoiRGF0YSBBY2Nlc3MgVG9rZW4gZm9yIHRoZSBhdXRob3JpemF0aW9uIGluIHRoZSBsb2NhbCBwcm92aWRlciBlbnZpcm9ubWVudCIsImlhdCI6MTYzMjY2MDY1OCwiaXNzIjoic3RhZ2VfcHJvdmlkZXIifQ.DLh9HQHXXTZuGSRrXf9uk6QBiikOHztcZ2aNC7x6wKg"
     appName: dataservice-api

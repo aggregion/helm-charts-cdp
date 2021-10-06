@@ -1,0 +1,26 @@
+{{- if .Values.dataservice.enabled }}
+{{- $dataServiceName := include "cdp.dataservice.fullname" . }}
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: "{{ $dataServiceName }}-atlas-entity-syncer"
+spec:
+  schedule: "{{ .Values.dataservice.configAtlasSyncer.cronjob.schedule }}"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+          - name: atlas-entity-syncer
+            image: "{{ .Values.dataservice.imageBusybox.repository }}:{{ .Values.dataservice.imageBusybox.tag }}"
+            imagePullPolicy: {{ .Values.dataservice.imageBusybox.pullPolicy }}
+            command:
+            - /bin/sh
+            - -c
+            - wget http://{{ include "cdp.dataservice.fullname" . }}:{{ .Values.dataservice.serviceAtlasSyncer.port }}/ -O - -q
+          restartPolicy: OnFailure
+          {{- with .Values.imagePullSecrets }}
+          imagePullSecrets:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+{{- end }}
