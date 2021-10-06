@@ -32,7 +32,7 @@ atlas:
   podSecurityContext: {}
   resources:
     requests:
-      memory: "2Gi"
+      memory: "1.5Gi"
   nodeSelector: {}
   tolerations: []
   affinity: {}
@@ -80,8 +80,8 @@ cassandra:
   podSecurityContext: {}
   resources:
     requests:
-      memory: "2Gi"
-      cpu: "0.2"
+      memory: "4Gi"
+      cpu: "0.1"
   nodeSelector: {}
   tolerations: []
   affinity: {}
@@ -112,8 +112,8 @@ hadoop:
   podSecurityContext: {}
   resources:
     requests:
-      memory: "2Gi"
-      cpu: "0.2"
+      memory: "900Mi"
+      cpu: "0.1"
   nodeSelector: {}
   tolerations: []
   affinity: {}
@@ -128,7 +128,7 @@ hadoopInit:
   command: "[\"sh\", \"-c\", \"mkdir -p /data && mkdir -p /name && chown -R 1000:1000 /data && chown -R 1000:1000 /home/hdfs && chown -R 1000:1000 /name && chown -R 1001:1000 /home/yarn\"]"
   resources:
     limits:
-      cpu: "0.1"
+      cpu: "0.05"
       memory: 200Mi
 
 hbase:
@@ -162,8 +162,8 @@ hbaseMaster:
   securityContext: {}
   resources:
     requests:
-      memory: "2Gi"
-      cpu: "0.2"
+      memory: "800Mi"
+      cpu: "0.1"
 
 hbaseRegion:
   storageSize: "1G"
@@ -175,8 +175,8 @@ hbaseRegion:
   securityContext: {}
   resources:
     requests:
-      memory: "2Gi"
-      cpu: "0.2"
+      memory: "400Mi"
+      cpu: "0.05"
 
 kafka:
   # enabled: false # should depends on "atlas"
@@ -201,7 +201,7 @@ kafka:
   podSecurityContext: {}
   resources:
     requests:
-      memory: "2Gi"
+      memory: "400Mi"
   nodeSelector: {}
   tolerations: []
   affinity: {}
@@ -215,7 +215,7 @@ kafkaInit:
   command: "[\"sh\", \"-c\", \"mkdir -p /bitnami && chown -R 1001:0 /bitnami\"]"
   resources:
     limits:
-      cpu: "0.1"
+      cpu: "0.05"
       memory: 200Mi
 
 solr:
@@ -241,8 +241,8 @@ solr:
   podSecurityContext: {}
   resources:
     requests:
-      memory: "2Gi"
-      cpu: "0.2"
+      memory: "700Mi"
+      cpu: "0.1"
   nodeSelector: {}
   tolerations: []
   affinity: {}
@@ -256,7 +256,7 @@ solrInit:
   command: "[\"sh\", \"-c\", \"mkdir -p /vol-path && chown -R 8983:8983 /vol-path\"]"
   resources:
     limits:
-      cpu: "0.1"
+      cpu: "0.05"
       memory: 200Mi
 
 zookeeper:
@@ -287,8 +287,8 @@ zookeeper:
   podSecurityContext: {}
   resources:
     requests:
-      memory: "1Gi"
-      cpu: "0.2"
+      memory: "300Mi"
+      cpu: "0.1"
   nodeSelector: {}
   tolerations: []
   affinity: {}
