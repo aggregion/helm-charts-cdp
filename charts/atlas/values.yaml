@@ -53,6 +53,8 @@ atlas:
       nginx.ingress.kubernetes.io/proxy-body-size: 128000m
     hosts:
       - host: atlas.local
+        paths:
+          - "/"
     tls: []
 
 cassandra:
