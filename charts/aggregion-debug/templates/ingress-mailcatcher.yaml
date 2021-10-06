@@ -1,8 +1,8 @@
-{{- if .Values.mailcatcher.enabled -}}
-{{- if .Values.mailcatcher.ingress.enabled -}}
+{{- if and .Values.mailcatcher.enabled .Values.mailcatcher.ingress.enabled -}}
 {{- $mailcatcherName := include "svcs.mailcatcher.fullname" . }}
-{{- $mailcatcherPort := .Values.mailcatcher.service.http.port }}
-{{- if semverCompare ">=1.14-0" .Capabilities.KubeVersion.GitVersion -}}
+{{- if semverCompare ">=1.22-0" .Capabilities.KubeVersion.GitVersion -}}
+apiVersion: networking.k8s.io/v1
+{{- else if semverCompare ">=1.14-0" .Capabilities.KubeVersion.GitVersion -}}
 apiVersion: networking.k8s.io/v1beta1
 {{- else -}}
 apiVersion: extensions/v1beta1
@@ -34,10 +34,18 @@ spec:
         paths:
           {{- range .paths }}
           - path: {{ . }}
+            {{- if semverCompare ">=1.22-0" $.Capabilities.KubeVersion.GitVersion}}
+            pathType: "Prefix"
+            backend:
+              service:
+                name: "{{ $mailcatcherName }}"
+                port:
+                  name: "http"
+            {{- else }}
             backend:
               serviceName: "{{ $mailcatcherName }}"
-              servicePort: {{ $mailcatcherPort }}
+              servicePort: "http"
+            {{- end }}
           {{- end }}
     {{- end }}
-  {{- end }}
 {{- end }}

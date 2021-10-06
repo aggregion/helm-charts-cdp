@@ -1,11 +1,10 @@
 {{- if .Values.frontend.ingress.enabled -}}
 {{- $frontendName := include "cdp.frontend.fullname" . -}}
-{{- $frontendPort := .Values.frontend.service.port -}}
 {{- $backendName := include "cdp.backend.fullname" . -}}
-{{- $backendPort := .Values.backend.service.api.port -}}
 {{- $datalabProxyName := printf "%s-dlproxy" $backendName -}}
-{{- $datalabProxyPort := .Values.backend.service.datalabProxy.port -}}
-{{- if semverCompare ">=1.14-0" .Capabilities.KubeVersion.GitVersion -}}
+{{- if semverCompare ">=1.22-0" .Capabilities.KubeVersion.GitVersion -}}
+apiVersion: networking.k8s.io/v1
+{{- else if semverCompare ">=1.14-0" .Capabilities.KubeVersion.GitVersion -}}
 apiVersion: networking.k8s.io/v1beta1
 {{- else -}}
 apiVersion: extensions/v1beta1
@@ -35,40 +34,104 @@ spec:
     - host: {{ .host | quote }}
       http:
         paths:
+          {{- if semverCompare ">=1.22-0" $.Capabilities.KubeVersion.GitVersion -}}
+          - path: "/graphql"
+            pathType: "Prefix"
+            backend:
+              service:
+                name: "{{ $backendName }}"
+                port:
+                  name: "httpapi"
+          - path: "/graphql-subscriptions"
+            pathType: "Prefix"
+            backend:
+              service:
+                name: "{{ $backendName }}"
+                port:
+                  name: "httpapi"
+          - path: "/files"
+            pathType: "Prefix"
+            backend:
+              service:
+                name: "{{ $backendName }}"
+                port:
+                  name: "httpapi"
+          {{- if $.Values.backend.configs.accessFromFrontendEnabled }}
+          - path: "/enclave"
+            pathType: "Prefix"
+            backend:
+              service:
+                name: "{{ $backendName }}"
+                port:
+                  name: "httpapi"
+          {{- end }}
+          {{- if $.Values.backend.configs.debugEnabled }}
+          - path: "/status"
+            pathType: "Prefix"
+            backend:
+              service:
+                name: "{{ $backendName }}"
+                port:
+                  name: "httpapi"
+          {{- end }}
+          - path: "/datalab/vm"
+            pathType: "Prefix"
+            backend:
+              service:
+                name: "{{ $datalabProxyName }}"
+                port:
+                  name: "httpproxy"
+          - path: "/auth/datalab"
+            pathType: "Prefix"
+            backend:
+              service:
+                name: "{{ $backendName }}"
+                port:
+                  name: "httpapi"
+          - backend:
+            path: "/"
+            pathType: "Prefix"
+              service:
+                name: "{{ $frontendName }}"
+                port:
+                  name: "http"
+          {{- else }} # >= 1.22
           - path: "/graphql"
             backend:
               serviceName: "{{ $backendName }}"
-              servicePort: {{ $backendPort }}
+              servicePort: "httpapi"
           - path: "/graphql-subscriptions"
             backend:
               serviceName: "{{ $backendName }}"
-              servicePort: {{ $backendPort }}
+              servicePort: "httpapi"
           - path: "/files"
             backend:
               serviceName: "{{ $backendName }}"
-              servicePort: {{ $backendPort }}
+              servicePort: "httpapi"
           {{- if $.Values.backend.configs.accessFromFrontendEnabled }}
           - path: "/enclave"
             backend:
               serviceName: "{{ $backendName }}"
-              servicePort: {{ $backendPort }}
+              servicePort: "httpapi"
           {{- end }}
           {{- if $.Values.backend.configs.debugEnabled }}
           - path: "/status"
             backend:
               serviceName: "{{ $backendName }}"
-              servicePort: {{ $backendPort }}
+              servicePort: "httpapi"
           {{- end }}
           - path: "/datalab/vm"
             backend:
               serviceName: "{{ $datalabProxyName }}"
-              servicePort: {{ $datalabProxyPort }}
+              servicePort: "httpproxy"
           - path: "/auth/datalab"
             backend:
               serviceName: "{{ $backendName }}"
-              servicePort: {{ $backendPort }}
-          - backend:
+              servicePort: "httpapi"
+          - path: "/"
+            backend:
               serviceName: "{{ $frontendName }}"
-              servicePort: {{ $frontendPort }}
+              servicePort: "http"
+          {{- end }}
     {{- end }}
-  {{- end }}
+{{- end }}

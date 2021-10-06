@@ -8,6 +8,9 @@ metadata:
 spec:
   accessModes:
     {{- toYaml .Values.backend.pvc.accessModes | nindent 4 }}
+  {{- if .Values.backend.configs.dataStorageClass }}
+  storageClass: "{{ .Values.backend.configs.dataStorageClass }}"
+  {{- end }}
   resources:
     requests:
       storage: "{{ .Values.backend.configs.dataStorageSize }}"

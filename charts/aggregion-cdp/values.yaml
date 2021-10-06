@@ -122,6 +122,8 @@ backend:
     # could be disabled
     cache: "redis"
 
+    # defines concrete storage class for persistence volume claim
+    dataStorageClass: ""
     dataStorageSize: "10G"
     # current debug is only for api service
     debugEnabled: false
