@@ -40,11 +40,11 @@ spec:
               service:
                 name: "{{ $atlasName }}"
                 port:
-                  name: "http"
+                  name: "client"
             {{- else }}
             backend:
               serviceName: "{{ $atlasName }}"
-              servicePort: "http"
+              servicePort: "client"
             {{- end }}
           {{- end }}
     {{- end }}
