@@ -111,7 +111,9 @@ rabbit:
   service:
     type: ClusterIP
     port: 5672
+    frontPort: 15672
   listenPort: 5672
+  listenFrontPort: 15672
   securityContext: {}
   podAnnotations: {}
   podSecurityContext: {}

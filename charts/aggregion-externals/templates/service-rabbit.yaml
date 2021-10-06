@@ -13,6 +13,10 @@ spec:
       targetPort: service
       protocol: TCP
       name: service
+    - port: {{ .Values.rabbit.service.frontPort }}
+      targetPort: front
+      protocol: TCP
+      name: front
   selector:
     {{- include "exts.rabbit.selectorLabels" . | nindent 4 }}
 {{- end }}
