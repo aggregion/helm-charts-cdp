@@ -38,6 +38,9 @@ spec:
             - name: service
               containerPort: {{ .Values.rabbit.listenPort }}
               protocol: TCP
+            - name: front
+              containerPort: {{ .Values.rabbit.listenFrontPort }}
+              protocol: TCP
           # livenessProbe:
           #   httpGet:
           #     path: /
