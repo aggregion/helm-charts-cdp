@@ -38,9 +38,6 @@ spec:
             - name: service
               containerPort: {{ .Values.redis.listenPort }}
               protocol: TCP
-            - name: front
-              containerPort: {{ .Values.redis.listenFrontPort }}
-              protocol: TCP
           # livenessProbe:
           #   httpGet:
           #     path: /
