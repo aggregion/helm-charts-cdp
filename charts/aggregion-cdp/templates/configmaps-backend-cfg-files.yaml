@@ -20,6 +20,7 @@ data:
           "enabled": {{ .Values.backend.configs.authLocalAccessPolicyEnabled }}
         }
       },
+      "providerInstanceId": "{{ .Values.backend.configs.providerInstanceId }}",
       "eos": {
         "initiateOrgId": "{{ .Values.backend.configs.eosOrgId }}",
         "walletsPath": "/home/node/app/eos-wallet"
