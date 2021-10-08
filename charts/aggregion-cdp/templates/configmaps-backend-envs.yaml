@@ -21,6 +21,7 @@ data:
   EOS_WALLET_PUBLIC_KEY: "{{ .Values.backend.configs.eosWalletOwnerPub }}"
   ENCLAVE_LOCAL_PROVIDER_NAME: "{{ .Values.backend.configs.providerName }}"
   CURRENT_PROVIDER_NAME: "{{ .Values.backend.configs.providerName }}"
+  PROVIDER_INSTANCE_ID: "{{ .Values.backend.configs.providerInstanceId }}"
   ENCLAVE_ENDPOINT: "{{ .Values.backend.configs.enclaveEndpoint | default (printf "http://%s:%v/v1" $enclaveName .Values.enclave.service.port) }}"
   ENCLAVE_SCRIPTS_AUDITORY: "{{ .Values.enclave.scripts.auditory }}"
   ENCLAVE_SCRIPTS_DATALAB: "{{ .Values.enclave.scripts.datalab }}"
