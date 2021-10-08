@@ -1,0 +1,178 @@
+---
+kind: NetworkPolicy
+apiVersion: networking.k8s.io/v1
+metadata:
+  name: datalab-auth-access-defaults
+  labels:
+    project: "datalab"
+    component: "datalab-auth"
+spec:
+  podSelector:
+    matchLabels:
+      name: "datalab-auth"
+{{#if datalabDmpNamespace}}
+  ingress:
+    - from:
+      - namespaceSelector:
+          matchLabels:
+            name: "default"
+        podSelector:
+          matchLabels:
+            app.kubernetes.io/name: "ingress-nginx"
+    - from:
+      - namespaceSelector:
+          matchLabels:
+            name: "{{ datalabDmpNamespace }}"
+        podSelector:
+          matchLabels: {}
+  egress:
+    - to:
+      - namespaceSelector:
+          matchLabels:
+            name: kube-system
+        podSelector:
+          matchLabels:
+            k8s-app: kube-dns
+        ports:
+          - protocol: TCP
+            port: 53
+          - protocol: UDP
+            port: 53
+    - to:
+      - namespaceSelector:
+          matchLabels:
+            name: "{{ datalabDmpNamespace }}"
+        podSelector:
+          matchLabels: {}
+    - to:
+       - podSelector:
+           matchLabels:
+             name: "datalab"
+
+{{else}}
+  ingress: {}
+  egress: {}
+{{/if}}
+  policyTypes:
+    - Ingress
+    - Egress
+
+---
+kind: NetworkPolicy
+apiVersion: networking.k8s.io/v1
+metadata:
+  name: datalab-access-defaults
+  labels:
+    project: "datalab"
+    component: "datalab"
+spec:
+  podSelector:
+    matchLabels:
+      name: "datalab"
+  ingress:
+    - from:
+      - namespaceSelector:
+          matchLabels:
+            name: "default"
+        podSelector:
+          matchLabels:
+            app.kubernetes.io/name: "ingress-nginx"
+    - from:
+      - podSelector:
+          matchLabels:
+            name: "datalab-auth"
+    {{#if datalabDmpNamespace}}
+    - from:
+      - namespaceSelector:
+          matchLabels:
+            name: "{{ datalabDmpNamespace }}"
+        podSelector:
+          matchLabels: {}
+    {{/if}}
+  egress:
+    - to:
+       - podSelector:
+           matchLabels:
+             name: "datalab-proxy"
+
+  policyTypes:
+    - Ingress
+    - Egress
+
+---
+kind: NetworkPolicy
+apiVersion: networking.k8s.io/v1
+metadata:
+  name: datalab-access-to-internet
+  labels:
+    project: "datalab"
+    component: "datalab"
+spec:
+  podSelector:
+    matchLabels:
+      name: "datalab"
+  policyTypes:
+    - Egress
+  egress:
+    - to:
+      - namespaceSelector:
+          matchLabels:
+            name: kube-system
+      podSelector:
+        matchLabels:
+          k8s-app: kube-dns
+      ports:
+        - protocol: TCP
+          port: 53
+        - protocol: UDP
+          port: 53
+    {{#ifCond datalabAllowInternet '==' 'true'}}
+    - to:
+      - ipBlock:
+          cidr: 0.0.0.0/0
+          except:
+            - 10.0.0.0/8
+            - 192.168.0.0/16
+            - 172.16.0.0/20
+    {{/ifCond}}
+
+---
+kind: NetworkPolicy
+apiVersion: networking.k8s.io/v1
+metadata:
+  name: datalab-proxy-access-to-internet
+  labels:
+    project: "datalab"
+    component: "datalab-proxy"
+spec:
+  podSelector:
+    matchLabels:
+      name: "datalab-proxy"
+  policyTypes:
+    - Egress
+    - Ingress
+  ingress:
+    - from:
+      - podSelector:
+          matchLabels:
+            name: "datalab"
+  egress:
+    - to:
+      - namespaceSelector:
+          matchLabels:
+            name: kube-system
+      podSelector:
+        matchLabels:
+          k8s-app: kube-dns
+      ports:
+        - protocol: TCP
+          port: 53
+        - protocol: UDP
+          port: 53
+    - to:
+      - ipBlock:
+          cidr: 0.0.0.0/0
+          except:
+            - 10.0.0.0/8
+            - 192.168.0.0/16
+            - 172.16.0.0/20

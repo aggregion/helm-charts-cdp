@@ -1,0 +1,42 @@
+## Configuration values
+
+In chart the "aggregion-dc" use value "dc.configs.paramsDefaults" to pre-define below values.
+For an example:
+values_my_own.yaml:
+  ...
+  dc:
+    ..
+    configs:
+      ...
+      paramsDefaults:
+        k8sversion: "1.22"
+        datalabStorageClassName: "local-storage"
+        datalabImagePullSecretName: "local-registry-secret"
+        datalabImagePullSecretInBase64: "ewoJImF1dGhzIjogewoJfSwKCSJI..."
+        datalabImage: "local-registry.com/datalab:latest"
+
+Re-deploy "aggregion-dc" instance after configure values, and re-start "dc" deployment after that (for an example could destroy pods or scale deployment).
+
+
+### Values
+
+k8sversion - Kubernetes server version, for an example 1.22. no defaults.
+datalabIngress - Ingress for datalab external access. default [false].
+datalabStorageClassName - Storage class for persistence volume claim. no defaults.
+datalabImagePullSecretName - Registry secret name. default [aggregionregistry].
+datalabImagePullSecretInBase64 - Registry secret value encoded as base64 value. json .dockerconfig format. default [empty credentials].
+datalabImage - default [registry.aggregion.com/datalab:latest].
+datalabImagePullPolicy - default [Always].
+datalabProxyImage - default [registry.aggregion.com/datalab-proxy:latest].
+datalabProxyImagePullPolicy - default [Always].
+datalabAuthImage - default [registry.aggregion.com/datalab-auth:latest].
+datalabAuthImagePullPolicy - default [Always].
+
+
+## Values will set up externally by DMP (placed for info only).
+
+datalabDmpNamespace - Reverse link to the namespace where datalab will communicate with dmp. no defaults.
+datalabAllowInternet - Allow or disallow Internet access. default [false].
+datalabStorageSize - Persistence storage size for a virtual machine. no defaults.
+datalabCpuLimit - Define a cpu limit. default [2].
+datalabMemoryLimitGb - Define a max memory limit. default [8].
