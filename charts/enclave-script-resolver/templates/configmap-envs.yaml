@@ -1,0 +1,8 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "enclave-script-resolver.fullname" . }}-config
+  labels:
+    {{- include "enclave-script-resolver.labels" . | nindent 4 }}
+data:
+  REPOSITORIES: {{ .Values.config.repositories | toJson | quote }}
