@@ -228,6 +228,7 @@ backend:
     # back reference to dmp api
     datalabAuthUrl: "http://datalab-auth-helper.datalab-auth-helper.svc.cluster.local:19000/"
     listenPort: 15432
+    atlasUrl: "http://atlas.local"
 
   restartPolicy: Always
   nameOverride: ""
