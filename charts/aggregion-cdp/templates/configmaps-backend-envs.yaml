@@ -9,7 +9,7 @@ metadata:
     {{- include "cdp.backend.labels" . | nindent 4 }}
 data:
   API_ENDPOINT: "http://{{ $backendName }}:{{ .Values.backend.service.api.port }}/graphql"
-  ATLAS_URL: "{{ .Values.backend.atlasUrl }}"
+  ATLAS_URL: "{{ .Values.backend.configs.atlasUrl }}"
   FILES_ENDPOINT: "http://{{ $backendName }}:{{ .Values.backend.service.api.port }}/"
   SERVER_PORT: "{{ .Values.backend.configs.listenPort }}"
   LOG_LEVEL: "{{ .Values.backend.configs.logLevel }}"
