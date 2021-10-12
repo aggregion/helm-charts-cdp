@@ -1,6 +1,7 @@
 {{- if .Values.frontend.ingress.enabled -}}
 {{- $frontendName := include "cdp.frontend.fullname" . -}}
 {{- $backendName := include "cdp.backend.fullname" . -}}
+{{- $dataserviceName := include "cdp.dataservice.fullname" . }}
 {{- $datalabProxyName := printf "%s-dlproxy" $backendName -}}
 {{- if semverCompare ">=1.22-0" .Capabilities.KubeVersion.GitVersion -}}
 apiVersion: networking.k8s.io/v1
@@ -132,6 +133,12 @@ spec:
             backend:
               serviceName: "{{ $frontendName }}"
               servicePort: "http"
+          {{- end }}
+          {{- if $.Values.backend.configs.dataserviceViaFrontendEnabled }}
+          - path: "/dataservice"
+            backend:
+              serviceName: "{{ $dataserviceName }}"
+              servicePort: "httpapi"
           {{- end }}
     {{- end }}
 {{- end }}
