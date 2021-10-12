@@ -96,7 +96,13 @@ spec:
                 name: "{{ $frontendName }}"
                 port:
                   name: "http"
-          {{- else }} # >= 1.22
+          {{- if $.Values.backend.configs.dataserviceViaFrontendEnabled }}
+          - path: "/dataservice"
+            backend:
+              serviceName: "{{ $dataserviceName }}"
+              servicePort: "httpapi"
+          {{- end }}
+          {{- else }} # <= 1.22
           - path: "/graphql"
             backend:
               serviceName: "{{ $backendName }}"
@@ -133,12 +139,12 @@ spec:
             backend:
               serviceName: "{{ $frontendName }}"
               servicePort: "http"
-          {{- end }}
           {{- if $.Values.backend.configs.dataserviceViaFrontendEnabled }}
           - path: "/dataservice"
             backend:
               serviceName: "{{ $dataserviceName }}"
               servicePort: "httpapi"
+          {{- end }}
           {{- end }}
     {{- end }}
 {{- end }}
