@@ -39,3 +39,4 @@ data:
   BASE_URL: "{{ .Values.backend.configs.baseUrl }}"
   DATA_SERVICE_ENDPOINT: "http://{{ $dataserviceName }}:{{ .Values.dataservice.service.port }}/api/"
   DATA_SERVICE_TOKEN: "{{ .Values.dataservice.config.accessToken }}"
+  DEPLOY_CONTROLLER_USE_EXTERNAL_S3: {{ .Values.backend.config.dcUseExternalS3 }}
