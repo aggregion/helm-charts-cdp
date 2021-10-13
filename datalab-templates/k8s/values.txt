@@ -39,7 +39,8 @@ datalabProxyImage - default [registry.aggregion.com/datalab-proxy:latest].
 datalabProxyImagePullPolicy - default [Always].
 datalabAuthImage - default [registry.aggregion.com/datalab-auth:latest].
 datalabAuthImagePullPolicy - default [Always].
-
+datalabIngressNamespace - The name of namespace where ingress is deployed. default [default].
+datalabIngressType - Use concrete type of k8s ingress. default [ingress-nginx].
 
 ## Values will set up externally by DMP (placed for info only).
 

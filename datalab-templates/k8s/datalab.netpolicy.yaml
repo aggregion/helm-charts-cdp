@@ -15,10 +15,10 @@ spec:
     - from:
       - namespaceSelector:
           matchLabels:
-            name: "default"
+            name: "{{#if datalabIngressNamespace}}{{ datalabIngressNamespace }}{{else}}default{{/if}}"
         podSelector:
           matchLabels:
-            app.kubernetes.io/name: "ingress-nginx"
+            app.kubernetes.io/name: "{{#if datalabIngressType}}{{ datalabIngressType }}{{else}}ingress-nginx{{/if}}"
     - from:
       - namespaceSelector:
           matchLabels:
@@ -73,10 +73,10 @@ spec:
     - from:
       - namespaceSelector:
           matchLabels:
-            name: "default"
+            name: "{{#if datalabIngressNamespace}}{{ datalabIngressNamespace }}{{else}}default{{/if}}"
         podSelector:
           matchLabels:
-            app.kubernetes.io/name: "ingress-nginx"
+            app.kubernetes.io/name: "{{#if datalabIngressType}}{{ datalabIngressType }}{{else}}ingress-nginx{{/if}}"
     - from:
       - podSelector:
           matchLabels:
