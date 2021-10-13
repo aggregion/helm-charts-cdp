@@ -18,7 +18,7 @@ metadata:
     component: "datalab"
 spec:
   rules:
-    - host: "{{ datalabSubDomain }}.{{ domain }}"
+    - host: "{{ domain }}"
       http:
         paths:
 {{#ifCond k8sversion '>=' '1.22'}}
@@ -59,7 +59,7 @@ metadata:
     component: "datalab"
 spec:
   rules:
-    - host: "s3.{{ datalabSubDomain }}.{{ domain }}"
+    - host: "s3.{{ domain }}"
       http:
         paths:
 {{#ifCond k8sversion '>=' '1.22'}}
