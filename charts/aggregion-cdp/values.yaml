@@ -230,7 +230,7 @@ backend:
     datalabAuthUrl: "http://datalab-auth-helper.datalab-auth-helper.svc.cluster.local:19000/"
     listenPort: 15432
     atlasUrl: "http://atlas.local"
-    dcUseExternalS3: true
+    dcUseExternalS3: false
 
   restartPolicy: Always
   nameOverride: ""
