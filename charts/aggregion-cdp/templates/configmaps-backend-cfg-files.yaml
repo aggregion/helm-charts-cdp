@@ -43,7 +43,7 @@ data:
             "cpuLimit": "{{ .Values.backend.configs.datalabCpuLimit }}",
             "memoryLimitGb": "{{ .Values.backend.configs.datalabMemoryLimitGb }}",
             "dmpNamespace": "{{ .Values.backend.configs.datalabDmpNamespace }}",
-            "webhookUrl": "{{ .Values.backend.configs.datalabWebhookUrl }}",
+            "webhookUrl": "{{ .Values.backend.configs.datalabWebhookUrl }}"
           }
         }
       },
