@@ -42,7 +42,8 @@ data:
             "storageSizeGb": "{{ .Values.backend.configs.datalabStorageSizeGb }}",
             "cpuLimit": "{{ .Values.backend.configs.datalabCpuLimit }}",
             "memoryLimitGb": "{{ .Values.backend.configs.datalabMemoryLimitGb }}",
-            "dmpNamespace": "{{ .Values.backend.configs.datalabDmpNamespace }}"
+            "dmpNamespace": "{{ .Values.backend.configs.datalabDmpNamespace }}",
+            "webhookUrl": "{{ .Values.backend.configs.datalabWebhookUrl }}",
           }
         }
       },
@@ -65,5 +66,8 @@ data:
           "host": "{{ .Values.backend.configs.redisHost }}",
           "keyPrefix": "{{ .Values.backend.configs.redisPrefix }}"
         }
+      },
+      "webhook": {
+        "tokenExpirationTime": {{ .Values.backend.configs.webhookTokenExpirationTime }}
       }
     }
