@@ -176,6 +176,27 @@ spec:
             {{- toYaml .Values.dc.resources | nindent 12 }}
           command: ["yarn", "run", "start:provision:prod"]
 
+        {{- if .Values.dc.notification.enabled }}
+        - name: "notification"
+          securityContext:
+            {{- toYaml .Values.dc.securityContext | nindent 12 }}
+          image: "{{ .Values.dc.image.repository }}:{{ .Values.dc.image.tag }}"
+          imagePullPolicy: "{{ .Values.dc.image.pullPolicy }}"
+          env:
+            - name: DATABASE_DB
+              value: "{{ .Values.dc.notification.databaseDb | default .Values.dc.configs.databaseDb }}"
+            - name: DATABASE_SCHEMA
+              value: "{{ .Values.dc.notification.databaseSchema }}"
+          envFrom:
+            - configMapRef:
+                name: "{{ $dcName }}-config"
+            - secretRef:
+                name: "{{ $dcName }}-secrets"
+          resources:
+            {{- toYaml .Values.dc.resources | nindent 12 }}
+          command: ["yarn", "run", "start:notification:prod"]
+        {{- end }}
+
         {{- if .Values.dc.trigger.enabled }}
         - name: "trigger"
           securityContext:
