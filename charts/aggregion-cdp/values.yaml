@@ -231,6 +231,7 @@ backend:
     listenPort: 15432
     atlasUrl: "http://atlas.local"
     dcUseExternalS3: false
+    webhookTokenExpirationTime: 3600
 
   restartPolicy: Always
   nameOverride: ""
