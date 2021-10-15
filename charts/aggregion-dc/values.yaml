@@ -19,6 +19,7 @@ agentk8s:
     pullPolicy: IfNotPresent
     tag: "latest"
   configs:
+    loglevel: "log"
     dumpPath: ""
     dummyMode: false
     # secret for connection
@@ -59,6 +60,7 @@ dc:
     pullPolicy: IfNotPresent
     tag: "latest"
   configs:
+    loglevel: "log"
     # secret for encryption data in database
     cipherSecret: "POnxPkRD/ycb04I/vYHXDNjDW0+IzzQzn8jx6n4O2w=="
     # jwt hmac secret for auth service
@@ -134,7 +136,7 @@ dc:
     port: 8080
 
   ingress:
-    enabled: true
+    enabled: false
     annotations:
       kubernetes.io/ingress.class: nginx
       nginx.ingress.kubernetes.io/proxy-body-size: 32m

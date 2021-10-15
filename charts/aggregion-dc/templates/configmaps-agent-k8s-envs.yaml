@@ -8,6 +8,7 @@ metadata:
     {{- include "dctl.agentk8s.labels" . | nindent 4 }}
 data:
   APP_K8S_CONFIG_TYPE: "cluster"
+  APP_LOGGER: "{{ .Values.agentk8s.configs.loglevel }}"
   DUMP_PATH: "{{ .Values.agentk8s.configs.dumpPath }}"
   DUMMY_MODE: "{{ .Values.agentk8s.configs.dummyMode }}"
   APP_AUTH_WHITE_IP_LIST: "{{ .Values.agentk8s.configs.whitelistIp }}"
