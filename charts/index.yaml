@@ -3,9 +3,9 @@ entries:
   aggregion-cdp:
   - apiVersion: v2
     appVersion: 1.16.0
-    created: "2021-10-15T15:02:28.845035269Z"
+    created: "2021-10-17T17:09:15.844327741Z"
     description: A Helm chart for Kubernetes to deploy Aggregion CDP
-    digest: 6c08e52d3de1e21f9937ec50d88edff722dc55031d8bcfbcf08baaadbe51ec0c
+    digest: a9554869bd9eaa20284bebae98c554dbbbebd54a7eb7a2365465dc7628236199
     name: aggregion-cdp
     type: application
     urls:
@@ -454,9 +454,9 @@ entries:
   aggregion-dc:
   - apiVersion: v2
     appVersion: 1.16.0
-    created: "2021-10-15T15:02:28.846291281Z"
+    created: "2021-10-17T17:09:15.845536158Z"
     description: A Helm chart for Kubernetes to install Deploy Controller
-    digest: 4e2c9ff6eea348f53043020fb0d6b316600600c0069058c24d3b514a7d68c659
+    digest: d98775b24b6c6a71dd3e1e0415f065df82cdf73c90da002a74de6a52b9cd752d
     name: aggregion-dc
     type: application
     urls:
@@ -495,11 +495,11 @@ entries:
   aggregion-debug:
   - apiVersion: v2
     appVersion: 1.16.0
-    created: "2021-10-15T15:02:28.846837986Z"
+    created: "2021-10-17T17:09:15.846067677Z"
     description: |
       A Helm chart for Kubernetes to deploy single instance of clickhouse, mongo, rabbitmq and redis.
       It's not recommend to use it in the production. Use charts from official rep for this purpose.
-    digest: fcbc320f3c579026aade0f3ca485cd315dd44564220cff62cc007d9e316056d4
+    digest: 6c48092c4e2763a24cc7c871514f71390c2c10358739c689bdb63598230cdd90
     name: aggregion-debug
     type: application
     urls:
@@ -520,11 +520,11 @@ entries:
   aggregion-externals:
   - apiVersion: v2
     appVersion: 1.16.0
-    created: "2021-10-15T15:02:28.848156699Z"
+    created: "2021-10-17T17:09:15.847122517Z"
     description: |
       A Helm chart for Kubernetes to deploy single instance of clickhouse, mongo, rabbitmq and redis.
       It's not recommend to use it in the production. Use charts from official rep for this purpose.
-    digest: 121d440ae6c729225752ebeb719600ce203e28ba283fc3dc19a4f9f1caa4063d
+    digest: 2e71565221f24bcaed8d86a65e6604cd3141a0498c857f16a55837177d065b5e
     name: aggregion-externals
     type: application
     urls:
@@ -581,17 +581,27 @@ entries:
   atlas:
   - apiVersion: v2
     appVersion: 1.0.0
-    created: "2021-10-15T15:02:28.850031518Z"
+    created: "2021-10-17T17:09:15.848643686Z"
     description: |
       A Helm chart for Kubernetes to deploy single instance of atlas, cassandra, hadoop, hbase, kafka, solr, zookeeper.
       It's not recommend to use it in the production. Use charts from official rep for this purpose.
-    digest: 5bca5b7702bf90f5d0ebf923ca0b46417ad8b83828564f1dade67610c77c8d4e
+    digest: e6e5c00346347eafa7ec0959426f54625470c83420a5111aa216a2d70f09a958
     name: atlas
     type: application
     urls:
     - https://aggregion.github.io/helm-charts-cdp/charts/atlas-0.1.0.tgz
     version: 0.1.0
   enclave-script-resolver:
+  - apiVersion: v2
+    appVersion: 1.16.0
+    created: "2021-10-17T17:09:15.849115415Z"
+    description: A Helm chart for Kubernetes
+    digest: 32c51745652b99ceb688a09894ee8cb3810b6e862cf24ad6f2669b965455ca01
+    name: enclave-script-resolver
+    type: application
+    urls:
+    - https://aggregion.github.io/helm-charts-cdp/charts/enclave-script-resolver-0.1.1.tgz
+    version: 0.1.1
   - apiVersion: v2
     appVersion: 1.16.0
     created: "2021-10-15T15:02:28.850532122Z"
@@ -605,9 +615,9 @@ entries:
   trino:
   - apiVersion: v2
     appVersion: "355"
-    created: "2021-10-15T15:02:28.851242129Z"
+    created: "2021-10-17T17:09:15.849725822Z"
     description: Fast distributed SQL query engine for big data analytics
-    digest: 203eeb267df83eade0685e55b5743851c841ec6bc2a16ab0a7f9877afc7a241b
+    digest: 0a5f056ed314f3f81214b4b539b624d870d7ed2ca45bed040b5b7a85fb05ad4f
     home: https://trino.io/
     icon: https://trino.io/assets/trino.png
     maintainers:
@@ -620,4 +630,4 @@ entries:
     urls:
     - https://aggregion.github.io/helm-charts-cdp/charts/trino-0.2.0.tgz
     version: 0.2.0
-generated: "2021-10-15T15:02:28.840153621Z"
+generated: "2021-10-17T17:09:15.840591807Z"
