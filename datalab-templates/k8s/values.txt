@@ -1,3 +1,11 @@
+## K8S labels for namespaces
+
+Before starting to upload templates and configure, add labels for namespaces:
+
+1. For `kube-system` add label `name=kube-system`.
+1. For `{{YOUR CDP NAMESPACE}}` add label `name={{YOUR CDP NAMESPACE}}` (if not exists).
+
+
 ## Configuration values
 
 In chart the "aggregion-dc" use value "dc.configs.paramsDefaults" to pre-define below values.
@@ -31,7 +39,8 @@ datalabProxyImage - default [registry.aggregion.com/datalab-proxy:latest].
 datalabProxyImagePullPolicy - default [Always].
 datalabAuthImage - default [registry.aggregion.com/datalab-auth:latest].
 datalabAuthImagePullPolicy - default [Always].
-
+datalabIngressNamespace - The name of namespace where ingress is deployed. default [default].
+datalabIngressType - Use concrete type of k8s ingress. default [ingress-nginx].
 
 ## Values will set up externally by DMP (placed for info only).
 

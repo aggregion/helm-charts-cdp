@@ -1,6 +1,7 @@
 {{- if .Values.frontend.ingress.enabled -}}
 {{- $frontendName := include "cdp.frontend.fullname" . -}}
 {{- $backendName := include "cdp.backend.fullname" . -}}
+{{- $dataserviceName := include "cdp.dataservice.fullname" . }}
 {{- $datalabProxyName := printf "%s-dlproxy" $backendName -}}
 {{- if semverCompare ">=1.22-0" .Capabilities.KubeVersion.GitVersion -}}
 apiVersion: networking.k8s.io/v1
@@ -56,6 +57,13 @@ spec:
                 name: "{{ $backendName }}"
                 port:
                   name: "httpapi"
+          - path: "/webhooks"
+            pathType: "Prefix"
+            backend:
+              service:
+                name: "{{ $backendName }}"
+                port:
+                  name: "httpapi"
           {{- if $.Values.backend.configs.accessFromFrontendEnabled }}
           - path: "/enclave"
             pathType: "Prefix"
@@ -95,7 +103,14 @@ spec:
                 name: "{{ $frontendName }}"
                 port:
                   name: "http"
-          {{- else }} # >= 1.22
+          {{- if $.Values.backend.configs.dataserviceViaFrontendEnabled }}
+          - path: "/api" # dataservice (workaround)
+            pathType: "Prefix"
+            backend:
+              serviceName: "{{ $dataserviceName }}"
+              servicePort: "httpapi"
+          {{- end }}
+          {{- else }} # <= 1.22
           - path: "/graphql"
             backend:
               serviceName: "{{ $backendName }}"
@@ -105,6 +120,10 @@ spec:
               serviceName: "{{ $backendName }}"
               servicePort: "httpapi"
           - path: "/files"
+            backend:
+              serviceName: "{{ $backendName }}"
+              servicePort: "httpapi"
+          - path: "/webhooks"
             backend:
               serviceName: "{{ $backendName }}"
               servicePort: "httpapi"
@@ -132,6 +151,12 @@ spec:
             backend:
               serviceName: "{{ $frontendName }}"
               servicePort: "http"
+          {{- if $.Values.backend.configs.dataserviceViaFrontendEnabled }}
+          - path: "/api" # dataservice (workaround)
+            backend:
+              serviceName: "{{ $dataserviceName }}"
+              servicePort: "httpapi"
+          {{- end }}
           {{- end }}
     {{- end }}
 {{- end }}

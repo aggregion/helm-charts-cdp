@@ -11,4 +11,5 @@ data:
   DATABASE_PORT: "{{ .Values.dc.configs.databasePort }}"
   APP_PLATFORM_URL: "http://platform:20200"
   APP_PROVISION_URL: "http://provision:20300"
+  APP_LOGGER: "{{ .Values.dc.configs.loglevel }}"
 {{- end }}
