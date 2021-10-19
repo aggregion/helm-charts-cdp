@@ -33,7 +33,7 @@ spec:
       updateStrategy:
         type: {{ .Values.agentk8s.updateStrategy }}
       {{- end }}
-      serviceAccountName: "{{ include "dctl.serviceAccountName" . }}-agent-k8s"
+      serviceAccountName: "{{ include "dctl.agentServiceAccountName" . }}"
       securityContext:
         {{- toYaml .Values.agentk8s.podSecurityContext | nindent 8 }}
       containers:

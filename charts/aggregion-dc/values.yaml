@@ -5,11 +5,8 @@
 replicaCount: 1
 imagePullSecrets:
   - name: aggregionregistry
-serviceAccount:
-  create: true
-  role: permissionless
-  annotations: {}
-  name: "deploy-controller"
+
+allowedNamespaces: []
 
 agentk8s:
   enabled: true
@@ -18,6 +15,11 @@ agentk8s:
     repository: registry.aggregion.com/deploy-controller-re
     pullPolicy: IfNotPresent
     tag: "latest"
+  serviceAccount:
+    create: true
+    role: permissionless
+    annotations: {}
+    name: "deploy-controller-agent"
   configs:
     loglevel: "log"
     dumpPath: ""
@@ -59,6 +61,10 @@ dc:
     repository: registry.aggregion.com/deploy-controller-re
     pullPolicy: IfNotPresent
     tag: "latest"
+  serviceAccount:
+    create: true
+    annotations: {}
+    name: "deploy-controller"
   configs:
     loglevel: "log"
     # secret for encryption data in database
@@ -108,10 +114,12 @@ dc:
   deployerApp:
     enabled: false
     databaseSchema: 'deployer_app'
+    defaultNamespace: 'default'
 
   deployerDatalab:
     enabled: false
     databaseSchema: 'deployer_datalab'
+    defaultNamespace: 'default'
 
   platform:
     databaseSchema: 'platform'

@@ -37,7 +37,7 @@ spec:
       updateStrategy:
         type: {{ .Values.dc.updateStrategy }}
       {{- end }}
-      serviceAccountName: "{{ include "dctl.serviceAccountName" . }}"
+      serviceAccountName: "{{ include "dctl.dcServiceAccountName" . }}"
       securityContext:
         {{- toYaml .Values.dc.podSecurityContext | nindent 8 }}
       containers:
@@ -124,6 +124,8 @@ spec:
               value: "{{ .Values.dc.deployerDatalab.databaseDb | default .Values.dc.configs.databaseDb }}"
             - name: DATABASE_SCHEMA
               value: "{{ .Values.dc.deployerDatalab.databaseSchema }}"
+            - name: APP_DEFAULT_NAMESPACE
+              value: "{{ .Values.dc.deployerDatalab.defaultNamespace }}"
           envFrom:
             - configMapRef:
                 name: "{{ $dcName }}-config"

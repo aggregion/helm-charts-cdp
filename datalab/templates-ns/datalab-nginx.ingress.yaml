@@ -1,0 +1,88 @@
+{{#if datalabIngress}}
+---
+{{#ifCond k8sversion '>=' '1.22'}}
+apiVersion: networking.k8s.io/v1
+{{else}}
+apiVersion: networking.k8s.io/v1beta1
+{{/ifCond}}
+kind: Ingress
+metadata:
+  name: "dl-vm-{{ ns }}"
+  annotations:
+    kubernetes.io/ingress.class: "{{#if datalabIngressClass}}{{ datalabIngressClass }}{{else}}nginx{{/if}}"
+    {{#ifCond datalabIngressClass 'eq' 'nginx'}}
+    nginx.ingress.kubernetes.io/proxy-body-size: "8m"
+    nginx.ingress.kubernetes.io/proxy-read-timeout: "360"
+    nginx.ingress.kubernetes.io/proxy-send-timeout: "360"
+    {{/ifCond}}
+  labels:
+    cdp/project: "datalab"
+    datalab/namespace: "{{ ns }}"
+    datalab/component: "datalab"
+spec:
+  rules:
+    - host: "{{ domain }}"
+      http:
+        paths:
+{{#ifCond k8sversion '>=' '1.22'}}
+          - backend:
+              service:
+                name: "dl-auth-{{ ns }}"
+                port:
+                  name: "dl-auth"
+            path: "/access"
+            pathType: Prefix
+{{else}}
+          - backend:
+              serviceName: "dl-auth-{{ ns }}"
+              servicePort: "dl-auth"
+            path: "/access"
+            pathType: Prefix
+{{/ifCond}}
+{{/if}}
+
+{{#if datalabS3Ingress}}
+---
+{{#ifCond k8sversion '>=' '1.22'}}
+apiVersion: networking.k8s.io/v1
+{{else}}
+apiVersion: networking.k8s.io/v1beta1
+{{/ifCond}}
+kind: Ingress
+metadata:
+  name: "dl-s3-{{ ns }}"
+  annotations:
+    kubernetes.io/ingress.class: "{{#if datalabIngressClass}}{{ datalabIngressClass }}{{else}}nginx{{/if}}"
+    {{#ifCond datalabIngressClass 'eq' 'nginx'}}
+    nginx.ingress.kubernetes.io/proxy-body-size: "120g"
+    nginx.ingress.kubernetes.io/proxy-read-timeout: "360"
+    nginx.ingress.kubernetes.io/proxy-send-timeout: "360"
+    {{#if datalabS3WhitelistIps}}
+    nginx.ingress.kubernetes.io/whitelist-source-range: "{{ datalabS3WhitelistIps }}"
+    {{/if}}
+    {{/ifCond}}
+  labels:
+    cdp/project: "datalab"
+    datalab/namespace: "{{ ns }}"
+    datalab/component: "s3"
+spec:
+  rules:
+    - host: "s3.{{ domain }}"
+      http:
+        paths:
+{{#ifCond k8sversion '>=' '1.22'}}
+          - backend:
+              service:
+                name: "dl-{{ ns }}"
+                port:
+                  name: "dl-s3"
+            path: "/"
+            pathType: Prefix
+{{else}}
+          - backend:
+              serviceName: "dl-{{ ns }}"
+              servicePort: "dl-s3"
+            path: "/"
+            pathType: Prefix
+{{/ifCond}}
+{{/if}}

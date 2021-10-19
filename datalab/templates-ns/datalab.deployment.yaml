@@ -1,0 +1,286 @@
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: "dlclaim-{{ ns }}"
+  labels:
+    cdp/project: "datalab"
+    datalab/namespace: "{{ ns }}"
+    datalab/component: "datalab"
+spec:
+  accessModes:
+    - ReadWriteOnce
+  {{#if datalabStorageClassName}}
+  storageClassName: "{{ datalabStorageClassName }}"
+  {{/if}}
+  resources:
+    requests:
+      {{#if datalabStorageSize}}
+      storage: "{{ datalabStorageSize }}Gi"
+      {{else}}
+      storage: "50Gi"
+      {{/if}}
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: "dl-{{ ns }}"
+  labels:
+    cdp/project: "datalab"
+    datalab/namespace: "{{ ns }}"
+    datalab/component: "datalab"
+spec:
+  selector:
+    matchLabels:
+      name: "dl-{{ ns }}"
+  template:
+    metadata:
+      labels:
+        cdp/project: "datalab"
+        datalab/namespace: "{{ ns }}"
+        datalab/component: "datalab"
+        name: "dl-{{ ns }}"
+    spec:
+      automountServiceAccountToken: false
+      enableServiceLinks: false
+      initContainers:
+        - name: "init-datalab-server"
+          image: "{{#if datalabImage}}{{ datalabImage }}{{else}}registry.aggregion.com/datalab:latest{{/if}}"
+          imagePullPolicy: "{{#if datalabImagePullPolicy}}{{ datalabImagePullPolicy }}{{else}}Always{{/if}}"
+          tty: true
+          command: ["sh", "-ex", "-c"]
+          args:
+            - >
+              [ -z "$(ls /dest/bin)" ] && cp -rp /bin /dest ;
+              [ -z "$(ls /dest/sbin)" ] && cp -rp /sbin /dest ;
+              [ -z "$(ls /dest/etc)" ] && cp -rp /etc /dest ;
+              [ -z "$(ls /dest/home)" ] && cp -rp /home /dest ;
+              [ -z "$(ls /dest/lib)" ] && cp -rp /lib /dest ;
+              [ -z "$(ls /dest/lib64)" ] && cp -rp /lib64 /dest ;
+              [ -z "$(ls /dest/opt)" ] && cp -rp /opt /dest ;
+              [ -z "$(ls /dest/root)" ] && cp -rp /root /dest ;
+              [ -z "$(ls /dest/usr)" ] && cp -rp /usr /dest ;
+              [ -z "$(ls /dest/var)" ] && cp -rp /var /dest ;
+              true
+          volumeMounts:
+            - mountPath: /dest/bin
+              subPath: bin
+              name: datalabpv
+            - mountPath: /dest/sbin
+              subPath: sbin
+              name: datalabpv
+            - mountPath: /dest/etc
+              subPath: etc
+              name: datalabpv
+            - mountPath: /dest/home
+              subPath: home
+              name: datalabpv
+            - mountPath: /dest/lib
+              subPath: lib
+              name: datalabpv
+            - mountPath: /dest/lib64
+              subPath: lib64
+              name: datalabpv
+            - mountPath: /dest/opt
+              subPath: opt
+              name: datalabpv
+            - mountPath: /dest/root
+              subPath: root
+              name: datalabpv
+            - mountPath: /dest/usr
+              subPath: usr
+              name: datalabpv
+            - mountPath: /dest/var
+              subPath: var
+              name: datalabpv
+      containers:
+        - name: "datalab-server"
+          image: "{{#if datalabImage}}{{ datalabImage }}{{else}}registry.aggregion.com/datalab:latest{{/if}}"
+          imagePullPolicy: "{{#if datalabImagePullPolicy}}{{ datalabImagePullPolicy }}{{else}}Always{{/if}}"
+          tty: true
+          env:
+            - name: AIC
+              value: "{{ datalabAllowInternet }}"
+          # envFrom:
+          #   - configMapRef:
+          #       name: "datalab-config"
+          resources:
+            requests:
+              cpu: "1"
+              memory: "1Gi"
+            limits:
+              cpu: "{{#if datalabCpuLimit}}{{ datalabCpuLimit }}{{else}}2{{/if}}"
+              memory: "{{#if datalabMemoryLimitGb}}{{ datalabMemoryLimitGb }}{{else}}8{{/if}}Gi"
+          ports:
+            - name: "dlport"
+              containerPort: 6080
+            - name: "dlports3"
+              containerPort: 9000
+          securityContext:
+              #readOnlyRootFilesystem: true
+              #runAsNonRoot: true
+              #privileged: false
+              # capabilities:
+              #   add:
+              #     - "SYS_ADMIN"
+          volumeMounts:
+            - mountPath: /bin
+              subPath: bin
+              name: datalabpv
+            - mountPath: /sbin
+              subPath: sbin
+              name: datalabpv
+            - mountPath: /etc
+              subPath: etc
+              name: datalabpv
+            - mountPath: /home
+              subPath: home
+              name: datalabpv
+            - mountPath: /lib
+              subPath: lib
+              name: datalabpv
+            - mountPath: /lib32
+              subPath: lib32
+              name: datalabpv
+            - mountPath: /lib64
+              subPath: lib64
+              name: datalabpv
+            - mountPath: /opt
+              subPath: opt
+              name: datalabpv
+            - mountPath: /root
+              subPath: root
+              name: datalabpv
+            - mountPath: /usr
+              subPath: usr
+              name: datalabpv
+            - mountPath: /var
+              subPath: var
+              name: datalabpv
+      restartPolicy: Always
+      volumes:
+        - name: datalabpv
+          persistentVolumeClaim:
+            claimName: "dlclaim-{{ ns }}"
+      imagePullSecrets:
+        - name: "{{#if datalabImagePullSecretName}}{{ datalabImagePullSecretName }}{{else}}aggregionregistry{{/if}}"
+      {{#if datalabNodeSelector }}
+      nodeSelector:
+        {{toYaml datalabNodeSelector 8}}
+      {{/if}}
+      {{#if datalabAffinity }}
+      affinity:
+        {{toYaml datalabAffinity 8}}
+      {{/if}}
+      {{#if datalabTolerations }}
+      tolerations:
+        {{toYaml datalabTolerations 8}}
+      {{/if}}
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: "dl-proxy-{{ ns }}"
+  labels:
+    cdp/project: "datalab"
+    datalab/namespace: "{{ ns }}"
+    datalab/component: "proxy"
+    name: "dl-proxy-{{ ns }}"
+spec:
+  selector:
+    matchLabels:
+      name: "dl-proxy-{{ ns }}"
+  template:
+    metadata:
+      labels:
+        cdp/project: "datalab"
+        datalab/namespace: "{{ ns }}"
+        datalab/component: "proxy"
+        name: "dl-proxy-{{ ns }}"
+    spec:
+      automountServiceAccountToken: false
+      terminationGracePeriodSeconds: 1
+      containers:
+        - name: "datalab-proxy-server"
+          image: "{{#if datalabProxyImage}}{{ datalabProxyImage }}{{else}}registry.aggregion.com/datalab-proxy:latest{{/if}}"
+          imagePullPolicy: "{{#if datalabProxyImagePullPolicy}}{{ datalabProxyImagePullPolicy }}{{else}}Always{{/if}}"
+          resources:
+            requests:
+              memory: "384Mi"
+            limits:
+              memory: "768Mi"
+          ports:
+            - name: "dlproxyport"
+              containerPort: 3128
+      imagePullSecrets:
+        - name: "{{#if datalabImagePullSecretName}}{{ datalabImagePullSecretName }}{{else}}aggregionregistry{{/if}}"
+      {{#if datalabNodeSelector }}
+      nodeSelector:
+        {{toYaml datalabNodeSelector 8 }}
+      {{/if}}
+      {{#if datalabAffinity }}
+      affinity:
+        {{toYaml datalabAffinity 8 }}
+      {{/if}}
+      {{#if datalabTolerations }}
+      tolerations:
+        {{toYaml datalabTolerations 8 }}
+      {{/if}}
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: "dl-auth-{{ ns }}"
+  labels:
+    cdp/project: "datalab"
+    datalab/namespace: "{{ ns }}"
+    datalab/component: "auth"
+    name: "dl-auth-{{ ns }}"
+spec:
+  selector:
+    matchLabels:
+      name: "dl-auth-{{ ns }}"
+  template:
+    metadata:
+      labels:
+        cdp/project: "datalab"
+        datalab/namespace: "{{ ns }}"
+        datalab/component: "auth"
+        name: "dl-auth-{{ ns }}"
+    spec:
+      automountServiceAccountToken: false
+      terminationGracePeriodSeconds: 1
+      containers:
+        - name: "datalab-auth-server"
+          image: "{{#if datalabAuthImage}}{{ datalabAuthImage }}{{else}}registry.aggregion.com/datalab-auth:latest{{/if}}"
+          imagePullPolicy: "{{#if datalabAuthImagePullPolicy}}{{ datalabAuthImagePullPolicy }}{{else}}Always{{/if}}"
+          env:
+            - name: TARGET_SERVER
+              value: "http://dl-{{ ns }}:6080"
+            - name: AUTH_SERVER
+              value: "{{{ datalabAuthUrl }}}"
+          resources:
+            requests:
+              memory: "384Mi"
+            limits:
+              memory: "512Mi"
+          ports:
+            - name: "dlauthport"
+              containerPort: 8000
+      imagePullSecrets:
+        - name: "{{#if datalabImagePullSecretName}}{{ datalabImagePullSecretName }}{{else}}aggregionregistry{{/if}}"
+      {{#if datalabNodeSelector }}
+      nodeSelector:
+        {{toYaml datalabNodeSelector 8 }}
+      {{/if}}
+      {{#if datalabAffinity }}
+      affinity:
+        {{toYaml datalabAffinity 8 }}
+      {{/if}}
+      {{#if datalabTolerations }}
+      tolerations:
+        {{toYaml datalabTolerations 8 }}
+      {{/if}}
