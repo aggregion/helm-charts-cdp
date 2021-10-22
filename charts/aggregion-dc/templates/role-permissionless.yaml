@@ -1,12 +1,14 @@
 {{- if and .Values.agentk8s.enabled .Values.agentk8s.serviceAccount.create -}}
-{{- if and (.Values.agentk8s.serviceAccount.role) (not .Values.allowedNamespaces) -}}
+{{- if and (.Values.agentk8s.serviceAccount.role) (.Values.allowedNamespaces) -}}
+{{- range .Values.allowedNamespaces }}
 apiVersion: rbac.authorization.k8s.io/v1
-kind: ClusterRole
+kind: Role
 metadata:
-  name: "{{ include "dctl.name" . }}-{{ .Values.agentk8s.serviceAccount.role }}"
+  name: "{{ include "dctl.name" $ }}-{{ $.Values.agentk8s.serviceAccount.role }}"
+  namespace: "{{ . }}"
   labels:
-    {{- include "dctl.labels" . | nindent 4 }}
-  {{- with .Values.agentk8s.serviceAccount.annotations }}
+    {{- include "dctl.labels" $ | nindent 4 }}
+  {{- with $.Values.agentk8s.serviceAccount.annotations }}
   annotations:
     {{- toYaml . | nindent 4 }}
   {{- end }}
@@ -26,11 +28,21 @@ rules:
       - "statefulsets"
       - "persistentvolumeclaims"
       - "networkpolicies"
-      - "namespaces"
       - "jobs"
       - "cronjobs"
       - "daemonsets"
     verbs:
-      - '*'
+      - "*"
+  - apiGroups:
+      - ""
+    resources:
+      - "namespaces"
+    resourceNames:
+      {{- toYaml $.Values.allowedNamespaces | nindent 6 }}
+    verbs:
+      - "get"
+      - "list"
+      - "watch"
+{{- end }}
 {{- end }}
 {{- end }}

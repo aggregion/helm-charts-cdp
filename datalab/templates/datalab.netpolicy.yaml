@@ -10,7 +10,6 @@ spec:
   podSelector:
     matchLabels:
       name: "datalab-auth"
-{{#if datalabDmpNamespace}}
   ingress:
     - from:
       - namespaceSelector:
@@ -19,12 +18,14 @@ spec:
         podSelector:
           matchLabels:
             app.kubernetes.io/name: "{{#if datalabIngressType}}{{ datalabIngressType }}{{else}}ingress-nginx{{/if}}"
+{{#if datalabDmpNamespace}}
     - from:
       - namespaceSelector:
           matchLabels:
             name: "{{ datalabDmpNamespace }}"
         podSelector:
           matchLabels: {}
+{{/if}}
   egress:
     - to:
       - namespaceSelector:
@@ -38,21 +39,18 @@ spec:
             port: 53
           - protocol: UDP
             port: 53
+{{#if datalabDmpNamespace}}
     - to:
       - namespaceSelector:
           matchLabels:
             name: "{{ datalabDmpNamespace }}"
         podSelector:
           matchLabels: {}
+{{/if}}
     - to:
        - podSelector:
            matchLabels:
              name: "datalab"
-
-{{else}}
-  ingress: {}
-  egress: {}
-{{/if}}
   policyTypes:
     - Ingress
     - Egress

@@ -102,10 +102,18 @@ app.kubernetes.io/instance: "{{ .Release.Name }}"
 {{/*
 Create the name of the service account to use
 */}}
-{{- define "dctl.serviceAccountName" -}}
-{{- if .Values.serviceAccount.create }}
-{{-   default .Values.serviceAccount.name }}
+{{- define "dctl.dcServiceAccountName" -}}
+{{- if .Values.dc.serviceAccount.create }}
+{{-   default .Values.dc.serviceAccount.name }}
 {{- else }}
-{{-   default "default" .Values.serviceAccount.name }}
+{{-   default "default" .Values.dc.serviceAccount.name }}
+{{- end }}
+{{- end }}
+
+{{- define "dctl.agentServiceAccountName" -}}
+{{- if .Values.agentk8s.serviceAccount.create }}
+{{-   default .Values.agentk8s.serviceAccount.name }}
+{{- else }}
+{{-   default "default" .Values.agentk8s.serviceAccount.name }}
 {{- end }}
 {{- end }}

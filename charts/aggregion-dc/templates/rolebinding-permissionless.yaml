@@ -1,0 +1,25 @@
+{{- if and .Values.agentk8s.enabled .Values.agentk8s.serviceAccount.create -}}
+{{- if and (.Values.agentk8s.serviceAccount.role) (.Values.allowedNamespaces) -}}
+{{- range .Values.allowedNamespaces }}
+apiVersion: rbac.authorization.k8s.io/v1beta1
+kind: RoleBinding
+metadata:
+  name: "{{ include "dctl.name" $ }}-{{ include "dctl.agentServiceAccountName" $ }}-{{ $.Values.agentk8s.serviceAccount.role }}-binding"
+  labels:
+    {{- include "dctl.labels" $ | nindent 4 }}
+  {{- with $.Values.agentk8s.serviceAccount.annotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+  namespace: "{{ . }}"
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: "{{ include "dctl.name" $ }}-{{ $.Values.agentk8s.serviceAccount.role }}"
+subjects:
+  - kind: ServiceAccount
+    name: "{{ include "dctl.agentServiceAccountName" $ }}"
+    namespace: "{{ $.Release.Namespace }}"
+{{- end }}
+{{- end }}
+{{- end }}
