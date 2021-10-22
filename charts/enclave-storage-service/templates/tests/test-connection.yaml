@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: "{{ include "enclave-storage-service.fullname" . }}-test-connection"
+  labels:
+    {{- include "enclave-storage-service.labels" . | nindent 4 }}
+  annotations:
+    "helm.sh/hook": test
+spec:
+  containers:
+    - name: wget
+      image: busybox
+      command: ['wget']
+      args: ['{{ include "enclave-storage-service.fullname" . }}:{{ .Values.service.port }}']
+  restartPolicy: Never
