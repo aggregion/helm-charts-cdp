@@ -20,11 +20,21 @@ data:
 
         root   /var/www/html;
 
+        {{- if .Values.backend.datalabNamespace }}
+        location ~ /datalab/vm/([a-fA-F0-9]{8,8})-([a-fA-F0-9]{4,4})-([a-fA-F0-9-]+)/access {
+                set              $vmid1 $1;
+                set              $vmid2 $2;
+                set              $vmid3 $3;
+
+                proxy_pass                              http://datalab-auth-$vmid1$vmid2.{{ .Values.backend.datalabNamespace }}.svc.cluster.local:8000;
+                proxy_set_header Datalab-Vm-Id          $vmid1-$vmid2-$vmid3;
+        {{- else }}
         location ~ /datalab/vm/([a-fA-F0-9-]+)/access {
                 set              $vmid $1;
 
                 proxy_pass                              http://datalab-auth.datalab-$vmid.svc.cluster.local:8000;
                 proxy_set_header Datalab-Vm-Id          $vmid;
+        {{- end }}
                 # proxy_set_header Host                   $1.datalab.{ domain };
 
                 resolver kube-dns.kube-system.svc.cluster.local;

@@ -219,6 +219,8 @@ backend:
     datalabMemoryLimitGb: "8"
     # the namespace of dmp where it was deployed
     datalabDmpNamespace: "default"
+    # the namespace to deploy datalab vm, it will be dynamic if omitted
+    datalabNamespace: ""
     # domain suffix
     datalabOverwriteDomain: "localhost"
     # who can access s3 interface of minio in datalab
