@@ -20,7 +20,7 @@ data:
 
         root   /var/www/html;
 
-        {{- if .Values.backend.datalabNamespace }}
+        {{- if .Values.backend.configs.datalabNamespace }}
         location ~ /datalab/vm/([a-fA-F0-9]{8,8})-([a-fA-F0-9]{4,4})-([a-fA-F0-9-]+)/access {
                 set              $vmid1 $1;
                 set              $vmid2 $2;
