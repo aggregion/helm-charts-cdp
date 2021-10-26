@@ -27,17 +27,16 @@ spec:
 {{#ifCond k8sversion '>=' '1.22'}}
           - backend:
               service:
-                name: "dl-auth-{{ ns }}"
+                name: "dl-auth-{{ @root.ns }}"
                 port:
                   name: "dl-auth"
             path: "/access"
             pathType: Prefix
 {{else}}
           - backend:
-              serviceName: "dl-auth-{{ ns }}"
+              serviceName: "dl-auth-{{ @root.ns }}"
               servicePort: "dl-auth"
             path: "/access"
-            pathType: Prefix
 {{/ifCond}}
 {{/if}}
 
@@ -58,7 +57,7 @@ metadata:
     nginx.ingress.kubernetes.io/proxy-read-timeout: "360"
     nginx.ingress.kubernetes.io/proxy-send-timeout: "360"
     {{#if datalabS3WhitelistIps}}
-    nginx.ingress.kubernetes.io/whitelist-source-range: "{{ datalabS3WhitelistIps }}"
+    nginx.ingress.kubernetes.io/whitelist-source-range: "{{ @root.datalabS3WhitelistIps }}"
     {{/if}}
     {{/ifCond}}
   labels:
@@ -73,16 +72,15 @@ spec:
 {{#ifCond k8sversion '>=' '1.22'}}
           - backend:
               service:
-                name: "dl-{{ ns }}"
+                name: "dl-{{ @root.ns }}"
                 port:
                   name: "dl-s3"
             path: "/"
             pathType: Prefix
 {{else}}
           - backend:
-              serviceName: "dl-{{ ns }}"
+              serviceName: "dl-{{ @root.ns }}"
               servicePort: "dl-s3"
             path: "/"
-            pathType: Prefix
 {{/ifCond}}
 {{/if}}

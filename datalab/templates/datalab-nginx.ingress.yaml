@@ -34,7 +34,6 @@ spec:
               serviceName: "datalab-auth"
               servicePort: "datalab-auth"
             path: "/access"
-            pathType: Prefix
 {{/ifCond}}
 {{/if}}
 
@@ -54,7 +53,7 @@ metadata:
     nginx.ingress.kubernetes.io/proxy-read-timeout: "360"
     nginx.ingress.kubernetes.io/proxy-send-timeout: "360"
     {{#if datalabS3WhitelistIps}}
-    nginx.ingress.kubernetes.io/whitelist-source-range: "{{ datalabS3WhitelistIps }}"
+    nginx.ingress.kubernetes.io/whitelist-source-range: "{{ @root.datalabS3WhitelistIps }}"
     {{/if}}
   labels:
     project: "datalab"
@@ -77,6 +76,5 @@ spec:
               serviceName: "datalab"
               servicePort: "datalab-s3"
             path: "/"
-            pathType: Prefix
 {{/ifCond}}
 {{/if}}
