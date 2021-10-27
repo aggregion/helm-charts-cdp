@@ -34,6 +34,8 @@ spec:
   selector:
     matchLabels:
       name: "dl-{{ ns }}"
+  strategy:
+    type: Recreate
   template:
     metadata:
       labels:

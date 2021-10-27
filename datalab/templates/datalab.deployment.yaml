@@ -33,6 +33,8 @@ spec:
   selector:
     matchLabels:
       name: "datalab"
+  strategy:
+    type: Recreate
   template:
     metadata:
       labels:

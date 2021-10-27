@@ -42,6 +42,7 @@ datalabAuthImagePullPolicy - default [Always].
 datalabIngressNamespace - The name of namespace where ingress is deployed. default [default].
 datalabIngressType - Use concrete type of k8s ingress. default [ingress-nginx].
 datalabIngressClass - Use concrete type of k8s ingress class. default [nginx].
+datalabIngressS3BodySizeInMb - Limit max body size. default [0].
 datalabNodeSelector - K8S deployment node selector. no defaults.
 datalabAffinity - K8S deployment affinity. no defaults.
 datalabTolerations - K8S deployment Tolerations. no defaults.

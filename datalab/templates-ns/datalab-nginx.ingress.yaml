@@ -10,7 +10,7 @@ metadata:
   name: "dl-vm-{{ ns }}"
   annotations:
     kubernetes.io/ingress.class: "{{#if datalabIngressClass}}{{ datalabIngressClass }}{{else}}nginx{{/if}}"
-    {{#ifCond datalabIngressClass 'eq' 'nginx'}}
+    {{#ifCond datalabIngressClass '==' 'nginx'}}
     nginx.ingress.kubernetes.io/proxy-body-size: "8m"
     nginx.ingress.kubernetes.io/proxy-read-timeout: "360"
     nginx.ingress.kubernetes.io/proxy-send-timeout: "360"
@@ -52,8 +52,8 @@ metadata:
   name: "dl-s3-{{ ns }}"
   annotations:
     kubernetes.io/ingress.class: "{{#if datalabIngressClass}}{{ datalabIngressClass }}{{else}}nginx{{/if}}"
-    {{#ifCond datalabIngressClass 'eq' 'nginx'}}
-    nginx.ingress.kubernetes.io/proxy-body-size: "120g"
+    {{#ifCond datalabIngressClass '==' 'nginx'}}
+    nginx.ingress.kubernetes.io/proxy-body-size: "{{#if datalabIngressS3BodySizeInMb}}{{ datalabIngressS3BodySizeInMb }}m{{else}}0{{/if}}"
     nginx.ingress.kubernetes.io/proxy-read-timeout: "360"
     nginx.ingress.kubernetes.io/proxy-send-timeout: "360"
     {{#if datalabS3WhitelistIps}}
