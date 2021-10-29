@@ -17,6 +17,8 @@ data:
   CLICKHOUSE_HOST: "{{ .Values.backend.configs.clickhouseHost }}"
   CLICKHOUSE_PORT: "{{ .Values.backend.configs.clickhousePort }}"
   CLICKHOUSE_DB: "{{ .Values.backend.configs.clickhouseDb }}"
+  CLICKHOUSE_USER: "{{ .Values.backend.configs.clickhouseUser }}"
+  CLICKHOUSE_PASSWORD: "{{ .Values.backend.configs.clickhousePassword }}"
   EOS_NODE_URL: "{{ .Values.backend.configs.eosNodeUrl }}"
   EOS_WALLET_ORG_ID: "{{ .Values.backend.configs.eosWalletOwnerOrgId }}"
   EOS_WALLET_PUBLIC_KEY: "{{ .Values.backend.configs.eosWalletOwnerPub }}"
