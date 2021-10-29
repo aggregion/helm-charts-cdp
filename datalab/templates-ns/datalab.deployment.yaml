@@ -101,9 +101,9 @@ spec:
           image: "{{#if datalabImage}}{{ datalabImage }}{{else}}registry.aggregion.com/datalab:latest{{/if}}"
           imagePullPolicy: "{{#if datalabImagePullPolicy}}{{ datalabImagePullPolicy }}{{else}}Always{{/if}}"
           tty: true
-          env:
-            - name: AIC
-              value: "{{ datalabAllowInternet }}"
+#          env:
+#            - name: AIC
+#              value: "{{ datalabAllowInternet }}"
           # envFrom:
           #   - configMapRef:
           #       name: "datalab-config"
@@ -123,14 +123,14 @@ spec:
             tcpSocket:
               port: 9000
             initialDelaySeconds: 10
-            periodSeconds: 20
-            failureThreshold: 10
+            periodSeconds: 10
+            failureThreshold: 20
           livenessProbe:
             tcpSocket:
               port: 6080
             initialDelaySeconds: 10
-            periodSeconds: 20
-            failureThreshold: 10
+            periodSeconds: 10
+            failureThreshold: 20
           securityContext:
               #readOnlyRootFilesystem: true
               #runAsNonRoot: true
