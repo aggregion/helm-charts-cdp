@@ -41,6 +41,7 @@ frontend:
     # runAsUser: 1000
   configs:
     listenPort: 5000
+    currency: RUB
   service:
     type: ClusterIP
     port: 5000
