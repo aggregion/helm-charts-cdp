@@ -9,7 +9,7 @@ metadata:
     {{- include "cdp.backend.labels" . | nindent 4 }}
 data:
   API_ENDPOINT: "http://{{ $backendName }}:{{ .Values.backend.service.api.port }}/graphql"
-  REACT_APP_CURRENCY: "{{ .Values.frontend.currency }}"
+  REACT_APP_CURRENCY: "{{ .Values.frontend.configs.currency }}"
   ATLAS_URL: "{{ .Values.backend.configs.atlasUrl }}"
   FILES_ENDPOINT: "http://{{ $backendName }}:{{ .Values.backend.service.api.port }}/"
   SERVER_PORT: "{{ .Values.backend.configs.listenPort }}"
