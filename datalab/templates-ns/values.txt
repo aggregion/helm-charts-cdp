@@ -3,6 +3,7 @@
 Before starting to upload templates and configure, add labels for namespaces:
 
 1. For `kube-system` add label `name=kube-system`.
+1. For `{{INGRESS NAMESPACE}}` add label `name={{INGRESS NAMESPACE}}` (if not exists).
 1. For `{{YOUR CDP NAMESPACE}}` add label `name={{YOUR CDP NAMESPACE}}` (if not exists).
 
 
@@ -31,6 +32,7 @@ Re-deploy "aggregion-dc" instance after configure values, and re-start "dc" depl
 k8sversion - Kubernetes server version, for an example 1.22. no defaults.
 datalabIngress - Ingress for datalab external access. default [false].
 datalabStorageClassName - Storage class for persistence volume claim. no defaults.
+datalabStorageAccessMode - Access storage mode. default [ReadWriteOnce].
 datalabImagePullSecretName - Registry secret name. default [aggregionregistry].
 datalabImagePullSecretInBase64 - Registry secret value encoded as base64 value. json .dockerconfig format. default [empty credentials].
 datalabImage - default [registry.aggregion.com/datalab:latest].
@@ -43,6 +45,7 @@ datalabIngressNamespace - The name of namespace where ingress is deployed. defau
 datalabIngressType - Use concrete type of k8s ingress. default [ingress-nginx].
 datalabIngressClass - Use concrete type of k8s ingress class. default [nginx].
 datalabIngressS3BodySizeInMb - Limit max body size. default [0].
+datalabUpdateStrategy - Deployment update strategy. default [Recreate].
 datalabNodeSelector - K8S deployment node selector. no defaults.
 datalabAffinity - K8S deployment affinity. no defaults.
 datalabTolerations - K8S deployment Tolerations. no defaults.

@@ -9,17 +9,13 @@ metadata:
     datalab/component: "datalab"
 spec:
   accessModes:
-    - ReadWriteOnce
+    - "{{#if datalabStorageAccessMode}}{{ datalabStorageAccessMode }}{{else}}ReadWriteOnce{{/if}}"
   {{#if datalabStorageClassName}}
   storageClassName: "{{ datalabStorageClassName }}"
   {{/if}}
   resources:
     requests:
-      {{#if datalabStorageSize}}
-      storage: "{{ datalabStorageSize }}Gi"
-      {{else}}
-      storage: "50Gi"
-      {{/if}}
+      storage: "{{#if datalabStorageSize}}{{ datalabStorageSize }}Gi{{else}}50Gi{{/if}}"
 
 ---
 apiVersion: apps/v1
@@ -35,7 +31,7 @@ spec:
     matchLabels:
       name: "dl-{{ ns }}"
   strategy:
-    type: Recreate
+    type: "{{#if datalabUpdateStrategy}}{{ datalabUpdateStrategy }}{{else}}Recreate{{/if}}"
   template:
     metadata:
       labels:
@@ -128,9 +124,15 @@ spec:
           livenessProbe:
             tcpSocket:
               port: 6080
-            initialDelaySeconds: 10
-            periodSeconds: 10
+            initialDelaySeconds: 15
+            periodSeconds: 15
             failureThreshold: 20
+          startupProbe:
+            tcpSocket:
+              port: 9000
+            initialDelaySeconds: 10
+            periodSeconds: 5
+            failureThreshold: 50
           securityContext:
               #readOnlyRootFilesystem: true
               #runAsNonRoot: true
