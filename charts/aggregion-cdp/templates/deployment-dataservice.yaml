@@ -102,6 +102,76 @@ spec:
             - secretRef:
                 name: "{{ $dataServiceName }}-secrets"
 
+        {{- if .Values.dataservice.glossarySyncers.enabled }}
+        - name: "glossary-syncer"
+          securityContext:
+            {{- toYaml .Values.dataservice.securityContext | nindent 12 }}
+
+          image: "{{ .Values.dataservice.imageApi.repository }}:{{ .Values.dataservice.imageApi.tag }}"
+          imagePullPolicy: {{ .Values.dataservice.imageApi.pullPolicy }}
+          args:
+            - npm
+            - run
+            - start:worker:glossary-syncer:prod
+
+          envFrom:
+            - configMapRef:
+                name: "{{ $dataServiceName }}-config"
+            - secretRef:
+                name: "{{ $dataServiceName }}-secrets"
+
+        - name: "glossary-updater"
+          securityContext:
+            {{- toYaml .Values.dataservice.securityContext | nindent 12 }}
+
+          image: "{{ .Values.dataservice.imageApi.repository }}:{{ .Values.dataservice.imageApi.tag }}"
+          imagePullPolicy: {{ .Values.dataservice.imageApi.pullPolicy }}
+          args:
+            - npm
+            - run
+            - start:worker:glossary-updater:prod
+
+          envFrom:
+            - configMapRef:
+                name: "{{ $dataServiceName }}-config"
+            - secretRef:
+                name: "{{ $dataServiceName }}-secrets"
+
+        - name: "glossary-term-syncer"
+          securityContext:
+            {{- toYaml .Values.dataservice.securityContext | nindent 12 }}
+
+          image: "{{ .Values.dataservice.imageApi.repository }}:{{ .Values.dataservice.imageApi.tag }}"
+          imagePullPolicy: {{ .Values.dataservice.imageApi.pullPolicy }}
+          args:
+            - npm
+            - run
+            - start:worker:glossary-term-syncer:prod
+
+          envFrom:
+            - configMapRef:
+                name: "{{ $dataServiceName }}-config"
+            - secretRef:
+                name: "{{ $dataServiceName }}-secrets"
+
+        - name: "glossary-term-updater"
+          securityContext:
+            {{- toYaml .Values.dataservice.securityContext | nindent 12 }}
+
+          image: "{{ .Values.dataservice.imageApi.repository }}:{{ .Values.dataservice.imageApi.tag }}"
+          imagePullPolicy: {{ .Values.dataservice.imageApi.pullPolicy }}
+          args:
+            - npm
+            - run
+            - start:worker:glossary-term-updater:prod
+
+          envFrom:
+            - configMapRef:
+                name: "{{ $dataServiceName }}-config"
+            - secretRef:
+                name: "{{ $dataServiceName }}-secrets"
+        {{- end }}
+
         - name: "atlas-entity-syncer"
           securityContext:
             {{- toYaml .Values.dataservice.securityContext | nindent 12 }}
