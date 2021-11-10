@@ -161,6 +161,9 @@ backend:
       smtp:
         host: "aggregion-cdp.com"
         port: 1025
+        secure: false
+        tls:
+          rejectUnauthorized: false
         auth:
           user: "username"
           pass: "password"
