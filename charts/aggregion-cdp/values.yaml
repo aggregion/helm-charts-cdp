@@ -465,3 +465,12 @@ dataservice:
     trinoHost: localhost
     trinoPort: 8080
     rabbitmqUri: "amqp://127.0.0.1"
+
+metadataSeed:
+  enabled: true
+  cronjob:
+    schedule: "*/30 * * * *"
+  image:
+    repository: registry.aggregion.com/metadata-seed
+    tag: latest
+    pullPolicy: IfNotPresent
