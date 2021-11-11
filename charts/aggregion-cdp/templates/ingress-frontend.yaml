@@ -107,8 +107,10 @@ spec:
           - path: "/api" # dataservice (workaround)
             pathType: "Prefix"
             backend:
-              serviceName: "{{ $dataserviceName }}"
-              servicePort: "httpapi"
+              service:
+                name: "{{ $dataserviceName }}"
+                port:
+                  name: "httpapi"
           {{- end }}
           {{- else }} # <= 1.22
           - path: "/graphql"
