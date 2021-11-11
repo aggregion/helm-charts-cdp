@@ -89,6 +89,10 @@ app.kubernetes.io/managed-by: {{ .Release.Service }}
 {{- include "cdp.component.labels" (list . "dataservice") }}
 {{- end }}
 
+{{- define "cdp.metadataseed.labels" -}}
+{{- include "cdp.component.labels" (list . "metadataseed") }}
+{{- end }}
+
 {{/*
 Selector labels
 */}}

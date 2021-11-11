@@ -5,7 +5,7 @@ kind: ConfigMap
 metadata:
   name: {{ $metadataSeedName }}-config
   labels:
-    {{- include "cdp.dataservice.labels" . | nindent 4 }}
+    {{- include "cdp.metadataseed.labels" . | nindent 4 }}
 data:   
   LOGGER_LEVEL: {{ .Values.dataservice.config.logLevel | quote }}
   TRINO_HOST: {{ .Values.dataservice.config.trinoHost | quote }}

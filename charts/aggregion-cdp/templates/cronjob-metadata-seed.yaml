@@ -10,7 +10,7 @@ kind: CronJob
 metadata:
   name: "{{ $metadataSeedName }}"
   labels:
-    {{- include "cdp.dataservice.labels" . | nindent 4 }}
+    {{- include "cdp.metadataseed.labels" . | nindent 4 }}
 spec:
   schedule: "{{ .Values.metadataSeed.cronjob.schedule }}"
   jobTemplate:
@@ -24,7 +24,7 @@ spec:
             args: ["sh" , "-e" , "-c" , "npm run start"]
             envFrom:
               - configMapRef:
-                name: "{{ $metadataSeedName }}-config"
+                  name: "{{ $metadataSeedName }}-config"
           restartPolicy: OnFailure
           {{- with .Values.imagePullSecrets }}
           imagePullSecrets:
