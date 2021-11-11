@@ -1,7 +1,7 @@
 
 {{- if .Values.metadataSeed.enabled }}
 {{- $backendName := include "cdp.backend.fullname" . -}}
-{{- $metadataSeedName := printf "%s-metadata-seed-cron-job" $backendName -}}
+{{- $metadataSeedName := printf "%s-metadata-seed" $backendName -}}
 {{- if semverCompare ">=1.21-0" .Capabilities.KubeVersion.GitVersion -}}
 apiVersion: batch/v1
 {{- else }}
@@ -19,7 +19,7 @@ spec:
       template:
         spec:
           containers:
-          - name: metadataSeed
+          - name: metadata-seed
             image: "{{ .Values.metadataSeed.image.repository }}:{{ .Values.metadataSeed.image.tag }}"
             imagePullPolicy: {{ .Values.metadataSeed.image.pullPolicy }}
             args: ["sh" , "-e" , "-c" , "npm run start"]
