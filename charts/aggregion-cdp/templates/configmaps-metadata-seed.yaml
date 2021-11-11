@@ -1,9 +1,9 @@
 {{- if .Values.metadataSeed.enabled }}
-{{- $name := include "cdp.metadataSeed.fullname" . }}
+{{- $metadataSeedName := include "cdp.metadataSeed.fullname" . }}
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: {{ $name }}-config
+  name: {{ $metadataSeedName }}-config
   labels:
     {{- include "cdp.dataservice.labels" . | nindent 4 }}
 data:   
