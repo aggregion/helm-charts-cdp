@@ -1,0 +1,16 @@
+{{- if .Values.metadataSeed.enabled }}
+{{- $name := include "cdp.metadataSeed.fullname" . }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ $name }}-config
+  labels:
+    {{- include "cdp.dataservice.labels" . | nindent 4 }}
+data:   
+  LOGGER_LEVEL: {{ .Values.dataservice.config.logLevel | quote }}
+  TRINO_HOST: {{ .Values.dataservice.config.trinoHost | quote }}
+  TRINO_PORT: {{ .Values.dataservice.config.trinoPort | quote }}
+  ATLAS_URL: "{{ .Values.dataservice.configAtlasSyncer.atlasBaseUrl }}"
+  ATLAS_USERNAME: "{{ .Values.dataservice.configAtlasSyncer.username }}"
+  ATLAS_PASSWORD: "{{ .Values.dataservice.configAtlasSyncer.password }}"
+{{- end }}
