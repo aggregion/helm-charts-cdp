@@ -26,6 +26,8 @@ spec:
               env:
                 - name: LOGGER_LEVEL
                   value: "{{ .Values.dataservice.config.logLevel }}"
+                - name: USER
+                  value: "metadata-seed" # need for presto-client: https://github.com/tagomoris/presto-client-node/blob/master/lib/presto-client/index.js#L40
                 - name: TRINO_HOST
                   value: "{{ .Values.dataservice.config.trinoHost }}"
                 - name: TRINO_PORT
