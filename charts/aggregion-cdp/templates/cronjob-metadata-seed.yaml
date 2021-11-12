@@ -11,7 +11,7 @@ kind: CronJob
 metadata:
   name: "{{ $metadataSeedName }}"
   labels:
-    {{- include "cdp.metadataseed.labels" . | nindent 4 }}
+    {{- include "cdp.dataservice.labels" . | nindent 4 }}
 spec:
   schedule: "{{ .Values.metadataSeed.cronjob.schedule }}"
   jobTemplate:

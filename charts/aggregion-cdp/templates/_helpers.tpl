@@ -49,10 +49,6 @@ If release name contains chart name it will be used as a full name.
 {{- printf "%s" (include "cdp.fullname" (list . "dataservice")) }}
 {{- end }}
 
-{{- define "cdp.metadataseed.fullname" -}}
-{{- printf "%s" (include "cdp.fullname" (list . "metadataseed")) }}
-{{- end }}
-
 {{/*
 Common labels
 */}}
