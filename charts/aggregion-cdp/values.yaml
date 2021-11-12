@@ -251,6 +251,7 @@ backend:
     datalabApiVersion: "0.2.0"
     # back reference to dmp api
     datalabAuthUrl: "http://datalab-auth-helper.datalab-auth-helper.svc.cluster.local:19000/"
+    datalabWebhookUrl: "http://aggregion-cdp-backend-EDIT_THAT.NAMESPACE.svc.cluster.local:8080/webhooks"
     listenPort: 15432
     atlasUrl: "http://atlas.local" # External link for the frontend
     dcUseExternalS3: false
@@ -353,7 +354,7 @@ enclave:
     # the key (pair with public key) is used to authenticate another enclaves
     authPrivateKey: "PrivateKeyBody"
     listenPort: 8321
-    datalabToken: ""
+    dataserviceToken: ""
   restartPolicy: Always
   nameOverride: ""
   fullnameOverride: ""
