@@ -1,6 +1,7 @@
 
 {{- if .Values.metadataSeed.enabled }}
-{{- $metadataSeedName := include "cdp.metadataseed.fullname" . }}
+{{- $backendName := include "cdp.backend.fullname" . -}}
+{{- $metadataSeedName := printf "%s-metadata-seed" $backendName -}}
 {{- if semverCompare ">=1.21-0" .Capabilities.KubeVersion.GitVersion -}}
 apiVersion: batch/v1
 {{- else }}
@@ -22,9 +23,6 @@ spec:
             image: "{{ .Values.metadataSeed.image.repository }}:{{ .Values.metadataSeed.image.tag }}"
             imagePullPolicy: {{ .Values.metadataSeed.image.pullPolicy }}
             args: ["sh" , "-e" , "-c" , "npm run start"]
-            envFrom:
-              - configMapRef:
-                  name: "{{ $metadataSeedName }}-config"
           restartPolicy: OnFailure
           {{- with .Values.imagePullSecrets }}
           imagePullSecrets:
