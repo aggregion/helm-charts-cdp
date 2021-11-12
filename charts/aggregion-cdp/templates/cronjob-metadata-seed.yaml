@@ -19,10 +19,23 @@ spec:
       template:
         spec:
           containers:
-          - name: metadata-seed
-            image: "{{ .Values.metadataSeed.image.repository }}:{{ .Values.metadataSeed.image.tag }}"
-            imagePullPolicy: {{ .Values.metadataSeed.image.pullPolicy }}
-            args: ["sh" , "-e" , "-c" , "npm run start"]
+            - name: metadata-seed
+              image: "{{ .Values.metadataSeed.image.repository }}:{{ .Values.metadataSeed.image.tag }}"
+              imagePullPolicy: {{ .Values.metadataSeed.image.pullPolicy }}
+              args: ["sh" , "-e" , "-c" , "npm run start"]
+              env:
+                - name: LOGGER_LEVEL
+                  value: "{{ .Values.dataservice.config.logLevel }}"
+                - name: TRINO_HOST
+                  value: "{{ .Values.dataservice.config.trinoHost }}"
+                - name: TRINO_PORT
+                  value: "{{ .Values.dataservice.config.trinoPort }}"
+                - name: ATLAS_URL
+                  value: "{{ .Values.dataservice.configAtlasSyncer.atlasBaseUrl }}"
+                - name: ATLAS_USERNAME
+                  value: "{{ .Values.dataservice.configAtlasSyncer.username }}"
+                - name: ATLAS_PASSWORD
+                  value: "{{ .Values.dataservice.configAtlasSyncer.password }}"
           restartPolicy: OnFailure
           {{- with .Values.imagePullSecrets }}
           imagePullSecrets:
