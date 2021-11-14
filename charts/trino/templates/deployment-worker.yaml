@@ -57,12 +57,14 @@ spec:
               port: http
             initialDelaySeconds: 60
             periodSeconds: 30
+            timeoutSeconds: 60
           readinessProbe:
             httpGet:
               path: /v1/info
               port: http
             initialDelaySeconds: 60
             periodSeconds: 30
+            timeoutSeconds: 60
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
       {{- with .Values.nodeSelector }}
