@@ -177,7 +177,7 @@ spec:
             {{- toYaml .Values.dataservice.securityContext | nindent 12 }}
 
           image: "{{ .Values.dataservice.imageAtlasEntitySyncer.repository }}:{{ .Values.dataservice.imageAtlasEntitySyncer.tag }}"
-          imagePullPolicy: { { .Values.dataservice.imageAtlasEntitySyncer.pullPolicy } }
+          imagePullPolicy: {{ .Values.dataservice.imageAtlasEntitySyncer.pullPolicy }}
 
           args:
             - npm
