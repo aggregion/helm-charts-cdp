@@ -85,6 +85,10 @@ app.kubernetes.io/managed-by: {{ .Release.Service }}
 {{- include "cdp.component.labels" (list . "dataservice") }}
 {{- end }}
 
+{{- define "cdp.metadataSeed.labels" -}}
+{{- include "cdp.component.labels" (list . "metadataSeed") }}
+{{- end }}
+
 {{/*
 Selector labels
 */}}
@@ -112,6 +116,10 @@ app.kubernetes.io/instance: "{{ .Release.Name }}"
 
 {{- define "cdp.dataservice.selectorLabels" -}}
 {{- include "cdp.selectorLabels" (list . "dataservice") }}
+{{- end }}
+
+{{- define "cdp.metadataSeed.selectorLabels" -}}
+{{- include "cdp.selectorLabels" (list . "metadataSeed") }}
 {{- end }}
 
 {{- define "cdp.selectorLabels.explicitly" -}}

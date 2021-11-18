@@ -468,6 +468,9 @@ dataservice:
 
 metadataSeed:
   enabled: false
+  replicaCount: 1
+  podAnnotations: {}
+  restartPolicy: Always
   cronjob:
     schedule: "*/30 * * * *"
   image:
