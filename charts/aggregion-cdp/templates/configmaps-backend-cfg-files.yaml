@@ -36,6 +36,7 @@ data:
             "apiVersion": "{{ .Values.backend.configs.datalabApiVersion }}",
             "clusterId": "{{ .Values.backend.configs.datalabPlatformId }}",
             "overwriteDomain": "{{ .Values.backend.configs.datalabOverwriteDomain }}",
+            "overwritePort": "{{ .Values.backend.configs.datalabOverwritePort }}",
             "templatesPrefix": "{{ .Values.backend.configs.datalabTemplates }}",
             "s3WhitelistIps": "{{ .Values.backend.configs.datalabWhiteIps }}",
             "authUrl": "{{ .Values.backend.configs.datalabAuthUrl }}",
