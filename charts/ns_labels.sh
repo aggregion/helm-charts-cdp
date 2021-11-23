@@ -1,6 +1,6 @@
 #!/bin/sh -e
 # input your company name first argument
-# for Example sh '''ns_labels.sh mycompanyname'''
+# for Example sh '''ns_labels.sh betatravel'''
 ns="$1"
 kubectl create ns $1
 kubectl create ns dc
