@@ -1,7 +1,7 @@
 #!/bin/sh
 
 helm upgrade --install --create-namespace \
-  -n alfatravel \ #change "alfatravel" on your namespace
+  -n betatravel \ #change "betatravel" on your namespace
   -f trino_values.yaml \ #values with helm charts
-  alfatrino \ # name helmcharts
+  betatrino \ # name helmcharts
   ./trino # path to directory charts
