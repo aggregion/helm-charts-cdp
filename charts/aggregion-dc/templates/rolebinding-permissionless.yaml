@@ -1,7 +1,11 @@
 {{- if and .Values.agentk8s.enabled .Values.agentk8s.serviceAccount.create -}}
 {{- if and (.Values.agentk8s.serviceAccount.role) (.Values.allowedNamespaces) -}}
 {{- range .Values.allowedNamespaces }}
+{{- if semverCompare ">=1.22-0" $.Capabilities.KubeVersion.GitVersion }}
+apiVersion: rbac.authorization.k8s.io/v1
+{{- else }}
 apiVersion: rbac.authorization.k8s.io/v1beta1
+{{- end }}
 kind: RoleBinding
 metadata:
   name: "{{ include "dctl.name" $ }}-{{ include "dctl.agentServiceAccountName" $ }}-{{ $.Values.agentk8s.serviceAccount.role }}-binding"
