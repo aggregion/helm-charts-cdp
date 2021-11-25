@@ -9,6 +9,7 @@ metadata:
     {{- include "cdp.metadataSeed.labels" . | nindent 4 }}
 spec:
   replicas: {{ .Values.metadataSeed.replicaCount }}
+  startingDeadlineSeconds: 200
   selector:
     matchLabels:
       {{- include "cdp.metadataSeed.selectorLabels" . | nindent 6 }}
