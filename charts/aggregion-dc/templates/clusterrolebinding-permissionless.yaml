@@ -1,6 +1,10 @@
 {{- if and .Values.agentk8s.enabled .Values.agentk8s.serviceAccount.create -}}
 {{- if and (.Values.agentk8s.serviceAccount.role) (not .Values.allowedNamespaces) -}}
+{{#ifCond k8sversion '>=' '1.22'}}
+apiVersion: rbac.authorization.k8s.io/v1
+{{else}}
 apiVersion: rbac.authorization.k8s.io/v1beta1
+{{/ifCond}}
 kind: ClusterRoleBinding
 metadata:
   name: "{{ include "dctl.name" . }}-{{ include "dctl.agentServiceAccountName" . }}-{{ .Values.agentk8s.serviceAccount.role }}-binding"
