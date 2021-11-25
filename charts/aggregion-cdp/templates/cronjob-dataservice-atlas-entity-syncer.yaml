@@ -11,6 +11,7 @@ metadata:
   labels:
     {{- include "cdp.dataservice.labels" . | nindent 4 }}
 spec:
+  startingDeadlineSeconds: 200
   schedule: "{{ .Values.dataservice.configAtlasSyncer.cronjob.schedule }}"
   jobTemplate:
     spec:
