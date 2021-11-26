@@ -51,8 +51,8 @@ atlas:
     annotations:
       kubernetes.io/ingress.class: nginx
       nginx.ingress.kubernetes.io/proxy-body-size: 128000m
-      nginx.ingress.kubernetes.io/limit-rps: 1000
-      nginx.ingress.kubernetes.io/limit-rpm: 60000
+      nginx.ingress.kubernetes.io/limit-rps: "1000"
+      nginx.ingress.kubernetes.io/limit-rpm: "60000"
     hosts:
       - host: atlas.local
         paths:
