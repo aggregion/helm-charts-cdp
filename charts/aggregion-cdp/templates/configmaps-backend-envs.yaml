@@ -40,7 +40,7 @@ data:
   DICTS_VENDORS: "{{ .Values.backend.configs.dictMode }}"
   SUPPORT_EMAIL: "{{ .Values.backend.configs.supportEmail }}"
   BASE_URL: "{{ .Values.backend.configs.baseUrl }}"
-  DATA_SERVICE_ENDPOINT: "http://{{ .Values.dataservice.configs.endpoint }}:{{ .Values.dataservice.service.port }}/api/"
+  DATA_SERVICE_ENDPOINT: "http://{{ $dataserviceName }}:{{ .Values.dataservice.service.port }}/api/"
   DATA_SERVICE_TOKEN: "{{ .Values.dataservice.config.accessToken }}"
   DEPLOY_CONTROLLER_USE_EXTERNAL_S3: "{{ .Values.backend.configs.dcUseExternalS3 }}"
   WEBHOOK_TOKEN_EXPIRATION_TIME: "{{ .Values.backend.configs.webhookTokenExpirationTime }}"
