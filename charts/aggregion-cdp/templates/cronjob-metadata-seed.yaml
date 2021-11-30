@@ -41,7 +41,7 @@ spec:
                   value: "{{ .Values.dataservice.configAtlasSyncer.username }}"
                 - name: ATLAS_PASSWORD
                   value: "{{ .Values.dataservice.configAtlasSyncer.password }}"
-          restartPolicy: OnFailure
+          restartPolicy: Never
           {{- with .Values.imagePullSecrets }}
           imagePullSecrets:
             {{- toYaml . | nindent 12 }}
