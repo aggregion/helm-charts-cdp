@@ -16,4 +16,4 @@ cat trino_values.yaml | grep --color=always -A3 "registry.aggregion.com/trinodb/
 echo 'DATALAB-HASH'
 cat cdp_values.yaml | grep 'datalab:'
 echo 'ENCLAVE-SERVER'
-docker ps | grep enclave | awk {'print$2'}
+docker ps | grep enclave-server | awk {'print$2'}
