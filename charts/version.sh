@@ -15,3 +15,5 @@ echo 'TRINO'
 cat trino_values.yaml | grep --color=always -A3 "registry.aggregion.com/trinodb/trino" | grep -v 'pullPolicy' | grep -v '#'
 echo 'DATALAB-HASH'
 cat cdp_values.yaml | grep 'datalab:'
+echo 'ENCLAVE-SERVER'
+docker ps | grep enclave | awk {'print$2'}
