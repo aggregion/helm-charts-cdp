@@ -26,5 +26,6 @@ data:
   TRINO_HOST: {{ .Values.dataservice.config.trinoHost | quote }}
   TRINO_PORT: {{ .Values.dataservice.config.trinoPort | quote }}
   RABBITMQ_URI: {{ .Values.dataservice.config.rabbitmqUri | quote }}
-  PROVIDER_INSTANCE_ID: {{ .Values.backend.configs.providerInstanceId | quote  }}
+  PROVIDER_INSTANCE_ID: {{ .Values.backend.configs.providerInstanceId | quote }}
+  CLICKHOUSE_USE_DIRECT_CONNECTION: {{ .Values.dataservice.config.clickhouseUseDirectConnection | quote }}
 {{- end }}
