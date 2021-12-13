@@ -471,6 +471,7 @@ dataservice:
     rabbitmqUri: "amqp://127.0.0.1"
     endpoint: "http://aggregion-cdp-dataservice-EDIT_THAT.NAMESPACE.svc.cluster.local:9045/api"
     clickhouseUseDirectConnection: true # since 2021-12-13
+    clickhouseIsMocked: false # since 2021-12-13
 
 metadataSeed:
   enabled: false
