@@ -32,23 +32,23 @@ spec:
       serviceAccountName: {{ include "cdp.serviceAccountName" . }}
       initContainers:
         - name: "init-dataservice-api"
-            securityContext:
+          securityContext:
               { { - toYaml .Values.dataservice.securityContext | nindent 12 } }
 
-            image: "{{ .Values.dataservice.imageApi.repository }}:{{ .Values.dataservice.imageApi.tag }}"
-            imagePullPolicy: { { .Values.dataservice.imageApi.pullPolicy } }
-            ports:
-              - name: httpapi
-                containerPort: { { .Values.dataservice.config.port } }
-            args:
-              - npm
-              - run
-              - migrate:up
-            envFrom:
-              - configMapRef:
-                  name: "{{ $dataServiceName }}-config"
-              - secretRef:
-                  name: "{{ $dataServiceName }}-secrets"
+          image: "{{ .Values.dataservice.imageApi.repository }}:{{ .Values.dataservice.imageApi.tag }}"
+          imagePullPolicy: {{ .Values.dataservice.imageApi.pullPolicy }}
+          ports:
+            - name: httpapi
+              containerPort: {{ .Values.dataservice.config.port }}
+          args:
+            - npm
+            - run
+            - migrate:up
+          envFrom:
+            - configMapRef:
+                name: "{{ $dataServiceName }}-config"
+            - secretRef:
+                name: "{{ $dataServiceName }}-secrets"
       containers:
         - name: "dataservice-api"
           securityContext:
