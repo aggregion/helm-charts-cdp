@@ -33,7 +33,7 @@ spec:
       initContainers:
         - name: "init-dataservice-api"
           securityContext:
-              { { - toYaml .Values.dataservice.securityContext | nindent 12 } }
+            {{- toYaml .Values.dataservice.securityContext | nindent 12 }}
 
           image: "{{ .Values.dataservice.imageApi.repository }}:{{ .Values.dataservice.imageApi.tag }}"
           imagePullPolicy: {{ .Values.dataservice.imageApi.pullPolicy }}
