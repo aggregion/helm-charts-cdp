@@ -280,8 +280,8 @@ backend:
           incomingList: ['DATA_RESEARCHER', 'DATA_ASSET_OWNER', 'DATA_STEWARD']
           outcomingList: ['DATA_RESEARCHER', 'DATA_ASSET_OWNER', 'DATA_STEWARD']
         DataLabScript:
-          get: ['DATA_RESEARCHER', 'DATA_STEWARD', 'DATA_ASSET_OWNER']
-          list: ['DATA_RESEARCHER', 'DATA_STEWARD', 'DATA_ASSET_OWNER']
+          get: ['GOD']
+          list: ['GOD']
         Dataset:
           get: [ 'DATA_ANALYST', 'ADMIN', 'DATA_RESEARCHER', 'DATA_ASSET_OWNER', 'DATA_STEWARD', 'GLOSSARY_RESEARCHER' ]
           list: [ 'DATA_ANALYST', 'ADMIN', 'DATA_RESEARCHER', 'DATA_ASSET_OWNER', 'DATA_STEWARD', 'GLOSSARY_RESEARCHER' ]
@@ -326,22 +326,10 @@ backend:
           createAndMoveToReview: ['DATA_RESEARCHER']
           upload: ['DATA_RESEARCHER']
         DataLabScript:
-          create: ['DATA_RESEARCHER']
-          merge: ['DATA_RESEARCHER']
-          changeStatus:
-            - if:
-                args:
-                  status: 'ready4review'
-              then: ['DATA_RESEARCHER']
-            - if:
-                args:
-                  status: 'approved'
-              then: ['DATA_STEWARD', 'DATA_ASSET_OWNER']
-            - if:
-                args:
-                  status: 'rejected'
-              then: ['DATA_STEWARD', 'DATA_ASSET_OWNER']
-          makeReview: ['DATA_STEWARD', 'DATA_ASSET_OWNER']
+          create: ['GOD']
+          merge: ['GOD']
+          changeStatus: ['GOD']
+          makeReview: ['GOD']
         GlossaryTerm:
           bookmark: ['GLOSSARY_RESEARCHER']
           unbookmark: ['GLOSSARY_RESEARCHER']
