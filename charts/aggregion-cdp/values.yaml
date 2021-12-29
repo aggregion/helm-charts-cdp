@@ -263,6 +263,88 @@ backend:
     atlasUrl: "http://atlas.local" # External link for the frontend
     dcUseExternalS3: false
     webhookTokenExpirationTime: 3600
+    userRolesMap:
+      Query:
+        Project:
+          get: ['DATA_ASSET_OWNER', 'DATA_STEWARD', 'DATA_RESEARCHER']
+          list: ['DATA_ASSET_OWNER', 'DATA_STEWARD', 'DATA_RESEARCHER']
+          incominglist: ['DATA_ASSET_OWNER', 'DATA_STEWARD', 'DATA_RESEARCHER']
+          outcominglist: ['DATA_ASSET_OWNER', 'DATA_STEWARD', 'DATA_RESEARCHER']
+        DataLabVM:
+          get: ['DATA_RESEARCHER']
+          list: ['DATA_RESEARCHER']
+          getBucketlistObjects: ['DATA_RESEARCHER']
+        DatasetRequest:
+          get: ['DATA_RESEARCHER', 'DATA_ASSET_OWNER', 'DATA_STEWARD']
+          list: ['DATA_RESEARCHER', 'DATA_ASSET_OWNER', 'DATA_STEWARD']
+          incomingList: ['DATA_RESEARCHER', 'DATA_ASSET_OWNER', 'DATA_STEWARD']
+          outcomingList: ['DATA_RESEARCHER', 'DATA_ASSET_OWNER', 'DATA_STEWARD']
+        DataLabScript:
+          get: ['DATA_RESEARCHER', 'DATA_STEWARD', 'DATA_ASSET_OWNER']
+          list: ['DATA_RESEARCHER', 'DATA_STEWARD', 'DATA_ASSET_OWNER']
+        Dataset:
+          get: [ 'DATA_ANALYST', 'ADMIN', 'DATA_RESEARCHER', 'DATA_ASSET_OWNER', 'DATA_STEWARD', 'GLOSSARY_RESEARCHER' ],
+          list: [ 'DATA_ANALYST', 'ADMIN', 'DATA_RESEARCHER', 'DATA_ASSET_OWNER', 'DATA_STEWARD', 'GLOSSARY_RESEARCHER' ]
+      Mutation:
+        Account:
+          updateGlobalOrgInfo: ['ADMIN']
+          setUserRoles: ['ADMIN']
+          removeUserRoles: ['ADMIN']
+          addMarketplaceInteraction: ['ADMIN']
+          deleteMarketplaceInteraction: ['ADMIN']
+          updateMarketplaceInteractions: ['ADMIN']
+          grantAccess: ['ADMIN']
+          denyAccess: ['ADMIN']
+        providerConfig:
+          setProviderConfig: ['ADMIN']
+        Project:
+          create: ['DATA_RESEARCHER']
+          merge: ['DATA_RESEARCHER'],
+          removeProject: ['DATA_RESEARCHER']
+          changeStatus: ['DATA_RESEARCHER']
+        DataLabVM:
+          create: ['DATA_RESEARCHER']
+          merge: ['DATA_RESEARCHER']
+          runDataLabVM: ['DATA_RESEARCHER']
+          stopDataLabVM: ['DATA_RESEARCHER']
+        DatasetRequest:
+          create: ['DATA_RESEARCHER']
+          merge: ['DATA_RESEARCHER']
+          changeStatus:
+            - if:
+                args:
+                  status: 'review'
+              then: ['DATA_RESEARCHER']
+            - if:
+                args:
+                  status: 'approved'
+              then: ['DATA_STEWARD', 'DATA_ASSET_OWNER']
+            - if:
+                args:
+                  status: 'rejected'
+              then: ['DATA_STEWARD', 'DATA_ASSET_OWNER']
+          createAndMoveToReview: ['DATA_RESEARCHER']
+          upload: ['DATA_RESEARCHER']
+        DataLabScript:
+          create: ['DATA_RESEARCHER']
+          merge: ['DATA_RESEARCHER']
+          changeStatus:
+            - if:
+                args:
+                  status: 'ready4review'
+              then: ['DATA_RESEARCHER']
+            - if:
+                args:
+                  status: 'approved'
+              then: ['DATA_STEWARD', 'DATA_ASSET_OWNER']
+            - if:
+                args:
+                  status: 'rejected'
+              then: ['DATA_STEWARD', 'DATA_ASSET_OWNER']
+          makeReview: ['DATA_STEWARD', 'DATA_ASSET_OWNER']
+        GlossaryTerm:
+          bookmark: ['GLOSSARY_RESEARCHER']
+          unbookmark: ['GLOSSARY_RESEARCHER']
 
   restartPolicy: Always
   nameOverride: ""
