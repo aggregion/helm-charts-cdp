@@ -70,5 +70,6 @@ data:
       },
       "webhook": {
         "tokenExpirationTime": {{ .Values.backend.configs.webhookTokenExpirationTime }}
-      }
+      },
+      "userRolesMap": {{ .Values.backend.configs.userRolesMap | toJson }}
     }
