@@ -2,7 +2,7 @@
 replicaCount: 1
 
 image:
-  repository: pypiserver/pypiserver
+  repository: registry.aggregion.com/pypiserver:v1.3.2
   tag: v1.3.2
   pullPolicy: IfNotPresent
   pullSecrets: []
@@ -44,7 +44,7 @@ ingress:
 
 service:
   type: ClusterIP
-  port: 8080
+  port: 80
   annotations: {}
   labels: {}
   clusterIP: ""
@@ -56,7 +56,7 @@ service:
   # nodePort: 30000
 
 persistence:
-  enabled: false
+  enabled: true
   ## PyPi server packages Persistent Volume Storage Class
   ## If defined, storageClassName: <storageClass>
   ## If set to "-", storageClassName: "", which disables dynamic provisioning
@@ -73,7 +73,7 @@ persistence:
   ## The Access mode should be ReadWriteMany if you decide to scale up to more
   ## than one replica
   accessMode: ReadWriteOnce
-  size: 5Gi
+  size: 15Gi
   mountPropagation: None
 
 securityContext:
