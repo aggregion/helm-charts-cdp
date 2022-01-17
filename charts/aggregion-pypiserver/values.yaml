@@ -1,11 +1,14 @@
 ## If you want more than 1 replica you will have to use a ReadWriteMany volume
+imagePullSecrets:
+  - name: aggregionregistry
+
 replicaCount: 1
 
 image:
-  repository: registry.aggregion.com/pypiserver:v1.3.2
+  repository: registry.aggregion.com/pypiserver
   tag: v1.3.2
   pullPolicy: IfNotPresent
-  pullSecrets: []
+#  pullSecrets: []
 
 pypiserver:
   # for a list of options see: https://github.com/pypiserver/pypiserver
