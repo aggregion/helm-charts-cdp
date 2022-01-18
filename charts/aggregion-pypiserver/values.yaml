@@ -27,7 +27,8 @@ auth:
 
 podAnnotations: {}
 
-podLabels: {}
+podLabels:
+  datalab/component: datalab
 
 ingress:
   enabled: false
