@@ -1,6 +1,6 @@
 #!/bin/sh
 helm upgrade --install --create-namespace \
-  -n betatravel \
-  -f keycloal_values.yaml \
+  -n keycloak \
+  -f keycloak_values.yaml \
   betaatlas \
   ./keycloak
