@@ -1,0 +1,66 @@
+{{- if .Values.authservice.enabled }}
+{{- $authServiceName := include "cdp.authservice.fullname" . }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: "{{ $authServiceName }}"
+  {{- with .Values.authservice.annotations }}
+  annotations:
+      {{- toYaml . | nindent 6 }}
+  {{- end }}
+  labels:
+    {{- include "cdp.authservice.labels" . | nindent 4 }}
+spec:
+  replicas: {{ .Values.authservice.replicaCount }}
+  selector:
+    matchLabels:
+      {{- include "cdp.authservice.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      {{- with .Values.authservice.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      labels:
+        {{- include "cdp.authservice.selectorLabels" . | nindent 8 }}
+    spec:
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      restartPolicy: {{ .Values.authservice.restartPolicy }}
+      serviceAccountName: {{ include "cdp.serviceAccountName" . }}
+      containers:
+        - name: "auth-service"
+          securityContext:
+            {{- toYaml .Values.authservice.securityContext | nindent 12 }}
+
+          image: "{{ .Values.authservice.imageApi.repository }}:{{ .Values.authservice.imageApi.tag }}"
+          imagePullPolicy: {{ .Values.authservice.imageApi.pullPolicy }}
+          ports:
+            - name: httpapi
+              containerPort: {{ .Values.authservice.config.port }}
+          args:
+            - npm
+            - run
+            - start:prod
+
+          envFrom:
+            - configMapRef:
+                name: "{{ $authServiceName }}-config"
+            - secretRef:
+                name: "{{ $authServiceName }}-secrets"
+
+      {{- with .Values.authservice.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.authservice.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+  {{- if .Values.authservice.updateStrategy }}
+  strategy:
+    {{- toYaml .Values.authservice.updateStrategy | nindent 4 }}
+  {{- end }}
+{{- end }}
