@@ -525,12 +525,12 @@ dataservice:
     accessToken: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0eXBlIjoiRGF0YSBBY2Nlc3MgVG9rZW4gZm9yIHRoZSBhdXRob3JpemF0aW9uIGluIHRoZSBsb2NhbCBwcm92aWRlciBlbnZpcm9ubWVudCIsImlhdCI6MTYzMjY2MDY1OCwiaXNzIjoic3RhZ2VfcHJvdmlkZXIifQ.DLh9HQHXXTZuGSRrXf9uk6QBiikOHztcZ2aNC7x6wKg" # < fake
     appName: dataservice-api
     logLevel: trace
-    logPrettyPrint: true
+    logPrettyPrint: false
     nodeEnv: development
     port: 9045 # internal
     mongoDbUri: mongodb://127.0.0.1:27017/ds-api
     mongoDbUriTest: mongodb://agg-dev:18005/ds-api-tests
-    mongoDebug: true
+    mongoDebug: false
     tokenExpirationTimeInSec: 31104000
     tokenSecretKey: data_access_token_secret_key
     tokenIssuer: local_provider_name
