@@ -548,6 +548,9 @@ metadataSeed:
   replicaCount: 1
   podAnnotations: {}
   restartPolicy: Always
+  service:
+    type: ClusterIP
+    port: 80
   cronjob:
     schedule: "*/30 * * * *"
   image:

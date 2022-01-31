@@ -1,0 +1,17 @@
+{{- if .Values.metadataSeed.enabled }}
+apiVersion: v1
+kind: Service
+metadata:
+  name: "{{ include "cdp.metadataSeed.fullname" . }}"
+  labels:
+    {{- include "cdp.metadataSeed.labels" . | nindent 4 }}
+spec:
+  type: {{ .Values.metadataSeed.service.type }}
+  ports:
+    - port: {{ .Values.metadataSeed.service.port }}
+      targetPort: httpapi
+      protocol: TCP
+      name: httpapi
+  selector:
+    {{- include "cdp.metadataSeed.selectorLabels" . | nindent 4 }}
+{{- end }}

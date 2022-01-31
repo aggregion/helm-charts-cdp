@@ -1,6 +1,5 @@
 {{- if .Values.metadataSeed.enabled }}
-{{- $backendName := include "cdp.backend.fullname" . -}}
-{{- $metadataSeedName := printf "%s-metadata-seed-depl" $backendName -}}
+{{- $metadataSeedName := include "cdp.metadataSeed.fullname" . -}}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -31,7 +30,10 @@ spec:
         - name: "metadata-seed"
           image: "{{ .Values.metadataSeed.image.repository }}:{{ .Values.metadataSeed.image.tag }}"
           imagePullPolicy: {{ .Values.metadataSeed.image.pullPolicy }}
-          args: ["sh", "-e", "-c", "while :; do echo 'Hit CTRL+C to stop'; sleep 600; done"]
+          args:
+            - npm
+            - run
+            - server:dev # there is no prod version (transpiled from ts to js) yet
           env:
             - name: LOGGER_LEVEL
               value: "{{ .Values.dataservice.config.logLevel }}"
