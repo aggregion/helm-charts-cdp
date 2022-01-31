@@ -71,5 +71,8 @@ data:
       "webhook": {
         "tokenExpirationTime": {{ .Values.backend.configs.webhookTokenExpirationTime }}
       },
+      "metadataSeed": {
+        "apiUrl": "{{ .Values.backend.configs.metadataSeedApiUrl }}"
+      },
       "userRolesMap": {{ .Values.backend.configs.userRolesMap | toJson }}
     }
