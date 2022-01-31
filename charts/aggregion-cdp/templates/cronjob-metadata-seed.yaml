@@ -8,7 +8,7 @@ apiVersion: batch/v1beta1
 {{- end }}
 kind: CronJob
 metadata:
-  name: "{{ $metadataSeedName }}"
+  name: "{{ $metadataSeedName | lower }}"
   labels:
     {{- include "cdp.dataservice.labels" . | nindent 4 }}
 spec:
