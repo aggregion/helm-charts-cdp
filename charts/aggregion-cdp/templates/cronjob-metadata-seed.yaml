@@ -1,7 +1,6 @@
 
 {{- if .Values.metadataSeed.enabled }}
-{{- $backendName := include "cdp.backend.fullname" . -}}
-{{- $metadataSeedName := printf "%s-metadata-seed" $backendName -}}
+{{- $metadataSeedName := include "cdp.metadataSeed.fullname" . -}}
 {{- if semverCompare ">=1.21-0" .Capabilities.KubeVersion.GitVersion -}}
 apiVersion: batch/v1
 {{- else }}
