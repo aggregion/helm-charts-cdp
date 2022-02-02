@@ -41,6 +41,8 @@ spec:
                   value: "{{ .Values.dataservice.configAtlasSyncer.username }}"
                 - name: ATLAS_PASSWORD
                   value: "{{ .Values.dataservice.configAtlasSyncer.password }}"
+                - name: DMP_BACKEND_BASE_URL
+                  value: "{{ .Values.metadataSeed.config.dmpBackendBaseUrl }}"
           restartPolicy: Never
           {{- with .Values.imagePullSecrets }}
           imagePullSecrets:
