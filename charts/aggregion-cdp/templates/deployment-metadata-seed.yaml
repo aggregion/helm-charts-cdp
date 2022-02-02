@@ -56,4 +56,6 @@ spec:
               value: "{{ .Values.dataservice.configAtlasSyncer.password }}"
             - name: PORT
               value: "{{ .Values.metadataSeed.config.port }}"
+            - name: DMP_BACKEND_BASE_URL
+              value: "{{ .Values.metadataSeed.config.dmpBackendBaseUrl }}"
 {{- end }}
