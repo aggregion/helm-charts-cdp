@@ -478,6 +478,10 @@ enclave:
       # requests:
       #   cpu: 100m
       #   memory: 128Mi
+
+      # if use azure (AKS)
+      # limits:
+      #   kubernetes.azure.com/sgx_epc_mem_in_MiB: 16
   nodeSelector: {}
   tolerations: []
   affinity: {}
