@@ -63,6 +63,20 @@ spec:
               value: hw
             - name: LAS_ADDR
               value: "{{ .Values.enclave.scone.lasAddr }}"
+            - name: SCONE_HEAP
+              value: 2G
+            - name: SCONE_STACK
+              value: 4M
+            - name: SCONE_TCS
+              value: 4
+            - name: SCONE_ALLOW_DLOPEN
+              value: 1
+            - name: SCONE_NO_MMAP_ACCESS
+              value: 0
+            - name: SCONE_SSPINS
+              value: 5
+            - name: SCONE_SSLEEP
+              value: 100
           # livenessProbe:
           readinessProbe:
             failureThreshold: 5
