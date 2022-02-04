@@ -67,13 +67,6 @@ spec:
             - name: data
               mountPath: /data/datalabscripts
               subPath: datalabscripts-data
-            {{- if .Values.enclave.scone.enabled }}
-            - mountPath: "{{ .Values.enclave.sgx.device }}"
-              name: dev-sgx
-            {{- end }}
-
-          resources:
-            {{- toYaml .Values.enclave.resources.server | nindent 12 }}
 
         {{- if .Values.backend.configs.migrationEnabled }}
         - name: "backend-migration"
@@ -374,11 +367,6 @@ spec:
                 path: local.json
               - key: "account.wallet"
                 path: "account.wallet"
-        {{- if .Values.enclave.scone.enabled }}
-        - name: dev-sgx
-          hostPath:
-            path: "{{ .Values.enclave.sgx.device }}"
-        {{- end }}
 
       {{- with .Values.backend.nodeSelector }}
       nodeSelector:
