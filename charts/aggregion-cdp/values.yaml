@@ -470,10 +470,6 @@ enclave:
     #      - enclave.local
   resources:
     server: {}
-      # if use azure (AKS)
-      # limits:
-      #   kubernetes.azure.com/sgx_epc_mem_in_MiB: 16
-
     services: {}
     las: {}
       # limits:
