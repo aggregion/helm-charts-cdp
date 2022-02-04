@@ -28,7 +28,4 @@ data:
   DMP_BASE_URL: "http://{{ $backendName }}:{{ .Values.backend.service.api.port }}/enclave"
   DATASERVICE_BASE_URL: "http://{{ $dataserviceName }}:{{ .Values.dataservice.service.port }}"
   DATASERVICE_TOKEN: "{{ .Values.enclave.configs.dataserviceToken }}"
-  API_KEY: "{{ .Values.enclave.scone.espApiKey }}"
-  ESP_URI: "{{ .Values.enclave.scone.espAddr }}"
-  SCONE_LAS_ADDR: "{{ .Values.enclave.scone.lasAddr }}"
 {{- end }}
