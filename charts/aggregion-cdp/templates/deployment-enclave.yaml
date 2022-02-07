@@ -63,7 +63,7 @@ spec:
           volumeMounts:
             - mountPath: /tmp
               name: tmp
-            - mountPath: /opt/enclave/config/local.json
+            - mountPath: /config/local.json
               subPath: local.json
               name: local-config-volume
             - mountPath: /var/keys/auth-key.pem
