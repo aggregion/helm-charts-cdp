@@ -64,7 +64,7 @@ spec:
                 name: "{{ $backendName }}"
                 port:
                   name: "httpapi"
-          - path: "/metadata-seed"
+          - path: "/metadata-seed/seed-excel-data/error-report.xlsx"
             pathType: "Prefix"
             backend:
               service:
@@ -143,7 +143,7 @@ spec:
             backend:
               serviceName: "{{ $backendName }}"
               servicePort: "httpapi"
-          - path: "/metadata-seed"
+          - path: "/metadata-seed/seed-excel-data/error-report.xlsx"
             backend:
               serviceName: "{{ $backendName }}"
               servicePort: "httpapi"
