@@ -64,6 +64,13 @@ spec:
                 name: "{{ $backendName }}"
                 port:
                   name: "httpapi"
+          - path: "/metadata-seed"
+            pathType: "Prefix"
+            backend:
+              service:
+                name: "{{ $backendName }}"
+                port:
+                  name: "httpapi"
           - path: "/webhooks"
             pathType: "Prefix"
             backend:
@@ -133,6 +140,10 @@ spec:
               serviceName: "{{ $backendName }}"
               servicePort: "httpapi"
           - path: "/glossary-terms"
+            backend:
+              serviceName: "{{ $backendName }}"
+              servicePort: "httpapi"
+          - path: "/metadata-seed"
             backend:
               serviceName: "{{ $backendName }}"
               servicePort: "httpapi"
