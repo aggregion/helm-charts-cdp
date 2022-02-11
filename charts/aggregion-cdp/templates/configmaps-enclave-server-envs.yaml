@@ -31,4 +31,5 @@ data:
   API_KEY: "{{ .Values.enclave.scone.espApiKey }}"
   ESP_URI: "{{ .Values.enclave.scone.espAddr }}"
   SCONE_LAS_ADDR: "{{ .Values.enclave.scone.lasAddr }}"
+  DISABLE_PRETTY_LOGS: "{{ .Values.enclave.configs.prettyLogs }}"
 {{- end }}
