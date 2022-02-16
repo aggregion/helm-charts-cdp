@@ -569,4 +569,6 @@ metadataSeed:
     pullPolicy: IfNotPresent
   config:
     port: 8100
+    logLevel: trace
+    logPrettyPrint: false
     dmpBackendBaseUrl: "http://dmpbackend"

@@ -39,7 +39,9 @@ spec:
             - server:dev # there is no prod version (transpiled from ts to js) yet
           env:
             - name: LOGGER_LEVEL
-              value: "{{ .Values.dataservice.config.logLevel }}"
+              value: "{{ .Values.metadataSeed.config.logLevel }}"
+            - name: LOGGER_PRETTY_PRINT
+              value: "{{ .Values.metadataSeed.config.logPrettyPrint }}"
             - name: PROVIDER_INSTANCE_ID
               value: "{{ .Values.backend.configs.providerInstanceId }}"
             - name: USER
