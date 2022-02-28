@@ -38,6 +38,7 @@ data:
                 # proxy_set_header Host                   $1.datalab.{ domain };
 
                 #resolver kube-dns.kube-system.svc.cluster.local;
+                resolver rke2-coredns-rke2-coredns.kube-system.svc.cluster.local;
 
                 rewrite /datalab/vm/([^/]+)/(.+) /$2 break;
 
