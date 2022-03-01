@@ -546,6 +546,7 @@ dataservice:
     tokenIssuer: local_provider_name
     bcmqOrgDecryptKey: it_doesn_not_matter
     bcmqPollingInterval: 200
+    bcmqLimit: 1
     trinoHost: localhost
     trinoPort: 8080
     rabbitmqUri: "amqp://127.0.0.1"

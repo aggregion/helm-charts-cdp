@@ -23,6 +23,7 @@ data:
   BLOCKCHAIN_WALLET_PUBLIC_KEY: {{ .Values.backend.configs.eosWalletOwnerPub | quote }}
   BCMQ_ORG_DECRYPT_KEY: {{ .Values.dataservice.config.bcmqOrgDecryptKey | quote }}
   BCMQ_POLLING_INTERVAL: {{ .Values.dataservice.config.bcmqPollingInterval | quote }}
+  BCMQ_LIMIT: {{ .Values.dataservice.config.bcmqLimit | quote }}
   TRINO_HOST: {{ .Values.dataservice.config.trinoHost | quote }}
   TRINO_PORT: {{ .Values.dataservice.config.trinoPort | quote }}
   RABBITMQ_URI: {{ .Values.dataservice.config.rabbitmqUri | quote }}
