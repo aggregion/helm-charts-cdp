@@ -522,6 +522,7 @@ dataservice:
     type: ClusterIP
     port: 8090 # external
   configAtlasSyncer:
+    enabled: false
     port: 8090 # internal
     username: "admin"
     password: "admin"
