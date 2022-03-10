@@ -13,7 +13,7 @@ spec:
       protocol: TCP
       name: httpapi
 
-    {{- if .Values.dataservice.configAtlasSyncer.enalbed}}
+    {{- if .Values.dataservice.configAtlasSyncer.enabled}}
     - port: {{ .Values.dataservice.serviceAtlasSyncer.port }}
       targetPort: atlassyncport
       protocol: TCP
