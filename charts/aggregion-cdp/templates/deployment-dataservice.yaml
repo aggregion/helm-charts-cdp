@@ -191,7 +191,7 @@ spec:
                 name: "{{ $dataServiceName }}-secrets"
         {{- end }}
 
-        {{- if .Values.dataservice.configAtlasSyncer.enalbed}}
+        {{- if .Values.dataservice.configAtlasSyncer.enabled}}
         - name: "atlas-entity-syncer"
           securityContext:
             {{- toYaml .Values.dataservice.securityContext | nindent 12 }}
