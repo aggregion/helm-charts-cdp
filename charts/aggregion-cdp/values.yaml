@@ -442,7 +442,7 @@ enclave:
   podAnnotations:
     prometheus.io/scrape: "true"
     prometheus.io/path: /metrics
-    prometheus.io/port: "8321"
+    prometheus.io/port: "8010"
   podSecurityContext: {}
   securityContext: {}
     # capabilities:
@@ -454,6 +454,7 @@ enclave:
   service:
     type: ClusterIP
     port: 8321
+    innerPort: 8010
 
   ingress:
     enabled: true

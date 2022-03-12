@@ -12,6 +12,10 @@ spec:
       targetPort: httpenclave
       protocol: TCP
       name: httpenclave
+    - port: {{ .Values.enclave.service.innerPort }}
+      targetPort: innerenclave
+      protocol: TCP
+      name: innerenclave
   selector:
     {{- include "cdp.enclave.selectorLabels" . | nindent 4 }}
 {{- end }}
