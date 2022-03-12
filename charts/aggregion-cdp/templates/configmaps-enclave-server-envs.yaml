@@ -18,6 +18,7 @@ data:
   CONFIG_FILE: "/config/local.json"
   PROVIDE_NAME: "{{ .Values.backend.configs.providerInstanceId }}"
   SERVER_PORT: "{{ .Values.enclave.configs.listenPort }}"
+  SERVER_INNER_PORT: "{{ .Values.enclave.configs.listenInnerPort }}"
   TMP_DIR: "/tmp"
   CH_TYPE: "real"
   CH_HOST: "{{ .Values.backend.configs.clickhouseHost }}"
