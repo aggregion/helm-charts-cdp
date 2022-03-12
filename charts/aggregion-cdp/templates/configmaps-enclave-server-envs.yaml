@@ -32,4 +32,5 @@ data:
   ESP_URI: "{{ .Values.enclave.scone.espAddr }}"
   SCONE_LAS_ADDR: "{{ .Values.enclave.scone.lasAddr }}"
   DISABLE_PRETTY_LOGS: "{{ .Values.enclave.configs.prettyLogs }}"
+  RABBITMQ_URL: "{{ .Values.backend.configs.rabbitmqUrl }}"
 {{- end }}
