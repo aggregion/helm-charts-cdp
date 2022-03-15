@@ -36,6 +36,7 @@ spec:
           args:
             - npm
             - run
+            - "--silent"
             - server:dev # there is no prod version (transpiled from ts to js) yet
           env:
             - name: LOGGER_LEVEL
