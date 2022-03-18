@@ -127,6 +127,13 @@ rabbit:
   nodeSelector: {}
   tolerations: []
   affinity: {}
+  ingress:
+    enabled: false
+    annotations:
+      kubernetes.io/ingress.class: nginx
+    tls: []
+    hosts:
+      - host: rabbit.local
 
 redis:
   enabled: false
