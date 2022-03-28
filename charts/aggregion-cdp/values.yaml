@@ -267,10 +267,10 @@ backend:
     userRolesMap:
       Query:
         Project:
-          get: ['DATA_ASSET_OWNER', 'DATA_STEWARD', 'DATA_RESEARCHER']
-          list: ['DATA_ASSET_OWNER', 'DATA_STEWARD', 'DATA_RESEARCHER']
-          incominglist: ['DATA_ASSET_OWNER', 'DATA_STEWARD', 'DATA_RESEARCHER']
-          outcominglist: ['DATA_ASSET_OWNER', 'DATA_STEWARD', 'DATA_RESEARCHER']
+          get: ['DATA_ASSET_OWNER', 'DATA_STEWARD', 'DATA_RESEARCHER', 'TEAMLEAD']
+          list: ['DATA_ASSET_OWNER', 'DATA_STEWARD', 'DATA_RESEARCHER', 'TEAMLEAD']
+          incominglist: ['DATA_ASSET_OWNER', 'DATA_STEWARD', 'DATA_RESEARCHER', 'TEAMLEAD']
+          outcominglist: ['DATA_ASSET_OWNER', 'DATA_STEWARD', 'DATA_RESEARCHER', 'TEAMLEAD']
         DataLabVM:
           get: ['DATA_RESEARCHER']
           list: ['DATA_RESEARCHER']
@@ -299,15 +299,15 @@ backend:
         providerConfig:
           setProviderConfig: ['ADMIN']
         Project:
-          create: ['DATA_RESEARCHER']
-          merge: ['DATA_RESEARCHER']
-          removeProject: ['DATA_RESEARCHER']
-          changeStatus: ['DATA_RESEARCHER']
+          create: ['TEAMLEAD']
+          merge: ['TEAMLEAD']
+          removeProject: ['TEAMLEAD']
+          changeStatus: ['TEAMLEAD']
         DataLabVM:
-          create: ['DATA_RESEARCHER']
-          merge: ['DATA_RESEARCHER']
-          runDataLabVM: ['DATA_RESEARCHER']
-          stopDataLabVM: ['DATA_RESEARCHER']
+          create: ['TEAMLEAD']
+          merge: ['TEAMLEAD']
+          runDataLabVM: ['TEAMLEAD']
+          stopDataLabVM: ['TEAMLEAD']
         DatasetRequest:
           create: ['DATA_RESEARCHER']
           merge: ['DATA_RESEARCHER']
