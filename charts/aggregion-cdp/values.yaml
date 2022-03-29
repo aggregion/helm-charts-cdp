@@ -267,10 +267,10 @@ backend:
     userRolesMap:
       Query:
         Project:
-          get: ['DATA_ASSET_OWNER', 'DATA_STEWARD', 'DATA_RESEARCHER', 'TEAMLEAD']
-          list: ['DATA_ASSET_OWNER', 'DATA_STEWARD', 'DATA_RESEARCHER', 'TEAMLEAD']
-          incominglist: ['DATA_ASSET_OWNER', 'DATA_STEWARD', 'DATA_RESEARCHER', 'TEAMLEAD']
-          outcominglist: ['DATA_ASSET_OWNER', 'DATA_STEWARD', 'DATA_RESEARCHER', 'TEAMLEAD']
+          get: ['DATA_ASSET_OWNER', 'DATA_STEWARD', 'DATA_RESEARCHER', 'TEAMLEAD', 'ADMIN']
+          list: ['DATA_ASSET_OWNER', 'DATA_STEWARD', 'DATA_RESEARCHER', 'TEAMLEAD', 'ADMIN']
+          incominglist: ['DATA_ASSET_OWNER', 'DATA_STEWARD', 'DATA_RESEARCHER', 'TEAMLEAD', 'ADMIN']
+          outcominglist: ['DATA_ASSET_OWNER', 'DATA_STEWARD', 'DATA_RESEARCHER', 'TEAMLEAD', 'ADMIN']
         DataLabVM:
           get: ['DATA_RESEARCHER']
           list: ['DATA_RESEARCHER']
@@ -303,6 +303,8 @@ backend:
           merge: ['TEAMLEAD']
           removeProject: ['TEAMLEAD']
           changeStatus: ['TEAMLEAD']
+          addMember: ['TEAMLEAD', 'ADMIN']
+          removeMember: ['TEAMLEAD', 'ADMIN']
         DataLabVM:
           create: ['TEAMLEAD']
           merge: ['TEAMLEAD']
