@@ -308,8 +308,8 @@ backend:
         DataLabVM:
           create: ['TEAMLEAD']
           merge: ['TEAMLEAD']
-          runDataLabVM: ['TEAMLEAD']
-          stopDataLabVM: ['TEAMLEAD']
+          runDataLabVM: ['TEAMLEAD', 'ADMIN']
+          stopDataLabVM: ['TEAMLEAD', 'ADMIN']
         DatasetRequest:
           create: ['DATA_RESEARCHER']
           merge: ['DATA_RESEARCHER']
