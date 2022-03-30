@@ -103,6 +103,7 @@ spec:
             secretName: "{{ $enclaveName }}-file-secrets"
       {{- with .Values.enclave.nodeSelector }}
       nodeSelector:
+        - processor_type: sgx
         {{- toYaml . | nindent 8 }}
       {{- end }}
       {{- with .Values.enclave.affinity }}
