@@ -299,17 +299,17 @@ backend:
         providerConfig:
           setProviderConfig: ['ADMIN']
         Project:
-          create: ['TEAMLEAD']
-          merge: ['TEAMLEAD']
-          removeProject: ['TEAMLEAD']
-          changeStatus: ['TEAMLEAD']
+          create: ['DATA_RESEARCHER', 'TEAMLEAD']
+          merge: ['DATA_RESEARCHER', 'TEAMLEAD']
+          removeProject: ['DATA_RESEARCHER', 'TEAMLEAD']
+          changeStatus: ['DATA_RESEARCHER', 'TEAMLEAD']
           addMember: ['TEAMLEAD', 'ADMIN']
           removeMember: ['TEAMLEAD', 'ADMIN']
         DataLabVM:
-          create: ['TEAMLEAD']
-          merge: ['TEAMLEAD']
-          runDataLabVM: ['TEAMLEAD', 'ADMIN']
-          stopDataLabVM: ['TEAMLEAD', 'ADMIN']
+          create: ['DATA_RESEARCHER','TEAMLEAD']
+          merge: ['DATA_RESEARCHER', 'TEAMLEAD']
+          runDataLabVM: ['DATA_RESEARCHER', 'TEAMLEAD', 'ADMIN']
+          stopDataLabVM: ['DATA_RESEARCHER', 'TEAMLEAD', 'ADMIN']
         DatasetRequest:
           create: ['DATA_RESEARCHER']
           merge: ['DATA_RESEARCHER']
