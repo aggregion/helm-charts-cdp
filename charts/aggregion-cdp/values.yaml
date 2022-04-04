@@ -272,20 +272,20 @@ backend:
           incominglist: ['DATA_ASSET_OWNER', 'DATA_STEWARD', 'DATA_RESEARCHER', 'TEAMLEAD', 'ADMIN']
           outcominglist: ['DATA_ASSET_OWNER', 'DATA_STEWARD', 'DATA_RESEARCHER', 'TEAMLEAD', 'ADMIN']
         DataLabVM:
-          get: ['DATA_RESEARCHER']
-          list: ['DATA_RESEARCHER']
-          getBucketlistObjects: ['DATA_RESEARCHER']
+          get: ['TEAMLEAD', 'DATA_RESEARCHER']
+          list: ['TEAMLEAD', 'DATA_RESEARCHER']
+          getBucketlistObjects: ['TEAMLEAD', 'DATA_RESEARCHER']
         DatasetRequest:
-          get: ['DATA_RESEARCHER', 'DATA_ASSET_OWNER', 'DATA_STEWARD']
-          list: ['DATA_RESEARCHER', 'DATA_ASSET_OWNER', 'DATA_STEWARD']
-          incomingList: ['DATA_RESEARCHER', 'DATA_ASSET_OWNER', 'DATA_STEWARD']
-          outcomingList: ['DATA_RESEARCHER', 'DATA_ASSET_OWNER', 'DATA_STEWARD']
+          get: ['TEAMLEAD', 'DATA_RESEARCHER', 'DATA_ASSET_OWNER', 'DATA_STEWARD']
+          list: ['TEAMLEAD', 'DATA_RESEARCHER', 'DATA_ASSET_OWNER', 'DATA_STEWARD']
+          incomingList: ['TEAMLEAD', 'DATA_RESEARCHER', 'DATA_ASSET_OWNER', 'DATA_STEWARD']
+          outcomingList: ['TEAMLEAD', 'DATA_RESEARCHER', 'DATA_ASSET_OWNER', 'DATA_STEWARD']
         DataLabScript:
           get: ['GOD']
           list: ['GOD']
         Dataset:
-          get: [ 'DATA_ANALYST', 'ADMIN', 'DATA_RESEARCHER', 'DATA_ASSET_OWNER', 'DATA_STEWARD', 'GLOSSARY_RESEARCHER' ]
-          list: [ 'DATA_ANALYST', 'ADMIN', 'DATA_RESEARCHER', 'DATA_ASSET_OWNER', 'DATA_STEWARD', 'GLOSSARY_RESEARCHER' ]
+          get: ['TEAMLEAD', 'DATA_ANALYST', 'ADMIN', 'DATA_RESEARCHER', 'DATA_ASSET_OWNER', 'DATA_STEWARD', 'GLOSSARY_RESEARCHER']
+          list: ['TEAMLEAD', 'DATA_ANALYST', 'ADMIN', 'DATA_RESEARCHER', 'DATA_ASSET_OWNER', 'DATA_STEWARD', 'GLOSSARY_RESEARCHER']
       Mutation:
         Account:
           updateGlobalOrgInfo: ['ADMIN']
@@ -311,8 +311,8 @@ backend:
           runDataLabVM: ['DATA_RESEARCHER', 'TEAMLEAD', 'ADMIN']
           stopDataLabVM: ['DATA_RESEARCHER', 'TEAMLEAD', 'ADMIN']
         DatasetRequest:
-          create: ['DATA_RESEARCHER']
-          merge: ['DATA_RESEARCHER']
+          create: ['TEAMLEAD', 'DATA_RESEARCHER']
+          merge: ['TEAMLEAD', 'DATA_RESEARCHER']
           changeStatus:
             - if:
                 args:
@@ -326,8 +326,8 @@ backend:
                 args:
                   status: 'rejected'
               then: ['DATA_STEWARD', 'DATA_ASSET_OWNER']
-          createAndMoveToReview: ['DATA_RESEARCHER']
-          upload: ['DATA_RESEARCHER']
+          createAndMoveToReview: ['TEAMLEAD', 'DATA_RESEARCHER']
+          upload: ['TEAMLEAD', 'DATA_RESEARCHER']
         DataLabScript:
           create: ['GOD']
           merge: ['GOD']
