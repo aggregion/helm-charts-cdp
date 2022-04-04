@@ -36,7 +36,6 @@ spec:
         {{- toYaml .Values.enclave.scone.lasPodSecurityContext | nindent 8 }}
       containers:
         - name: las
-          image: sconecuratedimages/las-scone:latest
           image: "{{ .Values.enclave.scone.lasImage.repository }}:{{ .Values.enclave.scone.lasImage.tag }}"
           imagePullPolicy: "{{ .Values.enclave.scone.lasImage.pullPolicy }}"
           securityContext:
