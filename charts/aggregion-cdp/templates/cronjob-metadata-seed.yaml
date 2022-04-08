@@ -23,7 +23,7 @@ spec:
             - name: metadata-seed
               image: "{{ .Values.metadataSeed.image.repository }}:{{ .Values.metadataSeed.image.tag }}"
               imagePullPolicy: {{ .Values.metadataSeed.image.pullPolicy }}
-              args: ["sh" , "-e" , "-c" , "npm run start"]
+              args: ["sh" , "-e" , "-c" , "node --enable-source-maps dist/main.js"]
               env:
                 - name: LOGGER_LEVEL
                   value: "{{ .Values.dataservice.config.logLevel }}"
