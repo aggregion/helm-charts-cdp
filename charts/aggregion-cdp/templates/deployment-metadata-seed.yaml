@@ -37,7 +37,7 @@ spec:
             - npm
             - run
             - "--silent"
-            - server:dev # there is no prod version (transpiled from ts to js) yet
+            - server:prod
           env:
             - name: LOGGER_LEVEL
               value: "{{ .Values.metadataSeed.config.logLevel }}"
