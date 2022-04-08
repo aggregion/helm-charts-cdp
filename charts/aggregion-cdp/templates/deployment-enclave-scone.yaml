@@ -47,6 +47,9 @@ spec:
             - name: httpenclave
               containerPort: {{ .Values.enclave.configs.listenPort }}
               protocol: TCP
+            - name: innerenclave
+              containerPort: {{ .Values.enclave.configs.listenInnerPort }}
+              protocol: TCP
           envFrom:
             - configMapRef:
                 name: "{{ $enclaveName }}-config"
