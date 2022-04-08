@@ -145,6 +145,7 @@ backend:
     serviceBcSyncerEnabled: true
     serviceCrondEnabled: true
     servicePanelSegmentUploaderEnabled: false
+    interactionIV: "dc189cc59c532e75e957f5dc64f03b82"
     # control access policy module
     authLocalAccessPolicyEnabled: false
     # Used to communicate between dmp and enclave. Must be equals to the same variable in enclave's config server ${dmp.secret}
@@ -153,6 +154,7 @@ backend:
     jwtSecret: "c2VjcmV0"
     # should be like as frontend ingress host
     baseUrl: "http://aggregion-cdp.com"
+    useMatchingRuleService: false
     alarmEmail: "alarm@aggregion-cdp.com"
     supportEmail: "support@aggregion-cdp.com"
     # it's whole encoded as json, see source code of dmp-backend :)
@@ -296,6 +298,7 @@ backend:
           updateMarketplaceInteractions: ['ADMIN']
           grantAccess: ['ADMIN']
           denyAccess: ['ADMIN']
+          setInteractionMatchingRule: ['ADMIN']
         providerConfig:
           setProviderConfig: ['ADMIN']
         Project:
