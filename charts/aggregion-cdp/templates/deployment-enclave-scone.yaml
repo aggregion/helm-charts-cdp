@@ -65,7 +65,7 @@ spec:
             - name: SCONE_MODE
               value: hw
             - name: LAS_ADDR
-              value: "{{ .Values.enclave.scone.lasAddr }}"
+              value: "{{ $enclaveName }}-scone-las"
             - name: SCONE_HEAP
               value: '2G'
             - name: SCONE_STACK
