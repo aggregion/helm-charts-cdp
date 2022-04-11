@@ -64,7 +64,7 @@ spec:
           {{- end }}
             - name: SCONE_MODE
               value: hw
-            - name: LAS_ADDR
+            - name: SCONE_LAS_ADDR
               value: "{{ $enclaveName }}-scone-las"
             - name: SCONE_HEAP
               value: '2G'
