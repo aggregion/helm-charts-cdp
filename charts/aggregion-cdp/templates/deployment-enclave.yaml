@@ -1,4 +1,4 @@
-{{- if and (.Values.enclave.enabled) (not (.Values.enclave.sgx.enabled)) }}
+{{- if and (.Values.enclave.enabled) (not (.Values.enclave.scone.enabled)) }}
 {{- $name := "enclave" }}
 {{- $enclaveName := include "cdp.enclave.fullname" . }}
 apiVersion: apps/v1

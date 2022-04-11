@@ -4,7 +4,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: "{{ $enclaveName-scone }}"
+  name: "{{ $enclaveName }}-scone"
   {{- with .Values.enclave.annotations }}
   annotations:
       {{- toYaml . | nindent 6 }}
