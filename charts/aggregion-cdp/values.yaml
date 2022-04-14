@@ -538,7 +538,7 @@ dataservice:
     password: "admin"
     atlasBaseUrl: "http://atlas.local"
     cronjob:
-      schedule: "*/5 * * * *"
+      schedule: "*/15 * * * *"
   glossarySyncers:
     enabled: false
   config:
@@ -574,7 +574,7 @@ metadataSeed:
     type: ClusterIP
     port: 80
   cronjob:
-    schedule: "*/30 * * * *"
+    schedule: "0 * * * *"
   image:
     repository: registry.aggregion.com/metadata-seed
     tag: latest
