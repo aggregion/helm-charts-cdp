@@ -54,6 +54,9 @@ atlas:
       nginx.ingress.kubernetes.io/limit-connections: "5000"
       nginx.ingress.kubernetes.io/limit-rps: "3000"
       nginx.ingress.kubernetes.io/limit-rpm: "60000"
+      nginx.ingress.kubernetes.io/proxy-connect-timeout: "1800"
+      nginx.ingress.kubernetes.io/proxy-send-timeout: "1800"
+      nginx.ingress.kubernetes.io/proxy-read-timeout: "1800"
     hosts:
       - host: atlas.local
         paths:
