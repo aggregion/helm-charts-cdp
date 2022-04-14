@@ -71,5 +71,6 @@ data:
       "webhook": {
         "tokenExpirationTime": {{ .Values.backend.configs.webhookTokenExpirationTime }}
       },
+      "useMatchingRuleService": {{ .Values.backend.configs.useMatchingRuleService }},
       "userRolesMap": {{ .Values.backend.configs.userRolesMap | toJson }}
     }
