@@ -13,7 +13,6 @@ data:
   NODE_ENV: {{ .Values.authservice.config.nodeEnv | quote }}
   PORT: {{ .Values.authservice.config.port | quote }}
   MONGO_DB_URI: {{ .Values.authservice.config.mongoDbUri | quote }}
-  MONGO_DB_URI_TEST: {{ .Values.authservice.config.mongoDbUriTest | quote }}
   MONGO_DEBUG: {{ .Values.authservice.config.mongoDebug | quote }}
   JWT_TOKEN_EXPIRATION_TIME: {{ .Values.authservice.config.jwtTokenExpirationTimeInSeconds | quote }}
   JWT_INVITE_EXPIRATION_TIME: {{ .Values.authservice.config.jwtInviteExpirationTimeInSeconds | quote }}
