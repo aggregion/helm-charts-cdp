@@ -13,7 +13,7 @@ atlas:
   enabled: false
   nameOverride: ""
   fullnameOverride: ""
-  storageSize: "6G"
+  storageSize: "10G"
   storageClass: ""
   restartPolicy: Always
   updateStrategy:
@@ -67,7 +67,7 @@ cassandra:
   # enabled: false # should depends on "atlas"
   nameOverride: ""
   fullnameOverride: ""
-  storageSize: "5G"
+  storageSize: "10G"
   storageClass: ""
   restartPolicy: Always
   updateStrategy:
@@ -228,7 +228,7 @@ solr:
   # enabled: false # should depends on "atlas"
   nameOverride: ""
   fullnameOverride: ""
-  storageSize: "5G"
+  storageSize: "10G"
   storageClass: ""
   restartPolicy: Always
   updateStrategy:
@@ -270,7 +270,7 @@ zookeeper:
   replicas: 3
   nameOverride: ""
   fullnameOverride: ""
-  storageSize: "3G"
+  storageSize: "10G"
   storageClass: ""
   restartPolicy: Always
   updateStrategy:
