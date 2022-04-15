@@ -44,6 +44,9 @@ data:
           {{- end }}
         }
       },
+      "rabbitmq": {
+        "url": "{{ .Values.backend.configs.rabbitmqUrl }}"
+      },
       "remoteEnclaveProvider": {
         "type": "http",
         "serviceSourceProvider": {
