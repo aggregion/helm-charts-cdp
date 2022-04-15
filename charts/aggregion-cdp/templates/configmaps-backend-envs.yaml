@@ -49,3 +49,5 @@ data:
   DEPLOY_CONTROLLER_USE_EXTERNAL_S3: "{{ .Values.backend.configs.dcUseExternalS3 }}"
   WEBHOOK_TOKEN_EXPIRATION_TIME: "{{ .Values.backend.configs.webhookTokenExpirationTime }}"
   METADATA_SEED_API_URL: "{{ .Values.backend.configs.metadataSeedApiUrl }}"
+  CACHE_TTL_MARKETPLACE: "{{ .Values.backend.configs.cacheTtlMarket }}"
+  CACHE_TTL_MATCHING: "{{ .Values.backend.configs.cacheTtlMatching }}"

@@ -124,6 +124,8 @@ backend:
 
     # could be disabled
     cache: "redis"
+    cacheTtlMarket: 3600
+    cacheTtlMatching: 3600
 
     # defines concrete storage class for persistence volume claim
     dataStorageClass: ""
