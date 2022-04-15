@@ -83,14 +83,14 @@ spec:
             - name: CONFIG_FILE
               value: '/var/local.json'
           # livenessProbe:
-          readinessProbe:
-            failureThreshold: 5
-            httpGet:
-              path: /healthcheck
-              port: {{ .Values.enclave.configs.listenPort }}
-            initialDelaySeconds: 60
-            timeoutSeconds: 3
-            periodSeconds: 5
+          # readinessProbe:
+          #   failureThreshold: 5
+          #   httpGet:
+          #     path: /healthcheck
+          #     port: {{ .Values.enclave.configs.listenPort }}
+          #   initialDelaySeconds: 60
+          #   timeoutSeconds: 3
+          #   periodSeconds: 5
           resources:
             {{- toYaml .Values.enclave.resources.server | nindent 12 }}
           volumeMounts:
