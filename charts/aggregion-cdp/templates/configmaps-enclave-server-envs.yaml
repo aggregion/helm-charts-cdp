@@ -15,6 +15,7 @@ data:
   ENCLAVE_SCRIPTS_SEGMENT: "{{ .Values.enclave.scripts.segment }}"
   ENCLAVE_SCRIPTS_SEGMENT_CRITERIES: "{{ .Values.enclave.scripts.segmentCriteries }}"
   ENCLAVE_SCRIPTS_STATISTIC: "{{ .Values.enclave.scripts.statistics }}"
+  ENCLAVE_SCONE_HEAP: "{{ .Values.enclave.scone.heapSize }}"
   CONFIG_FILE: "/config/local.json"
   PROVIDE_NAME: "{{ .Values.backend.configs.providerInstanceId }}"
   SERVER_PORT: "{{ .Values.enclave.configs.listenPort }}"
