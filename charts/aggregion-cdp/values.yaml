@@ -610,6 +610,7 @@ authservice:
     nodeEnv: development
     port: 9045 # internal
     mongoDbUri: mongodb://127.0.0.1:27017/auth-service
+    mongoDebug: false
     jwtTokenExpirationTimeInSeconds: 31104000
     jwtInviteExpirationTimeInSeconds: 31104000
     jwtSecretKey: authservice_secret_key
