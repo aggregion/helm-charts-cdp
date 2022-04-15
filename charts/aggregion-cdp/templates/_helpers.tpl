@@ -93,6 +93,10 @@ app.kubernetes.io/managed-by: {{ .Release.Service }}
 {{- include "cdp.component.labels" (list . "dataservice") }}
 {{- end }}
 
+{{- define "cdp.authservice.labels" -}}
+{{- include "cdp.component.labels" (list . "authservice") }}
+{{- end }}
+
 {{- define "cdp.metadataSeed.labels" -}}
 {{- include "cdp.component.labels" (list . "metadataSeed") }}
 {{- end }}
