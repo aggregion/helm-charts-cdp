@@ -1,0 +1,17 @@
+{{- if .Values.authservice.enabled }}
+apiVersion: v1
+kind: Service
+metadata:
+  name: "{{ include "cdp.authservice.fullname" . | lower }}"
+  labels:
+    {{- include "cdp.authservice.labels" . | nindent 4 }}
+spec:
+  type: {{ .Values.authservice.service.type }}
+  ports:
+    - port: {{ .Values.authservice.service.port }}
+      targetPort: httpapi
+      protocol: TCP
+      name: httpapi
+  selector:
+    {{- include "cdp.authservice.selectorLabels" . | nindent 4 }}
+{{- end }}

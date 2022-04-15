@@ -35,8 +35,8 @@ spec:
           securityContext:
             {{- toYaml .Values.authservice.securityContext | nindent 12 }}
 
-          image: "{{ .Values.authservice.imageApi.repository }}:{{ .Values.authservice.imageApi.tag }}"
-          imagePullPolicy: {{ .Values.authservice.imageApi.pullPolicy }}
+          image: "{{ .Values.authservice.image.repository }}:{{ .Values.authservice.image.tag }}"
+          imagePullPolicy: {{ .Values.authservice.image.pullPolicy }}
           ports:
             - name: httpapi
               containerPort: {{ .Values.authservice.config.port }}

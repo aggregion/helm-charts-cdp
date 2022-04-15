@@ -594,7 +594,7 @@ authservice:
   restartPolicy: Always
   updateStrategy: null
   securityContext: {}
-  imageApi:
+  image:
     repository: registry.aggregion.com/auth-service
     pullPolicy: IfNotPresent
     tag: latest
