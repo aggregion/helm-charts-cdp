@@ -1,0 +1,24 @@
+{{- if .Values.authservice.enabled }}
+{{- $authServiceName := include "cdp.authservice.fullname" . }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ $authServiceName }}-config
+  labels:
+    {{- include "cdp.authservice.labels" . | nindent 4 }}
+data:
+  APP_NAME: {{ .Values.authservice.config.appName | quote }}
+  LOG_LEVEL: {{ .Values.authservice.config.logLevel | quote }}
+  LOG_PRETTY_PRINT: {{ .Values.authservice.config.logPrettyPrint | quote }}
+  NODE_ENV: {{ .Values.authservice.config.nodeEnv | quote }}
+  PORT: {{ .Values.authservice.config.port | quote }}
+  MONGO_DB_URI: {{ .Values.authservice.config.mongoDbUri | quote }}
+  MONGO_DEBUG: {{ .Values.authservice.config.mongoDebug | quote }}
+  JWT_TOKEN_EXPIRATION_TIME: {{ .Values.authservice.config.jwtTokenExpirationTimeInSeconds | quote }}
+  JWT_INVITE_EXPIRATION_TIME: {{ .Values.authservice.config.jwtInviteExpirationTimeInSeconds | quote }}
+  JWT_SECRET_KEY: {{ .Values.authservice.config.jwtSecretKey | quote }}
+  LOCAL_ACCESS_POLICY_CAN_CONFIGURE: {{ .Values.authservice.config.localAccessPolicyCanConfigure | quote }}
+  LOCAL_ACCESS_POLICY_ENABLED: {{ .Values.authservice.config.localAccessPolicyEnabled | quote }}
+  LOCAL_PROVIDER_NAME: {{ .Values.backend.configs.providerName | quote }}
+  PROVIDER_INSTANCE_ID: {{ .Values.backend.configs.providerInstanceId | quote }}
+{{- end }}

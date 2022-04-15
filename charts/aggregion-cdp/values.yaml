@@ -583,3 +583,35 @@ metadataSeed:
     logLevel: trace
     logPrettyPrint: false
     dmpBackendBaseUrl: "http://dmpbackend"
+
+authservice:
+  enabled: false
+  replicaCount: 1
+  nameOverride: ""
+  annotations:
+    reloader.stakater.com/auto: "true"
+  podAnnotations: {}
+  restartPolicy: Always
+  updateStrategy: null
+  securityContext: {}
+  image:
+    repository: registry.aggregion.com/auth-service
+    pullPolicy: IfNotPresent
+    tag: latest
+  tolerations: []
+  affinity: {}
+  service:
+    type: ClusterIP
+    port: 80 # external
+  config:
+    appName: authservice-api
+    logLevel: trace
+    logPrettyPrint: false
+    nodeEnv: development
+    port: 9045 # internal
+    mongoDbUri: mongodb://127.0.0.1:27017/auth-service
+    jwtTokenExpirationTimeInSeconds: 31104000
+    jwtInviteExpirationTimeInSeconds: 31104000
+    jwtSecretKey: authservice_secret_key
+    localAccessPolicyCanConfigure: owner
+    localAccessPolicyEnabled: false
