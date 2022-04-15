@@ -130,6 +130,10 @@ app.kubernetes.io/instance: "{{ .Release.Name }}"
 {{- include "cdp.selectorLabels" (list . "dataservice") }}
 {{- end }}
 
+{{- define "cdp.authservice.selectorLabels" -}}
+{{- include "cdp.selectorLabels" (list . "authservice") }}
+{{- end }}
+
 {{- define "cdp.metadataSeed.selectorLabels" -}}
 {{- include "cdp.selectorLabels" (list . "metadataSeed") }}
 {{- end }}
