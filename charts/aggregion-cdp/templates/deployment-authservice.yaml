@@ -48,8 +48,6 @@ spec:
           envFrom:
             - configMapRef:
                 name: "{{ $authServiceName }}-config"
-            - secretRef:
-                name: "{{ $authServiceName }}-secrets"
 
       {{- with .Values.authservice.affinity }}
       affinity:
