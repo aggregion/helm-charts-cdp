@@ -304,17 +304,17 @@ backend:
         providerConfig:
           setProviderConfig: ['ADMIN']
         Project:
-          create: ['DATA_RESEARCHER', 'TEAMLEAD']
-          merge: ['DATA_RESEARCHER', 'TEAMLEAD']
-          removeProject: ['DATA_RESEARCHER', 'TEAMLEAD']
-          changeStatus: ['DATA_RESEARCHER', 'TEAMLEAD']
+          create: ['TEAMLEAD']
+          merge: ['TEAMLEAD']
+          removeProject: ['TEAMLEAD']
+          changeStatus: ['TEAMLEAD']
           addMember: ['TEAMLEAD', 'ADMIN']
           removeMember: ['TEAMLEAD', 'ADMIN']
         DataLabVM:
-          create: ['DATA_RESEARCHER','TEAMLEAD']
-          merge: ['DATA_RESEARCHER', 'TEAMLEAD']
+          create: ['TEAMLEAD']
+          merge: ['TEAMLEAD']
           runDataLabVM: ['DATA_RESEARCHER', 'TEAMLEAD', 'ADMIN']
-          stopDataLabVM: ['DATA_RESEARCHER', 'TEAMLEAD', 'ADMIN']
+          stopDataLabVM: ['TEAMLEAD', 'ADMIN']
         DatasetRequest:
           create: ['TEAMLEAD', 'DATA_RESEARCHER']
           merge: ['TEAMLEAD', 'DATA_RESEARCHER']
@@ -322,7 +322,7 @@ backend:
             - if:
                 args:
                   status: 'review'
-              then: ['DATA_RESEARCHER']
+              then: ['TEAMLEAD', 'DATA_RESEARCHER']
             - if:
                 args:
                   status: 'approved'
