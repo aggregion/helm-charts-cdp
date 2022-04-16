@@ -9,16 +9,11 @@ metadata:
   labels:
     {{- include "cdp.enclave.labels" . | nindent 4 }}
 data:
-  ENCLAVE_ENDPOINT: "http://{{ $enclaveName }}:{{ .Values.enclave.service.port }}/v1"
-  ENCLAVE_SCRIPTS_AUDITORY: "{{ .Values.enclave.scripts.auditory }}"
-  ENCLAVE_SCRIPTS_DATALAB: "{{ .Values.enclave.scripts.datalab }}"
-  ENCLAVE_SCRIPTS_SEGMENT: "{{ .Values.enclave.scripts.segment }}"
-  ENCLAVE_SCRIPTS_SEGMENT_CRITERIES: "{{ .Values.enclave.scripts.segmentCriteries }}"
-  ENCLAVE_SCRIPTS_STATISTIC: "{{ .Values.enclave.scripts.statistics }}"
   CONFIG_FILE: "/config/local.json"
   PROVIDE_NAME: "{{ .Values.backend.configs.providerInstanceId }}"
   SERVER_PORT: "{{ .Values.enclave.configs.listenPort }}"
   SERVER_INNER_PORT: "{{ .Values.enclave.configs.listenInnerPort }}"
+  {{- if not (.Values.enclave.enabled) }}
   TMP_DIR: "/tmp"
   CH_TYPE: "real"
   CH_HOST: "{{ .Values.backend.configs.clickhouseHost }}"
@@ -30,12 +25,24 @@ data:
   DATASERVICE_BASE_URL: "http://{{ $dataserviceName }}:{{ .Values.dataservice.service.port }}"
   DATASERVICE_TOKEN: "{{ .Values.enclave.configs.dataserviceToken }}"
   API_KEY: "{{ .Values.enclave.scone.espApiKey }}"
-  ESP_URI: "{{ .Values.enclave.scone.espAddr }}"
   DISABLE_PRETTY_LOGS: "{{ .Values.enclave.configs.prettyLogs }}"
   WORKER_HEAP_SIZE_MB: "{{ .Values.enclave.configs.workerHeapSizeMb }}"
-  ENCLAVE_RABBITMQ_URL: "{{ .Values.backend.configs.rabbitmqUrl }}"
   RABBITMQ_URL: "{{ .Values.backend.configs.rabbitmqUrl }}"
+  {{- end }}
   {{- if .Values.enclave.scone.enabled }}
+  ENCLAVE_CH_TYPE: "real"
+  ENCLAVE_CH_HOST: "{{ .Values.backend.configs.clickhouseHost }}"
+  ENCLAVE_CH_PORT: "{{ .Values.backend.configs.clickhousePort }}"
+  ENCLAVE_CH_DATABASE_NAME: "{{ .Values.backend.configs.clickhouseDb }}"
+  ENCLAVE_SERVICES_HOST: "localhost"
+  ENCLAVE_SERVICES_PORT: "8322"
+  ENCLAVE_DMP_BASE_URL: "http://{{ $backendName }}:{{ .Values.backend.service.api.port }}/enclave"
+  ENCLAVE_DATASERVICE_BASE_URL: "http://{{ $dataserviceName }}:{{ .Values.dataservice.service.port }}"
+  ENCLAVE_DATASERVICE_TOKEN: "{{ .Values.enclave.configs.dataserviceToken }}"
+  ENCLAVE_WORKER_HEAP_SIZE_MB: "{{ .Values.enclave.configs.workerHeapSizeMb }}"
+  ENCLAVE_RABBITMQ_URL: "{{ .Values.backend.configs.rabbitmqUrl }}"
+  API_KEY: "{{ .Values.enclave.scone.espApiKey }}"
+  ESP_URI: "{{ .Values.enclave.scone.espAddr }}"
   SCONE_HEAP: "{{ .Values.enclave.scone.heapSize }}"
   {{- end }}
 {{- end }}
