@@ -2,6 +2,10 @@
 {{- $backendName := include "cdp.backend.fullname" . }}
 {{- $enclaveName := include "cdp.enclave.fullname" . }}
 {{- $dataserviceName := include "cdp.dataservice.fullname" . }}
+{{- $envPrefix := "" -}}
+{{- if .Values.enclave.scone.enabled -}}
+  {{- $envPrefix = "ENCLAVE_" -}}
+{{- end}}
 apiVersion: v1
 kind: ConfigMap
 metadata:
@@ -9,38 +13,22 @@ metadata:
   labels:
     {{- include "cdp.enclave.labels" . | nindent 4 }}
 data:
-  CONFIG_FILE: "/config/local.json"
-  PROVIDE_NAME: "{{ .Values.backend.configs.providerInstanceId }}"
-  SERVER_PORT: "{{ .Values.enclave.configs.listenPort }}"
-  SERVER_INNER_PORT: "{{ .Values.enclave.configs.listenInnerPort }}"
-  {{- if not (.Values.enclave.enabled) }}
-  TMP_DIR: "/tmp"
-  CH_TYPE: "real"
-  CH_HOST: "{{ .Values.backend.configs.clickhouseHost }}"
-  CH_PORT: "{{ .Values.backend.configs.clickhousePort }}"
-  CH_DATABASE_NAME: "{{ .Values.backend.configs.clickhouseDb }}"
-  SERVICES_HOST: "localhost"
-  SERVICES_PORT: "8322"
-  DMP_BASE_URL: "http://{{ $backendName }}:{{ .Values.backend.service.api.port }}/enclave"
-  DATASERVICE_BASE_URL: "http://{{ $dataserviceName }}:{{ .Values.dataservice.service.port }}"
-  DATASERVICE_TOKEN: "{{ .Values.enclave.configs.dataserviceToken }}"
-  API_KEY: "{{ .Values.enclave.scone.espApiKey }}"
-  DISABLE_PRETTY_LOGS: "{{ .Values.enclave.configs.prettyLogs }}"
-  WORKER_HEAP_SIZE_MB: "{{ .Values.enclave.configs.workerHeapSizeMb }}"
-  RABBITMQ_URL: "{{ .Values.backend.configs.rabbitmqUrl }}"
-  {{- end }}
+  {{ $envPrefix }}SERVER_PORT: "{{ .Values.enclave.configs.listenPort }}"
+  {{ $envPrefix }}SERVER_INNER_PORT: "{{ .Values.enclave.configs.listenInnerPort }}"
+  {{ $envPrefix }}CH_TYPE: "real"
+  {{ $envPrefix }}CH_HOST: "{{ .Values.backend.configs.clickhouseHost }}"
+  {{ $envPrefix }}CH_PORT: "{{ .Values.backend.configs.clickhousePort }}"
+  {{ $envPrefix }}CH_DATABASE_NAME: "{{ .Values.backend.configs.clickhouseDb }}"
+  {{ $envPrefix }}SERVICES_HOST: "localhost"
+  {{ $envPrefix }}SERVICES_PORT: "8322"
+  {{ $envPrefix }}DMP_BASE_URL: "http://{{ $backendName }}:{{ .Values.backend.service.api.port }}/enclave"
+  {{ $envPrefix }}DATASERVICE_BASE_URL: "http://{{ $dataserviceName }}:{{ .Values.dataservice.service.port }}"
+  {{ $envPrefix }}DATASERVICE_TOKEN: "{{ .Values.enclave.configs.dataserviceToken }}"
+  {{ $envPrefix }}DISABLE_PRETTY_LOGS: "{{ .Values.enclave.configs.prettyLogs }}"
+  {{ $envPrefix }}WORKER_HEAP_SIZE_MB: "{{ .Values.enclave.configs.workerHeapSizeMb }}"
+  {{ $envPrefix }}RABBITMQ_URL: "{{ .Values.backend.configs.rabbitmqUrl }}"
   {{- if .Values.enclave.scone.enabled }}
-  ENCLAVE_CH_TYPE: "real"
-  ENCLAVE_CH_HOST: "{{ .Values.backend.configs.clickhouseHost }}"
-  ENCLAVE_CH_PORT: "{{ .Values.backend.configs.clickhousePort }}"
-  ENCLAVE_CH_DATABASE_NAME: "{{ .Values.backend.configs.clickhouseDb }}"
-  ENCLAVE_SERVICES_HOST: "localhost"
-  ENCLAVE_SERVICES_PORT: "8322"
-  ENCLAVE_DMP_BASE_URL: "http://{{ $backendName }}:{{ .Values.backend.service.api.port }}/enclave"
-  ENCLAVE_DATASERVICE_BASE_URL: "http://{{ $dataserviceName }}:{{ .Values.dataservice.service.port }}"
-  ENCLAVE_DATASERVICE_TOKEN: "{{ .Values.enclave.configs.dataserviceToken }}"
-  ENCLAVE_WORKER_HEAP_SIZE_MB: "{{ .Values.enclave.configs.workerHeapSizeMb }}"
-  ENCLAVE_RABBITMQ_URL: "{{ .Values.backend.configs.rabbitmqUrl }}"
+  CONFIG_FILE: "/config/local.json"
   API_KEY: "{{ .Values.enclave.scone.espApiKey }}"
   ESP_URI: "{{ .Values.enclave.scone.espAddr }}"
   SCONE_HEAP: "{{ .Values.enclave.scone.heapSize }}"
