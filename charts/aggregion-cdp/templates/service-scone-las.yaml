@@ -6,7 +6,7 @@ metadata:
   labels:
     {{- include "cdp.enclave.labels" . | nindent 4 }}
 spec:
-  type: NodePort
+  type: ClusterIP
   externalName: "{{ .Values.enclave.scone.lasServiceExternalName }}"
   ports:
     - port: {{ .Values.enclave.scone.lasPort }}
