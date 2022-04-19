@@ -198,57 +198,6 @@ spec:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: "dl-proxy-{{ ns }}"
-  labels:
-    cdp/project: "datalab"
-    datalab/namespace: "{{ ns }}"
-    datalab/component: "proxy"
-    name: "dl-proxy-{{ ns }}"
-spec:
-  selector:
-    matchLabels:
-      name: "dl-proxy-{{ ns }}"
-  template:
-    metadata:
-      labels:
-        cdp/project: "datalab"
-        datalab/namespace: "{{ ns }}"
-        datalab/component: "proxy"
-        name: "dl-proxy-{{ ns }}"
-    spec:
-      automountServiceAccountToken: false
-      terminationGracePeriodSeconds: 1
-      containers:
-        - name: "datalab-proxy-server"
-          image: "{{#if datalabProxyImage}}{{ datalabProxyImage }}{{else}}registry.aggregion.com/datalab-proxy:latest{{/if}}"
-          imagePullPolicy: "{{#if datalabProxyImagePullPolicy}}{{ datalabProxyImagePullPolicy }}{{else}}Always{{/if}}"
-          resources:
-            requests:
-              memory: "384Mi"
-            limits:
-              memory: "768Mi"
-          ports:
-            - name: "dlproxyport"
-              containerPort: 3128
-      imagePullSecrets:
-        - name: "{{#if datalabImagePullSecretName}}{{ datalabImagePullSecretName }}{{else}}aggregionregistry{{/if}}"
-      {{#if datalabNodeSelector }}
-      nodeSelector:
-        {{toYaml datalabNodeSelector 8 }}
-      {{/if}}
-      {{#if datalabAffinity }}
-      affinity:
-        {{toYaml datalabAffinity 8 }}
-      {{/if}}
-      {{#if datalabTolerations }}
-      tolerations:
-        {{toYaml datalabTolerations 8 }}
-      {{/if}}
-
----
-apiVersion: apps/v1
-kind: Deployment
-metadata:
   name: "dl-auth-{{ ns }}"
   labels:
     cdp/project: "datalab"
