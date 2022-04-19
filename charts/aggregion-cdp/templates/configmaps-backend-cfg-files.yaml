@@ -45,7 +45,6 @@ data:
             "memoryLimitGb": "{{ .Values.backend.configs.datalabMemoryLimitGb }}",
             "dmpNamespace": "{{ .Values.backend.configs.datalabDmpNamespace }}",
             "webhookUrl": "{{ .Values.backend.configs.datalabWebhookUrl }}"
-            "maxVms": "{{ .Values.backend.configs.datalabMaxVms }}"
           }
         }
       },
