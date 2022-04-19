@@ -27,25 +27,6 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: "dl-proxy-{{ ns }}"
-  labels:
-    cdp/project: "datalab"
-    datalab/namespace: "{{ ns }}"
-    datalab/component: "proxy"
-    name: "dl-proxy-{{ ns }}"
-spec:
-  selector:
-    name: "dl-proxy-{{ ns }}"
-  ports:
-    - name: dl-proxy
-      protocol: TCP
-      port: 3128
-      targetPort: dlproxyport
-
----
-apiVersion: v1
-kind: Service
-metadata:
   name: "dl-auth-{{ ns }}"
   labels:
     cdp/project: "datalab"

@@ -37,8 +37,6 @@ datalabImagePullSecretName - Registry secret name. default [aggregionregistry].
 datalabImagePullSecretInBase64 - Registry secret value encoded as base64 value. json .dockerconfig format. default [empty credentials].
 datalabImage - default [registry.aggregion.com/datalab:latest].
 datalabImagePullPolicy - default [Always].
-datalabProxyImage - default [registry.aggregion.com/datalab-proxy:latest].
-datalabProxyImagePullPolicy - default [Always].
 datalabAuthImage - default [registry.aggregion.com/datalab-auth:latest].
 datalabAuthImagePullPolicy - default [Always].
 datalabIngressNamespace - The name of namespace where ingress is deployed. default [default].
