@@ -262,6 +262,7 @@ backend:
     # back reference to dmp api
     datalabAuthUrl: "http://datalab-auth-helper.datalab-auth-helper.svc.cluster.local:19000/"
     datalabWebhookUrl: "http://aggregion-cdp-backend-EDIT_THAT.NAMESPACE.svc.cluster.local:8080/webhooks"
+    datalabMaxVms: "10"
     listenPort: 15432
     atlasUrl: "http://atlas.local" # External link for the frontend
     dcUseExternalS3: false
