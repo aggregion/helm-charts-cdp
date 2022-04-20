@@ -52,9 +52,9 @@ spec:
               protocol: TCP
           envFrom:
             - configMapRef:
-              name: "{{ $enclaveName }}-config"
+                name: "{{ $enclaveName }}-config"
             - secretRef:
-              name: "{{ $enclaveName }}-secrets"
+                name: "{{ $enclaveName }}-secrets"
           # livenessProbe:
           # readinessProbe:
           #   failureThreshold: 5
