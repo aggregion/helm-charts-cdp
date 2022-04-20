@@ -13,7 +13,7 @@ metadata:
   labels:
     {{- include "cdp.enclave.labels" . | nindent 4 }}
 data:
-  {{- if .Values.enclave.scone.enabled }}
+  {{- if not (.Values.enclave.scone.enabled) }}
   PROVIDE_NAME: "{{ .Values.backend.configs.providerInstanceId }}"
   {{- end }}
   {{ $envPrefix }}SERVER_PORT: "{{ .Values.enclave.configs.listenPort }}"
