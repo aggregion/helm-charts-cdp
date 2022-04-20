@@ -55,33 +55,6 @@ spec:
                 name: "{{ $enclaveName }}-config"
             - secretRef:
                 name: "{{ $enclaveName }}-secrets"
-          env:
-          {{- if .Values.enclave.scone.debug }}
-            - name: SCONE_VERSION
-              value: '1'
-            - name: SCONE_LOG
-              value: '7'
-          {{- end }}
-            - name: SCONE_MODE
-              value: hw
-            - name: SCONE_LAS_ADDR
-              value: "{{ $enclaveName }}-scone-las"
-            # - name: SCONE_HEAP
-            #   value: '2G'
-            - name: SCONE_STACK
-              value: '4M'
-            - name: SCONE_TCS
-              value: '4'
-            - name: SCONE_ALLOW_DLOPEN
-              value: '1'
-            - name: SCONE_NO_MMAP_ACCESS
-              value: '0'
-            - name: SCONE_SSPINS
-              value: '5'
-            - name: SCONE_SSLEEP
-              value: '100'
-            - name: CONFIG_FILE
-              value: '/var/local.json'
           # livenessProbe:
           # readinessProbe:
           #   failureThreshold: 5
