@@ -2,9 +2,10 @@
 {{- $backendName := include "cdp.backend.fullname" . }}
 {{- $enclaveName := include "cdp.enclave.fullname" . }}
 {{- $dataserviceName := include "cdp.dataservice.fullname" . }}
-{{- $envPrefix := "" -}}
 {{- if .Values.enclave.scone.enabled -}}
-  {{- $envPrefix = "ENCLAVE_" -}}
+  {{- $envPrefix := "ENCLAVE_" -}}
+{{ else }}
+  {{- $envPrefix := "" -}}
 {{- end}}
 apiVersion: v1
 kind: ConfigMap
