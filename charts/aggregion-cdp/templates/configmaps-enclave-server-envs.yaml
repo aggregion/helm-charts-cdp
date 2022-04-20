@@ -30,10 +30,24 @@ data:
   {{ $envPrefix }}DISABLE_PRETTY_LOGS: "{{ .Values.enclave.configs.prettyLogs }}"
   {{ $envPrefix }}WORKER_HEAP_SIZE_MB: "{{ .Values.enclave.configs.workerHeapSizeMb }}"
   {{ $envPrefix }}RABBITMQ_URL: "{{ .Values.backend.configs.rabbitmqUrl }}"
+
   {{- if .Values.enclave.scone.enabled }}
-  CONFIG_FILE: "/config/local.json"
+  CONFIG_FILE: "/var/local.json"
   API_KEY: "{{ .Values.enclave.scone.espApiKey }}"
   ESP_URI: "{{ .Values.enclave.scone.espAddr }}"
+
   SCONE_HEAP: "{{ .Values.enclave.scone.heapSize }}"
+  SCONE_MODE: "hw"
+  SCONE_LAS_ADDR: "{{ $enclaveName }}-scone-las"
+  SCONE_STACK: "4M"
+  SCONE_TCS: "4"
+  SCONE_ALLOW_DLOPEN: "1"
+  SCONE_NO_MMAP_ACCESS: "0"
+  SCONE_SSPINS: "5"
+  SCONE_SSLEEP: "100"
+  {{- if .Values.enclave.scone.debug }}
+  SCONE_VERSION: "1"
+  SCONE_LOG: "7"
+  {{- end }}
   {{- end }}
 {{- end }}
