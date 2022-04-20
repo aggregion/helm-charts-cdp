@@ -94,7 +94,7 @@ spec:
       volumes:
         - name: tmp
           hostPath:
-            path: "/tmp/enclave
+            path: "/tmp/{{ $enclaveName }}"
         - name: local-config-volume
           configMap:
             name: "{{ $enclaveName }}-config-files"
