@@ -291,6 +291,8 @@ backend:
         Dataset:
           get: ['TEAMLEAD', 'DATA_ANALYST', 'ADMIN', 'DATA_RESEARCHER', 'DATA_ASSET_OWNER', 'DATA_STEWARD', 'GLOSSARY_RESEARCHER']
           list: ['TEAMLEAD', 'DATA_ANALYST', 'ADMIN', 'DATA_RESEARCHER', 'DATA_ASSET_OWNER', 'DATA_STEWARD', 'GLOSSARY_RESEARCHER']
+        DatasetLogs:
+          list: ['TEAMLEAD']
       Mutation:
         Account:
           updateGlobalOrgInfo: ['ADMIN']
