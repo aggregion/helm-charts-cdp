@@ -191,6 +191,25 @@ spec:
                 name: "{{ $dataServiceName }}-secrets"
         {{- end }}
 
+        {{- if .Values.dataservice.datasetLogsSyncers.enabled }}
+        - name: "dataset-logs-syncer"
+          securityContext:
+            {{ - toYaml .Values.dataservice.securityContext | nindent 12 }}
+
+          image: "{{ .Values.dataservice.imageApi.repository }}:{{ .Values.dataservice.imageApi.tag }}"
+          imagePullPolicy: {{ .Values.dataservice.imageApi.pullPolicy }}
+          args:
+            - npm
+            - run
+            - start:worker:dataset-logs-syncer:prod
+
+          envFrom:
+            - configMapRef:
+                name: "{{ $dataServiceName }}-config"
+            - secretRef:
+                name: "{{ $dataServiceName }}-secrets"
+        {{- end }}
+
         {{- if .Values.dataservice.configAtlasSyncer.enabled}}
         - name: "atlas-entity-syncer"
           securityContext:
