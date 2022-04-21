@@ -194,10 +194,10 @@ spec:
         {{- if .Values.dataservice.datasetLogsSyncers.enabled }}
         - name: "dataset-logs-syncer"
           securityContext:
-            { { - toYaml .Values.dataservice.securityContext | nindent 12 } }
+            {{ - toYaml .Values.dataservice.securityContext | nindent 12 }}
 
           image: "{{ .Values.dataservice.imageApi.repository }}:{{ .Values.dataservice.imageApi.tag }}"
-          imagePullPolicy: { { .Values.dataservice.imageApi.pullPolicy } }
+          imagePullPolicy: {{ .Values.dataservice.imageApi.pullPolicy }}
           args:
             - npm
             - run
