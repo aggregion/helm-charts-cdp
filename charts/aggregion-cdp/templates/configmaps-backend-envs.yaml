@@ -28,7 +28,7 @@ data:
   CURRENT_PROVIDER_NAME: "{{ .Values.backend.configs.providerName }}"
   PROVIDER_INSTANCE_ID: "{{ .Values.backend.configs.providerInstanceId }}"
   INTERACTION_INITIALIZATION_VECTOR: "{{ .Values.backend.configs.interactionIV }}"
-  ENCLAVE_ENDPOINT: "{{ .Values.backend.configs.enclaveEndpoint | default (printf "http://%s:%v/v1" $enclaveName .Values.enclave.service.innerPort) }}"
+  ENCLAVE_ENDPOINT: "{{ .Values.backend.configs.enclaveEndpoint | default (printf "http://%s:%v" $enclaveName .Values.enclave.service.innerPort) }}"
   ENCLAVE_SCRIPTS_AUDITORY: "{{ .Values.enclave.scripts.auditory }}"
   ENCLAVE_SCRIPTS_DATALAB: "{{ .Values.enclave.scripts.datalab }}"
   ENCLAVE_SCRIPTS_SEGMENT: "{{ .Values.enclave.scripts.segment }}"
