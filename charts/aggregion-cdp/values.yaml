@@ -424,13 +424,6 @@ enclave:
     lasPodSecurityContext: {}
     lasSecurityContext: {}
     heapSize: "2G"
-  scripts:
-    auditory: "sha256-1dbdf66d12ed88c56682a533bf8b703211a004743e7b6c9393bc70461175f7ba"
-    datalab: "sha256-4be860062a8440188600ee3c57d65c59aa3a7d23feee022ab87c4b85386cfe89"
-    segment: "sha256-eee58a0d585b02731979815f5985e9d08b8aa328b41c5b5954f67dde1344eed3"
-    segmentCriteries: "sha256-af951a1b4078a926671d7fbcb244f0a4f6d6cb221d321cdb5ba569bb84a55f46"
-    statistics: "sha256-652c1df657735c02ff329216dd0d935a529447facdcf5919db54ab873067ebc7"
-    agreements: "sha256-8a92c854d733eeb99803bec30b7c6dd411d819ed75a7ca2c1d1b8eee41c13203"
   imageServer:
     repository: registry.aggregion.com/enclave-server-nodejs
     pullPolicy: IfNotPresent

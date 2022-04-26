@@ -29,12 +29,6 @@ data:
   PROVIDER_INSTANCE_ID: "{{ .Values.backend.configs.providerInstanceId }}"
   INTERACTION_INITIALIZATION_VECTOR: "{{ .Values.backend.configs.interactionIV }}"
   ENCLAVE_ENDPOINT: "{{ .Values.backend.configs.enclaveEndpoint | default (printf "http://%s:%v" $enclaveName .Values.enclave.service.innerPort) }}"
-  ENCLAVE_SCRIPTS_AUDITORY: "{{ .Values.enclave.scripts.auditory }}"
-  ENCLAVE_SCRIPTS_DATALAB: "{{ .Values.enclave.scripts.datalab }}"
-  ENCLAVE_SCRIPTS_SEGMENT: "{{ .Values.enclave.scripts.segment }}"
-  ENCLAVE_SCRIPTS_AGREEMENTS: "{{ .Values.enclave.scripts.agreements }}"
-  ENCLAVE_SCRIPTS_SEGMENT_CRITERIES: "{{ .Values.enclave.scripts.segmentCriteries }}"
-  ENCLAVE_SCRIPTS_STATISTIC: "{{ .Values.enclave.scripts.statistics }}"
   ENCLAVE_DMP_API_SECRET: "{{ .Values.backend.configs.dmpSecret }}"
   ENCLAVE_KNOWN_PROVIDERS: '{{ .Values.providers | toJson }}'
   EMAIL_NOTIFICATIONS: '{{ .Values.backend.configs.email | toJson }}'
