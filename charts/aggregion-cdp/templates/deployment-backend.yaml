@@ -33,6 +33,30 @@ spec:
       serviceAccountName: {{ include "cdp.serviceAccountName" . }}
       securityContext:
         {{- toYaml .Values.backend.podSecurityContext | nindent 8 }}
+      initContainers:
+        {{- if .Values.backend.configs.migrationEnabled }}
+        - name: "backend-migration"
+          securityContext:
+            {{- toYaml .Values.backend.securityContext | nindent 12 }}
+          image: "{{ .Values.backend.image.repository }}:{{ .Values.backend.image.tag }}"
+          imagePullPolicy: {{ .Values.backend.image.pullPolicy }}
+          args:
+            - npm
+            - run
+            - migrate:up
+          envFrom:
+            - configMapRef:
+              name: "{{ $backendName }}-config"
+            - secretRef:
+              name: "{{ $backendName }}-secrets"
+          resources:
+            {{- toYaml .Values.backend.resources.migration | nindent 12 }}
+          volumeMounts:
+            - mountPath: /home/node/app/config/local.json
+              subPath: local.json
+              name: local-config-volume
+        {{- end }}
+
       containers:
         - name: "backend-api"
           securityContext:
@@ -67,29 +91,6 @@ spec:
             - name: data
               mountPath: /data/datalabscripts
               subPath: datalabscripts-data
-
-        {{- if .Values.backend.configs.migrationEnabled }}
-        - name: "backend-migration"
-          securityContext:
-            {{- toYaml .Values.backend.securityContext | nindent 12 }}
-          image: "{{ .Values.backend.image.repository }}:{{ .Values.backend.image.tag }}"
-          imagePullPolicy: {{ .Values.backend.image.pullPolicy }}
-          args:
-            - npm
-            - run
-            - migrate:up
-          envFrom:
-            - configMapRef:
-                name: "{{ $backendName }}-config"
-            - secretRef:
-                name: "{{ $backendName }}-secrets"
-          resources:
-            {{- toYaml .Values.backend.resources.migration | nindent 12 }}
-          volumeMounts:
-            - mountPath: /home/node/app/config/local.json
-              subPath: local.json
-              name: local-config-volume
-        {{- end }}
 
         {{- if .Values.backend.configs.serviceMatchingStatusWatcherEnabled }}
         - name: "backend-matching-status-watcher"
