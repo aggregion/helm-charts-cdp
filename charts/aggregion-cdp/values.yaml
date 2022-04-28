@@ -272,10 +272,10 @@ backend:
     userRolesMap:
       Query:
         Project:
-          get: ['DATA_ASSET_OWNER', 'DATA_STEWARD', 'DATA_RESEARCHER', 'TEAMLEAD', 'ADMIN']
-          list: ['DATA_ASSET_OWNER', 'DATA_STEWARD', 'DATA_RESEARCHER', 'TEAMLEAD', 'ADMIN']
-          incominglist: ['DATA_ASSET_OWNER', 'DATA_STEWARD', 'DATA_RESEARCHER', 'TEAMLEAD', 'ADMIN']
-          outcominglist: ['DATA_ASSET_OWNER', 'DATA_STEWARD', 'DATA_RESEARCHER', 'TEAMLEAD', 'ADMIN']
+          get: ['DATA_ASSET_OWNER', 'DATA_STEWARD', 'DATA_RESEARCHER', 'TEAMLEAD']
+          list: ['DATA_ASSET_OWNER', 'DATA_STEWARD', 'DATA_RESEARCHER', 'TEAMLEAD']
+          incominglist: ['DATA_ASSET_OWNER', 'DATA_STEWARD', 'DATA_RESEARCHER', 'TEAMLEAD']
+          outcominglist: ['DATA_ASSET_OWNER', 'DATA_STEWARD', 'DATA_RESEARCHER', 'TEAMLEAD']
         DataLabVM:
           get: ['TEAMLEAD', 'DATA_RESEARCHER']
           list: ['TEAMLEAD', 'DATA_RESEARCHER']
@@ -286,13 +286,11 @@ backend:
           incomingList: ['TEAMLEAD', 'DATA_RESEARCHER', 'DATA_ASSET_OWNER', 'DATA_STEWARD']
           outcomingList: ['TEAMLEAD', 'DATA_RESEARCHER', 'DATA_ASSET_OWNER', 'DATA_STEWARD']
         DataLabScript:
-          get: ['GOD']
-          list: ['GOD']
+          get: ['DATA_RESEARCHER', 'DATA_STEWARD', 'DATA_ASSET_OWNER']
+          list: ['DATA_RESEARCHER', 'DATA_STEWARD', 'DATA_ASSET_OWNER']
         Dataset:
           get: ['TEAMLEAD', 'DATA_ANALYST', 'ADMIN', 'DATA_RESEARCHER', 'DATA_ASSET_OWNER', 'DATA_STEWARD', 'GLOSSARY_RESEARCHER']
           list: ['TEAMLEAD', 'DATA_ANALYST', 'ADMIN', 'DATA_RESEARCHER', 'DATA_ASSET_OWNER', 'DATA_STEWARD', 'GLOSSARY_RESEARCHER']
-        DatasetLogs:
-          list: ['TEAMLEAD']
       Mutation:
         Account:
           updateGlobalOrgInfo: ['ADMIN']
@@ -316,31 +314,43 @@ backend:
         DataLabVM:
           create: ['TEAMLEAD']
           merge: ['TEAMLEAD']
-          runDataLabVM: ['DATA_RESEARCHER', 'TEAMLEAD', 'ADMIN']
-          stopDataLabVM: ['TEAMLEAD', 'ADMIN']
+          runDataLabVM: ['DATA_RESEARCHER', 'TEAMLEAD']
+          stopDataLabVM: ['TEAMLEAD']
         DatasetRequest:
           create: ['TEAMLEAD', 'DATA_RESEARCHER']
           merge: ['TEAMLEAD', 'DATA_RESEARCHER']
           changeStatus:
             - if:
                 args:
-                  status: 'review'
+                  status: "review"
               then: ['TEAMLEAD', 'DATA_RESEARCHER']
             - if:
                 args:
-                  status: 'approved'
+                  status: "approved"
               then: ['DATA_STEWARD', 'DATA_ASSET_OWNER']
             - if:
                 args:
-                  status: 'rejected'
+                  status: "rejected"
               then: ['DATA_STEWARD', 'DATA_ASSET_OWNER']
           createAndMoveToReview: ['TEAMLEAD', 'DATA_RESEARCHER']
           upload: ['TEAMLEAD', 'DATA_RESEARCHER']
         DataLabScript:
-          create: ['GOD']
-          merge: ['GOD']
-          changeStatus: ['GOD']
-          makeReview: ['GOD']
+          create: ['DATA_RESEARCHER']
+          merge: ['DATA_RESEARCHER']
+          changeStatus:
+            - if:
+                args:
+                  status: "ready4review"
+              then: ['DATA_RESEARCHER']
+            - if:
+                args:
+                  status: "approved"
+              then: ['DATA_STEWARD', 'DATA_ASSET_OWNER']
+            - if:
+                args:
+                  status: "rejected"
+              then: ['DATA_STEWARD', 'DATA_ASSET_OWNER']
+          makeReview: ['DATA_STEWARD', 'DATA_ASSET_OWNER']
         GlossaryTerm:
           bookmark: ['GLOSSARY_RESEARCHER']
           unbookmark: ['GLOSSARY_RESEARCHER']
