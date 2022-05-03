@@ -1,0 +1,30 @@
+global:
+  storageClass: "" # overwrite if needed custom storage class, for example, with correct permissions on folders
+
+keycloak:
+  enabled: true
+
+  auth:
+    adminUser: admin
+
+  postgresql:
+    primary:
+      persistence:
+        size: 1Gi
+
+  service:
+    type: NodePort
+
+  proxyAddressForwarding: true # cause keycloak runned behind ingress
+
+  ingress:
+    enabled: true
+    annotations:
+      kubernetes.io/ingress.class: nginx
+      cert-manager.io/cluster-issuer: letsencrypt-prod
+    tls: true
+
+  metrics:
+    enabled: true
+    serviceMonitor:
+      enabled: true
