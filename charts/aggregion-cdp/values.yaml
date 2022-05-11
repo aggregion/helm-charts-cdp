@@ -291,6 +291,10 @@ backend:
         Dataset:
           get: ['TEAMLEAD', 'DATA_ANALYST', 'ADMIN', 'DATA_RESEARCHER', 'DATA_ASSET_OWNER', 'DATA_STEWARD', 'GLOSSARY_RESEARCHER']
           list: ['TEAMLEAD', 'DATA_ANALYST', 'ADMIN', 'DATA_RESEARCHER', 'DATA_ASSET_OWNER', 'DATA_STEWARD', 'GLOSSARY_RESEARCHER']
+        DatasetLogs:
+          list: ['TEAMLEAD']
+        MetadataSeed:
+          seedExcelData: ['DATA_ANALYST', 'DATA_STEWARD']
       Mutation:
         Account:
           updateGlobalOrgInfo: ['ADMIN']
@@ -354,6 +358,8 @@ backend:
         GlossaryTerm:
           bookmark: ['GLOSSARY_RESEARCHER']
           unbookmark: ['GLOSSARY_RESEARCHER']
+        MetadataSeed:
+          seedExcelData: ['DATA_ANALYST', 'DATA_STEWARD']
 
   restartPolicy: Always
   nameOverride: ""
