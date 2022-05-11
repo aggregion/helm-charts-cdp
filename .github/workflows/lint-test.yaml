@@ -18,6 +18,9 @@ jobs:
       - name: Fetch history
         run: git fetch --prune --unshallow
 
+      - name: Add Bitnami Charts
+        run:  helm repo add bitnami https://charts.bitnami.com/bitnami  
+
       - name: Lint Helm charts
         uses: helm/chart-testing-action@v1.0.0
         with:
