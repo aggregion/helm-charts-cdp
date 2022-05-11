@@ -277,9 +277,9 @@ backend:
           incominglist: ['DATA_ASSET_OWNER', 'DATA_STEWARD', 'DATA_RESEARCHER', 'TEAMLEAD']
           outcominglist: ['DATA_ASSET_OWNER', 'DATA_STEWARD', 'DATA_RESEARCHER', 'TEAMLEAD']
         DataLabVM:
-          get: ['TEAMLEAD', 'DATA_RESEARCHER']
-          list: ['TEAMLEAD', 'DATA_RESEARCHER']
-          getBucketlistObjects: ['TEAMLEAD', 'DATA_RESEARCHER']
+          get: ['TEAMLEAD', 'DATA_RESEARCHER', 'ADMIN']
+          list: ['TEAMLEAD', 'DATA_RESEARCHER', 'ADMIN']
+          getBucketlistObjects: ['TEAMLEAD', 'DATA_RESEARCHER', 'ADMIN']
         DatasetRequest:
           get: ['TEAMLEAD', 'DATA_RESEARCHER', 'DATA_ASSET_OWNER', 'DATA_STEWARD']
           list: ['TEAMLEAD', 'DATA_RESEARCHER', 'DATA_ASSET_OWNER', 'DATA_STEWARD']
