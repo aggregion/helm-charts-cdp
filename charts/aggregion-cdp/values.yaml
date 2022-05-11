@@ -277,9 +277,9 @@ backend:
           incominglist: ['DATA_ASSET_OWNER', 'DATA_STEWARD', 'DATA_RESEARCHER', 'TEAMLEAD']
           outcominglist: ['DATA_ASSET_OWNER', 'DATA_STEWARD', 'DATA_RESEARCHER', 'TEAMLEAD']
         DataLabVM:
-          get: ['TEAMLEAD', 'DATA_RESEARCHER']
-          list: ['TEAMLEAD', 'DATA_RESEARCHER']
-          getBucketlistObjects: ['TEAMLEAD', 'DATA_RESEARCHER']
+          get: ['TEAMLEAD', 'DATA_RESEARCHER', 'ADMIN']
+          list: ['TEAMLEAD', 'DATA_RESEARCHER', 'ADMIN']
+          getBucketlistObjects: ['TEAMLEAD', 'DATA_RESEARCHER', 'ADMIN']
         DatasetRequest:
           get: ['TEAMLEAD', 'DATA_RESEARCHER', 'DATA_ASSET_OWNER', 'DATA_STEWARD']
           list: ['TEAMLEAD', 'DATA_RESEARCHER', 'DATA_ASSET_OWNER', 'DATA_STEWARD']
@@ -291,6 +291,14 @@ backend:
         Dataset:
           get: ['TEAMLEAD', 'DATA_ANALYST', 'ADMIN', 'DATA_RESEARCHER', 'DATA_ASSET_OWNER', 'DATA_STEWARD', 'GLOSSARY_RESEARCHER']
           list: ['TEAMLEAD', 'DATA_ANALYST', 'ADMIN', 'DATA_RESEARCHER', 'DATA_ASSET_OWNER', 'DATA_STEWARD', 'GLOSSARY_RESEARCHER']
+        DatasetLogs:
+          list: ['TEAMLEAD']
+        MetadataSeed:
+          seedExcelData: ['DATA_ANALYST', 'DATA_STEWARD']
+        DatasetMatchingGroup:
+          get: ['TEAMLEAD', 'DATA_RESEARCHER']
+          list: ['TEAMLEAD', 'DATA_RESEARCHER']
+          checkDatasetsForMatching: ['TEAMLEAD', 'DATA_RESEARCHER']
       Mutation:
         Account:
           updateGlobalOrgInfo: ['ADMIN']
@@ -354,6 +362,20 @@ backend:
         GlossaryTerm:
           bookmark: ['GLOSSARY_RESEARCHER']
           unbookmark: ['GLOSSARY_RESEARCHER']
+        DatasetMatchingGroup:
+          create: ['TEAMLEAD', 'DATA_RESEARCHER']
+          merge: ['TEAMLEAD', 'DATA_RESEARCHER']
+          setDatasets: ['TEAMLEAD', 'DATA_RESEARCHER']
+          removeDataset: ['TEAMLEAD', 'DATA_RESEARCHER']
+          changeStatus: ['TEAMLEAD', 'DATA_RESEARCHER']
+          hide: ['TEAMLEAD', 'DATA_RESEARCHER']
+          unhide: ['TEAMLEAD', 'DATA_RESEARCHER']
+          runMatching: ['TEAMLEAD', 'DATA_RESEARCHER']
+          stopMatching: ['TEAMLEAD', 'DATA_RESEARCHER']
+          runUpload: ['TEAMLEAD', 'DATA_RESEARCHER']
+          stopUpload: ['TEAMLEAD', 'DATA_RESEARCHER']
+        MetadataSeed:
+          seedExcelData: ['DATA_ANALYST', 'DATA_STEWARD']
 
   restartPolicy: Always
   nameOverride: ""
