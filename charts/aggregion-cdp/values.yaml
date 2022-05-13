@@ -282,7 +282,7 @@ backend:
           getBucketlistObjects: ['TEAMLEAD', 'DATA_RESEARCHER', 'ADMIN']
         DatasetRequest:
           get: ['TEAMLEAD', 'DATA_RESEARCHER', 'DATA_ASSET_OWNER', 'DATA_STEWARD']
-          list: ['TEAMLEAD', 'DATA_RESEARCHER', 'DATA_ASSET_OWNER', 'DATA_STEWARD']
+          list: ['TEAMLEAD', 'DATA_RESEARCHER', 'DATA_ASSET_OWNER', 'DATA_STEWARD', 'ADMIN']
           incomingList: ['TEAMLEAD', 'DATA_RESEARCHER', 'DATA_ASSET_OWNER', 'DATA_STEWARD']
           outcomingList: ['TEAMLEAD', 'DATA_RESEARCHER', 'DATA_ASSET_OWNER', 'DATA_STEWARD']
         DataLabScript:
@@ -297,7 +297,7 @@ backend:
           seedExcelData: ['DATA_ANALYST', 'DATA_STEWARD']
         DatasetMatchingGroup:
           get: ['TEAMLEAD', 'DATA_RESEARCHER']
-          list: ['TEAMLEAD', 'DATA_RESEARCHER']
+          list: ['TEAMLEAD', 'DATA_RESEARCHER', 'ADMIN']
           checkDatasetsForMatching: ['TEAMLEAD', 'DATA_RESEARCHER']
       Mutation:
         Account:
