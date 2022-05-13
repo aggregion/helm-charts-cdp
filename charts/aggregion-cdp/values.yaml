@@ -299,6 +299,8 @@ backend:
           get: ['TEAMLEAD', 'DATA_RESEARCHER']
           list: ['TEAMLEAD', 'DATA_RESEARCHER']
           checkDatasetsForMatching: ['TEAMLEAD', 'DATA_RESEARCHER']
+        Job:
+          list: ['TEAMLEAD', 'DATA_RESEARCHER', 'ADMIN']
       Mutation:
         Account:
           updateGlobalOrgInfo: ['ADMIN']
@@ -376,7 +378,10 @@ backend:
           stopUpload: ['TEAMLEAD', 'DATA_RESEARCHER']
         MetadataSeed:
           seedExcelData: ['DATA_ANALYST', 'DATA_STEWARD']
-
+        Job:
+          debug: ['TEAMLEAD', 'DATA_RESEARCHER']
+          run: ['TEAMLEAD']
+          abort: ['TEAMLEAD', 'DATA_RESEARCHER', 'ADMIN']
   restartPolicy: Always
   nameOverride: ""
   fullnameOverride: ""
