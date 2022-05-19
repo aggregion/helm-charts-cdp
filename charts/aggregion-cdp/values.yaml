@@ -274,17 +274,17 @@ backend:
     userRolesMap:
       Query:
         Project:
-          get: ['DATA_ASSET_OWNER', 'DATA_STEWARD', 'DATA_RESEARCHER', 'TEAMLEAD']
-          list: ['DATA_ASSET_OWNER', 'DATA_STEWARD', 'DATA_RESEARCHER', 'TEAMLEAD']
+          get: ['DATA_ASSET_OWNER', 'DATA_STEWARD', 'DATA_RESEARCHER', 'TEAMLEAD', 'ADMIN']
+          list: ['DATA_ASSET_OWNER', 'DATA_STEWARD', 'DATA_RESEARCHER', 'TEAMLEAD', 'ADMIN']
           incominglist: ['DATA_ASSET_OWNER', 'DATA_STEWARD', 'DATA_RESEARCHER', 'TEAMLEAD']
           outcominglist: ['DATA_ASSET_OWNER', 'DATA_STEWARD', 'DATA_RESEARCHER', 'TEAMLEAD']
         DataLabVM:
-          get: ['TEAMLEAD', 'DATA_RESEARCHER']
-          list: ['TEAMLEAD', 'DATA_RESEARCHER']
-          getBucketlistObjects: ['TEAMLEAD', 'DATA_RESEARCHER']
+          get: ['TEAMLEAD', 'DATA_RESEARCHER', 'ADMIN']
+          list: ['TEAMLEAD', 'DATA_RESEARCHER', 'ADMIN']
+          getBucketlistObjects: ['TEAMLEAD', 'DATA_RESEARCHER', 'ADMIN']
         DatasetRequest:
           get: ['TEAMLEAD', 'DATA_RESEARCHER', 'DATA_ASSET_OWNER', 'DATA_STEWARD']
-          list: ['TEAMLEAD', 'DATA_RESEARCHER', 'DATA_ASSET_OWNER', 'DATA_STEWARD']
+          list: ['TEAMLEAD', 'DATA_RESEARCHER', 'DATA_ASSET_OWNER', 'DATA_STEWARD', 'ADMIN']
           incomingList: ['TEAMLEAD', 'DATA_RESEARCHER', 'DATA_ASSET_OWNER', 'DATA_STEWARD']
           outcomingList: ['TEAMLEAD', 'DATA_RESEARCHER', 'DATA_ASSET_OWNER', 'DATA_STEWARD']
         DataLabScript:
@@ -293,6 +293,16 @@ backend:
         Dataset:
           get: ['TEAMLEAD', 'DATA_ANALYST', 'ADMIN', 'DATA_RESEARCHER', 'DATA_ASSET_OWNER', 'DATA_STEWARD', 'GLOSSARY_RESEARCHER']
           list: ['TEAMLEAD', 'DATA_ANALYST', 'ADMIN', 'DATA_RESEARCHER', 'DATA_ASSET_OWNER', 'DATA_STEWARD', 'GLOSSARY_RESEARCHER']
+        DatasetLogs:
+          list: ['TEAMLEAD']
+        MetadataSeed:
+          seedExcelData: ['DATA_ANALYST', 'DATA_STEWARD']
+        DatasetMatchingGroup:
+          get: ['TEAMLEAD', 'DATA_RESEARCHER']
+          list: ['TEAMLEAD', 'DATA_RESEARCHER', 'ADMIN']
+          checkDatasetsForMatching: ['TEAMLEAD', 'DATA_RESEARCHER']
+        Job:
+          list: ['TEAMLEAD', 'DATA_RESEARCHER', 'ADMIN']
       Mutation:
         Account:
           updateGlobalOrgInfo: ['ADMIN']
@@ -317,7 +327,7 @@ backend:
           create: ['TEAMLEAD']
           merge: ['TEAMLEAD']
           runDataLabVM: ['DATA_RESEARCHER', 'TEAMLEAD']
-          stopDataLabVM: ['TEAMLEAD']
+          stopDataLabVM: ['TEAMLEAD', 'ADMIN']
         DatasetRequest:
           create: ['TEAMLEAD', 'DATA_RESEARCHER']
           merge: ['TEAMLEAD', 'DATA_RESEARCHER']
@@ -356,7 +366,24 @@ backend:
         GlossaryTerm:
           bookmark: ['GLOSSARY_RESEARCHER']
           unbookmark: ['GLOSSARY_RESEARCHER']
-
+        DatasetMatchingGroup:
+          create: ['TEAMLEAD', 'DATA_RESEARCHER']
+          merge: ['TEAMLEAD', 'DATA_RESEARCHER']
+          setDatasets: ['TEAMLEAD', 'DATA_RESEARCHER']
+          removeDataset: ['TEAMLEAD', 'DATA_RESEARCHER']
+          changeStatus: ['TEAMLEAD', 'DATA_RESEARCHER']
+          hide: ['TEAMLEAD', 'DATA_RESEARCHER']
+          unhide: ['TEAMLEAD', 'DATA_RESEARCHER']
+          runMatching: ['TEAMLEAD', 'DATA_RESEARCHER']
+          stopMatching: ['TEAMLEAD', 'DATA_RESEARCHER']
+          runUpload: ['TEAMLEAD', 'DATA_RESEARCHER']
+          stopUpload: ['TEAMLEAD', 'DATA_RESEARCHER']
+        MetadataSeed:
+          seedExcelData: ['DATA_ANALYST', 'DATA_STEWARD']
+        Job:
+          debug: ['TEAMLEAD', 'DATA_RESEARCHER']
+          run: ['TEAMLEAD']
+          abort: ['TEAMLEAD', 'DATA_RESEARCHER', 'ADMIN']
   restartPolicy: Always
   nameOverride: ""
   fullnameOverride: ""

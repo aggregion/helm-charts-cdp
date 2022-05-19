@@ -46,9 +46,9 @@ spec:
             - migrate:up
           envFrom:
             - configMapRef:
-              name: "{{ $backendName }}-config"
+                name: "{{ $backendName }}-config"
             - secretRef:
-              name: "{{ $backendName }}-secrets"
+                name: "{{ $backendName }}-secrets"
           resources:
             {{- toYaml .Values.backend.resources.migration | nindent 12 }}
           volumeMounts:
