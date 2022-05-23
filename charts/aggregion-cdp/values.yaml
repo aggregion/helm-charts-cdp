@@ -282,6 +282,7 @@ backend:
           get: ['TEAMLEAD', 'DATA_RESEARCHER', 'ADMIN']
           list: ['TEAMLEAD', 'DATA_RESEARCHER', 'ADMIN']
           getBucketlistObjects: ['TEAMLEAD', 'DATA_RESEARCHER', 'ADMIN']
+          upload: ['DATA_RESEARCHER', 'TEAMLEAD']
         DatasetRequest:
           get: ['TEAMLEAD', 'DATA_RESEARCHER', 'DATA_ASSET_OWNER', 'DATA_STEWARD']
           list: ['TEAMLEAD', 'DATA_RESEARCHER', 'DATA_ASSET_OWNER', 'DATA_STEWARD', 'ADMIN']
