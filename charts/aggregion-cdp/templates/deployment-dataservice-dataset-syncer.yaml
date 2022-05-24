@@ -1,4 +1,4 @@
-{{- if .Values.dataservice.enabled }}
+{{- if and (.Values.dataservice.enabled) (.Values.dataservice.datasetDatasetSyncer.enabled) }}
 {{- $dataServiceName := include "cdp.dataservice.fullname" . }}
 apiVersion: apps/v1
 kind: Deployment

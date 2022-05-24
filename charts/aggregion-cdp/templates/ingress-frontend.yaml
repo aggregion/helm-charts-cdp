@@ -117,7 +117,7 @@ spec:
                 name: "{{ $frontendName }}"
                 port:
                   name: "http"
-          {{- if $.Values.backend.configs.dataserviceViaFrontendEnabled }}
+          {{- if and ($.Values.dataservice.enabled) ($.Values.backend.configs.dataserviceViaFrontendEnabled) }}
           - path: "/api" # dataservice (workaround)
             pathType: "Prefix"
             backend:
@@ -175,7 +175,7 @@ spec:
             backend:
               serviceName: "{{ $frontendName }}"
               servicePort: "http"
-          {{- if $.Values.backend.configs.dataserviceViaFrontendEnabled }}
+          {{- if and ($.Values.dataservice.enabled) ($.Values.backend.configs.dataserviceViaFrontendEnabled) }}
           - path: "/api" # dataservice (workaround)
             backend:
               serviceName: "{{ $dataserviceName }}"
