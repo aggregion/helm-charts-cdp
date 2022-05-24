@@ -1,10 +1,11 @@
+{{- if or (.Values.backend.configs.serviceBcCheckerEnabled) (.Values.backend.configs.serviceBcSyncerEnabled) (.Values.backend.configs.serviceCrondEnabled) }}
 {{- $name := "backend" }}
 {{- $backendName := include "cdp.backend.fullname" . }}
 {{- $eosWalletPath := printf "%s/%s" (substr 0 3 .Values.backend.configs.eosOrgId) .Values.backend.configs.eosOrgId }}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: "{{ $backendName }}"
+  name: "{{ $backendName }}-bc-auth"
   {{- with .Values.backend.annotations }}
   annotations:
       {{- toYaml . | nindent 6 }}
@@ -33,54 +34,44 @@ spec:
       serviceAccountName: {{ include "cdp.serviceAccountName" . }}
       securityContext:
         {{- toYaml .Values.backend.podSecurityContext | nindent 8 }}
-      initContainers:
-        {{- if .Values.backend.configs.migrationEnabled }}
-        - name: "backend-migration"
-          securityContext:
-            {{- toYaml .Values.backend.securityContext | nindent 12 }}
+
+      containers:
+        {{- if .Values.backend.configs.serviceBcCheckerEnabled }}
+        - name: "backend-bc-checker"
           image: "{{ .Values.backend.image.repository }}:{{ .Values.backend.image.tag }}"
-          imagePullPolicy: {{ .Values.backend.image.pullPolicy }}
+          imagePullPolicy: "Always"
           args:
             - npm
             - run
-            - migrate:up
+            - start:worker:bc_checker
           envFrom:
             - configMapRef:
                 name: "{{ $backendName }}-config"
             - secretRef:
                 name: "{{ $backendName }}-secrets"
           resources:
-            {{- toYaml .Values.backend.resources.migration | nindent 12 }}
+            {{- toYaml .Values.backend.resources.bcChecker | nindent 12 }}
           volumeMounts:
             - mountPath: /home/node/app/config/local.json
               subPath: local.json
               name: local-config-volume
         {{- end }}
 
-      containers:
-        - name: "backend-api"
-          securityContext:
-            {{- toYaml .Values.backend.securityContext | nindent 12 }}
+        {{- if .Values.backend.configs.serviceBcSyncerEnabled }}
+        - name: "backend-bc-syncer"
           image: "{{ .Values.backend.image.repository }}:{{ .Values.backend.image.tag }}"
-          imagePullPolicy: {{ .Values.backend.image.pullPolicy }}
-          ports:
-            - name: httpapi
-              containerPort: {{ .Values.backend.configs.listenPort }}
+          imagePullPolicy: "{{ .Values.backend.image.pullPolicy }}"
           args:
             - npm
             - run
-            {{- if .Values.backend.configs.debugEnabled }}
-            - start:api:debug
-            {{- else }}
-            - start:api
-            {{- end }}
+            - start:worker:bc_syncer
           envFrom:
             - configMapRef:
                 name: "{{ $backendName }}-config"
             - secretRef:
                 name: "{{ $backendName }}-secrets"
           resources:
-            {{- toYaml .Values.backend.resources.api | nindent 12 }}
+            {{- toYaml .Values.backend.resources.bcSyncer | nindent 12 }}
           volumeMounts:
             - mountPath: /home/node/app/config/local.json
               subPath: local.json
@@ -88,17 +79,29 @@ spec:
             - mountPath: "/home/node/app/eos-wallet/{{ $eosWalletPath }}.wallet"
               subPath: "account.wallet"
               name: local-config-volume
-            - name: data
-              mountPath: /data/datalabscripts
-              subPath: datalabscripts-data
+        {{- end }}
+
+        {{- if .Values.backend.configs.serviceCrondEnabled }}
+        - name: "backend-crond"
+          image: "{{ .Values.backend.crond.image.repository }}:{{ .Values.backend.crond.image.tag }}"
+          imagePullPolicy: "{{ .Values.backend.crond.image.pullPolicy }}"
+          envFrom:
+            - configMapRef:
+                name: "{{ $backendName }}-config"
+            - secretRef:
+                name: "{{ $backendName }}-secrets"
+          env:
+            - name: "CRON_STRINGS"
+              value: "*/5 * * * * curl http://localhost:9050"
+          resources:
+            {{- toYaml .Values.backend.resources.crond | nindent 12 }}
+          volumeMounts:
+            - mountPath: /home/node/app/config/local.json
+              subPath: local.json
+              name: local-config-volume
+        {{- end }}
 
       volumes:
-        - name: data
-          persistentVolumeClaim:
-            claimName: "{{ $backendName }}-claim"
-        - name: tmp
-          hostPath:
-            path: "/tmp/{{ $backendName }}"
         - name: local-config-volume
           configMap:
             name: "{{ $backendName }}-config-files"
@@ -124,3 +127,4 @@ spec:
   strategy:
     {{- toYaml .Values.backend.updateStrategy | nindent 4 }}
   {{- end }}
+{{- end }}
