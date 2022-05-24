@@ -1,4 +1,4 @@
-{{- if .Values.backend.configs.serviceSegmentsEnabled }}
+{{- if and (.Values.backend.enabled) (.Values.backend.configs.serviceSegmentsEnabled) }}
 {{- $name := "backend" }}
 {{- $backendName := include "cdp.backend.fullname" . }}
 {{- $eosWalletPath := printf "%s/%s" (substr 0 3 .Values.backend.configs.eosOrgId) .Values.backend.configs.eosOrgId }}

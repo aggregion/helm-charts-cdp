@@ -1,3 +1,4 @@
+{{- if .Values.backend.enabled }}
 {{- $backendName := include "cdp.backend.fullname" . }}
 {{- $enclaveName := include "cdp.enclave.fullname" . }}
 {{- $dataserviceName := include "cdp.dataservice.fullname" . }}
@@ -49,3 +50,4 @@ data:
   GRAPHQL_PLAYGROUND_ENABLED: "{{ .Values.backend.configs.graphQLPlayground.enabled }}"
   GITLAB_PERSONAL_ACCESS_TOKEN: "{{ .Values.backend.configs.gitlab.personalAccessToken }}"
   GITLAB_HOST: "{{ .Values.backend.configs.gitlab.host }}"
+{{- end }}

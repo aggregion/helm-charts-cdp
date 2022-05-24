@@ -1,3 +1,4 @@
+{{- if .Values.backend.enabled }}
 {{- $name := "backend" }}
 {{- $backendName := include "cdp.backend.fullname" . }}
 {{- $eosWalletPath := printf "%s/%s" (substr 0 3 .Values.backend.configs.eosOrgId) .Values.backend.configs.eosOrgId }}
@@ -124,3 +125,4 @@ spec:
   strategy:
     {{- toYaml .Values.backend.updateStrategy | nindent 4 }}
   {{- end }}
+{{- end }}

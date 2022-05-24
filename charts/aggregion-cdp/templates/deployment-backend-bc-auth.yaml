@@ -1,3 +1,4 @@
+{{- if .Values.backend.enabled }}
 {{- if or (.Values.backend.configs.serviceBcCheckerEnabled) (.Values.backend.configs.serviceBcSyncerEnabled) (.Values.backend.configs.serviceCrondEnabled) }}
 {{- $name := "backend" }}
 {{- $backendName := include "cdp.backend.fullname" . }}
@@ -127,4 +128,5 @@ spec:
   strategy:
     {{- toYaml .Values.backend.updateStrategy | nindent 4 }}
   {{- end }}
+{{- end }}
 {{- end }}

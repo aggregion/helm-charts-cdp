@@ -1,4 +1,4 @@
-{{- if .Values.backend.dbseed.enabled -}}
+{{- if and (.Values.backend.enabled) (.Values.backend.dbseed.enabled) -}}
 {{- $name := "backend" -}}
 {{- $backendName := include "cdp.backend.fullname" . -}}
 {{- $dbseedName := printf "%s-dbseed" $backendName -}}
