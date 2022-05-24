@@ -271,6 +271,9 @@ backend:
     useMatchingRuleService: true
     graphQLPlayground:
       enabled: true
+    gitlab:
+      personalAccessToken: "https://gitlab.cas-dcap.aggregion.com"
+      host: "xJ51bxxa1ZrQXiMdoYFt"
     userRolesMap:
       Query:
         Project:
@@ -288,9 +291,9 @@ backend:
           list: ['TEAMLEAD', 'DATA_RESEARCHER', 'DATA_ASSET_OWNER', 'DATA_STEWARD', 'ADMIN']
           incomingList: ['TEAMLEAD', 'DATA_RESEARCHER', 'DATA_ASSET_OWNER', 'DATA_STEWARD']
           outcomingList: ['TEAMLEAD', 'DATA_RESEARCHER', 'DATA_ASSET_OWNER', 'DATA_STEWARD']
-        DataLabScript:
-          get: ['DATA_RESEARCHER', 'DATA_STEWARD', 'DATA_ASSET_OWNER']
-          list: ['DATA_RESEARCHER', 'DATA_STEWARD', 'DATA_ASSET_OWNER']
+        Script:
+          get: ['DATA_RESEARCHER', 'DATA_STEWARD', 'DATA_ASSET_OWNER', 'TEAMLEAD']
+          list: ['DATA_RESEARCHER', 'DATA_STEWARD', 'DATA_ASSET_OWNER', 'TEAMLEAD']
         Dataset:
           get: ['TEAMLEAD', 'DATA_ANALYST', 'ADMIN', 'DATA_RESEARCHER', 'DATA_ASSET_OWNER', 'DATA_STEWARD', 'GLOSSARY_RESEARCHER']
           list: ['TEAMLEAD', 'DATA_ANALYST', 'ADMIN', 'DATA_RESEARCHER', 'DATA_ASSET_OWNER', 'DATA_STEWARD', 'GLOSSARY_RESEARCHER']
@@ -298,12 +301,12 @@ backend:
           list: ['TEAMLEAD']
         MetadataSeed:
           seedExcelData: ['DATA_ANALYST', 'DATA_STEWARD']
+        Job:
+          list: ['TEAMLEAD', 'DATA_RESEARCHER', 'ADMIN']
         DatasetMatchingGroup:
           get: ['TEAMLEAD', 'DATA_RESEARCHER']
           list: ['TEAMLEAD', 'DATA_RESEARCHER', 'ADMIN']
           checkDatasetsForMatching: ['TEAMLEAD', 'DATA_RESEARCHER']
-        Job:
-          list: ['TEAMLEAD', 'DATA_RESEARCHER', 'ADMIN']
       Mutation:
         Account:
           updateGlobalOrgInfo: ['ADMIN']
@@ -347,21 +350,21 @@ backend:
               then: ['DATA_STEWARD', 'DATA_ASSET_OWNER']
           createAndMoveToReview: ['TEAMLEAD', 'DATA_RESEARCHER']
           upload: ['TEAMLEAD', 'DATA_RESEARCHER']
-        DataLabScript:
-          create: ['DATA_RESEARCHER']
-          merge: ['DATA_RESEARCHER']
+        Script:
+          create: ['DATA_RESEARCHER', 'TEAMLEAD']
+          merge: ['DATA_RESEARCHER', 'TEAMLEAD']
           changeStatus:
             - if:
                 args:
-                  status: "ready4review"
-              then: ['DATA_RESEARCHER']
+                  status: 'ready4review'
+              then: ['TEAMLEAD']
             - if:
                 args:
-                  status: "approved"
+                  status: 'approved'
               then: ['DATA_STEWARD', 'DATA_ASSET_OWNER']
             - if:
                 args:
-                  status: "rejected"
+                  status: 'rejected'
               then: ['DATA_STEWARD', 'DATA_ASSET_OWNER']
           makeReview: ['DATA_STEWARD', 'DATA_ASSET_OWNER']
         GlossaryTerm:

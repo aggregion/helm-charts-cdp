@@ -47,3 +47,5 @@ data:
   CACHE_TTL_MATCHING: "{{ .Values.backend.configs.cacheTtlMatching }}"
   MAX_RUNNING_DATALAB_VMS: "{{ .Values.backend.configs.datalabMaxVms }}"
   GRAPHQL_PLAYGROUND_ENABLED: "{{ .Values.backend.configs.graphQLPlayground.enabled }}"
+  GITLAB_PERSONAL_ACCESS_TOKEN: "{{ .Values.backend.configs.gitlab.personalAccessToken }}"
+  GITLAB_HOST: "{{ .Values.backend.configs.gitlab.host }}"
