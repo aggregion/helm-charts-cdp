@@ -1,3 +1,4 @@
+{{- if .Values.backend.enabled }}
 {{- $backendName := include "cdp.backend.fullname" . }}
 {{- $enclaveName := include "cdp.enclave.fullname" . }}
 apiVersion: v1
@@ -74,3 +75,4 @@ data:
       "useMatchingRuleService": {{ .Values.backend.configs.useMatchingRuleService }},
       "userRolesMap": {{ .Values.backend.configs.userRolesMap | toJson }}
     }
+{{- end }}

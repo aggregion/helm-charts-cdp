@@ -1,3 +1,4 @@
+{{- if .Values.backend.enabled }}
 {{- $backendName := include "cdp.backend.fullname" . }}
 apiVersion: v1
 kind: PersistentVolumeClaim
@@ -14,3 +15,4 @@ spec:
   resources:
     requests:
       storage: "{{ .Values.backend.configs.dataStorageSize }}"
+{{- end }}

@@ -1,3 +1,4 @@
+{{- if and (.Values.backend.enabled) (.Values.backend.configs.serviceDatasetUploaderEnabled) }}
 {{- $name := "backend" }}
 {{- $backendName := include "cdp.backend.fullname" . }}
 {{- $eosWalletPath := printf "%s/%s" (substr 0 3 .Values.backend.configs.eosOrgId) .Values.backend.configs.eosOrgId }}
@@ -35,7 +36,6 @@ spec:
         {{- toYaml .Values.backend.podSecurityContext | nindent 8 }}
 
       containers:
-        {{- if .Values.backend.configs.serviceDatasetUploaderEnabled }}
         - name: "backend-dataset-uploader"
           image: "{{ .Values.backend.image.repository }}:{{ .Values.backend.image.tag }}"
           imagePullPolicy: "Always"
@@ -67,7 +67,6 @@ spec:
             - mountPath: "/home/node/app/eos-wallet/{{ $eosWalletPath }}.wallet"
               subPath: "account.wallet"
               name: local-config-volume
-        {{- end }}
 
       volumes:
         - name: local-config-volume
@@ -95,3 +94,4 @@ spec:
   strategy:
     {{- toYaml .Values.backend.updateStrategy | nindent 4 }}
   {{- end }}
+{{- end }}

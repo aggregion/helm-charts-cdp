@@ -39,6 +39,7 @@ frontend:
     # readOnlyRootFilesystem: true
     # runAsNonRoot: true
     # runAsUser: 1000
+  enabled: true
   configs:
     listenPort: 5000
     currency: RUB
@@ -109,6 +110,8 @@ backend:
     numberOfCustomers: 0
     accountsAndUsers: 0
     resources: {}
+
+  enabled: true
 
   configs:
     # infrastructure dependencies
