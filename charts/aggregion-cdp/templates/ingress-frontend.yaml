@@ -64,6 +64,7 @@ spec:
                 name: "{{ $backendName }}"
                 port:
                   name: "httpapi"
+          {{- if $.Values.metadataSeed.enabled }}
           - path: "/metadata-seed/seed-excel-data/error-report.xlsx"
             pathType: "Prefix"
             backend:
@@ -71,6 +72,7 @@ spec:
                 name: "{{ $backendName }}"
                 port:
                   name: "httpapi"
+          {{- end }}
           - path: "/webhooks"
             pathType: "Prefix"
             backend:
@@ -143,10 +145,12 @@ spec:
             backend:
               serviceName: "{{ $backendName }}"
               servicePort: "httpapi"
+          {{- if $.Values.metadataSeed.enabled }}
           - path: "/metadata-seed/seed-excel-data/error-report.xlsx"
             backend:
               serviceName: "{{ $backendName }}"
               servicePort: "httpapi"
+          {{- end }}
           - path: "/webhooks"
             backend:
               serviceName: "{{ $backendName }}"
