@@ -2,7 +2,6 @@
 {{- if or (.Values.backend.configs.serviceMatchingStatusWatcherEnabled) (.Values.backend.configs.serviceMatchingStatusResponseWatcherEnabled) }}
 {{- $name := "backend" }}
 {{- $backendName := include "cdp.backend.fullname" . }}
-{{- $eosWalletPath := printf "%s/%s" (substr 0 3 .Values.backend.configs.eosOrgId) .Values.backend.configs.eosOrgId }}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
