@@ -1,7 +1,6 @@
 {{- if and (.Values.backend.enabled) (.Values.backend.configs.serviceBlockchainUpdaterEnabled) }}
 {{- $name := "backend" }}
 {{- $backendName := include "cdp.backend.fullname" . }}
-{{- $eosWalletPath := printf "%s/%s" (substr 0 3 .Values.backend.configs.eosOrgId) .Values.backend.configs.eosOrgId }}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -64,9 +63,6 @@ spec:
             - mountPath: /home/node/app/config/local.json
               subPath: local.json
               name: local-config-volume
-            - mountPath: "/home/node/app/eos-wallet/{{ $eosWalletPath }}.wallet"
-              subPath: "account.wallet"
-              name: local-config-volume
 
       volumes:
         - name: local-config-volume
@@ -75,8 +71,6 @@ spec:
             items:
               - key: local.json
                 path: local.json
-              - key: "account.wallet"
-                path: "account.wallet"
 
       {{- with .Values.backend.nodeSelector }}
       nodeSelector:
