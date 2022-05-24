@@ -1,9 +1,9 @@
-{{- if .Values.dataservice.enabled }}
+{{- if and (.Values.dataservice.enabled) (.Values.dataservice.configAtlasSyncer.enabled) }}
 {{- $dataServiceName := include "cdp.dataservice.fullname" . }}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: "{{ $dataServiceName }}"
+  name: "{{ $dataServiceName }}-atlas-entity-syncer"
   {{- with .Values.dataservice.annotations }}
   annotations:
       {{- toYaml . | nindent 6 }}
@@ -30,42 +30,22 @@ spec:
       {{- end }}
       restartPolicy: {{ .Values.dataservice.restartPolicy }}
       serviceAccountName: {{ include "cdp.serviceAccountName" . }}
-      initContainers:
-        - name: "init-dataservice-api"
-          securityContext:
-            {{- toYaml .Values.dataservice.securityContext | nindent 12 }}
-          image: "{{ .Values.dataservice.imageApi.repository }}:{{ .Values.dataservice.imageApi.tag }}"
-          imagePullPolicy: {{ .Values.dataservice.imageApi.pullPolicy }}
-          ports:
-            - name: httpapi
-              containerPort: {{ .Values.dataservice.config.port }}
-          args:
-            - npm
-            - run
-            - migrate:up
-          envFrom:
-            - configMapRef:
-                name: "{{ $dataServiceName }}-config"
-            - secretRef:
-                name: "{{ $dataServiceName }}-secrets"
       containers:
-        - name: "dataservice-api"
+        - name: "atlas-entity-syncer"
           securityContext:
             {{- toYaml .Values.dataservice.securityContext | nindent 12 }}
-          image: "{{ .Values.dataservice.imageApi.repository }}:{{ .Values.dataservice.imageApi.tag }}"
-          imagePullPolicy: {{ .Values.dataservice.imageApi.pullPolicy }}
-          ports:
-            - name: httpapi
-              containerPort: {{ .Values.dataservice.config.port }}
+          image: "{{ .Values.dataservice.imageAtlasEntitySyncer.repository }}:{{ .Values.dataservice.imageAtlasEntitySyncer.tag }}"
+          imagePullPolicy: {{ .Values.dataservice.imageAtlasEntitySyncer.pullPolicy }}
           args:
             - npm
             - run
             - start:prod
+          ports:
+            - name: atlassyncport
+              containerPort: {{ .Values.dataservice.configAtlasSyncer.port }}
           envFrom:
             - configMapRef:
-                name: "{{ $dataServiceName }}-config"
-            - secretRef:
-                name: "{{ $dataServiceName }}-secrets"
+                name: "{{ $dataServiceName }}-atlas-syncer-config"
       {{- with .Values.dataservice.affinity }}
       affinity:
         {{- toYaml . | nindent 8 }}
