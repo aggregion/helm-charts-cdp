@@ -386,6 +386,21 @@ backend:
           stopUpload: ['TEAMLEAD', 'DATA_RESEARCHER']
         MetadataSeed:
           seedExcelData: ['DATA_ANALYST', 'DATA_STEWARD']
+        JobSetting:
+          merge: ['TEAMLEAD', 'DATA_RESEARCHER']
+          changeStatus:
+            - if:
+                args:
+                  status: 'waiting'
+              then: ['TEAMLEAD']
+            - if:
+                args:
+                  status: 'debug'
+              then: ['TEAMLEAD', 'DATA_RESEARCHER']
+            - if:
+                args:
+                  status: 'ready4review'
+              then: ['TEAMLEAD', 'DATA_RESEARCHER']
         Job:
           debug: ['TEAMLEAD', 'DATA_RESEARCHER']
           run: ['TEAMLEAD']
