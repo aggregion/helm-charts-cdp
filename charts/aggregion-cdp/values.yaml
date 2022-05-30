@@ -387,6 +387,7 @@ backend:
         MetadataSeed:
           seedExcelData: ['DATA_ANALYST', 'DATA_STEWARD']
         JobSetting:
+          create: ['TEAMLEAD', 'DATA_RESEARCHER']
           merge: ['TEAMLEAD', 'DATA_RESEARCHER']
           changeStatus:
             - if:
