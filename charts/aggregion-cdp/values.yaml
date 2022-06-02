@@ -71,6 +71,24 @@ frontend:
   nodeSelector: {}
   tolerations: []
   affinity: {}
+  gatekeeper:
+    image:
+      repository: "registry.aggregion.com/gatekeeper"
+      tag: "1.4.2"
+      pullPolicy: IfNotPresent
+    configs:
+      clientId: "account" #CLIENT-ID IN KEYCLOAK
+      clientSecret: "XXXsnylVLJVDnXXXK2z3ZlqRPjBKsXXX" #CLIENT-SECRET IN CREDENTINALS INKEYCLOAK
+      discoveryUrl: "https://KEYCLOAK.com/auth/realms/ad1" #Link keycloak
+      enableDefaultDeny: true
+      enableMetrics: false
+      enableRefreshToken: true
+      encryptionKey: "XXXa7xRcoClKEU0AHSH4X0XhL5Qy2XXX"
+      listen: 5000
+      listenAdmin: 4000
+      noRedirects: false
+      redirectionUrl: "demo.local"
+      upstreamUrl: "http://frontend.svc:5000"
 
 backend:
   enabled: true

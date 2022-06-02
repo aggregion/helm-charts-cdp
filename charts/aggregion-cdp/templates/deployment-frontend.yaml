@@ -2,7 +2,7 @@
 {{- $name := "frontend" }}
 {{- $backendName := include "cdp.backend.fullname" . }}
 {{- $frontendName := include "cdp.frontend.fullname" . }}
-{{- $gatekeeperName := include "exts.gatekeeper.fullname" . }}
+{{- $gatekeeperName := include "cdp.gatekeeper.fullname" . }}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -64,17 +64,13 @@ spec:
           imagePullPolicy: {{ .Values.gatekeeper.image.pullPolicy }}
           envFrom:
             - configMapRef:
-                name: "{{ $backendName }}-config" #EDIT
+                name: "{{ $gatekeeperName }}-config"
             - secretRef:
-                name: "{{ $backendName }}-secrets" #EDIT
+                name: "{{ $gatekeeperName }}-secrets"
           ports:
             - name: http
               containerPort: {{ .Values.frontend.configs.listenPort }}
               protocol: TCP
-          volumeMounts:
-            - mountPath: /home/node/app/config/local.json
-              subPath: local.json
-              name: local-config-volume
         {{- else}}
         - name: "frontend"
           securityContext:
