@@ -2,6 +2,7 @@
 {{- $name := "frontend" }}
 {{- $backendName := include "cdp.backend.fullname" . }}
 {{- $frontendName := include "cdp.frontend.fullname" . }}
+{{- $gatekeeperName := include "exts.gatekeeper.fullname" . }}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -35,6 +36,46 @@ spec:
       securityContext:
         {{- toYaml .Values.frontend.podSecurityContext | nindent 8 }}
       containers:
+        {{- if .Values.gatekeeper.enabled }}
+        - name: "frontend"
+          securityContext:
+            {{- toYaml .Values.frontend.securityContext | nindent 12 }}
+          image: "{{ .Values.frontend.image.repository }}:{{ .Values.frontend.image.tag }}"
+          imagePullPolicy: {{ .Values.frontend.image.pullPolicy }}
+          envFrom:
+            - configMapRef:
+                name: "{{ $backendName }}-config"
+          ports:
+            - name: httpinternal
+              containerPort: 5001 # use "upsteam-url: http://localhost:5001" in gatekeeper config.yaml
+              protocol: TCP
+          # livenessProbe:
+          #   httpGet:
+          #     path: /
+          #     port: http
+          # readinessProbe:
+          #   httpGet:
+          #     path: /
+          #     port: http
+        - name: "gatekeeper"
+          securityContext:
+            {{- toYaml .Values.gatekeeper.securityContext | nindent 12 }}
+          image: "{{ .Values.gatekeeper.image.repository }}:{{ .Values.gatekeeper.image.tag }}"
+          imagePullPolicy: {{ .Values.gatekeeper.image.pullPolicy }}
+          envFrom:
+            - configMapRef:
+                name: "{{ $backendName }}-config" #EDIT
+            - secretRef:
+                name: "{{ $backendName }}-secrets" #EDIT
+          ports:
+            - name: http
+              containerPort: {{ .Values.frontend.configs.listenPort }}
+              protocol: TCP
+          volumeMounts:
+            - mountPath: /home/node/app/config/local.json
+              subPath: local.json
+              name: local-config-volume
+        {{- else}}
         - name: "frontend"
           securityContext:
             {{- toYaml .Values.frontend.securityContext | nindent 12 }}
@@ -57,6 +98,7 @@ spec:
           #     port: http
           resources:
             {{- toYaml .Values.frontend.resources | nindent 12 }}
+        {{- end}}
       {{- with .Values.frontend.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
