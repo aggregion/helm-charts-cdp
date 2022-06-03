@@ -305,6 +305,9 @@ backend:
           list: ['TEAMLEAD']
         MetadataSeed:
           seedExcelData: ['DATA_ANALYST', 'DATA_STEWARD']
+        JobSetting:
+          get: ['TEAMLEAD', 'DATA_RESEARCHER']
+          list: ['TEAMLEAD', 'DATA_RESEARCHER', 'ADMIN']
         Job:
           list: ['TEAMLEAD', 'DATA_RESEARCHER', 'ADMIN']
         DatasetMatchingGroup:
