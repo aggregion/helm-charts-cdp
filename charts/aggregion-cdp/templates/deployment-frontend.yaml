@@ -2,7 +2,6 @@
 {{- $name := "frontend" }}
 {{- $backendName := include "cdp.backend.fullname" . }}
 {{- $frontendName := include "cdp.frontend.fullname" . }}
-{{- $gatekeeperName := include "cdp.gatekeeper.fullname" . }}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -27,7 +26,7 @@ spec:
       labels:
         {{- include "cdp.frontend.selectorLabels" . | nindent 8 }}
     spec:
-      {{- with .Values.imagePullSecrets }}
+     # {{- with .Values.imagePullSecrets }}
       imagePullSecrets:
         {{- toYaml . | nindent 8 }}
       {{- end }}
@@ -52,18 +51,35 @@ spec:
         - name: "gatekeeper"
           securityContext:
             {{- toYaml .Values.frontend.gatekeeper.securityContext | nindent 12 }}
-          image: "{{ .Values.frontend.gatekeeper.image.repository }}:{{ .Values.gatekeeper.image.tag }}"
+          image: "{{ .Values.frontend.gatekeeper.image.repository }}:{{ .Values.frontend.gatekeeper.image.tag }}"
           imagePullPolicy: {{ .Values.frontend.gatekeeper.image.pullPolicy }}
-          envFrom:
-            - configMapRef:
-                name: "{{ $gatekeeperName }}-config"
-            - secretRef:
-                name: "{{ $gatekeeperName }}-secrets"
+          args:
+            - --config
+            - /etc/gatekeeper/config.yaml
+            {{- with .Values.extraArgs }}
+            {{- toYaml . | nindent 12 }}
+          {{- with .Values.extraEnvVars }}
+          env:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
           ports:
             - name: http
               containerPort: {{ .Values.frontend.configs.listenPort }}
               protocol: TCP
-        {{- else}}
+          volumeMounts:
+            - name: config
+              mountPath: /etc/gatekeeper
+              {{- with .Values.extraVolumeMounts  }}
+              {{- toYaml . | nindent 12  }}
+              {{- else}}
+        volumes:
+         - secret:
+             secretName: {{ $frontendName }}
+           name: config
+         {{- with .Values.extraVolumes }}
+         {{- toYaml . | nindent 8 }}
+         {{- end }}
+
         - name: "frontend"
           securityContext:
             {{- toYaml .Values.frontend.securityContext | nindent 12 }}
@@ -87,6 +103,13 @@ spec:
           resources:
             {{- toYaml .Values.frontend.resources | nindent 12 }}
         {{- end}}
+#      volumes:
+#        - secret:
+#            secretName: {{ $frontendName }}
+#          name: config
+#        {{- with .Values.extraVolumes }}
+#        {{- toYaml . | nindent 8 }}
+#        {{- end }}
       {{- with .Values.frontend.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
@@ -103,4 +126,6 @@ spec:
   strategy:
     {{- toYaml .Values.frontend.updateStrategy | nindent 4 }}
   {{- end }}
+{{- end }}
+{{- end }}
 {{- end }}
