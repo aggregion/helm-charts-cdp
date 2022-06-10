@@ -57,7 +57,7 @@ spec:
           #     port: http
           resources:
             {{- toYaml .Values.frontend.resources | nindent 12 }}
-            
+        {{- if .Values.frontend.gatekeeper.enabled -}}    
         - name: "gatekeeper"
           securityContext:
             {{- toYaml .Values.frontend.securityContext | nindent 12 }}
@@ -87,7 +87,8 @@ spec:
       volumes:
         - name: local-config-volume
           configMap:
-            name: "{{ $frontendName }}-config"                              
+            name: "{{ $frontendName }}-config"
+        {{- end -}}                                  
       {{- with .Values.frontend.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
