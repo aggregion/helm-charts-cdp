@@ -15,6 +15,7 @@ metadata:
 data:
   {{- if not (.Values.enclave.scone.enabled) }}
   PROVIDE_NAME: "{{ .Values.backend.configs.providerInstanceId }}"
+  PROVIDER_SECRET: "{{ .Values.enclave.configs.providerSecret }}"
   {{- end }}
   {{ $envPrefix }}SERVER_PORT: "{{ .Values.enclave.configs.listenPort }}"
   {{ $envPrefix }}SERVER_INNER_PORT: "{{ .Values.enclave.configs.listenInnerPort }}"
