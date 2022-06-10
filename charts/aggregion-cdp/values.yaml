@@ -71,6 +71,8 @@ frontend:
   nodeSelector: {}
   tolerations: []
   affinity: {}
+  updateStrategy:
+    type: Recreate
   gatekeeper:
     image:
       repository: "registry.aggregion.com/gatekeeper"
@@ -91,10 +93,7 @@ frontend:
       noRedirects: false
       redirectionUrl: "demo.local"
       upstreamUrl: "http://frontend.svc:5000"
-extraArgs: []
-extraVolumes: []
-extraEnvVars: []
-extraVolumeMounts: []
+
 backend:
   enabled: true
   replicaCount: 1
