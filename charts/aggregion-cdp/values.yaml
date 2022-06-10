@@ -71,8 +71,6 @@ frontend:
   nodeSelector: {}
   tolerations: []
   affinity: {}
-  updateStrategy:
-    type: Recreate
   gatekeeper:
     image:
       repository: "registry.aggregion.com/gatekeeper"
