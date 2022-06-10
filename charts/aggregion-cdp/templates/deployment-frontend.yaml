@@ -26,7 +26,7 @@ spec:
       labels:
         {{- include "cdp.frontend.selectorLabels" . | nindent 8 }}
     spec:
-     # {{- with .Values.imagePullSecrets }}
+      {{- with .Values.imagePullSecrets }}
       imagePullSecrets:
         {{- toYaml . | nindent 8 }}
       {{- end }}
@@ -35,51 +35,7 @@ spec:
       securityContext:
         {{- toYaml .Values.frontend.podSecurityContext | nindent 8 }}
       containers:
-        {{- if .Values.frontend.gatekeeper.enabled }}
-        - name: "frontend"
-          securityContext:
-            {{- toYaml .Values.frontend.securityContext | nindent 12 }}
-          image: "{{ .Values.frontend.image.repository }}:{{ .Values.frontend.image.tag }}"
-          imagePullPolicy: {{ .Values.frontend.image.pullPolicy }}
-          envFrom:
-            - configMapRef:
-                name: "{{ $backendName }}-config"
-          ports:
-            - name: httpinternal
-              containerPort: 5001 # use "upsteam-url: http://localhost:5001" in gatekeeper config.yaml
-              protocol: TCP
-        - name: "gatekeeper"
-          securityContext:
-            {{- toYaml .Values.frontend.gatekeeper.securityContext | nindent 12 }}
-          image: "{{ .Values.frontend.gatekeeper.image.repository }}:{{ .Values.frontend.gatekeeper.image.tag }}"
-          imagePullPolicy: {{ .Values.frontend.gatekeeper.image.pullPolicy }}
-          args:
-            - --config
-            - /etc/gatekeeper/config.yaml
-            {{- with .Values.extraArgs }}
-            {{- toYaml . | nindent 12 }}
-          {{- with .Values.extraEnvVars }}
-          env:
-            {{- toYaml . | nindent 12 }}
-          {{- end }}
-          ports:
-            - name: http
-              containerPort: {{ .Values.frontend.configs.listenPort }}
-              protocol: TCP
-          volumeMounts:
-            - name: config
-              mountPath: /etc/gatekeeper
-              {{- with .Values.extraVolumeMounts  }}
-              {{- toYaml . | nindent 12  }}
-              {{- else}}
-        volumes:
-         - secret:
-             secretName: {{ $frontendName }}
-           name: config
-         {{- with .Values.extraVolumes }}
-         {{- toYaml . | nindent 8 }}
-         {{- end }}
-
+        {{- if .Values.frontend.gatekeeper.enabled -}}
         - name: "frontend"
           securityContext:
             {{- toYaml .Values.frontend.securityContext | nindent 12 }}
@@ -102,15 +58,44 @@ spec:
           #     port: http
           resources:
             {{- toYaml .Values.frontend.resources | nindent 12 }}
-        {{- end}}
-#      volumes:
-#        - secret:
-#            secretName: {{ $frontendName }}
-#          name: config
-#        {{- with .Values.extraVolumes }}
-#        {{- toYaml . | nindent 8 }}
-#        {{- end }}
       {{- with .Values.frontend.nodeSelector }}
+        - name: "gatekeeper"
+          securityContext:
+            {{- toYaml .Values.frontend.gatekeeper.securityContext | nindent 12 }}
+          image: "{{ .Values.frontend.gatekeeper.image.repository }}:{{ .Values.frontend.gatekeeper.image.tag }}"
+          imagePullPolicy: {{ .Values.frontend.gatekeeper.image.pullPolicy }}
+          envFrom:
+            - configMapRef:
+                name: "{{ $backendName }}-config"
+          ports:
+            - name: httpgk
+              containerPort: 5050
+              protocol: TCP
+          {{- else }}
+        - name: "frontend"
+          securityContext:
+            {{- toYaml .Values.frontend.securityContext | nindent 12 }}
+          image: "{{ .Values.frontend.image.repository }}:{{ .Values.frontend.image.tag }}"
+          imagePullPolicy: {{ .Values.frontend.image.pullPolicy }}
+          envFrom:
+            - configMapRef:
+                name: "{{ $backendName }}-config"
+          ports:
+            - name: http
+              containerPort: {{ .Values.frontend.configs.listenPort }}
+              protocol: TCP
+          # livenessProbe:
+          #   httpGet:
+          #     path: /
+          #     port: http
+          # readinessProbe:
+          #   httpGet:
+          #     path: /
+          #     port: http
+          resources:
+            {{- toYaml .Values.frontend.resources | nindent 12 }}
+      {{- with .Values.frontend.nodeSelector }} 
+      {{- end }}                   
       nodeSelector:
         {{- toYaml . | nindent 8 }}
       {{- end }}
@@ -126,6 +111,5 @@ spec:
   strategy:
     {{- toYaml .Values.frontend.updateStrategy | nindent 4 }}
   {{- end }}
-{{- end }}
 {{- end }}
 {{- end }}
