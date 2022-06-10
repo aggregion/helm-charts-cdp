@@ -61,7 +61,27 @@ spec:
       nodeSelector:
         {{- toYaml . | nindent 8 }}
       {{- end }}
-      {{- with .Values.frontend.affinity }}
+        {{- if .Values.frontend.gatekeeper.enabled -}}
+        - name: "gatekeeper"
+          image: "{{ .Values.frontend.gatekeeper.image.repository }}:{{ .Values.frontend.gatekeeper.image.tag }}"
+          imagePullPolicy: {{ .Values.frontend.gatekeeper.image.pullPolicy }}
+          ports:
+            - name: httpgk
+              containerPort: 5050
+              protocol: TCP
+          envFrom:
+            - configMapRef:
+                name: "{{ $frontendName }}-config"
+          volumeMounts:
+            - mountPath: /etc/gatekeeper/config.yaml
+                name: "local-config-volume"
+                subPath: config.yaml
+       volumes:
+        - name: "local-config-volume"
+            configMap:
+              name: "{{ $frontendName }}-config-files"
+        {{- end }}      
+        {{- with .Values.frontend.affinity }}
       affinity:
         {{- toYaml . | nindent 8 }}
       {{- end }}

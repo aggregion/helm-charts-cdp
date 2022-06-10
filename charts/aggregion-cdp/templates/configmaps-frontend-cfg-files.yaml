@@ -1,0 +1,23 @@
+{{- if .Values.frontend.gatekeeper.enabled }}
+{{- $frontendName := include "cdp.frontend.fullname" . }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: "{{ $frontendName }}-config-files"
+  labels:
+    {{- include "cdp.frontend.labels" . | nindent 4 }}
+data:
+  config.yaml: |
+    client-id: "{{ .Values.frontend.gatekeeper.config.clientId }}"
+    client-secret: "{{ .Values.frontend.gatekeeper.config.clientSecret }}"
+    discovery-url: "{{ .Values.frontend.gatekeeper.config.discoveryUrl }}"
+    enable-default-deny: "{{ .Values.frontend.gatekeeper.config.enableDefaultDeny }}"
+    enable-metrics: "{{ .Values.frontend.gatekeeper.config.enableMetrics }}"
+    enable-refresh-tokens: "{{ .Values.frontend.gatekeeper.config.enableRefreshTokens  }}"
+    encryption-key: "{{ .Values.frontend.gatekeeper.config.encryptionKey }}"
+    listen: "{{ .Values.frontend.gatekeeper.config.listen }}"
+    listen-admin: "{{ .Values.frontend.gatekeeper.config.listenAdmin }}"
+    no-redirects: "{{ .Values.frontend.gatekeeper.config.noRedirects }}"
+    redirection-url: "{{ .Values.frontend.gatekeeper.config.redirectionUrl }}"
+    upstream-url: "{{ .Values.frontend.gatekeeper.config.upstreamUrl }}"
+{{- end }}
