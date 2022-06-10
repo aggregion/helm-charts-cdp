@@ -57,6 +57,37 @@ spec:
           #     port: http
           resources:
             {{- toYaml .Values.frontend.resources | nindent 12 }}
+            
+        - name: "gatekeeper"
+          securityContext:
+            {{- toYaml .Values.frontend.securityContext | nindent 12 }}
+          image: "{{ .Values.frontend.gatekeeper.image.repository }}:{{ .Values.frontend.gatekeeper.image.tag }}"
+          imagePullPolicy: {{ .Values.frontend.gatekeeper.image.pullPolicy }}
+          envFrom:
+            - configMapRef:
+                name: "{{ $frontendName }}-config"
+          ports:
+            - name: httpgk
+              containerPort: 5050
+              protocol: TCP
+          # livenessProbe:
+          #   httpGet:
+          #     path: /
+          #     port: http
+          # readinessProbe:
+          #   httpGet:
+          #     path: /
+          #     port: http
+          resources:
+            {{- toYaml .Values.frontend.resources | nindent 12 }}
+          volumeMounts:
+            - mountPath: /etc/gatekeeper/config.yaml
+              subPath: config.yaml
+              name: local-config-volume
+      volumes:
+        - name: local-config-volume
+          configMap:
+            name: "{{ $frontendName }}-config-files"                              
       {{- with .Values.frontend.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}

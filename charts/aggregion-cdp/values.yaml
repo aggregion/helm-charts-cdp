@@ -76,6 +76,8 @@ frontend:
       repository: "registry.aggregion.com/gatekeeper"
       tag: "1.4.2"
       pullPolicy: IfNotPresent
+      podSecurityContext: {}
+      securityContext: {}
     configs:
       clientId: "account" #CLIENT-ID IN KEYCLOAK
       clientSecret: "XXXsnylVLJVDnXXXK2z3ZlqRPjBKsXXX" #CLIENT-SECRET IN CREDENTINALS INKEYCLOAK
