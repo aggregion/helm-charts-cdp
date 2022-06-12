@@ -72,6 +72,7 @@ frontend:
   tolerations: []
   affinity: {}
   gatekeeper:
+    enabled: true
     image:
       repository: "registry.aggregion.com/gatekeeper"
       tag: "1.4.2"
