@@ -57,15 +57,15 @@ spec:
           #     port: http
           resources:
             {{- toYaml .Values.frontend.resources | nindent 12 }}
-        {{ if .Values.frontend.gatekeeper.enabled }}    
+        {{ if .Values.frontend.gatekeeper.enabled }}
         - name: "gatekeeper"
           securityContext:
             {{- toYaml .Values.frontend.securityContext | nindent 12 }}
           image: "{{ .Values.frontend.gatekeeper.image.repository }}:{{ .Values.frontend.gatekeeper.image.tag }}"
           imagePullPolicy: {{ .Values.frontend.gatekeeper.image.pullPolicy }}
-          envFrom:
-            - configMapRef:
-                name: "{{ $frontendName }}-config"
+          args:
+            - --config
+            - /etc/gatekeeper/config.yaml
           ports:
             - name: httpgk
               containerPort: 5050
@@ -81,14 +81,13 @@ spec:
           resources:
             {{- toYaml .Values.frontend.resources | nindent 12 }}
           volumeMounts:
-            - mountPath: /etc/gatekeeper/config.yaml
-              subPath: config.yaml
-              name: local-config-volume
+            - name: local-config-volume
+              mountPath: /etc/gatekeeper
+            {{ end }}
       volumes:
         - name: local-config-volume
-          configMap:
-            name: "{{ $frontendName }}-config"
-        {{ end }}                                  
+          secret:
+            secretName: "{{ $frontendName }}-config"
       {{- with .Values.frontend.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
