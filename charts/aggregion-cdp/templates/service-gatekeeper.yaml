@@ -1,0 +1,17 @@
+{{- if .Values.frontend.gatekeeper.enabled }}
+apiVersion: v1
+kind: Service
+metadata:
+  name: "{{ include "cdp.frontend.fullname" . }}-gatekeeper"
+  labels:
+    {{- include "cdp.frontend.labels" . | nindent 4 }}
+spec:
+  type: {{ .Values.frontend.gatekeeper.service.type }}
+  ports:
+    - port: {{ .Values.frontend.gatekeeper.service.port }}
+      targetPort: httpgk
+      protocol: TCP
+      name: httpgk
+  selector:
+    {{- include "cdp.frontend.selectorLabels" . | nindent 4 }}
+{{- end }}
