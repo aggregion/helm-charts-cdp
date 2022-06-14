@@ -1,0 +1,46 @@
+# Default values for pipeline.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+imagePullSecrets:
+  - name: aggregionregistry
+
+nameOverride: ""
+
+serviceAccount:
+  create: false
+  annotations: {}
+  name: "default"
+
+runner:
+  enabled: true
+  replicaCount: 1
+  annotations:
+    reloader.stakater.com/auto: "true"
+  image:
+    repository: registry.aggregion.com/pipeline-runner
+    pullPolicy: Always
+    tag: latest
+  configs:
+    amqpUrl: "amqp://..."
+    ports:
+      http:
+        container: 6601
+        service: 9100
+    httpHostname: 0.0.0.0
+    nodeEnv: production
+    pipelinesCreateQueueName: create_pipeline_runner
+  resuources: {}
+  restartPolicy: Always
+  nameOverride: ""
+  fullnameOverride: ""
+  podAnnotations: {}
+  #   prometheus.io/scrape: "true"
+  #   prometheus.io/path: /metrics
+  #   prometheus.io/port: "8010"
+  podSecurityContext: {}
+  securityContext: {}
+  nodeSelector: {}
+  tolerations: []
+  affinity: {}
+  updateStrategy: {}

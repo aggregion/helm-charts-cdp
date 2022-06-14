@@ -1,0 +1,15 @@
+{{- if .Values.runner.enabled }}
+{{- $pipelineRunnerName := include "pipeline.runner.fullname" . }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ $pipelineRunnerName }}-config
+  labels:
+    {{- include "pipeline.labels" . | nindent 4 }}
+data:
+  AMQP_URL: "{{ .Values.runner.configs.amqpUrl }}"
+  HTTP_PORT: "{{ .Values.runner.configs.ports.http.container }}"
+  HTTP_HOSTNAME: "{{ .Values.runner.configs.httpHostname }}"
+  NODE_ENV: "{{ .Values.runner.configs.nodeEnv }}"
+  PIPELINES_CREATE_RUNNER_QUEUE_NAME: "{{ .Values.runner.configs.pipelinesCreateQueueName }}"
+{{- end }}

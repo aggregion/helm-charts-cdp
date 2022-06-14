@@ -1,0 +1,16 @@
+{{- if .Values.runner.enabled }}
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "pipeline.runner.fullname" . }}
+  labels:
+    {{- include "pipeline.runner.labels" . | nindent 4 }}
+spec:
+  ports:
+    - port: {{ .Values.runner.configs.ports.http.service }}
+      targetPort: http
+      protocol: TCP
+      name: http
+  selector:
+    {{- include "pipeline.runner.selectorLabels" . | nindent 4 }}
+{{- end }}
