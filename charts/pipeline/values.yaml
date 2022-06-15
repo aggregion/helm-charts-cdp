@@ -30,6 +30,7 @@ runner:
     httpHostname: 0.0.0.0
     nodeEnv: production
     pipelinesCreateQueueName: create_pipeline_runner
+  serviceAccount: tekton-pipeline-runner
   resuources: {}
   restartPolicy: Always
   nameOverride: ""
@@ -38,6 +39,37 @@ runner:
     prometheus.io/scrape: "true"
     prometheus.io/path: /metrics
     prometheus.io/port: "6601"
+  podSecurityContext: {}
+  securityContext: {}
+  nodeSelector: {}
+  tolerations: []
+  affinity: {}
+  updateStrategy: {}
+
+watcher:
+  enabled: true
+  replicaCount: 1
+  annotations:
+    reloader.stakater.com/auto: "true"
+  image:
+    repository: registry.aggregion.com/pipeline-watcher
+    pullPolicy: Always
+    tag: latest
+  configs:
+    ports:
+      http:
+        container: 6602
+        service: 9101
+    httpHostname: 0.0.0.0
+    nodeEnv: production
+  resuources: {}
+  restartPolicy: Always
+  nameOverride: ""
+  fullnameOverride: ""
+  podAnnotations:
+    prometheus.io/scrape: "true"
+    prometheus.io/path: /metrics
+    prometheus.io/port: "6602"
   podSecurityContext: {}
   securityContext: {}
   nodeSelector: {}
