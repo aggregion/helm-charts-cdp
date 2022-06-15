@@ -1,0 +1,31 @@
+{{- if .Values.frontend.gatekeeper.enabled }}
+{{- $frontendName := include "cdp.frontend.fullname" . }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: frontend-gatekeeper-config
+  labels:
+    {{- include "cdp.frontend.labels" . | nindent 4 }}
+data:
+  config.yaml: |
+    client-id: frontend
+    client-secret: lWhJICnqeO1u2sXeGlq3B176OVfL8wm5
+    discovery-url: http://keycloak/realms/ad1/.well-known/openid-configuration
+    enable-default-deny: true
+    enable-metrics: false
+    enable-refresh-tokens: true
+    encryption-key: RfvTgbYHNujm8IKl
+    skip-openid-provider-tls-verify: true
+    listen: :3000
+    listen-admin: :4000
+    no-redirects: false
+    secure-cookie: false
+    redirection-url: https://test.dcp.bm.dev.aggregion.com
+    upstream-url: http://127.0.0.1:5000
+    resources:
+    - uri: /graphql
+    methods:
+    - GET
+    white-listed: true
+
+{{- end }}

@@ -80,18 +80,20 @@ frontend:
       podSecurityContext: {}
       securityContext: {}
     configs:
-      clientId: "account" #CLIENT-ID IN KEYCLOAK
-      clientSecret: "XXXsnylVLJVDnXXXK2z3ZlqRPjBKsXXX" #CLIENT-SECRET IN CREDENTINALS INKEYCLOAK
-      discoveryUrl: "https://KEYCLOAK.com/auth/realms/ad1" #Link keycloak
+      clientId: frontend
+      clientSecret: XXXICnqeO1u2sXeGlq3B176OVfL8XXX
+      discoveryUrl: http://keycloak/realms/ad1/.well-known/openid-configuration
       enableDefaultDeny: true
       enableMetrics: false
-      enableRefreshToken: true
-      encryptionKey: "XXXa7xRcoClKEU0AHSH4X0XhL5Qy2XXX"
-      listen: 3000
-      listenAdmin: 4000
+      enableRefreshTokens: true
+      encryptionKey: RfvTgbYHNujm8IKl
+      skipOpenidProviderTlsVerify: true
+      listen: :3000
+      listenAdmin: :4000
       noRedirects: false
-      redirectionUrl: "demo.local"
-      upstreamUrl: "http://127.0.0.1:5000"
+      secureCookie: false
+      redirectionUrl: https://test.dcp.bm.dev.aggregion.com #FOR EXAMPLE
+      upstreamUrl: http://127.0.0.1:5000
 
 backend:
   enabled: true
@@ -104,29 +106,54 @@ backend:
     pullPolicy: IfNotPresent
     tag: "develop"
 
+  gatekeeper:
+    enabled: false
+    image:
+      repository: "registry.aggregion.com/gatekeeper"
+      tag: "1.4.2"
+      pullPolicy: IfNotPresent
+      podSecurityContext: {}
+      securityContext: {}
+    configs:
+      clientId: backend
+      clientSecret: XXXICnqeO1u2sXeGlq3B176OVfL8XXX
+      discoveryUrl: http://keycloak/realms/ad1/.well-known/openid-configuration
+      enableDefaultDeny: true
+      enableMetrics: false
+      enableRefreshTokens: true
+      encryptionKey: RfvTgbYHNujm8IKl
+      skipOpenidProviderTlsVerify: true
+      listen: :3000
+      listenAdmin: :4000
+      noRedirects: false
+      secureCookie: false
+      redirectionUrl: https://test.dcp.bm.dev.aggregion.com #FOR EXAMPLE
+      upstreamUrl: http://127.0.0.1:5000
+
+
   crond:
     image:
-      repository: "registry.aggregion.com/cron-curl"
-      tag: "0.0.1"
-      pullPolicy: IfNotPresent
+    repository: "registry.aggregion.com/cron-curl"
+    tag: "0.0.1"
+    pullPolicy: IfNotPresent
     resources: {}
 
   datalabProxy:
     replicaCount: 1
     listenPort: 8080
     image:
-      repository: nginx
-      tag: 1.19-alpine
-      pullPolicy: IfNotPresent
+    repository: nginx
+    tag: 1.19-alpine
+    pullPolicy: IfNotPresent
     resources: {}
 
   dbseed:
     enabled: false
     podAnnotations: {}
     image:
-      repository: registry.aggregion.com/dmp-seed
-      tag: latest
-      pullPolicy: IfNotPresent
+    repository: registry.aggregion.com/dmp-seed
+    tag: latest
+    pullPolicy: IfNotPresent
     useConfig: retailer
     once: 1
     numberOfCustomers: 0
