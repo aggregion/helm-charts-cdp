@@ -1,0 +1,16 @@
+apiVersion: tekton.dev/v1beta1
+kind: Task
+metadata:
+  name: debug-save-result
+spec:
+  steps:
+    - name: save-result
+      image: ubuntu
+      command: ["bash", "-c"]
+      args: ["cat /cache/message_hashed.txt | tee $(results.res.path)"]
+      volumeMounts:
+        - name: vol
+          mountPath: /cache
+  results:
+    - name: res
+      description: Hashed result

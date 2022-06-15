@@ -1,0 +1,21 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: tekton-pipelines-controller-envs
+  labels:
+    app.kubernetes.io/instance: default
+    app.kubernetes.io/part-of: tekton-pipelines
+data:
+  # If you are changing these names, you will also need to update
+  # the controller's Role in 200-role.yaml to include the new
+  # values in the "configmaps" "get" rule.
+  CONFIG_DEFAULTS_NAME: config-defaults
+  CONFIG_LOGGING_NAME: config-logging
+  CONFIG_OBSERVABILITY_NAME: config-observability
+  CONFIG_ARTIFACT_BUCKET_NAME: config-artifact-bucket
+  CONFIG_ARTIFACT_PVC_NAME: config-artifact-pvc
+  CONFIG_FEATURE_FLAGS_NAME: feature-flags
+  CONFIG_LEADERELECTION_NAME: config-leader-election
+  SSL_CERT_FILE: /etc/config-registry-cert/cert
+  SSL_CERT_DIR: /etc/ssl/certs
+  METRICS_DOMAIN: tekton.dev/pipeline

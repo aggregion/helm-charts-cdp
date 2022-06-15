@@ -1,0 +1,86 @@
+{{- if .Values.runner.enabled }}
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: {{ .Values.runner.serviceAccount }}-role
+rules:
+  # required
+  - apiGroups:
+      - tekton.dev
+    resources:
+      - tasks
+      - clustertasks
+      - taskruns
+      - pipelines
+      - pipelineruns
+      - pipelineresources
+      - conditions
+      - runs
+      - taskruns/finalizers
+      - pipelineruns/finalizers
+      - runs/finalizers
+      - tasks/status
+      - clustertasks/status
+      - taskruns/status
+      - pipelines/status
+      - pipelineruns/status
+      - pipelineresources/status
+      - runs/status
+    verbs:
+      - create
+      - delete
+      - deletecollection
+      - get
+      - list
+      - patch
+      - update
+      - watch
+
+  # required
+  - apiGroups:
+      - ""
+    resources:
+      - persistentvolumes
+      - persistentvolumeclaims
+    verbs:
+      - create
+      - delete
+      - deletecollection
+      - get
+      - list
+      - patch
+      - update
+      - watch
+
+  # optional
+  - apiGroups:
+      - ""
+    resources:
+      - persistentvolumes/status
+      - persistentvolumeclaims/status
+    verbs:
+      - get
+      - patch
+      - update
+
+  # optional
+  - apiGroups:
+      - resolution.tekton.dev
+    resources: ["resolutionrequests"]
+    verbs: ["get", "list", "watch", "create", "delete"]
+
+  # optional
+  - apiGroups:
+      - apiextensions.k8s.io
+    resources: ["customresourcedefinitions", "customresourcedefinitions/status"]
+    verbs: ["get", "update", "patch"]
+    resourceNames:
+      - pipelines.tekton.dev
+      - pipelineruns.tekton.dev
+      - runs.tekton.dev
+      - tasks.tekton.dev
+      - clustertasks.tekton.dev
+      - taskruns.tekton.dev
+      - pipelineresources.tekton.dev
+      - conditions.tekton.dev
+{{- end }}
