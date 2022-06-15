@@ -39,6 +39,11 @@ spec:
             {{- toYaml .Values.runner.securityContext | nindent 12 }}
           image: "{{ .Values.runner.image.repository }}:{{ .Values.runner.image.tag }}"
           imagePullPolicy: {{ .Values.runner.image.pullPolicy }}
+          args:
+            - npm
+            - -w @dcp/pipeline-runner
+            - run
+            - start:dev
           ports:
             - name: http
               containerPort: {{ .Values.runner.configs.ports.http.container }}
