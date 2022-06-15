@@ -1,0 +1,17 @@
+apiVersion: tekton.dev/v1beta1
+kind: Task
+metadata:
+  name: debug-save-message
+spec:
+  params:
+    - name: input-message
+      description: 'Input message'
+      default: 'Hello'
+  steps:
+    - name: write-message
+      image: ubuntu
+      command: ["bash", "-c"]
+      args: ["echo '$(params.input-message)' | tee /cache/message.txt"]
+      volumeMounts:
+        - name: vol
+          mountPath: /cache
