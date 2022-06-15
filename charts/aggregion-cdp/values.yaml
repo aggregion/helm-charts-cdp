@@ -72,7 +72,7 @@ frontend:
   tolerations: []
   affinity: {}
   gatekeeper:
-    enabled: true
+    enabled: false
     image:
       repository: "registry.aggregion.com/gatekeeper"
       tag: "1.4.2"
@@ -87,11 +87,11 @@ frontend:
       enableMetrics: false
       enableRefreshToken: true
       encryptionKey: "XXXa7xRcoClKEU0AHSH4X0XhL5Qy2XXX"
-      listen: 5050
+      listen: 3000
       listenAdmin: 4000
       noRedirects: false
       redirectionUrl: "demo.local"
-      upstreamUrl: "http://frontend.svc:5000"
+      upstreamUrl: "http://127.0.0.1:5000"
 
 backend:
   enabled: true

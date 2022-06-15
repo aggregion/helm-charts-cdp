@@ -44,9 +44,15 @@ spec:
             - configMapRef:
                 name: "{{ $backendName }}-config"
           ports:
+            {{- if .Values.frontend.gatekeeper.enabled  }}
+            - name: httpfront
+              containerPort: {{ .Values.frontend.configs.listenPort }}
+              protocol: TCP
+            {{- else }}
             - name: http
               containerPort: {{ .Values.frontend.configs.listenPort }}
               protocol: TCP
+            {{- end }}
           # livenessProbe:
           #   httpGet:
           #     path: /
@@ -67,8 +73,8 @@ spec:
             - --config
             - /etc/gatekeeper/config.yaml
           ports:
-            - name: httpgk
-              containerPort: 5050
+            - name: http
+              containerPort: 3000
               protocol: TCP
           # livenessProbe:
           #   httpGet:
@@ -81,13 +87,20 @@ spec:
           resources:
             {{- toYaml .Values.frontend.resources | nindent 12 }}
           volumeMounts:
-            - name: local-config-volume
-              mountPath: /etc/gatekeeper
-            {{ end }}
+        #    - name: local-config-volume
+        #      mountPath: /etc/gatekeeper
+            - name: config
+              mountPath: /etc/gatekeeper/config.yaml
+              subPath: config.yaml
+            {{- end }}
+
       volumes:
-        - name: local-config-volume
-          secret:
-            secretName: "{{ $frontendName }}-config"
+    #    - name: local-config-volume
+    #      secret:
+    #        secretName: "{{ $frontendName }}-config"
+        - name: config
+          configMap:
+            name: gatekeeper-config
       {{- with .Values.frontend.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}

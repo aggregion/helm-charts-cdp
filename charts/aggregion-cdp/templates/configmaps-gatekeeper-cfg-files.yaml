@@ -1,0 +1,35 @@
+{{- if .Values.frontend.gatekeeper.enabled }}
+{{- $frontendName := include "cdp.frontend.fullname" . }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: gatekeeper-config
+  labels:
+    {{- include "cdp.frontend.labels" . | nindent 4 }}
+data:
+  config.yaml: |
+    client-id: account
+    client-secret: XXsnylVLJVDnXXXK2z3ZlqRPjBKsXXX
+    discovery-url: https://kc.test.dcp.bm.dev.aggregion.com/auth/realms/ad1
+    enable-default-deny: true
+    enable-metrics: false
+    enable-refresh-tokens: true
+    encryption-key: XXXa7xRcoClKEU0AHSH4X0XhL5Qy2XXX
+    listen: 3000
+    listen-admin: 4000
+    no-redirects: true
+    redirection-url: https://test.dcp.bm.dev.aggregion.com
+    upstream-url: http://127.0.0.1:80
+#    client-id: "{{ .Values.frontend.gatekeeper.config.clientId }}"
+#    client-secret: "{{ .Values.frontend.gatekeeper.config.clientSecret }}"
+#    discovery-url: "{{ .Values.frontend.gatekeeper.config.discoveryUrl }}"
+#    enable-default-deny: "{{ .Values.frontend.gatekeeper.config.enableDefaultDeny }}"
+#    enable-metrics: "{{ .Values.frontend.gatekeeper.config.enableMetrics }}"
+#    enable-refresh-tokens: "{{ .Values.frontend.gatekeeper.config.enableRefreshTokens  }}"
+#    encryption-key: "{{ .Values.frontend.gatekeeper.config.encryptionKey }}"
+#    listen: "{{ .Values.frontend.gatekeeper.config.listen }}"
+#    listen-admin: "{{ .Values.frontend.gatekeeper.config.listenAdmin }}"
+#    no-redirects: "{{ .Values.frontend.gatekeeper.config.noRedirects }}"
+#    redirection-url: "{{ .Values.frontend.gatekeeper.config.redirectionUrl }}"
+#    upstream-url: "{{ .Values.frontend.gatekeeper.config.upstreamUrl }}"
+{{- end }}
