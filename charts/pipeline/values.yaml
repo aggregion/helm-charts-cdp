@@ -34,10 +34,10 @@ runner:
   restartPolicy: Always
   nameOverride: ""
   fullnameOverride: ""
-  podAnnotations: {}
-  #   prometheus.io/scrape: "true"
-  #   prometheus.io/path: /metrics
-  #   prometheus.io/port: "8010"
+  podAnnotations:
+    prometheus.io/scrape: "true"
+    prometheus.io/path: /metrics
+    prometheus.io/port: "6601"
   podSecurityContext: {}
   securityContext: {}
   nodeSelector: {}
