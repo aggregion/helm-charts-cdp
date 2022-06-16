@@ -72,7 +72,7 @@ frontend:
   tolerations: []
   affinity: {}
   gatekeeper:
-    enabled: false
+    enabled: true
     image:
       repository: "registry.aggregion.com/gatekeeper"
       tag: "1.4.2"
@@ -80,20 +80,25 @@ frontend:
       podSecurityContext: {}
       securityContext: {}
     configs:
-      clientId: frontend
-      clientSecret: XXXICnqeO1u2sXeGlq3B176OVfL8XXX
-      discoveryUrl: http://keycloak/realms/ad1/.well-known/openid-configuration
-      enableDefaultDeny: true
-      enableMetrics: false
-      enableRefreshTokens: true
-      encryptionKey: RfvTgbYHNujm8IKl
-      skipOpenidProviderTlsVerify: true
+      client-id: frontend
+      client-secret: lWhJICnqeO1u2sXeGlq3B176OVfL8wm5
+      discovery-url: http://keycloak/realms/ad1/.well-known/openid-configuration
+      enable-default-deny: true
+      enable-metrics: false
+      enable-refresh-tokens: true
+      encryption-key: RfvTgbYHNujm8IKl
+      skip-openid-provider-tls-verify: true
       listen: :3000
-      listenAdmin: :4000
-      noRedirects: false
-      secureCookie: false
-      redirectionUrl: https://test.dcp.bm.dev.aggregion.com #FOR EXAMPLE
-      upstreamUrl: http://127.0.0.1:5000
+      listen-admin: :4000
+      no-redirects: false
+      secure-cookie: false
+      redirection-url: https://test.dcp.bm.dev.aggregion.com
+      upstream-url: http://127.0.0.1:5000
+      resources:
+      - uri: /graphql
+      methods:
+      - GET
+      white-listed: true  
 
 backend:
   enabled: true
