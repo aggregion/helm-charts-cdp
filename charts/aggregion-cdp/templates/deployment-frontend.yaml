@@ -90,8 +90,7 @@ spec:
         #    - name: local-config-volume
         #      mountPath: /etc/gatekeeper
             - name: config
-              mountPath: /etc/gatekeeper/config.yaml
-              subPath: config.yaml
+              mountPath: /etc/gatekeeper
             {{- end }}
 
       volumes:
@@ -99,8 +98,8 @@ spec:
     #      secret:
     #        secretName: "{{ $frontendName }}-config"
         - name: config
-          configMap:
-            name: frontend-gatekeeper-config
+          secret:
+            secretName: frontend-gatekeeper-config
       {{- with .Values.frontend.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
