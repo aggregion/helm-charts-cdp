@@ -1,12 +1,12 @@
 apiVersion: rbac.authorization.k8s.io/v1
 kind: RoleBinding
 metadata:
-  name: {{ .Values.runner.serviceAccount }}-rb
+  name: {{ include "pipeline.serviceAccountName" . }}-rb
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: Role
-  name: {{ .Values.runner.serviceAccount }}-role
+  name: {{ include "pipeline.serviceAccountName" . }}-role
 subjects:
   - kind: ServiceAccount
-    # namespace: tekton-pipelines
-    name: {{ .Values.runner.serviceAccount }}
+    namespace: {{ .Release.Namespace }}
+    name: {{ include "pipeline.serviceAccountName" . }}

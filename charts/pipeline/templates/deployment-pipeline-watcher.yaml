@@ -30,8 +30,8 @@ spec:
         {{- toYaml . | nindent 8 }}
       {{- end }}
       restartPolicy: {{ .Values.watcher.restartPolicy }}
-      serviceAccountName: {{ .Values.runner.serviceAccount }}
-      automountServiceAccountToken: true
+      # serviceAccountName: {{ include "pipeline.serviceAccountName" . }}
+      # automountServiceAccountToken: true
       securityContext:
         {{- toYaml .Values.watcher.podSecurityContext | nindent 8 }}
       containers:
