@@ -96,9 +96,9 @@ frontend:
       upstream-url: http://127.0.0.1:5000
       resources:
       - uri: /graphql
-      methods:
-      - GET
-      white-listed: true
+        methods:
+        - GET
+        white-listed: true
 
 backend:
   enabled: true
@@ -136,9 +136,9 @@ backend:
       upstream-url: http://127.0.0.1:5000
       resources:
       - uri: /graphql
-      methods:
-      - GET
-      white-listed: true
+        methods:
+        - GET
+        white-listed: true
 
   crond:
     image:
