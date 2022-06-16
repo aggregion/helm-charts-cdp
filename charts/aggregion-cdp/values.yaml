@@ -72,7 +72,7 @@ frontend:
   tolerations: []
   affinity: {}
   gatekeeper:
-    enabled: true
+    enabled: false
     image:
       repository: "registry.aggregion.com/gatekeeper"
       tag: "1.4.2"
@@ -81,18 +81,18 @@ frontend:
       securityContext: {}
     config:
       client-id: frontend
-      client-secret: lWhJICnqeO1u2sXeGlq3B176OVfL8wm5
+      client-secret: XXxxXXxxXXxxXXxxXXxxXXxxXXxxXXxx
       discovery-url: http://keycloak/realms/ad1/.well-known/openid-configuration
       enable-default-deny: true
       enable-metrics: false
       enable-refresh-tokens: true
-      encryption-key: RfvTgbYHNujm8IKl
+      encryption-key: xxXXxxXXxxXXxxXX
       skip-openid-provider-tls-verify: true
       listen: :3000
       listen-admin: :4000
       no-redirects: false
       secure-cookie: false
-      redirection-url: https://test.dcp.bm.dev.aggregion.com
+      redirection-url: https://test.youdomaindom.com
       upstream-url: http://127.0.0.1:5000
       resources:
       - uri: /graphql
@@ -112,7 +112,7 @@ backend:
     tag: "develop"
 
   gatekeeper:
-    enabled: true
+    enabled: false
     image:
       repository: "registry.aggregion.com/gatekeeper"
       tag: "1.4.2"
@@ -121,18 +121,18 @@ backend:
       securityContext: {}
     config:
       client-id: backend
-      client-secret: GF4nFFNJgt8ae7giPXEQZ9WehMImZuYh
+      client-secret: XXxxXXxxXXxxXXxxXXxxXXxxXXxxXXxx
       discovery-url: http://keycloak/realms/ad1/.well-known/openid-configuration
       enable-default-deny: true
       enable-metrics: false
       enable-refresh-tokens: true
-      encryption-key: RfvTgbYHNujm8IKl
+      encryption-key: xxXXxxXXxxXXxxXX
       skip-openid-provider-tls-verify: true
       listen: :3000
       listen-admin: :4000
       no-redirects: true
       secure-cookie: false
-      redirection-url: https://test.dcp.bm.dev.aggregion.com
+      redirection-url: https://test.youdomaindom.com
       upstream-url: http://127.0.0.1:5000
       resources:
       - uri: /graphql
