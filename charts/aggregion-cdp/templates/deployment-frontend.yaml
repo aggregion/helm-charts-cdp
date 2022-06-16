@@ -87,19 +87,14 @@ spec:
           resources:
             {{- toYaml .Values.frontend.resources | nindent 12 }}
           volumeMounts:
-        #    - name: local-config-volume
-        #      mountPath: /etc/gatekeeper
             - name: config
               mountPath: /etc/gatekeeper
             {{- end }}
 
       volumes:
-    #    - name: local-config-volume
-    #      secret:
-    #        secretName: "{{ $frontendName }}-config"
         - name: config
           secret:
-            secretName: frontend-gatekeeper-config
+            secretName: "{{ include "cdp.frontend.fullname" . }}-gatekeeper-secrets"
       {{- with .Values.frontend.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
