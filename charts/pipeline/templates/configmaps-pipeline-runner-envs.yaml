@@ -12,4 +12,5 @@ data:
   HTTP_HOSTNAME: "{{ .Values.runner.configs.httpHostname }}"
   NODE_ENV: "{{ .Values.runner.configs.nodeEnv }}"
   PIPELINES_CREATE_RUNNER_QUEUE_NAME: "{{ .Values.runner.configs.pipelinesCreateQueueName }}"
+  LOG_LEVEL: "{{ .Values.runner.configs.logLevel }}"
 {{- end }}

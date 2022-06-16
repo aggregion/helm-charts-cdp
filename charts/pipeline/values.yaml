@@ -30,7 +30,8 @@ runner:
     httpHostname: 0.0.0.0
     nodeEnv: production
     pipelinesCreateQueueName: create_pipeline_runner
-  serviceAccount: tekton-pipeline-runner
+    serviceAccount: tekton-pipeline-runner
+    logLevel: info
   resuources: {}
   restartPolicy: Always
   nameOverride: ""
@@ -62,6 +63,7 @@ watcher:
         service: 9101
     httpHostname: 0.0.0.0
     nodeEnv: production
+    logLevel: info
   resuources: {}
   restartPolicy: Always
   nameOverride: ""
