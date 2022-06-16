@@ -133,27 +133,27 @@ backend:
 
   crond:
     image:
-    repository: "registry.aggregion.com/cron-curl"
-    tag: "0.0.1"
-    pullPolicy: IfNotPresent
+      repository: "registry.aggregion.com/cron-curl"
+      tag: "0.0.1"
+      pullPolicy: IfNotPresent
     resources: {}
 
   datalabProxy:
     replicaCount: 1
     listenPort: 8080
     image:
-    repository: nginx
-    tag: 1.19-alpine
-    pullPolicy: IfNotPresent
+      repository: nginx
+      tag: 1.19-alpine
+      pullPolicy: IfNotPresent
     resources: {}
 
   dbseed:
     enabled: false
     podAnnotations: {}
     image:
-    repository: registry.aggregion.com/dmp-seed
-    tag: latest
-    pullPolicy: IfNotPresent
+      repository: registry.aggregion.com/dmp-seed
+      tag: latest
+      pullPolicy: IfNotPresent
     useConfig: retailer
     once: 1
     numberOfCustomers: 0
