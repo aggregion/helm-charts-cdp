@@ -10,7 +10,7 @@ nameOverride: ""
 serviceAccount:
   create: false
   annotations: {}
-  name: "default"
+  name: "tekton-pipeline-runner"
 
 runner:
   enabled: true
@@ -30,7 +30,6 @@ runner:
     httpHostname: 0.0.0.0
     nodeEnv: production
     pipelinesCreateQueueName: create_pipeline_runner
-    serviceAccount: tekton-pipeline-runner
     logLevel: info
   resuources: {}
   restartPolicy: Always
