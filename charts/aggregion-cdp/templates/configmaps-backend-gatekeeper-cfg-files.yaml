@@ -8,6 +8,7 @@ metadata:
     {{- include "cdp.backend.labels" . | nindent 4 }}
 data:
   config.yaml: |
+    {{- toYaml .Values.backend.gatekeeper.config | nindent 4 }}
     client-id: backend
     client-secret: GF4nFFNJgt8ae7giPXEQZ9WehMImZuYh
     discovery-url: http://keycloak/realms/ad1/.well-known/openid-configuration
