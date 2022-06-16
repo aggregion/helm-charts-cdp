@@ -79,7 +79,7 @@ frontend:
       pullPolicy: IfNotPresent
       podSecurityContext: {}
       securityContext: {}
-    configs:
+    config:
       client-id: frontend
       client-secret: lWhJICnqeO1u2sXeGlq3B176OVfL8wm5
       discovery-url: http://keycloak/realms/ad1/.well-known/openid-configuration
