@@ -9,7 +9,7 @@ metadata:
 subjects:
   - kind: ServiceAccount
     name: {{ .Values.controllerServiceAccount.name }}
-    namespace: {{ .Values.namespace.name }}
+    namespace: {{ .Release.Namespace }}
 roleRef:
   kind: ClusterRole
   name: tekton-pipelines-controller-cluster-access
