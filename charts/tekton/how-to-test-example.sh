@@ -12,6 +12,10 @@ helm upgrade --install --kubeconfig ~/Downloads/keeley.yaml -n tekton-pipelines 
     --set webhookServiceAccount.create=true \
     tekton-pipelines ./pipeline-release
 
+helm upgrade --install --kubeconfig ~/Downloads/keeley.yaml -n tekton-operator \
+    --set operatorServiceAccount.create=true \
+    tekton-operator ./operator-release
+
 helm upgrade --install -n pipelines --kubeconfig ~/Downloads/keeley.yaml \
     --set runner.image.tag=41d6a836 \
     --set watcher.image.tag=41d6a836 \
