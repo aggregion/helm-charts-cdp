@@ -8,6 +8,8 @@ helm upgrade --kubeconfig ~/Downloads/keeley.yaml -n infra \
 helm upgrade --install --kubeconfig ~/Downloads/keeley.yaml -n tekton-pipelines \
     --set cloudevent.enabled=true \
     --set cloudevent.webhookUrl=http://pipeline-watcher-pipelines.pipelines.svc.cluster.local:9101/pipelines/events \
+    --set controllerServiceAccount.create=true \
+    --set webhookServiceAccount.create=true \
     tekton-pipelines ./pipeline-release
 
 helm upgrade --install -n pipelines --kubeconfig ~/Downloads/keeley.yaml \

@@ -17,10 +17,6 @@ webhookServiceAccount:
   annotations: {}
   name: "tekton-pipelines-webhook"
 
-namespace:
-  needCreate: true
-  name: tekton-pipelines
-
 cloudevent:
   enabled: false
   webhookUrl: http://webhook
