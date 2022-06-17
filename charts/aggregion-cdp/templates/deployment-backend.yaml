@@ -88,9 +88,9 @@ spec:
         {{- if .Values.backend.gatekeeper.enabled  }}
         - name: "gatekeeper"
           securityContext:
-            {{- toYaml .Values.frontend.securityContext | nindent 12 }}
-          image: "{{ .Values.frontend.gatekeeper.image.repository }}:{{ .Values.frontend.gatekeeper.image.tag }}"
-          imagePullPolicy: {{ .Values.frontend.gatekeeper.image.pullPolicy }}
+            {{- toYaml .Values.backend.securityContext | nindent 12 }}
+          image: "{{ .Values.backend.gatekeeper.image.repository }}:{{ .Values.backend.gatekeeper.image.tag }}"
+          imagePullPolicy: {{ .Values.backend.gatekeeper.image.pullPolicy }}
           args:
             - --config
             - /etc/gatekeeper/config.yaml
@@ -108,7 +108,7 @@ spec:
           #     port: http
         {{- end }}
           resources:
-            {{- toYaml .Values.frontend.resources | nindent 12 }}
+            {{- toYaml .Values.backend.resources | nindent 12 }}
           volumeMounts:
             - mountPath: /home/node/app/config/local.json
               subPath: local.json
