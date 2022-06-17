@@ -40,9 +40,6 @@ spec:
             {{- toYaml .Values.frontend.securityContext | nindent 12 }}
           image: "{{ .Values.frontend.image.repository }}:{{ .Values.frontend.image.tag }}"
           imagePullPolicy: {{ .Values.frontend.image.pullPolicy }}
-          envFrom:
-            - configMapRef:
-                name: "{{ $frontendName }}-config"
           ports:
             {{- if .Values.frontend.gatekeeper.enabled  }}
             - name: httpfront
