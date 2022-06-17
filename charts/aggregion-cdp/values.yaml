@@ -94,11 +94,6 @@ frontend:
       secure-cookie: false
       redirection-url: https://test.youdomaindom.com
       upstream-url: http://127.0.0.1:5000
-      resources:
-      - uri: /graphql
-        methods:
-        - GET
-        white-listed: true
 
 backend:
   enabled: true
