@@ -43,7 +43,7 @@ spec:
           envFrom:
             - configMapRef:
                 name: "{{ $backendName }}-config"
-          {{- if not .Values.frontend.gatekeeper.enabled  }}                
+          {{- if not .Values.frontend.gatekeeper.enabled  }}
           ports:
             - name: http
               containerPort: {{ .Values.frontend.configs.listenPort }}
@@ -72,21 +72,12 @@ spec:
             - name: http
               containerPort: 3000
               protocol: TCP
-          # livenessProbe:
-          #   httpGet:
-          #     path: /
-          #     port: http
-          # readinessProbe:
-          #   httpGet:
-          #     path: /
-          #     port: http
           resources:
             {{- toYaml .Values.frontend.resources | nindent 12 }}
           volumeMounts:
             - name: config
               mountPath: /etc/gatekeeper
-            {{- end }}
-
+        {{- end }}
       volumes:
         - name: config
           secret:
