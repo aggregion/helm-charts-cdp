@@ -9,7 +9,7 @@ metadata:
     app.kubernetes.io/part-of: tekton-pipelines
 subjects:
   - kind: ServiceAccount
-    name: tekton-pipelines-webhook
+    name: {{ .Values.webhookServiceAccount.name }}
     namespace: {{ .Values.namespace.name }}
 roleRef:
   kind: Role

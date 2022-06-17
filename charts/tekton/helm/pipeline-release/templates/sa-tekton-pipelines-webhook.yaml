@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: ServiceAccount
 metadata:
-  name: tekton-pipelines-webhook
+  name: {{ .Values.webhookServiceAccount.name }}
   namespace: {{ .Values.namespace.name }}
   labels:
     app.kubernetes.io/component: webhook

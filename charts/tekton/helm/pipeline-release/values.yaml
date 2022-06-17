@@ -7,10 +7,15 @@ imagePullSecrets:
 
 nameOverride: ""
 
-serviceAccount:
+controllerServiceAccount:
   create: false
   annotations: {}
-  name: "default"
+  name: "tekton-pipelines-controller"
+
+webhookServiceAccount:
+  create: false
+  annotations: {}
+  name: "tekton-pipelines-webhook"
 
 namespace:
   needCreate: true
