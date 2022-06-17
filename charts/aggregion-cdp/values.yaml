@@ -72,7 +72,7 @@ frontend:
   tolerations: []
   affinity: {}
   gatekeeper:
-    enabled: false
+    enabled: true
     image:
       repository: "registry.aggregion.com/gatekeeper"
       tag: "1.4.2"
@@ -112,7 +112,7 @@ backend:
     tag: "develop"
 
   gatekeeper:
-    enabled: false
+    enabled: true
     image:
       repository: "registry.aggregion.com/gatekeeper"
       tag: "1.4.2"
@@ -504,6 +504,7 @@ backend:
     bcSyncer: {}
     crond: {}
     panelSegmentUploader: {}
+    gatekeeper: {}
       # limits:
       #   cpu: 100m
       #   memory: 128Mi

@@ -109,7 +109,7 @@ spec:
               containerPort: 3000
               protocol: TCP
           resources:
-            {{- toYaml .Values.backend.resources | nindent 12 }}
+            {{- toYaml .Values.backend.resources.gatekeeper | nindent 12 }}
           volumeMounts:
             - name: config
               mountPath: /etc/gatekeeper
