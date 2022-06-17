@@ -72,7 +72,7 @@ frontend:
   tolerations: []
   affinity: {}
   gatekeeper:
-    enabled: true
+    enabled: false
     image:
       repository: "registry.aggregion.com/gatekeeper"
       tag: "1.4.2"
@@ -112,7 +112,7 @@ backend:
     tag: "develop"
 
   gatekeeper:
-    enabled: true
+    enabled: false
     image:
       repository: "registry.aggregion.com/gatekeeper"
       tag: "1.4.2"
