@@ -85,6 +85,16 @@ spec:
                 name: "{{ $backendName }}-secrets"
           resources:
             {{- toYaml .Values.backend.resources.api | nindent 12 }}
+          volumeMounts:
+            - mountPath: /home/node/app/config/local.json
+              subPath: local.json
+              name: local-config-volume
+            - mountPath: "/home/node/app/eos-wallet/{{ $eosWalletPath }}.wallet"
+              subPath: "account.wallet"
+              name: local-config-volume
+            - name: data
+              mountPath: /data/datalabscripts
+              subPath: datalabscripts-data                      
         {{- if .Values.backend.gatekeeper.enabled  }}
         - name: "gatekeeper"
           securityContext:
@@ -98,30 +108,12 @@ spec:
             - name: httpapi
               containerPort: 3000
               protocol: TCP
-          # livenessProbe:
-          #   httpGet:
-          #     path: /
-          #     port: http
-          # readinessProbe:
-          #   httpGet:
-          #     path: /
-          #     port: http
-        {{- end }}
           resources:
             {{- toYaml .Values.backend.resources | nindent 12 }}
           volumeMounts:
-            - mountPath: /home/node/app/config/local.json
-              subPath: local.json
-              name: local-config-volume
-            - mountPath: "/home/node/app/eos-wallet/{{ $eosWalletPath }}.wallet"
-              subPath: "account.wallet"
-              name: local-config-volume
-            - name: data
-              mountPath: /data/datalabscripts
-              subPath: datalabscripts-data
             - name: config
               mountPath: /etc/gatekeeper
-
+        {{- end }}
       volumes:
         - name: data
           persistentVolumeClaim:
