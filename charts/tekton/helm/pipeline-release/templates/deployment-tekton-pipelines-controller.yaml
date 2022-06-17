@@ -37,7 +37,7 @@ spec:
     spec:
       affinity:
         {{- toYaml .Values.controller.affinity | nindent 8 }}
-      serviceAccountName: tekton-pipelines-controller
+      serviceAccountName: {{ .Values.controllerServiceAccount.name }}
       containers:
         - name: tekton-pipelines-controller
           image: gcr.io/tekton-releases/github.com/tektoncd/pipeline/cmd/controller:v0.36.0@sha256:303da752778cfb1f9b25e1b4b2db0a6754dc4029f2246eca79cc9f9ec16ae201

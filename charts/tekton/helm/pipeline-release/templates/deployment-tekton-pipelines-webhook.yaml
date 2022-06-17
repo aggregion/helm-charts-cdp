@@ -41,7 +41,7 @@ spec:
     spec:
       affinity:
         {{- toYaml .Values.webhook.affinity | nindent 8 }}
-      serviceAccountName: tekton-pipelines-webhook
+      serviceAccountName: {{ .Values.webhookServiceAccount.name }}
       containers:
         - name: webhook
           # This is the Go import path for the binary that is containerized
