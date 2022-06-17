@@ -64,15 +64,12 @@ spec:
             {{- toYaml .Values.backend.securityContext | nindent 12 }}
           image: "{{ .Values.backend.image.repository }}:{{ .Values.backend.image.tag }}"
           imagePullPolicy: {{ .Values.backend.image.pullPolicy }}
+          {{- if not .Values.backend.gatekeeper.enabled  }}
           ports:
-          {{- if .Values.backend.gatekeeper.enabled  }}
-            - name: httpback
-              containerPort: {{ .Values.backend.configs.listenPort }}
-            {{- else }}
             - name: httpapi
               containerPort: {{ .Values.backend.configs.listenPort }}
               protocol: TCP
-            {{- end }}
+          {{- end }}
           args:
             - npm
             - run
