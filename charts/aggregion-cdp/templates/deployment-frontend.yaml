@@ -43,16 +43,12 @@ spec:
           envFrom:
             - configMapRef:
                 name: "{{ $backendName }}-config"
+          {{- if not .Values.frontend.gatekeeper.enabled  }}                
           ports:
-            {{- if .Values.frontend.gatekeeper.enabled  }}
-            - name: httpfront
-              containerPort: {{ .Values.frontend.configs.listenPort }}
-              protocol: TCP
-            {{- else }}
             - name: http
               containerPort: {{ .Values.frontend.configs.listenPort }}
               protocol: TCP
-            {{- end }}
+          {{- end }}
           # livenessProbe:
           #   httpGet:
           #     path: /
