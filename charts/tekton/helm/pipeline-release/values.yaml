@@ -79,4 +79,6 @@ webhook:
     runAsUser: 65532
     runAsGroup: 65532
 
-
+pruner:
+  enabled: true
+  schedule: '*/5 * * * *'
