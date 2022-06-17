@@ -94,7 +94,7 @@ spec:
               name: local-config-volume
             - name: data
               mountPath: /data/datalabscripts
-              subPath: datalabscripts-data                      
+              subPath: datalabscripts-data
         {{- if .Values.backend.gatekeeper.enabled  }}
         - name: "gatekeeper"
           securityContext:
@@ -148,4 +148,4 @@ spec:
   strategy:
     {{- toYaml .Values.backend.updateStrategy | nindent 4 }}
   {{- end }}
-  {{- end }}
+{{- end }}
