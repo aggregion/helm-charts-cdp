@@ -1,4 +1,4 @@
-{{- if .Values.runner.enabled }}
+{{- if or (.Values.runner.enabled) (.Values.runner.serviceAccountEnabled) }}
 apiVersion: rbac.authorization.k8s.io/v1
 kind: Role
 metadata:
