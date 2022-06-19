@@ -1,4 +1,5 @@
-apiVersion: rbac.authorization.k8s.io/v1
+
+{{- if or (.Values.runner.enabled) (.Values.runner.serviceAccountEnabled) }}apiVersion: rbac.authorization.k8s.io/v1
 kind: RoleBinding
 metadata:
   name: {{ include "pipeline.serviceAccountName" . }}-rb
@@ -10,3 +11,4 @@ subjects:
   - kind: ServiceAccount
     namespace: {{ .Release.Namespace }}
     name: {{ include "pipeline.serviceAccountName" . }}
+{{- end }}

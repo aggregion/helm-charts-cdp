@@ -14,6 +14,8 @@ serviceAccount:
 
 runner:
   enabled: true
+  # serviceAccountEnabled: if you want to rollout only service account without the deployment
+  serviceAccountEnabled: true
   replicaCount: 1
   annotations:
     reloader.stakater.com/auto: "true"
