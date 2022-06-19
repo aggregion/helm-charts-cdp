@@ -1,22 +1,22 @@
-helm upgrade --kubeconfig ~/Downloads/keeley.yaml -n infra \
+# install rabbitmq
+helm repo add bitnami https://charts.bitnami.com/bitnami
+helm upgrade -n infra \
     --set persistence.size=100Mi \
     --set persistence.storageClass=fast.ru-3b \
     --set auth.username=admin \
     --set auth.password=secretpassword \
     rabbitmq bitnami/rabbitmq
 
-helm upgrade --install --kubeconfig ~/Downloads/keeley.yaml -n tekton-pipelines \
+# install tekton-pipelines
+helm upgrade --install -n tekton-pipelines \
     --set cloudevent.enabled=true \
     --set cloudevent.webhookUrl=http://pipeline-watcher-pipelines.pipelines.svc.cluster.local:9101/pipelines/events \
     --set controllerServiceAccount.create=true \
     --set webhookServiceAccount.create=true \
     tekton-pipelines ./pipeline-release
 
-helm upgrade --install --kubeconfig ~/Downloads/keeley.yaml -n tekton-operator \
-    --set operatorServiceAccount.create=true \
-    tekton-operator ./operator-release
-
-helm upgrade --install -n pipelines --kubeconfig ~/Downloads/keeley.yaml \
+# install runner, watcher and service account
+helm upgrade --install -n pipelines \
     --set runner.image.tag=41d6a836 \
     --set watcher.image.tag=41d6a836 \
     --set runner.configs.amqpUrl=amqp://admin:secretpassword@rabbitmq.infra.svc.cluster.local:5672 \
@@ -25,7 +25,8 @@ helm upgrade --install -n pipelines --kubeconfig ~/Downloads/keeley.yaml \
     --set serviceAccount.create=true \
     pipelines ./pipeline
 
-helm upgrade --kubeconfig ~/Downloads/keeley.yaml --install -n pipelines aggregion-pipelines ./aggregion
+# install pipelnes and tasks
+helm upgrade --install -n pipelines aggregion-pipelines ./aggregion
 
 '''
 {

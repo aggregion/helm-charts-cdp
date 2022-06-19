@@ -103,9 +103,10 @@ app.kubernetes.io/instance: "{{ .Release.Name }}"
 Create the name of the service account to use
 */}}
 {{- define "pipeline.serviceAccountName" -}}
-{{- if .Values.serviceAccount.create }}
-{{-   default .Values.serviceAccount.name }}
+{{- if .Values.serviceAccount.nameOverride }}
+{{-   default .Values.serviceAccount.nameOverride }}
 {{- else }}
-{{-   default "default" .Values.serviceAccount.name }}
+{{-   $serviceAccount := printf "%s-%s" .Release.Name "runner-sa" -}}
+{{-   default $serviceAccount .Values.serviceAccount.nameOverride }}
 {{- end }}
 {{- end }}

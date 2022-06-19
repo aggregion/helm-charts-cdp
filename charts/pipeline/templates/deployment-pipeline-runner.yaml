@@ -1,5 +1,6 @@
 {{- if .Values.runner.enabled }}
 {{- $pipelineRunnerName := include "pipeline.runner.fullname" . }}
+{{- $pipelineRunnerServiceAccount := include "pipeline.serviceAccountName" . }}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -30,7 +31,7 @@ spec:
         {{- toYaml . | nindent 8 }}
       {{- end }}
       restartPolicy: {{ .Values.runner.restartPolicy }}
-      serviceAccountName: {{ include "pipeline.serviceAccountName" . }}
+      serviceAccountName: {{ $pipelineRunnerServiceAccount }}
       automountServiceAccountToken: true
       securityContext:
         {{- toYaml .Values.runner.podSecurityContext | nindent 8 }}

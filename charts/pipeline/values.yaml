@@ -10,7 +10,7 @@ nameOverride: ""
 serviceAccount:
   create: false
   annotations: {}
-  name: "tekton-pipeline-runner"
+  nameOverride: ""
 
 runner:
   enabled: true

@@ -1,8 +1,9 @@
 {{- if .Values.runner.enabled }}
+{{- $pipelineRunnerName := include "pipeline.runner.fullname" . }}
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ include "pipeline.runner.fullname" . }}
+  name: {{ $pipelineRunnerName }}-svc
   labels:
     {{- include "pipeline.runner.labels" . | nindent 4 }}
 spec:
