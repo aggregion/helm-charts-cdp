@@ -10,15 +10,12 @@ nameOverride: ""
 serviceAccount:
   create: false
   annotations: {}
-  name: "tekton-pipeline-runner"
+  nameOverride: ""
 
 runner:
   enabled: true
   # serviceAccountEnabled: if you want to rollout only service account without the deployment
   serviceAccountEnabled: true
-  # serviceAccountNamespace: namespace where you rollout pipelines
-  # serviceAccountNamespace and namespace of service account for pipelines rollout must be the same
-  serviceAccountNamespace: {{ .Release.Namespace }}
   replicaCount: 1
   annotations:
     reloader.stakater.com/auto: "true"

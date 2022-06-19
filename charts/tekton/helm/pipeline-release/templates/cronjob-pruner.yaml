@@ -4,9 +4,9 @@ kind: CronJob
 metadata:
   name: tekton-resource-pruner
   labels:
-    tektonconfig.operator.tekton.dev/pruner: 'true'
+    tektonconfig.operator.tekton.dev/pruner: "true"
 spec:
-  schedule: {{ .Values.pruner.schedule }}
+  schedule: "{{ .Values.pruner.schedule }}"
   concurrencyPolicy: Forbid
   suspend: false
   jobTemplate:

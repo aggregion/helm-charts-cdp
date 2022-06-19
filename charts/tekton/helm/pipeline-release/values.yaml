@@ -21,6 +21,9 @@ cloudevent:
   enabled: false
   webhookUrl: http://webhook
 
+namespace:
+  create: false
+
 controller:
   replicaCount: 1
   affinity:
@@ -81,4 +84,4 @@ webhook:
 
 pruner:
   enabled: true
-  schedule: '*/5 * * * *'
+  schedule: "*/5 * * * *"
