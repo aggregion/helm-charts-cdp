@@ -1,0 +1,25 @@
+{{ .Values.debugHasher.enabled }}
+apiVersion: tekton.dev/v1beta1
+kind: Task
+metadata:
+  name: debug-dataset-downloader
+spec:
+  params:
+    - name: access-token
+      description: 'AccessToken'
+    - name: enclave-service-base-url
+      description: Internal port of enclave service
+  steps:
+    - name: dataset-downloader
+      image: registry.aggregion.com/cleanroom/dataset-downloader-debug:latest
+      volumeMounts:
+        - name: vol
+          mountPath: /cache
+      env:
+        - name: "DATA_DIR"
+          value: "/cache/data"
+        - name: "JOB"
+          value: "$(params.access-token)"
+        - name: "ENCLAVE_SERVICE_BASE_URL"
+          value: "$(params.enclave-service-base-url)"
+{{- end }}

@@ -1,0 +1,31 @@
+{{ .Values.debugCleanroom.enabled }}
+apiVersion: tekton.dev/v1beta1
+kind: Pipeline
+metadata:
+  name: debug-cleanroom
+spec:
+  params:
+    - name: access-token
+      description: 'AccessToken'
+    - name: enclave-service-base-url
+      description: Internal port of enclave service
+  tasks:
+    - name: script-downloader
+      taskRef:
+        name: debug-script-downloader
+      params:
+        - name: access-token
+          value: $(params.access-token)
+        - name: enclave-service-base-url
+          value: $(params.enclave-service-base-url)
+    - name: dataset-downloader
+      runAfter:
+        - script-downloader
+      taskRef:
+        name: debug-dataset-downloader
+      params:
+        - name: access-token
+          value: $(params.access-token)
+        - name: enclave-service-base-url
+          value: $(params.enclave-service-base-url)
+{{- end }}
