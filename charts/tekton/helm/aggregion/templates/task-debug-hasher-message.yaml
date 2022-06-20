@@ -1,3 +1,4 @@
+{{ .Values.debugHasher.enabled }}
 apiVersion: tekton.dev/v1beta1
 kind: Task
 metadata:
@@ -11,3 +12,4 @@ spec:
       volumeMounts:
         - name: vol
           mountPath: /cache
+{{- end }}
