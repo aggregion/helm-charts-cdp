@@ -7,8 +7,6 @@ spec:
   params:
     - name: access-token
       description: 'AccessToken'
-    - name: enclave-service-base-url
-      description: Internal port of enclave service
   tasks:
     - name: script-downloader
       taskRef:
@@ -27,5 +25,5 @@ spec:
         - name: access-token
           value: $(params.access-token)
         - name: enclave-service-base-url
-          value: $(params.enclave-service-base-url)
+          value: {{ .Values.debugCleanroom.enclaveServiceBaseUrl }}
 {{- end }}
