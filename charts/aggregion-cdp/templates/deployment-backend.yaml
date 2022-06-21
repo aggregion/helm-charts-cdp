@@ -129,9 +129,11 @@ spec:
                 path: local.json
               - key: "account.wallet"
                 path: "account.wallet"
+        {{- if .Values.backend.gatekeeper.enabled  }}        
         - name: config
           secret:
             secretName: "{{ include "cdp.backend.fullname" . }}-gatekeeper-secrets"
+        {{- end }}
       {{- with .Values.backend.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}

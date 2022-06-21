@@ -78,10 +78,12 @@ spec:
             - name: config
               mountPath: /etc/gatekeeper
         {{- end }}
+      {{ if .Values.frontend.gatekeeper.enabled }}  
       volumes:
         - name: config
           secret:
             secretName: "{{ include "cdp.frontend.fullname" . }}-gatekeeper-secrets"
+      {{- end }}
       {{- with .Values.frontend.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
