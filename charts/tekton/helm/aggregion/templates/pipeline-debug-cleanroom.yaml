@@ -5,8 +5,30 @@ metadata:
   name: debug-cleanroom
 spec:
   params:
+    # Token for access to datasets
     - name: access-token
-      description: 'AccessToken'
+      description: "AccessToken"
+    # For dataset
+    - name: dataset-dir
+      description: "Dirname of dataset"
+      default: "/cache/data"
+    - name: dataset-filename
+      description: "Filename of dataset"
+      default: "dataset.tsv"
+    # For results
+    - name: result-dir
+      description: "Dirname for results"
+      default: "/cache/result"
+    - name: result-filename
+      description: "Filename of result file"
+      default: "result.tsv"
+    # For scripts
+    - name: scripts-dir
+      description: "Dirname of scripts"
+      default: "/cache/scripts"
+    - name: entrypoint
+      description: "Executable file for running in python runner"
+      default: main.py
   tasks:
     - name: script-downloader
       taskRef:
@@ -16,6 +38,8 @@ spec:
           value: $(params.access-token)
         - name: enclave-service-base-url
           value: $(params.enclave-service-base-url)
+        - name: scripts-dir
+          value: $(params.scripts-dir)
     - name: dataset-downloader
       runAfter:
         - script-downloader
@@ -26,4 +50,49 @@ spec:
           value: $(params.access-token)
         - name: enclave-service-base-url
           value: {{ .Values.debugCleanroom.enclaveServiceBaseUrl }}
+        - name: dataset-dir
+          value: $(params.dataset-dir)
+        - name: dataset-filename
+          value: $(params.dataset-filename)
+    - name: python-runner
+      runAfter:
+        - script-downloader
+        - dataset-downloader
+      taskRef:
+        name: debug-python-runner
+      params:
+        - name: access-token
+          value: $(params.access-token)
+        - name: dataset-dir
+          value: $(params.dataset-dir)
+        - name: dataset-filename
+          value: $(params.dataset-filename)
+        - name: scripts-dir
+          value: $(params.scripts-dir)
+        - name: entrypoint
+          value: $(params.entrypoint)
+        - name: result-dir
+          value: $(params.result-dir)
+        - name: result-filename
+          value: $(params.result-filename)
+    - name: result-publisher
+      runAfter:
+        - script-downloader
+        - dataset-downloader
+        - python-runner
+      taskRef:
+        name: debug-result-publisher
+      params:
+        - name: access-token
+          value: $(params.access-token)
+        - name: enclave-service-base-url
+          value: {{ .Values.debugCleanroom.enclaveServiceBaseUrl }}
+        - name: dataset-dir
+          value: $(params.dataset-dir)
+        - name: dataset-filename
+          value: $(params.dataset-filename)
+        - name: scripts-dir
+          value: $(params.scripts-dir)
+        - name: entrypoint
+          value: $(params.entrypoint)
 {{- end }}

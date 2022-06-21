@@ -2,7 +2,7 @@
 apiVersion: tekton.dev/v1beta1
 kind: Task
 metadata:
-  name: debug-dataset-downloader
+  name: debug-result-publisher
 spec:
   params:
     - name: enclave-service-base-url
@@ -17,9 +17,16 @@ spec:
     - name: dataset-filename
       description: "Filename of dataset"
       default: "dataset.tsv"
+    # For results
+    - name: scripts-dir
+      description: "Dirname of scripts"
+      default: "/cache/scripts"
+    - name: entrypoint
+      description: "Executable file for running in python runner"
+      default: main.py
   steps:
-    - name: dataset-downloader
-      image: registry.aggregion.com/cleanroom/dataset-downloader-debug:latest
+    - name: result-publisher
+      image: registry.aggregion.com/cleanroom/result-publisher-debug:latest
       volumeMounts:
         - name: vol
           mountPath: /cache
@@ -34,4 +41,9 @@ spec:
           value: "$(params.dataset-dir)"
         - name: "DATASET_PATH"
           value: "$(params.dataset-filename)"
+        # For results
+        - name: "RESULT_DIR"
+          value: "$(params.result-dir)"
+        - name: "RESULT_PATH"
+          value: "$(params.result-filename)"
 {{- end }}
