@@ -28,6 +28,7 @@ data:
   ENCLAVE_LOCAL_PROVIDER_NAME: "{{ .Values.backend.configs.providerName }}"
   CURRENT_PROVIDER_NAME: "{{ .Values.backend.configs.providerName }}"
   PROVIDER_INSTANCE_ID: "{{ .Values.backend.configs.providerInstanceId }}"
+  PROVIDER_NAMES: '{{ .Values.providerNames | to Json }}'
   INTERACTION_INITIALIZATION_VECTOR: "{{ .Values.backend.configs.interactionIV }}"
   ENCLAVE_ENDPOINT: "{{ .Values.backend.configs.enclaveEndpoint | default (printf "http://%s:%v" $enclaveName .Values.enclave.service.innerPort) }}"
   ENCLAVE_DMP_API_SECRET: "{{ .Values.backend.configs.dmpSecret }}"
