@@ -1,3 +1,4 @@
+{{ .Values.debugHasher.enabled }}
 apiVersion: tekton.dev/v1beta1
 kind: Pipeline
 metadata:
@@ -29,3 +30,4 @@ spec:
     - name: res
       description: Hashed result
       value: "$(tasks.task3.results.res)"
+{{- end }}

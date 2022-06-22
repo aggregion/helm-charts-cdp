@@ -11,3 +11,10 @@ serviceAccount:
   create: false
   annotations: {}
   name: "default"
+
+debugHasher:
+  enabled: true
+
+debugCleanroom:
+  enabled: true
+  enclaveServiceBaseUrl: http://...
