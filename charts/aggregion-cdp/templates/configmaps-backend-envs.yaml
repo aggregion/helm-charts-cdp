@@ -61,11 +61,11 @@ data:
   PIPELINES_CLEANROOM_NAME: "{{ .Values.backend.configs.pipelineRunner.pipelines.cleanroom.pipelineName }}"
   PIPELINES_CLEANROOM_RESULT_QUEUE: "{{ .Values.backend.configs.pipelineRunner.pipelines.cleanroom.statusQueue }}"
 
-  PIPELINES_DEBUG_NAMESPACE: "{{ .Values.backend.configs.pipelineRunner.pipelines.debugHasher.namespace }}"
-  PIPELINES_DEBUG_PVC_SIZE: "{{ .Values.backend.configs.pipelineRunner.pipelines.debugHasher.pvcSize }}"
-  PIPELINES_DEBUG_STORAGE_CLASS_NAME: "{{ .Values.backend.configs.pipelineRunner.pipelines.debugHasher.storageClassName }}"
-  PIPELINES_DEBUG_SERVICE_ACCOUNT_NAME: "{{ .Values.backend.configs.pipelineRunner.pipelines.debugHasher.serviceAccountName }}"
-  PIPELINES_DEBUG_TIMEOUT: "{{ .Values.backend.configs.pipelineRunner.pipelines.debugHasher.timeout }}"
-  PIPELINES_DEBUG_NAME: "{{ .Values.backend.configs.pipelineRunner.pipelines.debugHasher.pipelineName }}"
-  PIPELINES_DEBUG_RESULT_QUEUE: "{{ .Values.backend.configs.pipelineRunner.pipelines.debugHasher.statusQueue }}"
+  PIPELINES_DEBUG_HASHER_NAMESPACE: "{{ .Values.backend.configs.pipelineRunner.pipelines.debugHasher.namespace }}"
+  PIPELINES_DEBUG_HASHER_PVC_SIZE: "{{ .Values.backend.configs.pipelineRunner.pipelines.debugHasher.pvcSize }}"
+  PIPELINES_DEBUG_HASHER_STORAGE_CLASS_NAME: "{{ .Values.backend.configs.pipelineRunner.pipelines.debugHasher.storageClassName }}"
+  PIPELINES_DEBUG_HASHER_SERVICE_ACCOUNT_NAME: "{{ .Values.backend.configs.pipelineRunner.pipelines.debugHasher.serviceAccountName }}"
+  PIPELINES_DEBUG_HASHER_TIMEOUT: "{{ .Values.backend.configs.pipelineRunner.pipelines.debugHasher.timeout }}"
+  PIPELINES_DEBUG_HASHER_NAME: "{{ .Values.backend.configs.pipelineRunner.pipelines.debugHasher.pipelineName }}"
+  PIPELINES_DEBUG_HASHER_RESULT_QUEUE: "{{ .Values.backend.configs.pipelineRunner.pipelines.debugHasher.statusQueue }}"
 {{- end }}
