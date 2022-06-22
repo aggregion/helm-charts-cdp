@@ -282,6 +282,26 @@ backend:
     gitlab:
       personalAccessToken: "xJ51bxxa1ZrQXiMdoYFt"
       host: "https://gitlab.cas-dcap.aggregion.com"
+    pipelineRunner:
+      debugMode: true
+      queue: "create_pipeline_runner"
+      pipelines:
+        cleanroom:
+          namespace: "pipelines"
+          pvcSize: "1Gi"
+          storageClassName: "longhorn"
+          serviceAccountName: "pipelines-dev1-runner-sa"
+          timeout: "1h0m0s"
+          pipelineName: "debug-cleanroom"
+          statusQueue: "pipeline_cleanroom_event_status"
+        debugHasher:
+          namespace: "pipelines"
+          pvcSize: "10Mi"
+          storageClassName: "longhorn"
+          serviceAccountName: "pipelines-dev1-runner-sa"
+          timeout: "1h0m0s"
+          pipelineName: "debug-hasher"
+          statusQueue: "pipeline_debug_hasher_event_status"
     userRolesMap:
       Query:
         Project:
