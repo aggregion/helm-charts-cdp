@@ -21,8 +21,8 @@ runner:
     reloader.stakater.com/auto: "true"
   image:
     repository: registry.aggregion.com/pipeline-runner
-    pullPolicy: Always
-    tag: latest
+    pullPolicy: IfNotPresent
+    tag: ede07758
   configs:
     amqpUrl: "amqp://..."
     ports:
@@ -33,6 +33,21 @@ runner:
     nodeEnv: production
     pipelinesCreateQueueName: create_pipeline_runner
     logLevel: info
+    amqpPrefetchCount: 1
+    cloudEventsListener: "http://watcher:9101"
+    pipelines:
+      debug-hasher:
+        namespace: "pipelines"
+        pvcSize: "10Mi"
+        storageClassName: "default"
+        annotations:
+          aggregion.dev/instance: "common"
+      debug-cleanroom:
+        namespace: "pipelines"
+        pvcSize: "1000Mi"
+        storageClassName: "default"
+        annotations:
+          aggregion.dev/instance: "common"
   resuources: {}
   restartPolicy: Always
   nameOverride: ""
@@ -55,8 +70,8 @@ watcher:
     reloader.stakater.com/auto: "true"
   image:
     repository: registry.aggregion.com/pipeline-watcher
-    pullPolicy: Always
-    tag: latest
+    pullPolicy: IfNotPresent
+    tag: ede07758
   configs:
     ports:
       http:

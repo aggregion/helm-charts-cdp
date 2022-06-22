@@ -31,6 +31,10 @@ helm upgrade --install -n pipelines \
     --set watcher.enabled=false \
     --set serviceAccount.create=true \
     --set runner.configs.pipelinesCreateQueueName=task-app1 \
+    --set runner.debug-hasher.namespace=pipelines \
+    --set runner.debug-hasher.storageClassName=longhorn \
+    --set runner.debug-cleanroom.namespace=pipelines \
+    --set runner.debug-cleanroom.storageClassName=longhorn \
     app-pipelines ./pipeline
 
 # install pipelnes and tasks
