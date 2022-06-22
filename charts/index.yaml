@@ -3,9 +3,9 @@ entries:
   aggregion-cdp:
   - apiVersion: v2
     appVersion: 1.17.0
-    created: "2022-06-22T16:53:34.744020167Z"
+    created: "2022-06-22T20:51:15.999483717Z"
     description: A Helm chart for Kubernetes to deploy Aggregion CDP
-    digest: e8aa9147d1b0677b3869bb68bd514e124b9a370796195c75e7241cc5ffe424cc
+    digest: 8095420422b1e397b05a32039ce3e5a8026530962c015d1ca8793dae08b99ad5
     name: aggregion-cdp
     type: application
     urls:
@@ -1834,9 +1834,9 @@ entries:
   aggregion-dc:
   - apiVersion: v2
     appVersion: 1.16.0
-    created: "2022-06-22T16:53:34.745116876Z"
+    created: "2022-06-22T20:51:16.000551624Z"
     description: A Helm chart for Kubernetes to install Deploy Controller
-    digest: 2b203bfde1bab31c720137f34e11253c8f2fac6884f1f6b3174af253be55f50e
+    digest: b00b4b9823ebce8d5116f121840b8b389bbbf87e6a031590f86bd97bef44d1ec
     name: aggregion-dc
     type: application
     urls:
@@ -1895,11 +1895,11 @@ entries:
   aggregion-debug:
   - apiVersion: v2
     appVersion: 1.16.0
-    created: "2022-06-22T16:53:34.74563428Z"
+    created: "2022-06-22T20:51:16.001830433Z"
     description: 'A Helm chart for Kubernetes to deploy single instance of clickhouse,
       mongo, rabbitmq and redis. It''s not recommend to use it in the production.
       Use charts from official rep for this purpose. '
-    digest: c6e2acec30697571e03ec4f2bf316894c7f3581f94ac66d8eab511a797a736f7
+    digest: 5e5dc606fdd8ac59f903c71978eb24e42879ac3ca188e1606d8675a0ba310545
     name: aggregion-debug
     type: application
     urls:
@@ -1920,11 +1920,11 @@ entries:
   aggregion-externals:
   - apiVersion: v2
     appVersion: 1.16.0
-    created: "2022-06-22T16:53:34.746610088Z"
+    created: "2022-06-22T20:51:16.003815347Z"
     description: 'A Helm chart for Kubernetes to deploy single instance of clickhouse,
       mongo, rabbitmq and redis. It''s not recommend to use it in the production.
       Use charts from official rep for this purpose. '
-    digest: f9f442b3f221e80468700071a9e71bff154ee947b2a4e0d1459ae604802163ad
+    digest: db99aec4258de856bcfd4fa6c0f26fe3402e83c51fc90ad954517d2ea4e32a4b
     name: aggregion-externals
     type: application
     urls:
@@ -1981,11 +1981,11 @@ entries:
   atlas:
   - apiVersion: v2
     appVersion: 1.0.0
-    created: "2022-06-22T16:53:34.748217101Z"
+    created: "2022-06-22T20:51:16.005857661Z"
     description: 'A Helm chart for Kubernetes to deploy single instance of atlas,
       cassandra, hadoop, hbase, kafka, solr, zookeeper. It''s not recommend to use
       it in the production. Use charts from official rep for this purpose. '
-    digest: c6220a37e1004d48534822fac1dd0b0cd81c8567dc4e9383e105b7021cde1bec
+    digest: b94f7052c3dcb7475b2a2cbef526bfb07f882845cc7ea7f9dae11463f291cd98
     name: atlas
     type: application
     urls:
@@ -2042,9 +2042,9 @@ entries:
   enclave-script-resolver:
   - apiVersion: v2
     appVersion: 1.16.0
-    created: "2022-06-22T16:53:34.748737005Z"
+    created: "2022-06-22T20:51:16.006375864Z"
     description: A Helm chart for Kubernetes
-    digest: 28db7494ea1982bdebf67132b134e72f0deffa251f7462e1f205331e8da982e6
+    digest: ef68e2b39bfa84ddf44eca808ac32f0f70a1d9c104d7d54266cb53d8eb14f9ce
     name: enclave-script-resolver
     type: application
     urls:
@@ -2063,15 +2063,25 @@ entries:
   enclave-storage-service:
   - apiVersion: v2
     appVersion: 1.16.0
-    created: "2022-06-22T16:53:34.74930321Z"
+    created: "2022-06-22T20:51:16.007013069Z"
     description: A Helm chart for Kubernetes
-    digest: cde72a204cab8de6b5f06ec5c75f0b783f33e3ad184fcf8ab0517bde25cc84b8
+    digest: 57b3f47e59cb351a51b88ef43714a70f771d85967d9b04965a3a7bbbfa3ec547
     name: enclave-storage-service
     type: application
     urls:
     - https://aggregion.github.io/helm-charts-cdp/charts/enclave-storage-service-0.1.0.tgz
     version: 0.1.0
   pipeline:
+  - apiVersion: v2
+    appVersion: 1.0.0
+    created: "2022-06-22T20:51:16.007845775Z"
+    description: A Helm chart for Kubernetes to deploy Aggregion CDP
+    digest: 5512a7c1a8529e04bef9ea2d8b120b8e1b09cc25ce83e3f24da8ab792a665afe
+    name: pipeline
+    type: application
+    urls:
+    - https://aggregion.github.io/helm-charts-cdp/charts/pipeline-0.0.2.tgz
+    version: 0.0.2
   - apiVersion: v2
     appVersion: 1.0.0
     created: "2022-06-22T16:53:34.750001716Z"
@@ -2085,9 +2095,9 @@ entries:
   trino:
   - apiVersion: v2
     appVersion: "355"
-    created: "2022-06-22T16:53:34.75173503Z"
+    created: "2022-06-22T20:51:16.008480379Z"
     description: Fast distributed SQL query engine for big data analytics
-    digest: e7115d7415d24b95be8e845ef5d002db647fecb835bc7d1f028ea9f6c8008ae5
+    digest: cf6be107a2de95dccecbb6e844fe1467c935f0dbd4251d7f83e64303f7efe1e9
     home: https://trino.io/
     icon: https://trino.io/assets/trino.png
     maintainers:
@@ -2134,4 +2144,4 @@ entries:
     urls:
     - https://aggregion.github.io/helm-charts-cdp/charts/trino-0.2.0.tgz
     version: 0.2.0
-generated: "2022-06-22T16:53:34.739297629Z"
+generated: "2022-06-22T20:51:15.995267787Z"
