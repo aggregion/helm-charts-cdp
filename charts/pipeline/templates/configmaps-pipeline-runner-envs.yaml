@@ -15,5 +15,5 @@ data:
   PIPELINES_CREATE_RUNNER_QUEUE_NAME: "{{ .Values.runner.configs.pipelinesCreateQueueName }}"
   PIPELINES_WATCHER_URL: "{{ .Values.runner.configs.cloudEventsListener }}"
   LOG_LEVEL: "{{ .Values.runner.configs.logLevel }}"
-  PIPELINES_PIPELINE_RUNNERS: {{ toJson .Values.runner.configs.pipelines }}
+  PIPELINES_PIPELINE_RUNNERS: {{ .Values.runner.configs.pipelines | toJson | quote }}
 {{- end }}
