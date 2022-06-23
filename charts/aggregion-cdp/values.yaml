@@ -29,19 +29,20 @@ gatekeeper:
     podSecurityContext: {}
     securityContext: {}
   config:
-    client-id: frontend
-    client-secret: XXxxXXxxXXxxXXxxXXxxXXxxXXxxXXxx
-    discovery-url: http://keycloak/realms/ad1/.well-known/openid-configuration
-    enable-default-deny: true
-    enable-refresh-tokens: true
-    enable-metrics: false
-    encryption-key: xxXXxxXXxxXXxxXX
-    skip-openid-provider-tls-verify: true
+    clientId: frontend
+    clientSecret: XXxxXXxxXXxxXXxxXXxxXXxxXXxxXXxx
+    discoveryUrl: http://keycloak/realms/ad1/.well-known/openid-configuration
+    enableDefaultDeny: true
+    enableRefreshTokens: true
+    enableMetrics: false
+    noRedirects: true
+    encryptionKey: xxXXxxXXxxXXxxXX
+    skipOpenidProviderTlsVerify: true
     listen: :3000
-    listen-admin: :4000
-    secure-cookie: false
-    redirection-url: https://test.youdomaindom.com
-    upstream-url: http://127.0.0.1:5000
+    listenAdmin: :4000
+    secureCookie: false
+    redirectionUrl: https://test.youdomaindom.com
+    upstreamUrl: http://127.0.0.1:5000
 
 frontend:
   enabled: true
@@ -95,11 +96,6 @@ frontend:
   nodeSelector: {}
   tolerations: []
   affinity: {}
-  gatekeeper:
-    ExtraConfig:
-      client-id: frontend
-      no-redirects: false
-
 
 backend:
   enabled: true
@@ -111,16 +107,6 @@ backend:
     repository: registry.aggregion.com/dmp-backend
     pullPolicy: IfNotPresent
     tag: "develop"
-
-  gatekeeper:
-    ExtraConfig:
-      client-id: backend
-      no-redirects: true
-      resources:
-      - uri: /graphql
-        methods:
-        - GET
-        white-listed: true
 
   crond:
     image:
