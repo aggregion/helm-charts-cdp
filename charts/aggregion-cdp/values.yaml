@@ -19,6 +19,30 @@ serviceAccount:
   annotations: {}
   name: "default"
 
+
+gatekeeper:
+  enabled: true
+  image:
+    repository: "registry.aggregion.com/gatekeeper"
+    tag: "1.4.2"
+    pullPolicy: IfNotPresent
+    podSecurityContext: {}
+    securityContext: {}
+  config:
+    client-id: frontend
+    client-secret: XXxxXXxxXXxxXXxxXXxxXXxxXXxxXXxx
+    discovery-url: http://keycloak/realms/ad1/.well-known/openid-configuration
+    enable-default-deny: true
+    enable-refresh-tokens: true
+    enable-metrics: false
+    encryption-key: xxXXxxXXxxXXxxXX
+    skip-openid-provider-tls-verify: true
+    listen: :3000
+    listen-admin: :4000
+    secure-cookie: false
+    redirection-url: https://test.youdomaindom.com
+    upstream-url: http://127.0.0.1:5000
+
 frontend:
   enabled: true
   replicaCount: 1
@@ -72,28 +96,10 @@ frontend:
   tolerations: []
   affinity: {}
   gatekeeper:
-    enabled: false
-    image:
-      repository: "registry.aggregion.com/gatekeeper"
-      tag: "1.4.2"
-      pullPolicy: IfNotPresent
-      podSecurityContext: {}
-      securityContext: {}
-    config:
+    ExtraConfig:
       client-id: frontend
-      client-secret: XXxxXXxxXXxxXXxxXXxxXXxxXXxxXXxx
-      discovery-url: http://keycloak/realms/ad1/.well-known/openid-configuration
-      enable-default-deny: true
-      enable-metrics: false
-      enable-refresh-tokens: true
-      encryption-key: xxXXxxXXxxXXxxXX
-      skip-openid-provider-tls-verify: true
-      listen: :3000
-      listen-admin: :4000
       no-redirects: false
-      secure-cookie: false
-      redirection-url: https://test.youdomaindom.com
-      upstream-url: http://127.0.0.1:5000
+
 
 backend:
   enabled: true
@@ -107,28 +113,9 @@ backend:
     tag: "develop"
 
   gatekeeper:
-    enabled: false
-    image:
-      repository: "registry.aggregion.com/gatekeeper"
-      tag: "1.4.2"
-      pullPolicy: IfNotPresent
-      podSecurityContext: {}
-      securityContext: {}
-    config:
+    ExtraConfig:
       client-id: backend
-      client-secret: XXxxXXxxXXxxXXxxXXxxXXxxXXxxXXxx
-      discovery-url: http://keycloak/realms/ad1/.well-known/openid-configuration
-      enable-default-deny: true
-      enable-metrics: false
-      enable-refresh-tokens: true
-      encryption-key: xxXXxxXXxxXXxxXX
-      skip-openid-provider-tls-verify: true
-      listen: :3000
-      listen-admin: :4000
       no-redirects: true
-      secure-cookie: false
-      redirection-url: https://test.youdomaindom.com
-      upstream-url: http://127.0.0.1:5000
       resources:
       - uri: /graphql
         methods:

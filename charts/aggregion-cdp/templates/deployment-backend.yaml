@@ -64,7 +64,7 @@ spec:
             {{- toYaml .Values.backend.securityContext | nindent 12 }}
           image: "{{ .Values.backend.image.repository }}:{{ .Values.backend.image.tag }}"
           imagePullPolicy: {{ .Values.backend.image.pullPolicy }}
-          {{- if not .Values.backend.gatekeeper.enabled  }}
+          {{- if not .Values.gatekeeper.enabled }}
           ports:
             - name: httpapi
               containerPort: {{ .Values.backend.configs.listenPort }}
@@ -95,12 +95,12 @@ spec:
             - name: data
               mountPath: /data/datalabscripts
               subPath: datalabscripts-data
-        {{- if .Values.backend.gatekeeper.enabled  }}
+        {{- if .Values.gatekeeper.enabled }}
         - name: "gatekeeper"
           securityContext:
             {{- toYaml .Values.backend.securityContext | nindent 12 }}
-          image: "{{ .Values.backend.gatekeeper.image.repository }}:{{ .Values.backend.gatekeeper.image.tag }}"
-          imagePullPolicy: {{ .Values.backend.gatekeeper.image.pullPolicy }}
+          image: "{{ .Values.gatekeeper.image.repository }}:{{ .Values.gatekeeper.image.tag }}"
+          imagePullPolicy: {{ .Values.gatekeeper.image.pullPolicy }}
           args:
             - --config
             - /etc/gatekeeper/config.yaml
@@ -111,7 +111,7 @@ spec:
           resources:
             {{- toYaml .Values.backend.resources.gatekeeper | nindent 12 }}
           volumeMounts:
-            - name: config
+            - name: gatekeeper-config
               mountPath: /etc/gatekeeper
         {{- end }}
       volumes:
@@ -129,8 +129,8 @@ spec:
                 path: local.json
               - key: "account.wallet"
                 path: "account.wallet"
-        {{- if .Values.backend.gatekeeper.enabled  }}        
-        - name: config
+        {{- if .Values.gatekeeper.enabled }}
+        - name: gatekeeper-config
           secret:
             secretName: "{{ include "cdp.backend.fullname" . }}-gatekeeper-secrets"
         {{- end }}
