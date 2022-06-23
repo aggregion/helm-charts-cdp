@@ -1,4 +1,4 @@
-{{ .Values.debugCleanroom.enabled }}
+{{ if (.Values.debugCleanroom.enabled) }}
 apiVersion: tekton.dev/v1beta1
 kind: Pipeline
 metadata:
