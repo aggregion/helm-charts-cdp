@@ -16,4 +16,5 @@ data:
   PIPELINES_WATCHER_URL: "{{ .Values.runner.configs.cloudEventsListener }}"
   LOG_LEVEL: "{{ .Values.runner.configs.logLevel }}"
   PIPELINES_PIPELINE_RUNNERS: {{ .Values.runner.configs.pipelines | toJson | quote }}
+  PIPELINES_BASE_PIPELINER_RUNNER: {{ .Values.runner.configs.basePipelineOptions | toJson | quote }}
 {{- end }}
