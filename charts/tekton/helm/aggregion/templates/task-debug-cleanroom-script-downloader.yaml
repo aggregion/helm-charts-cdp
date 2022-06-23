@@ -4,6 +4,10 @@ kind: Task
 metadata:
   name: debug-script-downloader
 spec:
+  {{- with .Values.imagePullSecrets }}
+  imagePullSecrets:
+    {{- toYaml . | nindent 8 }}
+  {{- end }}
   params:
     - name: enclave-service-base-url
       description: Internal port of enclave service

@@ -4,6 +4,10 @@ kind: Task
 metadata:
   name: debug-python-runner
 spec:
+  {{- with .Values.imagePullSecrets }}
+  imagePullSecrets:
+    {{- toYaml . | nindent 8 }}
+  {{- end }}
   params:
     # Token for access to datasets
     - name: access-token
