@@ -48,6 +48,12 @@ runner:
         storageClassName: "default"
         annotations:
           aggregion.dev/instance: "common"
+    basePipelineOptions:
+      namespace: "pipelines"
+      pvcSize: "10Mi"
+      storageClassName: "default"
+      annotations:
+        aggregion.dev/instance: "common"
   resuources: {}
   restartPolicy: Always
   nameOverride: ""
