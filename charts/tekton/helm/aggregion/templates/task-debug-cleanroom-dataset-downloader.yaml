@@ -20,6 +20,7 @@ spec:
   steps:
     - name: dataset-downloader
       image: registry.aggregion.com/cleanroom/dataset-downloader-debug:latest
+      imagePullPolicy: Always
       volumeMounts:
         - name: vol
           mountPath: /cache

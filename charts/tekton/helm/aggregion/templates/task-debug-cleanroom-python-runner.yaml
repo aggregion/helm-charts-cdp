@@ -32,6 +32,7 @@ spec:
   steps:
     - name: python-runner
       image: registry.aggregion.com/cleanroom/python-runner-debug:latest
+      imagePullPolicy: Always
       volumeMounts:
         - name: vol
           mountPath: /cache

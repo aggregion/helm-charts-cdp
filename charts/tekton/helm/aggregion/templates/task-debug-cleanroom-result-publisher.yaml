@@ -34,6 +34,7 @@ spec:
   steps:
     - name: result-publisher
       image: registry.aggregion.com/cleanroom/result-publisher-debug:latest
+      imagePullPolicy: Always
       volumeMounts:
         - name: vol
           mountPath: /cache
