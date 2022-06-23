@@ -5,8 +5,6 @@ metadata:
   name: debug-cleanroom
 spec:
   params:
-    - name: enclave-service-base-url
-      description: Internal port of enclave service
     # Token for access to datasets
     - name: access-token
       description: "AccessToken"
@@ -39,7 +37,7 @@ spec:
         - name: access-token
           value: $(params.access-token)
         - name: enclave-service-base-url
-          value: $(params.enclave-service-base-url)
+          value: {{ .Values.debugCleanroom.enclaveServiceBaseUrl }}
         - name: scripts-dir
           value: $(params.scripts-dir)
     - name: dataset-downloader
