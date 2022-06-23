@@ -18,6 +18,13 @@ spec:
       description: "Filename of dataset"
       default: "dataset.tsv"
     # For results
+    - name: result-dir
+      description: "Dirname for results"
+      default: "/cache/result"
+    - name: result-filename
+      description: "Filename of result file"
+      default: "result.tsv"
+    # For scripts
     - name: scripts-dir
       description: "Dirname of scripts"
       default: "/cache/scripts"
