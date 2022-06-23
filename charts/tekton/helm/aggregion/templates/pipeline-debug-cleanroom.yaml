@@ -5,6 +5,8 @@ metadata:
   name: debug-cleanroom
 spec:
   params:
+    - name: enclave-service-base-url
+      description: Internal port of enclave service
     # Token for access to datasets
     - name: access-token
       description: "AccessToken"
