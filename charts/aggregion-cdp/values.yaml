@@ -38,8 +38,8 @@ gatekeeper:
     noRedirects: true
     encryptionKey: xxXXxxXXxxXXxxXX
     skipOpenidProviderTlsVerify: true
-    listen: :3000
-    listenAdmin: :4000
+    listen: 3000
+    listenAdmin: 4000
     secureCookie: false
     redirectionUrl: https://test.youdomaindom.com
     upstreamUrl: http://127.0.0.1:5000

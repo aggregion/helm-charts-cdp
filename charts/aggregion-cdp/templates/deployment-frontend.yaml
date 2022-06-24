@@ -70,7 +70,7 @@ spec:
             - /etc/gatekeeper/config.yaml
           ports:
             - name: http
-              containerPort: 3000
+              containerPort: {{ int .Values.gatekeeper.config.listen }}
               protocol: TCP
           resources:
             {{- toYaml .Values.frontend.resources | nindent 12 }}

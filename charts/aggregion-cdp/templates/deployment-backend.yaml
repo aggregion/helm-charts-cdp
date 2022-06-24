@@ -106,7 +106,7 @@ spec:
             - /etc/gatekeeper/config.yaml
           ports:
             - name: httpapi
-              containerPort: 3000
+              containerPort: {{ int .Values.gatekeeper.config.listen }}
               protocol: TCP
           resources:
             {{- toYaml .Values.backend.resources.gatekeeper | nindent 12 }}
