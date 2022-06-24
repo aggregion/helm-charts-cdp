@@ -109,7 +109,7 @@ spec:
               containerPort: {{ int .Values.gatekeeper.config.listen }}
               protocol: TCP
           resources:
-            {{- toYaml .Values.backend.resources.gatekeeper | nindent 12 }}
+            {}
           volumeMounts:
             - name: gatekeeper-config
               mountPath: /etc/gatekeeper
