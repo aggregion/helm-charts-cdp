@@ -1,0 +1,12 @@
+{{- if .Values.sconeCleanroom.enabled }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: scone-cleanroom-script-downloader-config
+data:
+  SCONE_CAS_ADDR: {{ .Values.sconeCleanroom.casAddr }}
+  SCONE_HEAP: {{ .Values.sconeCleanroom.scriptDownloader.sconeHeap }}
+  {{- if .Values.sconeCleanroom.scriptDownloader.debug }}
+  SCONE_LOG: "7"
+  {{- end }}
+{{- end }}

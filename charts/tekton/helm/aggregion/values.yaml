@@ -18,3 +18,40 @@ debugHasher:
 debugCleanroom:
   enabled: true
   enclaveServiceBaseUrl: http://...
+
+sconeCleanroom:
+  enabled: false
+  enclaveServiceBaseUrl: http://...
+  casAddr: 185.184.79.2:28765
+  datasetDownloader:
+    debug: false
+    sconeHeap: 2G
+    resources:
+      requests:
+        memory: 3Gi
+      limits:
+        memory: 3Gi
+  pythonRunner:
+    debug: false
+    sconeHeap: 16G
+    resources:
+      requests:
+        memory: 20Gi
+      limits:
+        memory: 20Gi
+  resultPublisher:
+    debug: false
+    sconeHeap: 2G
+    resources:
+      requests:
+        memory: 3Gi
+      limits:
+        memory: 3Gi
+  scriptDownloader:
+    debug: false
+    sconeHeap: 2G
+    resources:
+      requests:
+        memory: 3Gi
+      limits:
+        memory: 3Gi

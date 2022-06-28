@@ -1,0 +1,42 @@
+{{ if (.Values.sconeCleanroom.enabled) }}
+apiVersion: tekton.dev/v1beta1
+kind: Task
+metadata:
+  name: scone-dataset-downloader
+spec:
+  params:
+    - name: enclave-service-base-url
+      description: Internal port of enclave service
+    # Token for access to datasets
+    - name: access-token
+      description: 'AccessToken'
+    # For dataset
+    - name: dataset-dir
+      description: "Dirname of dataset"
+      default: "/cache/data"
+    - name: dataset-filename
+      description: "Filename of dataset"
+      default: "dataset.tsv"
+  steps:
+    - name: dataset-downloader
+      image: registry.aggregion.com/cleanroom/dataset-downloader-production:latest
+      imagePullPolicy: Always
+      volumeMounts:
+        - name: vol
+          mountPath: /cache
+      env:
+        - name: "ENCLAVE_SERVICE_BASE_URL"
+          value: "$(params.enclave-service-base-url)"
+        # Token for access to datasets
+        - name: "JOB"
+          value: "$(params.access-token)"
+        # For dataset
+        - name: "DATA_DIR"
+          value: "$(params.dataset-dir)"
+        - name: "DATASET_PATH"
+          value: "$(params.dataset-filename)"
+      envFrom:
+        - configMapRef:
+            name: scone-cleanroom-dataset-downloader-config
+      resources: {{ .Values.sconeCleanroom.datasetDownloader.resources | toJson }}
+{{- end }}
