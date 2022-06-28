@@ -74,7 +74,7 @@ spec:
             - start:api:debug
             {{- else }}
             - start:api
-            - --ignore-scripts
+            # - --ignore-scripts
             {{- end }}
           envFrom:
             - configMapRef:
