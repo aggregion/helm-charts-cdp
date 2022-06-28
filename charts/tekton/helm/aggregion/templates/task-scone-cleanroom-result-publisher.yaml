@@ -1,0 +1,61 @@
+{{ if (.Values.sconeCleanroom.enabled) }}
+apiVersion: tekton.dev/v1beta1
+kind: Task
+metadata:
+  name: scone-result-publisher
+spec:
+  params:
+    - name: enclave-service-base-url
+      description: Internal port of enclave service
+    # Token for access to datasets
+    - name: access-token
+      description: 'AccessToken'
+    # For dataset
+    - name: dataset-dir
+      description: "Dirname of dataset"
+      default: "/cache/data"
+    - name: dataset-filename
+      description: "Filename of dataset"
+      default: "dataset.tsv"
+    # For results
+    - name: result-dir
+      description: "Dirname for results"
+      default: "/cache/result"
+    - name: result-filename
+      description: "Filename of result file"
+      default: "result.tsv"
+    # For scripts
+    - name: scripts-dir
+      description: "Dirname of scripts"
+      default: "/cache/scripts"
+    - name: entrypoint
+      description: "Executable file for running in python runner"
+      default: main.py
+  steps:
+    - name: result-publisher
+      image: registry.aggregion.com/cleanroom/result-publisher-production:latest
+      imagePullPolicy: Always
+      volumeMounts:
+        - name: vol
+          mountPath: /cache
+      env:
+        - name: "ENCLAVE_SERVICE_BASE_URL"
+          value: "$(params.enclave-service-base-url)"
+        # Token for access to datasets
+        - name: "JOB"
+          value: "$(params.access-token)"
+        # For dataset
+        - name: "DATA_DIR"
+          value: "$(params.dataset-dir)"
+        - name: "DATASET_PATH"
+          value: "$(params.dataset-filename)"
+        # For results
+        - name: "RESULT_DIR"
+          value: "$(params.result-dir)"
+        - name: "RESULT_PATH"
+          value: "$(params.result-filename)"
+      envFrom:
+        - configMapRef:
+            name: scone-cleanroom-result-publisher-config
+      resources: {{ .Values.sconeCleanroom.resultPublisher.resources | toJson }}
+{{- end }}
