@@ -37,8 +37,14 @@ helm upgrade --install -n pipelines \
     --set runner.configs.basePipelineOptions.annotations."aggregion.dev"/instance=app \
     app-pipelines ./pipeline
 
-# install pipelnes and tasks
+# install pipelnes and tasks for tests
 helm upgrade --install -n pipelines aggregion-pipelines ./aggregion
+
+# install pipelnes and tasks for production
+helm upgrade --install -n pipelines \
+    --set sconeCleanroom.enabled=true \
+    --set sconeCleanroom.casAddr=185.184.79.2:28765 \
+    aggregion-pipelines ./aggregion
 
 : '
 {
