@@ -57,7 +57,7 @@ spec:
           {{- end }}
           ports:
             - containerPort: {{ .Values.enclave.scone.lasPort }}
-              hostPort: {{ .Values.enclave.scone.lasHostPort }}
+              hostPort: {{ .Values.enclave.scone.lasPort }}
               name: lasport
           volumeMounts:
             - mountPath: "{{ .Values.enclave.sgx.device }}"
