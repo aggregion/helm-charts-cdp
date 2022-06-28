@@ -55,10 +55,10 @@ spec:
           {{- if .Values.enclave.scone.lasEnvs }}
             {{- toYaml .Values.enclave.scone.lasEnvs | nindent 12 }}
           {{- end }}
-          # ports:
-          #   - containerPort: {{ .Values.enclave.scone.lasPort }}
-          #     hostPort: {{ .Values.enclave.scone.lasPort }}
-          #     name: lasport
+          ports:
+            - containerPort: {{ .Values.enclave.scone.lasPort }}
+              hostPort: {{ .Values.enclave.scone.lasHostPort }}
+              name: lasport
           volumeMounts:
             - mountPath: "{{ .Values.enclave.sgx.device }}"
               name: dev-sgx
