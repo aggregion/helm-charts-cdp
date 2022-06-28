@@ -42,6 +42,7 @@ spec:
             - npm
             - run
             - start:worker:debug_pipeline_status_watcher
+            - --ignore-scripts
           envFrom:
             - configMapRef:
                 name: "{{ $backendName }}-config"
@@ -58,6 +59,7 @@ spec:
             - npm
             - run
             - start:worker:cleanroom_pipeline_status_watcher
+            - --ignore-scripts
           envFrom:
             - configMapRef:
                 name: "{{ $backendName }}-config"
