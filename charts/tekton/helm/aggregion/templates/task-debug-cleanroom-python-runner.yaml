@@ -1,8 +1,9 @@
-{{ if (.Values.debugCleanroom.enabled) }}
+{{- if (.Values.debugCleanroom.enabled) -}}
+{{- $name := .Release.Name -}}
 apiVersion: tekton.dev/v1beta1
 kind: Task
 metadata:
-  name: debug-python-runner
+  name: "debug-python-runner-{{ $name }}"
 spec:
   params:
     # Token for access to datasets
@@ -55,4 +56,4 @@ spec:
           value: "$(params.result-dir)"
         - name: "RESULT_PATH"
           value: "$(params.result-filename)"
-{{- end }}
+{{- end -}}

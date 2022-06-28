@@ -1,8 +1,9 @@
-{{ if (.Values.sconeCleanroom.enabled) }}
+{{- if (.Values.sconeCleanroom.enabled) -}}
+{{- $name := .Release.Name -}}
 apiVersion: tekton.dev/v1beta1
 kind: Task
 metadata:
-  name: scone-dataset-downloader
+  name: "scone-dataset-downloader-{{ $name }}"
 spec:
   params:
     - name: enclave-service-base-url
@@ -37,6 +38,7 @@ spec:
           value: "$(params.dataset-filename)"
       envFrom:
         - configMapRef:
-            name: scone-cleanroom-dataset-downloader-config
-      resources: {{ .Values.sconeCleanroom.datasetDownloader.resources | toJson }}
-{{- end }}
+            name: "scone-cleanroom-dataset-downloader-config-{{ $name }}"
+      resources:
+        {{ .Values.sconeCleanroom.datasetDownloader.resources | toJson }}
+{{- end -}}

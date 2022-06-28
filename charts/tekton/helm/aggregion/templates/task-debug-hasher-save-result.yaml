@@ -1,8 +1,9 @@
-{{ if (.Values.debugHasher.enabled) }}
+{{- if (.Values.debugHasher.enabled) -}}
+{{- $name := .Release.Name -}}
 apiVersion: tekton.dev/v1beta1
 kind: Task
 metadata:
-  name: debug-save-result
+  name: "debug-save-result-{{ $name }}"
 spec:
   steps:
     - name: save-result
@@ -15,4 +16,4 @@ spec:
   results:
     - name: res
       description: Hashed result
-{{- end }}
+{{- end -}}

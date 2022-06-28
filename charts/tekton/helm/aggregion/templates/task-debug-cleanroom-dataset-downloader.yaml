@@ -1,8 +1,9 @@
-{{ if (.Values.debugCleanroom.enabled) }}
+{{- if (.Values.debugCleanroom.enabled) -}}
+{{- $name := .Release.Name -}}
 apiVersion: tekton.dev/v1beta1
 kind: Task
 metadata:
-  name: debug-dataset-downloader
+  name: "debug-dataset-downloader-{{ $name }}"
 spec:
   params:
     - name: enclave-service-base-url
@@ -35,4 +36,4 @@ spec:
           value: "$(params.dataset-dir)"
         - name: "DATASET_PATH"
           value: "$(params.dataset-filename)"
-{{- end }}
+{{- end -}}

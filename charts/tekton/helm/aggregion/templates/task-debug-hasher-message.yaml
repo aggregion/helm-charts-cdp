@@ -1,8 +1,9 @@
-{{ if (.Values.debugHasher.enabled) }}
+{{- if (.Values.debugHasher.enabled) -}}
+{{- $name := .Release.Name -}}
 apiVersion: tekton.dev/v1beta1
 kind: Task
 metadata:
-  name: debug-hash-message
+  name: "debug-hash-message-{{ $name }}"
 spec:
   steps:
     - name: hash-message
@@ -12,4 +13,4 @@ spec:
       volumeMounts:
         - name: vol
           mountPath: /cache
-{{- end }}
+{{- end -}}

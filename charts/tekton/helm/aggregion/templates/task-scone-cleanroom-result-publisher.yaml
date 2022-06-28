@@ -1,8 +1,9 @@
-{{ if (.Values.sconeCleanroom.enabled) }}
+{{- if (.Values.sconeCleanroom.enabled) -}}
+{{- $name := .Release.Name -}}
 apiVersion: tekton.dev/v1beta1
 kind: Task
 metadata:
-  name: scone-result-publisher
+  name: "scone-result-publisher-{{ $name }}"
 spec:
   params:
     - name: enclave-service-base-url
@@ -56,6 +57,7 @@ spec:
           value: "$(params.result-filename)"
       envFrom:
         - configMapRef:
-            name: scone-cleanroom-result-publisher-config
-      resources: {{ .Values.sconeCleanroom.resultPublisher.resources | toJson }}
-{{- end }}
+            name: "scone-cleanroom-result-publisher-config-{{ $name }}"
+      resources:
+        {{ .Values.sconeCleanroom.resultPublisher.resources | toJson }}
+{{- end -}}
