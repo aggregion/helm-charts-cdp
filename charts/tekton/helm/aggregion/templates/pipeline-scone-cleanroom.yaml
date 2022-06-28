@@ -1,8 +1,9 @@
-{{ if (.Values.sconeCleanroom.enabled) }}
+{{- if (.Values.sconeCleanroom.enabled) -}}
+{{- $name := .Release.Name -}}
 apiVersion: tekton.dev/v1beta1
 kind: Pipeline
 metadata:
-  name: scone-cleanroom
+  name: "scone-cleanroom-{{ $name }}"
 spec:
   params:
     # Token for access to datasets
@@ -32,7 +33,7 @@ spec:
   tasks:
     - name: script-downloader
       taskRef:
-        name: scone-script-downloader
+        name: "scone-script-downloader-{{ $name }}"
       params:
         - name: access-token
           value: $(params.access-token)
@@ -44,7 +45,7 @@ spec:
       runAfter:
         - script-downloader
       taskRef:
-        name: scone-dataset-downloader
+        name: "scone-dataset-downloader-{{ $name }}"
       params:
         - name: access-token
           value: $(params.access-token)
@@ -59,7 +60,7 @@ spec:
         - script-downloader
         - dataset-downloader
       taskRef:
-        name: scone-python-runner
+        name: "scone-python-runner-{{ $name }}"
       params:
         - name: access-token
           value: $(params.access-token)
@@ -81,7 +82,7 @@ spec:
         - dataset-downloader
         - python-runner
       taskRef:
-        name: scone-result-publisher
+        name: "scone-result-publisher-{{ $name }}"
       params:
         - name: access-token
           value: $(params.access-token)
@@ -95,4 +96,4 @@ spec:
           value: $(params.scripts-dir)
         - name: entrypoint
           value: $(params.entrypoint)
-{{- end }}
+{{- end -}}

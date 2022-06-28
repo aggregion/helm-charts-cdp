@@ -1,8 +1,9 @@
-{{ if (.Values.debugCleanroom.enabled) }}
+{{- if (.Values.debugCleanroom.enabled) -}}
+{{- $name := .Release.Name -}}
 apiVersion: tekton.dev/v1beta1
 kind: Task
 metadata:
-  name: debug-script-downloader
+  name: "debug-script-downloader-{{ $name }}"
 spec:
   params:
     - name: enclave-service-base-url
@@ -29,4 +30,4 @@ spec:
         # For scripts
         - name: "SCRIPTS_DIR"
           value: "$(params.scripts-dir)"
-{{- end }}
+{{- end -}}

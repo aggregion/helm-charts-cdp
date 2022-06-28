@@ -1,8 +1,9 @@
-{{ if (.Values.sconeCleanroom.enabled) }}
+{{- if (.Values.sconeCleanroom.enabled) -}}
+{{- $name := .Release.Name -}}
 apiVersion: tekton.dev/v1beta1
 kind: Task
 metadata:
-  name: scone-python-runner
+  name: "scone-python-runner-{{ $name }}"
   annotations:
     experimental.tekton.dev/execution-mode: hermetic
 spec:
@@ -59,6 +60,7 @@ spec:
           value: "$(params.result-filename)"
       envFrom:
         - configMapRef:
-            name: scone-cleanroom-python-runner-config
-      resources: {{ .Values.sconeCleanroom.pythonRunner.resources | toJson }}
-{{- end }}
+            name: "scone-cleanroom-python-runner-config-{{ $name }}"
+      resources:
+        {{ .Values.sconeCleanroom.pythonRunner.resources | toJson }}
+{{- end -}}

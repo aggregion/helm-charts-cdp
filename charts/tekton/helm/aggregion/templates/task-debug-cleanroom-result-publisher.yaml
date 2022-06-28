@@ -1,8 +1,9 @@
-{{ if (.Values.debugCleanroom.enabled) }}
+{{- if (.Values.debugCleanroom.enabled) -}}
+{{- $name := .Release.Name -}}
 apiVersion: tekton.dev/v1beta1
 kind: Task
 metadata:
-  name: debug-result-publisher
+  name: "debug-result-publisher-{{ $name }}"
 spec:
   params:
     - name: enclave-service-base-url
@@ -54,4 +55,4 @@ spec:
           value: "$(params.result-dir)"
         - name: "RESULT_PATH"
           value: "$(params.result-filename)"
-{{- end }}
+{{- end -}}

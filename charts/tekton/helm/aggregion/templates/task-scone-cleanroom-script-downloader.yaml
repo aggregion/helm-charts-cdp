@@ -1,8 +1,9 @@
-{{ if (.Values.sconeCleanroom.enabled) }}
+{{- if (.Values.sconeCleanroom.enabled) -}}
+{{- $name := .Release.Name -}}
 apiVersion: tekton.dev/v1beta1
 kind: Task
 metadata:
-  name: scone-script-downloader
+  name: "scone-script-downloader-{{ $name }}"
 spec:
   params:
     - name: enclave-service-base-url
@@ -31,6 +32,7 @@ spec:
           value: "$(params.scripts-dir)"
       envFrom:
         - configMapRef:
-            name: scone-cleanroom-script-downloader-config
-      resources: {{ .Values.sconeCleanroom.scriptDownloader.resources | toJson }}
-{{- end }}
+            name: "scone-cleanroom-script-downloader-config-{{ $name }}"
+      resources:
+        {{ .Values.sconeCleanroom.scriptDownloader.resources | toJson }}
+{{- end -}}
