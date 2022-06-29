@@ -61,11 +61,6 @@ runner:
           - name: dev-sgx
             hostPath:
               path: /dev/sgx
-        env:
-          - name: "LAS_HOST"
-            valueFrom:
-              fieldRef:
-                status.hostIP
   resuources: {}
   restartPolicy: Always
   nameOverride: ""

@@ -44,6 +44,10 @@ spec:
         - name: dev-sgx
           mountPath: "{{ .Values.sgx.device }}"
       env:
+        - name: "LAS_HOST"
+          valueFrom:
+            fieldRef:
+              fieldPath: status.hostIP
         # Token for access to datasets
         - name: "JOB"
           value: "$(params.access-token)"
