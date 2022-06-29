@@ -25,7 +25,7 @@ spec:
       labels:
         name: "{{ $enclaveName }}-scone-las"
     spec:
-      hostNetwork: true
+      # hostNetwork: true
       {{- with .Values.imagePullSecrets }}
       imagePullSecrets:
         {{- toYaml . | nindent 8 }}
