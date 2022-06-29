@@ -54,6 +54,9 @@ runner:
       storageClassName: "default"
       annotations:
         aggregion.dev/instance: "common"
+      podTemplate:
+        nodeSelector:
+          enclave: sgx2
   resuources: {}
   restartPolicy: Always
   nameOverride: ""

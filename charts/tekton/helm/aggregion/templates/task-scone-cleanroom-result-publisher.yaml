@@ -5,8 +5,6 @@ kind: Task
 metadata:
   name: "scone-result-publisher-{{ $name }}"
 spec:
-  nodeSelector:
-    {{ .Values.sconeCleanroom.nodeSelector | toJson }}
   params:
     - name: enclave-service-base-url
       description: Internal port of enclave service
