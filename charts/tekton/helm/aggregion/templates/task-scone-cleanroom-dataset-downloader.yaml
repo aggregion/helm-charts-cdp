@@ -22,6 +22,8 @@ spec:
     - name: dataset-downloader
       image: registry.aggregion.com/cleanroom/dataset-downloader-production:latest
       imagePullPolicy: Always
+      securityContext:
+        privileged: true
       volumeMounts:
         - name: vol
           mountPath: /cache
