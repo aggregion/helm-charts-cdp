@@ -43,7 +43,7 @@ helm upgrade --install -n pipelines aggregion-pipelines ./aggregion
 # install pipelnes and tasks for production
 helm upgrade --install -n pipelines \
     --set sconeCleanroom.enabled=true \
-    --set sconeCleanroom.casAddr=185.184.79.2:28765 \
+    --set sconeCleanroom.casAddr=185.184.79.2:18765 \
     aggregion-pipelines ./aggregion
 
 : '
