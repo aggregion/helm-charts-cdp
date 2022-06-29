@@ -25,7 +25,6 @@ spec:
       volumeMounts:
         - name: vol
           mountPath: /cache
-      volumeDevices:
         - name: dev-sgx
           devicePath: "{{ .Values.sgx.device }}"
       env:
