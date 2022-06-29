@@ -43,7 +43,7 @@ spec:
               protocol: TCP
           volumeMounts:
             - name: data
-              mountPath: /var/lib/cassandra/data
+              mountPath: /var/lib/cassandra
               # subPath: cassandra-data
           resources:
             {{- toYaml .Values.cassandra.resources | nindent 12 }}
