@@ -7,10 +7,6 @@ metadata:
 spec:
   nodeSelector:
     {{ .Values.sconeCleanroom.nodeSelector | toJson }}
-  volumes:
-    - name: dev-sgx
-      hostPath:
-        path: "{{ .Values.sgx.device }}"
   params:
     - name: enclave-service-base-url
       description: Internal port of enclave service
@@ -45,6 +41,9 @@ spec:
       volumeMounts:
         - name: vol
           mountPath: /cache
+        - name: dev-sgx
+          hostPath:
+            path: "{{ .Values.sgx.device }}"
       env:
         - name: "ENCLAVE_SERVICE_BASE_URL"
           value: "$(params.enclave-service-base-url)"
