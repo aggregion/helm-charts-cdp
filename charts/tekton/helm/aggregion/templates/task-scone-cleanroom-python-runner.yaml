@@ -40,8 +40,7 @@ spec:
         - name: vol
           mountPath: /cache
         - name: dev-sgx
-          hostPath:
-            path: "{{ .Values.sgx.device }}"
+          mountPath: "{{ .Values.sgx.device }}"
       env:
         # Token for access to datasets
         - name: "JOB"
