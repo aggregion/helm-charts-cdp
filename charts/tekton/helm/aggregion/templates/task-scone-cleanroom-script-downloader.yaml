@@ -22,7 +22,7 @@ spec:
         - name: vol
           mountPath: /cache
         - name: dev-sgx
-          devicePath: "{{ .Values.sgx.device }}"
+          mountPath: "{{ .Values.sgx.device }}"
       env:
         - name: "ENCLAVE_SERVICE_BASE_URL"
           value: "$(params.enclave-service-base-url)"
