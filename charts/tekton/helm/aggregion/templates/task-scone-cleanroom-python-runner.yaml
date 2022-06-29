@@ -9,10 +9,6 @@ metadata:
 spec:
   nodeSelector:
     {{ .Values.sconeCleanroom.nodeSelector | toJson }}
-  volumes:
-    - name: dev-sgx
-      hostPath:
-        path: "{{ .Values.sgx.device }}"
   params:
     # Token for access to datasets
     - name: access-token
@@ -45,6 +41,9 @@ spec:
       volumeMounts:
         - name: vol
           mountPath: /cache
+        - name: dev-sgx
+          hostPath:
+            path: "{{ .Values.sgx.device }}"
       env:
         # Token for access to datasets
         - name: "JOB"
