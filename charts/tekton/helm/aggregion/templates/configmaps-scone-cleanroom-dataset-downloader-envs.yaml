@@ -5,6 +5,7 @@ kind: ConfigMap
 metadata:
   name: "scone-cleanroom-dataset-downloader-config-{{ $name }}"
 data:
+  SCONE_LAS_ADDR: {{ .Values.sconeCleanroom.lasAddr }}
   SCONE_CAS_ADDR: {{ .Values.sconeCleanroom.casAddr }}
   SCONE_HEAP: {{ .Values.sconeCleanroom.datasetDownloader.sconeHeap }}
   {{- if .Values.sconeCleanroom.datasetDownloader.debug }}
