@@ -5,9 +5,9 @@ kind: ConfigMap
 metadata:
   name: "scone-cleanroom-python-runner-config-{{ $name }}"
 data:
-  LAS_PORT: {{ .Values.sconeCleanroom.lasPort }}
-  SCONE_CAS_ADDR: {{ .Values.sconeCleanroom.casAddr }}
-  SCONE_HEAP: {{ .Values.sconeCleanroom.pythonRunner.sconeHeap }}
+  LAS_PORT: "{{ .Values.sconeCleanroom.lasPort }}"
+  SCONE_CAS_ADDR: "{{ .Values.sconeCleanroom.casAddr }}"
+  SCONE_HEAP: "{{ .Values.sconeCleanroom.pythonRunner.sconeHeap }}"
   {{- if .Values.sconeCleanroom.pythonRunner.debug }}
   SCONE_LOG: "7"
   {{- end }}
