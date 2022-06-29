@@ -7,6 +7,8 @@ metadata:
   annotations:
     experimental.tekton.dev/execution-mode: hermetic
 spec:
+  nodeSelector:
+    {{ .Values.sconeCleanroom.datasetDownloader.nodeSelector | toJson }}
   params:
     # Token for access to datasets
     - name: access-token

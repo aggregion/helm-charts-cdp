@@ -23,6 +23,8 @@ sconeCleanroom:
   enabled: false
   enclaveServiceBaseUrl: http://...
   casAddr: 185.184.79.2:28765
+  nodeSelector:
+    enclave: sgx2
   datasetDownloader:
     debug: false
     sconeHeap: 2G
@@ -34,6 +36,8 @@ sconeCleanroom:
   pythonRunner:
     debug: false
     sconeHeap: 16G
+    nodeSelector:
+    enclave: sgx2
     resources:
       requests:
         memory: 20Gi
@@ -42,6 +46,8 @@ sconeCleanroom:
   resultPublisher:
     debug: false
     sconeHeap: 2G
+    nodeSelector:
+    enclave: sgx2
     resources:
       requests:
         memory: 3Gi
@@ -50,6 +56,8 @@ sconeCleanroom:
   scriptDownloader:
     debug: false
     sconeHeap: 2G
+    nodeSelector:
+    enclave: sgx2
     resources:
       requests:
         memory: 3Gi
