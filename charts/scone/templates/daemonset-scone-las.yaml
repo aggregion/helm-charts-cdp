@@ -1,0 +1,86 @@
+{{- if (.Values.las.enabled) }}
+{{- $serviceName := include "scone.las.fullname" . }}
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: "{{ $serviceName }}-scone-las"
+  labels:
+    name: "{{ $serviceName }}-scone-las"
+    {{- include "scone.las.labels" . | nindent 4 }}
+  {{- with .Values.las.annotations }}
+  annotations:
+      {{- toYaml . | nindent 6 }}
+  {{- end }}
+spec:
+  selector:
+    matchLabels:
+      name: "{{ $serviceName }}-scone-las"
+  template:
+    metadata:
+    {{- with .Values.las.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}
+      labels:
+        name: "{{ $serviceName }}-scone-las"
+    spec:
+      hostNetwork: true
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      restartPolicy: {{ .Values.las.restartPolicy }}
+      serviceAccountName: {{ include "scone.serviceAccountName" . }}
+      securityContext:
+        {{- toYaml .Values.las.podSecurityContext | nindent 8 }}
+      containers:
+        - name: las
+          image: "{{ .Values.las.image.repository }}:{{ .Values.las.image.tag }}"
+          imagePullPolicy: "{{ .Values.las.image.pullPolicy }}"
+          securityContext:
+            privileged: true
+            {{- if .Values.las.securityContext }}
+            {{- toYaml .Values.las.securityContext | nindent 12 }}
+            {{- end }}
+          env:
+            - name: SCONE_MODE
+              value: hw
+          {{- if .Values.las.debug }}
+            - name: SCONE_VERSION
+              value: '1'
+            - name: SCONE_LOG
+              value: '7'
+          {{- end }}
+          {{- if .Values.las.envs }}
+            {{- toYaml .Values.las.envs | nindent 12 }}
+          {{- end }}
+          ports:
+            - containerPort: {{ .Values.las.ports.container }}
+              hostPort: {{ .Values.las.ports.container }}
+              name: lasport
+          volumeMounts:
+            - mountPath: "{{ .Values.las.sgx.device }}"
+              name: dev-sgx
+          resources:
+            {{- toYaml .Values.las.resources | nindent 12 }}
+      volumes:
+        - name: dev-sgx
+          hostPath:
+            path: "{{ .Values.las.sgx.device }}"
+      {{- with .Values.las.sgx.nodeWithSgxSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.las.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.las.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+  {{- if .Values.las.updateStrategy }}
+  updateStrategy:
+    {{- toYaml .Values.las.updateStrategy | nindent 4 }}
+  {{- end }}
+{{- end }}

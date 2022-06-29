@@ -1,0 +1,55 @@
+# Default values for aggregion-cdp.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+imagePullSecrets:
+  - name: aggregionregistry
+
+nameOverride: ""
+
+serviceAccount:
+  create: false
+  annotations: {}
+  name: "default"
+
+las:
+  # should be false when enclave deployed outside of cluster, as standalone instance
+  enabled: true
+  annotations:
+    reloader.stakater.com/auto: "true"
+  nameOverride: ""
+  fullnameOverride: ""
+
+  sgx:
+    nodeWithSgxSelector: {}
+    device: "/dev/sgx"
+  debug: false
+  image:
+    repository: "registry.aggregion.com/sconecuratedimages/aggregion"
+    pullPolicy: "IfNotPresent"
+    tag: "las-no-epid-scone-5.6.0"
+  envs: []
+  ports:
+    container: 18766
+  serviceExternalName: "las"
+  podAnnotations: {}
+  restartPolicy: "Always"
+  updateStrategy: null
+  podSecurityContext: {}
+  securityContext: {}
+  heapSize: "2G"
+  nodeSelector: {}
+  tolerations: []
+  affinity: {}
+  resources: {}
+      # limits:
+      #   cpu: 100m
+      #   memory: 128Mi
+      # requests:
+      #   cpu: 100m
+      #   memory: 128Mi
+
+      # if use azure (AKS)
+      # limits:
+      #   kubernetes.azure.com/sgx_epc_mem_in_MiB: 16
+
