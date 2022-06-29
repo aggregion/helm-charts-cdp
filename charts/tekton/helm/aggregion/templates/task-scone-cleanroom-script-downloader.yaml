@@ -26,6 +26,10 @@ spec:
         - name: dev-sgx
           mountPath: "{{ .Values.sgx.device }}"
       env:
+        - name: "LAS_HOST"
+          valueFrom:
+            fieldRef:
+              status.hostIP
         - name: "ENCLAVE_SERVICE_BASE_URL"
           value: "$(params.enclave-service-base-url)"
         # Token for access to datasets
