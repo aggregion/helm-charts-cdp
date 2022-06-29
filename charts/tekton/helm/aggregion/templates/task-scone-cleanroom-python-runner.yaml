@@ -8,7 +8,11 @@ metadata:
     experimental.tekton.dev/execution-mode: hermetic
 spec:
   nodeSelector:
-    {{ .Values.sconeCleanroom.datasetDownloader.nodeSelector | toJson }}
+    {{ .Values.sconeCleanroom.nodeSelector | toJson }}
+  volumes:
+    - name: dev-sgx
+      hostPath:
+        path: "{{ .Values.sgx.device }}"
   params:
     # Token for access to datasets
     - name: access-token

@@ -19,6 +19,9 @@ debugCleanroom:
   enabled: true
   enclaveServiceBaseUrl: http://...
 
+sgx:
+  device: "/dev/sgx"
+
 sconeCleanroom:
   enabled: false
   enclaveServiceBaseUrl: http://...
@@ -36,8 +39,6 @@ sconeCleanroom:
   pythonRunner:
     debug: false
     sconeHeap: 16G
-    nodeSelector:
-    enclave: sgx2
     resources:
       requests:
         memory: 20Gi
@@ -46,8 +47,6 @@ sconeCleanroom:
   resultPublisher:
     debug: false
     sconeHeap: 2G
-    nodeSelector:
-    enclave: sgx2
     resources:
       requests:
         memory: 3Gi
@@ -56,8 +55,6 @@ sconeCleanroom:
   scriptDownloader:
     debug: false
     sconeHeap: 2G
-    nodeSelector:
-    enclave: sgx2
     resources:
       requests:
         memory: 3Gi
