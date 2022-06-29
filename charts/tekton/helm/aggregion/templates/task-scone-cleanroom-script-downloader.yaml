@@ -21,8 +21,9 @@ spec:
       volumeMounts:
         - name: vol
           mountPath: /cache
+      volumeDevices:
         - name: dev-sgx
-          mountPath: "{{ .Values.sgx.device }}"
+          devicePath: "{{ .Values.sgx.device }}"
       env:
         - name: "ENCLAVE_SERVICE_BASE_URL"
           value: "$(params.enclave-service-base-url)"
