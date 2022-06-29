@@ -46,6 +46,8 @@ spec:
           value: "$(params.dataset-filename)"
       envFrom:
         - configMapRef:
+            name: "scone-cleanroom-common-config-{{ $name }}"
+        - configMapRef:
             name: "scone-cleanroom-dataset-downloader-config-{{ $name }}"
       resources:
         {{ .Values.sconeCleanroom.datasetDownloader.resources | toJson }}

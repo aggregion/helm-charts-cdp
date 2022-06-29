@@ -1,0 +1,16 @@
+{{- if .Values.sconeCleanroom.enabled -}}
+{{- $name := .Release.Name -}}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: "scone-cleanroom-common-config-{{ $name }}"
+data:
+  LAS_PORT: "{{ .Values.sconeCleanroom.lasPort }}"
+  RUN_MODE: "{{ .Values.sconeCleanroom.runMode }}"
+  SCONE_HEAP: "{{ .Values.sconeCleanroom.datasetDownloader.sconeHeap }}"
+  SCONE_STACK: "4M"
+  SCONE_ALLOW_DLOPEN: "1"
+  SCONE_MPROTECT: "0"
+  SCONE_TCS: "4"
+  SCONE_MODE: "hw"
+{{- end -}}

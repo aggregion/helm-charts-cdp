@@ -41,6 +41,8 @@ spec:
           value: "$(params.scripts-dir)"
       envFrom:
         - configMapRef:
+            name: "scone-cleanroom-common-config-{{ $name }}"
+        - configMapRef:
             name: "scone-cleanroom-script-downloader-config-{{ $name }}"
       resources:
         {{ .Values.sconeCleanroom.scriptDownloader.resources | toJson }}

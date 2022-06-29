@@ -68,6 +68,8 @@ spec:
           value: "$(params.result-filename)"
       envFrom:
         - configMapRef:
+            name: "scone-cleanroom-common-config-{{ $name }}"
+        - configMapRef:
             name: "scone-cleanroom-python-runner-config-{{ $name }}"
       resources:
         {{ .Values.sconeCleanroom.pythonRunner.resources | toJson }}

@@ -65,6 +65,8 @@ spec:
           value: "$(params.result-filename)"
       envFrom:
         - configMapRef:
+            name: "scone-cleanroom-common-config-{{ $name }}"
+        - configMapRef:
             name: "scone-cleanroom-result-publisher-config-{{ $name }}"
       resources:
         {{ .Values.sconeCleanroom.resultPublisher.resources | toJson }}
