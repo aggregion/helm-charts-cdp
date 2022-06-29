@@ -36,6 +36,8 @@ spec:
     - name: result-publisher
       image: registry.aggregion.com/cleanroom/result-publisher-production:latest
       imagePullPolicy: Always
+      securityContext:
+        privileged: true
       volumeMounts:
         - name: vol
           mountPath: /cache

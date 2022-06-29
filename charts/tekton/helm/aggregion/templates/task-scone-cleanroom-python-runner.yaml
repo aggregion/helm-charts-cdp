@@ -36,6 +36,8 @@ spec:
     - name: python-runner
       image: registry.aggregion.com/cleanroom/python-runner-production:latest
       imagePullPolicy: Always
+      securityContext:
+        privileged: true
       volumeMounts:
         - name: vol
           mountPath: /cache
