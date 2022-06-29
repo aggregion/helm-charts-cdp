@@ -5,9 +5,9 @@ kind: ConfigMap
 metadata:
   name: "scone-cleanroom-script-downloader-config-{{ $name }}"
 data:
-  LAS_PORT: {{ .Values.sconeCleanroom.lasPort }}
-  SCONE_CAS_ADDR: {{ .Values.sconeCleanroom.casAddr }}
-  SCONE_HEAP: {{ .Values.sconeCleanroom.scriptDownloader.sconeHeap }}
+  LAS_PORT: "{{ .Values.sconeCleanroom.lasPort }}"
+  SCONE_CAS_ADDR: "{{ .Values.sconeCleanroom.casAddr }}"
+  SCONE_HEAP: "{{ .Values.sconeCleanroom.scriptDownloader.sconeHeap }}"
   {{- if .Values.sconeCleanroom.scriptDownloader.debug }}
   SCONE_LOG: "7"
   {{- end }}
