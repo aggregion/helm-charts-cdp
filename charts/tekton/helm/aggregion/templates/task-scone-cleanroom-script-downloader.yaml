@@ -18,6 +18,7 @@ spec:
   steps:
     - name: script-downloader
       image: registry.aggregion.com/cleanroom/scripts-downloader-production:latest
+      imagePullPolicy: Always
       securityContext:
         privileged: true
       volumeMounts:
