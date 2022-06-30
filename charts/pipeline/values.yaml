@@ -36,7 +36,7 @@ runner:
     amqpPrefetchCount: 1
     cloudEventsListener: "http://watcher:9101"
     pipelines:
-      debug-hasher:
+      debugHasher:
         namespace: "pipelines"
         pvcSize: "10Mi"
         storageClassName: "default"
@@ -45,7 +45,8 @@ runner:
         podTemplate:
           nodeSelector:
             enclave: nodejs
-      debug-cleanroom:
+        pipelineName: "debug-hasher"
+      debugCleanroom:
         namespace: "pipelines"
         pvcSize: "1000Mi"
         storageClassName: "default"
@@ -54,7 +55,8 @@ runner:
         podTemplate:
           nodeSelector:
             enclave: nodejs
-      scone-cleanroom:
+        pipelineName: "debug-cleanroom"
+      sconeCleanroom:
         namespace: "pipelines"
         pvcSize: "1000Mi"
         storageClassName: "default"
@@ -67,6 +69,7 @@ runner:
             - name: dev-sgx
               hostPath:
                 path: /dev/sgx
+        pipelineName: "scone-cleanroom"
     basePipelineOptions:
       namespace: "pipelines"
       pvcSize: "10Mi"

@@ -15,6 +15,6 @@ data:
   PIPELINES_CREATE_RUNNER_QUEUE_NAME: "{{ .Values.runner.configs.pipelinesCreateQueueName }}"
   PIPELINES_WATCHER_URL: "{{ .Values.runner.configs.cloudEventsListener }}"
   LOG_LEVEL: "{{ .Values.runner.configs.logLevel }}"
-  PIPELINES_PIPELINE_RUNNERS: {{ .Values.runner.configs.pipelines | toJson | quote }}
+  PIPELINES_PIPELINE_RUNNERS: '{ "{{ .Values.runner.configs.pipelines.debugHasher.pipelineName }}": {{ .Values.runner.configs.pipelines.debugHasher | toJson }}, "{{ .Values.runner.configs.pipelines.debugCleanroom.pipelineName }}": {{ .Values.runner.configs.pipelines.debugCleanroom | toJson }}, "{{ .Values.runner.configs.pipelines.debugCleanroom.pipelineName }}": {{ .Values.runner.configs.pipelines.debugCleanroom | toJson }} }'
   PIPELINES_BASE_PIPELINER_RUNNER: {{ .Values.runner.configs.basePipelineOptions | toJson | quote }}
 {{- end }}
