@@ -1,10 +1,12 @@
+export INSTANCE=app1
+
 # install rabbitmq
 helm repo add bitnami https://charts.bitnami.com/bitnami
 helm upgrade --install -n app \
+    --set auth.password=secretpassword \
+    --set auth.username=admin \
     --set persistence.size=100Mi \
     --set persistence.storageClass=fast.ru-3b \
-    --set auth.username=admin \
-    --set auth.password=secretpassword \
     rabbitmq bitnami/rabbitmq
 
 # install tekton-pipelines
@@ -12,41 +14,46 @@ helm upgrade --install -n tekton-pipelines \
     --set cloudevent.enabled=true \
     --set cloudevent.webhookUrl=http://pipeline-watcher-pipelines-svc.pipelines.svc.cluster.local:9101/pipelines/events \
     --set controllerServiceAccount.create=true \
+    --set pruner.backoffLimit=24 \
     --set webhookServiceAccount.create=true \
     tekton-pipelines ./pipeline-release
 
 # install only watcher (runner and service account are disabled)
 helm upgrade --install -n pipelines \
-    --set watcher.image.tag=41d6a836 \
-    --set watcher.configs.logLevel=trace \
     --set runner.enabled=false \
     --set serviceAccount.create=false \
+    --set watcher.configs.logLevel=trace \
+    --set watcher.image.tag=bcb186be \
     pipelines ./pipeline
 
 # install runner and service account (watcher disabled)
 helm upgrade --install -n pipelines \
-    --set runner.image.tag=41d6a836 \
+    --set "runner.configs.basePipelineOptions.annotations.aggregion\.dev/instance=$INSTANCE" \
     --set runner.configs.amqpUrl=amqp://admin:secretpassword@rabbitmq.app.svc.cluster.local:5672 \
-    --set runner.configs.logLevel=trace \
-    --set watcher.enabled=false \
-    --set serviceAccount.create=true \
-    --set runner.configs.pipelinesCreateQueueName=task-app1 \
     --set runner.configs.basePipelineOptions.namespace=pipelines \
-    --set runner.configs.pipelines.debug-hasher.storageClassName=longhorn \
-    --set runner.configs.pipelines.debug-cleanroom.storageClassName=longhorn \
-    --set runner.configs.basePipelineOptions.annotations."aggregion.dev"/instance=app \
-    app-pipelines ./pipeline
+    --set runner.configs.logLevel=trace \
+    --set runner.configs.pipelines.debugCleanroom.pipelineName=debug-cleanroom-$INSTANCE-agg-pipelines \
+    --set runner.configs.pipelines.debugCleanroom.storageClassName=longhorn \
+    --set runner.configs.pipelines.debugHasher.pipelineName=debug-hasher-$INSTANCE-agg-pipelines \
+    --set runner.configs.pipelines.debugHasher.storageClassName=longhorn \
+    --set runner.configs.pipelines.sconeCleanroom.pipelineName=scone-cleanroom-$INSTANCE-agg-pipelines \
+    --set runner.configs.pipelinesCreateQueueName=task-$INSTANCE \
+    --set runner.image.tag=bcb186be \
+    --set serviceAccount.create=true \
+    --set watcher.enabled=false \
+    $INSTANCE-pipelines ./pipeline
 
-# install pipelnes and tasks for tests
-helm upgrade --install -n pipelines aggregion-pipelines ./aggregion
-
-# install pipelnes and tasks for production
+# install pipelnes and tasks
 helm upgrade --install -n pipelines \
-    --set sconeCleanroom.enabled=true \
+    --set debugCleanroom.enclaveServiceBaseUrl=http://aggregion-cdp-enclave-cdp-test1.cdpstage-dmpd-918-test.svc.cluster.local:8010 \
     --set sconeCleanroom.casAddr=185.184.79.2:18765 \
-    --set sconeCleanroom.lasAddr=las \
+    # sconeCleanroom.casCommonSessionName from ESP
     --set sconeCleanroom.casCommonSessionName=someid \
-    aggregion-pipelines ./aggregion
+    --set sconeCleanroom.enabled=true \
+    --set sconeCleanroom.enclaveServiceBaseUrl=http://aggregion-cdp-enclave-cdp-test1.cdpstage-dmpd-918-test.svc.cluster.local:8010 \
+    --set sconeCleanroom.lasAddr=18766 \
+    --set sconeCleanroom.scriptDownloader.debug=true \
+    $INSTANCE-agg-pipelines ./aggregion
 
 : '
 {
