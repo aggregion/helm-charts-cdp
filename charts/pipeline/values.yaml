@@ -63,17 +63,17 @@ runner:
         podTemplate:
           nodeSelector:
             enclave: sgx2
+          volumes:
+            - name: dev-sgx
+              hostPath:
+                path: /dev/sgx
     basePipelineOptions:
       namespace: "pipelines"
       pvcSize: "10Mi"
       storageClassName: "default"
       annotations:
         aggregion.dev/instance: "common"
-      podTemplate:
-        volumes:
-          - name: dev-sgx
-            hostPath:
-              path: /dev/sgx
+      podTemplate: {}
   resuources: {}
   restartPolicy: Always
   nameOverride: ""
