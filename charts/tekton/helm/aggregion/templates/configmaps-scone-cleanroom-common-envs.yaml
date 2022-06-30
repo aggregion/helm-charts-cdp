@@ -13,4 +13,5 @@ data:
   SCONE_MPROTECT: "0"
   SCONE_TCS: "4"
   SCONE_MODE: "hw"
+  COMMON_SESSION_NAME: "{{ .Values.sconeCleanroom.casCommonSessionName }}"
 {{- end -}}
