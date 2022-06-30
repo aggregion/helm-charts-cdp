@@ -42,12 +42,27 @@ runner:
         storageClassName: "default"
         annotations:
           aggregion.dev/instance: "common"
+        podTemplate:
+          nodeSelector:
+            enclave: nodejs
       debug-cleanroom:
         namespace: "pipelines"
         pvcSize: "1000Mi"
         storageClassName: "default"
         annotations:
           aggregion.dev/instance: "common"
+        podTemplate:
+          nodeSelector:
+            enclave: nodejs
+      scone-cleanroom:
+        namespace: "pipelines"
+        pvcSize: "1000Mi"
+        storageClassName: "default"
+        annotations:
+          aggregion.dev/instance: "common"
+        podTemplate:
+          nodeSelector:
+            enclave: sgx2
     basePipelineOptions:
       namespace: "pipelines"
       pvcSize: "10Mi"
@@ -55,8 +70,6 @@ runner:
       annotations:
         aggregion.dev/instance: "common"
       podTemplate:
-        nodeSelector:
-          enclave: sgx2
         volumes:
           - name: dev-sgx
             hostPath:
