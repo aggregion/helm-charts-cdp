@@ -13,7 +13,7 @@ spec:
     metadata:
       creationTimestamp: null
     spec:
-      backoffLimit: 3
+      backoffLimit: {{ .Values.pruner.backoffLimit }}
       template:
         metadata:
           creationTimestamp: null
