@@ -22,7 +22,7 @@ runner:
   image:
     repository: registry.aggregion.com/pipeline-runner
     pullPolicy: IfNotPresent
-    tag: ede07758
+    tag: bcb186be
   configs:
     amqpUrl: "amqp://..."
     ports:
@@ -100,7 +100,7 @@ watcher:
   image:
     repository: registry.aggregion.com/pipeline-watcher
     pullPolicy: IfNotPresent
-    tag: ede07758
+    tag: bcb186be
   configs:
     ports:
       http:
