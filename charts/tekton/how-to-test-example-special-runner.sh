@@ -45,6 +45,7 @@ helm upgrade --install -n pipelines \
     --set sconeCleanroom.enabled=true \
     --set sconeCleanroom.casAddr=185.184.79.2:18765 \
     --set sconeCleanroom.lasAddr=las \
+    --set sconeCleanroom.casCommonSessionName=someid \
     aggregion-pipelines ./aggregion
 
 : '
