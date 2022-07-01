@@ -1,6 +1,4 @@
-export INSTANCE=app1
-
-# install rabbitmq
+# install rabbitmq if needed
 helm repo add bitnami https://charts.bitnami.com/bitnami
 helm upgrade --install -n app \
     --set auth.password=secretpassword \
@@ -23,14 +21,13 @@ helm upgrade --install -n tekton-pipelines \
 # pwd=charts
 helm upgrade --install -n pipelines \
     --set runner.configs.amqpUrl=amqp://admin:secretpassword@rabbitmq.app.svc.cluster.local:5672 \
-    --set runner.configs.basePipelineOptions.annotations.aggregion\.dev/instance=$INSTANCE \
     --set runner.configs.basePipelineOptions.namespace=pipelines \
     --set runner.configs.logLevel=trace \
-    --set runner.configs.pipelines.debugCleanroom.pipelineName=debug-cleanroom-$INSTANCE-agg-pipelines \
+    --set runner.configs.pipelines.debugCleanroom.pipelineName=debug-cleanroom-pipeline-charts \
     --set runner.configs.pipelines.debugCleanroom.storageClassName=longhorn \
-    --set runner.configs.pipelines.debugHasher.pipelineName=debug-hasher-$INSTANCE-agg-pipelines \
+    --set runner.configs.pipelines.debugHasher.pipelineName=debug-hasher-pipeline-charts \
     --set runner.configs.pipelines.debugHasher.storageClassName=longhorn \
-    --set runner.configs.pipelines.sconeCleanroom.pipelineName=scone-cleanroom-$INSTANCE-agg-pipelines \
+    --set runner.configs.pipelines.sconeCleanroom.pipelineName=scone-cleanroom-pipeline-charts \
     --set runner.configs.pipelinesCreateQueueName=create_pipeline_runner \
     --set runner.enabled=true \
     --set runner.image.tag=bcb186be \
@@ -50,4 +47,4 @@ helm upgrade --install -n pipelines \
     --set sconeCleanroom.enclaveServiceBaseUrl=http://aggregion-cdp-enclave-cdp-test1.cdpstage-dmpd-918-test.svc.cluster.local:8010 \
     --set sconeCleanroom.lasAddr=18766 \
     --set sconeCleanroom.scriptDownloader.debug=true \
-    $INSTANCE-agg-pipelines ./aggregion
+    pipeline-charts ./aggregion
