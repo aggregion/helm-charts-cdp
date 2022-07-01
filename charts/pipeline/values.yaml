@@ -31,9 +31,11 @@ runner:
         service: 9100
     httpHostname: 0.0.0.0
     nodeEnv: production
+    # runner.configs.pipelinesCreateQueueName should be equals to CDP.backend.configs.pipelineRunner.queue
     pipelinesCreateQueueName: create_pipeline_runner
     logLevel: info
     amqpPrefetchCount: 1
+    # URL to CloudEvent listener (it's "watcher" in this chart)
     cloudEventsListener: "http://watcher:9101"
     pipelines:
       debugHasher:

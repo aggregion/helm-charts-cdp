@@ -26,7 +26,8 @@ sconeCleanroom:
   enabled: false
   enclaveServiceBaseUrl: http://...
   casAddr: 185.184.79.2:18765
-  casCommonSessionName: "MUST BE MODIFIED"
+  # sconeCleanroom.casCommonSessionName should be extracts from ESP
+  casCommonSessionName: "SHOULD BE MODIFIED"
   lasPort: 18766
   runMode: production
   datasetDownloader:

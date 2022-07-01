@@ -22,8 +22,8 @@ helm upgrade --install -n tekton-pipelines \
 # install our services for tekton
 # pwd=charts
 helm upgrade --install -n pipelines \
-    --set "runner.configs.basePipelineOptions.annotations.aggregion\.dev/instance=$INSTANCE" \
     --set runner.configs.amqpUrl=amqp://admin:secretpassword@rabbitmq.app.svc.cluster.local:5672 \
+    --set runner.configs.basePipelineOptions.annotations.aggregion\.dev/instance=$INSTANCE \
     --set runner.configs.basePipelineOptions.namespace=pipelines \
     --set runner.configs.logLevel=trace \
     --set runner.configs.pipelines.debugCleanroom.pipelineName=debug-cleanroom-$INSTANCE-agg-pipelines \
@@ -31,7 +31,6 @@ helm upgrade --install -n pipelines \
     --set runner.configs.pipelines.debugHasher.pipelineName=debug-hasher-$INSTANCE-agg-pipelines \
     --set runner.configs.pipelines.debugHasher.storageClassName=longhorn \
     --set runner.configs.pipelines.sconeCleanroom.pipelineName=scone-cleanroom-$INSTANCE-agg-pipelines \
-    # runner.configs.pipelinesCreateQueueName must be equals to CDP.backend.configs.pipelineRunner.queue
     --set runner.configs.pipelinesCreateQueueName=create_pipeline_runner \
     --set runner.enabled=true \
     --set runner.image.tag=bcb186be \
@@ -46,7 +45,6 @@ helm upgrade --install -n pipelines \
 helm upgrade --install -n pipelines \
     --set debugCleanroom.enclaveServiceBaseUrl=http://aggregion-cdp-enclave-cdp-test1.cdpstage-dmpd-918-test.svc.cluster.local:8010 \
     --set sconeCleanroom.casAddr=185.184.79.2:18765 \
-    # sconeCleanroom.casCommonSessionName from ESP
     --set sconeCleanroom.casCommonSessionName=someid \
     --set sconeCleanroom.enabled=true \
     --set sconeCleanroom.enclaveServiceBaseUrl=http://aggregion-cdp-enclave-cdp-test1.cdpstage-dmpd-918-test.svc.cluster.local:8010 \

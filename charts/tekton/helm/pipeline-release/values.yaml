@@ -18,7 +18,9 @@ webhookServiceAccount:
   name: "tekton-pipelines-webhook"
 
 cloudevent:
+  # tekton events in CloudEvents format for our "pipeline-watcher" service
   enabled: false
+  # webhook URL for CloudEvents from tekton (watcher)
   webhookUrl: http://webhook
 
 namespace:
@@ -82,6 +84,7 @@ webhook:
     runAsUser: 65532
     runAsGroup: 65532
 
+# For cleaning of PipelineRuns, TaskRuns and PVCs
 pruner:
   enabled: true
   schedule: "*/5 * * * *"
