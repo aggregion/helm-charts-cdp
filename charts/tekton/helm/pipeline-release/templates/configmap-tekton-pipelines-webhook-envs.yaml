@@ -16,9 +16,4 @@ data:
   WEBHOOK_SERVICE_NAME: tekton-pipelines-webhook
   WEBHOOK_SECRET_NAME: webhook-certs
   METRICS_DOMAIN: tekton.dev/pipeline
-
-
-
-
-
-
+  KUBERNETES_MIN_VERSION: "{{ .Values.webhook.k8sMinVersion }}"

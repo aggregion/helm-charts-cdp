@@ -45,6 +45,7 @@ controller:
     # User 65532 is the distroless nonroot user ID
     runAsUser: 65532
     runAsGroup: 65532
+  k8sMinVersion: "1.21.0-0"
 
 webhook:
   replicaCount: 1
@@ -83,6 +84,7 @@ webhook:
     # User 65532 is the distroless nonroot user ID
     runAsUser: 65532
     runAsGroup: 65532
+  k8sMinVersion: "1.21.0-0"
 
 # For cleaning of PipelineRuns, TaskRuns and PVCs
 pruner:
