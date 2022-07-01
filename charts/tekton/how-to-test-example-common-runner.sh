@@ -10,6 +10,7 @@ helm upgrade --install -n app \
     rabbitmq bitnami/rabbitmq
 
 # install tekton-pipelines
+# pwd=charts/tekton/helm
 helm upgrade --install -n tekton-pipelines \
     --set cloudevent.enabled=true \
     --set cloudevent.webhookUrl=http://pipeline-watcher-pipelines-svc.pipelines.svc.cluster.local:9101/pipelines/events \
@@ -18,7 +19,8 @@ helm upgrade --install -n tekton-pipelines \
     --set webhookServiceAccount.create=true \
     tekton-pipelines ./pipeline-release
 
-# install only watcher (runner and service account are disabled)
+# install our services for tekton
+# pwd=charts
 helm upgrade --install -n pipelines \
     --set "runner.configs.basePipelineOptions.annotations.aggregion\.dev/instance=$INSTANCE" \
     --set runner.configs.amqpUrl=amqp://admin:secretpassword@rabbitmq.app.svc.cluster.local:5672 \
@@ -29,7 +31,8 @@ helm upgrade --install -n pipelines \
     --set runner.configs.pipelines.debugHasher.pipelineName=debug-hasher-$INSTANCE-agg-pipelines \
     --set runner.configs.pipelines.debugHasher.storageClassName=longhorn \
     --set runner.configs.pipelines.sconeCleanroom.pipelineName=scone-cleanroom-$INSTANCE-agg-pipelines \
-    --set runner.configs.pipelinesCreateQueueName=task-$INSTANCE \
+    # runner.configs.pipelinesCreateQueueName must be equals to CDP.backend.configs.pipelineRunner.queue
+    --set runner.configs.pipelinesCreateQueueName=create_pipeline_runner \
     --set runner.enabled=true \
     --set runner.image.tag=bcb186be \
     --set serviceAccount.create=true \
@@ -38,6 +41,8 @@ helm upgrade --install -n pipelines \
     --set watcher.image.tag=bcb186be \
     pipelines ./pipeline
 
+# install pipelnes and tasks
+# pwd=charts/tekton/helm
 helm upgrade --install -n pipelines \
     --set debugCleanroom.enclaveServiceBaseUrl=http://aggregion-cdp-enclave-cdp-test1.cdpstage-dmpd-918-test.svc.cluster.local:8010 \
     --set sconeCleanroom.casAddr=185.184.79.2:18765 \
