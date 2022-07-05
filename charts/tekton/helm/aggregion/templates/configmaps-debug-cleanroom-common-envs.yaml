@@ -1,4 +1,4 @@
-{{- if .Values.sconeCleanroom.enabled -}}
+{{- if .Values.debugCleanroom.enabled -}}
 {{- $name := .Release.Name -}}
 apiVersion: v1
 kind: ConfigMap
