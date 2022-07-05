@@ -1,0 +1,9 @@
+{{- if .Values.sconeCleanroom.enabled -}}
+{{- $name := .Release.Name -}}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: "debug-cleanroom-common-config-{{ $name }}"
+data:
+  DCP_BASE_URL: "{{ .Values.debugCleanroom.dcpBaseUrl }}" # Without trainilg slash
+{{- end -}}

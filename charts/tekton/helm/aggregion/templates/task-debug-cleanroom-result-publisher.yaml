@@ -32,6 +32,14 @@ spec:
     - name: entrypoint
       description: "Executable file for running in python runner"
       default: main.py
+    # Logs publishing
+    - name: log-publish-path
+      description: "Path of DCP for log publishing"
+    - name: log-publish-token
+      description: "Token for log publishing to DCP"
+    - name: out-log-path
+      description: "Path to log file"
+      default: "/cache/out.log"
   steps:
     - name: result-publisher
       image: registry.aggregion.com/cleanroom/result-publisher-debug:latest
@@ -55,4 +63,23 @@ spec:
           value: "$(params.result-dir)"
         - name: "RESULT_PATH"
           value: "$(params.result-filename)"
+        # Logs
+        - name: "LOG_PATH"
+          value: "$(params.out-log-path)"
+    - name: log-publisher
+      image: curlimages/curl
+      imagePullPolicy: IfNotPresent
+      volumeMounts:
+        - name: vol
+          mountPath: /cache
+      args:
+        - -vvv
+        - -X POST
+        - -H "Content-Type: plain/text"
+        - -H "token: $(params.log-publish-token)"
+        - --data-binary "@$(params.out-log-path)"
+        - $DCP_BASE_URL/$(params.log-publish-path)
+      envFrom:
+        - configMapRef:
+            name: "debug-cleanroom-common-config-{{ $name }}"
 {{- end -}}
