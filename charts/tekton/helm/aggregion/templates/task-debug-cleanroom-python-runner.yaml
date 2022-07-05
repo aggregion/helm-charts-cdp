@@ -78,7 +78,7 @@ spec:
         #!/bin/sh
         curl -vvv -X POST -H "Content-Type: plain/text" -H "token: $(params.log-publish-token)" \
           --data-binary "@$(params.out-log-path)" \
-          $DCP_BASE_URL/$(params.log-publish-path)
+          $DCP_BASE_URL$(params.log-publish-path)
       envFrom:
         - configMapRef:
             name: "debug-cleanroom-common-config-{{ $name }}"
