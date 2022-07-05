@@ -57,6 +57,13 @@ spec:
                 name: "{{ $backendName }}"
                 port:
                   name: "httpapi"
+          - path: "/pipeline"
+            pathType: "Prefix"
+            backend:
+              service:
+                name: "{{ $backendName }}"
+                port:
+                  name: "httpapi"
           - path: "/glossary-terms"
             pathType: "Prefix"
             backend:
@@ -138,6 +145,10 @@ spec:
               serviceName: "{{ $backendName }}"
               servicePort: "httpapi"
           - path: "/files"
+            backend:
+              serviceName: "{{ $backendName }}"
+              servicePort: "httpapi"
+          - path: "/pipeline"
             backend:
               serviceName: "{{ $backendName }}"
               servicePort: "httpapi"
