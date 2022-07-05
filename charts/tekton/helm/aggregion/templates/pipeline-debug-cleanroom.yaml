@@ -30,6 +30,14 @@ spec:
     - name: entrypoint
       description: "Executable file for running in python runner"
       default: main.py
+    # Logs publishing
+    - name: log-publish-path
+      description: "Path of DCP for log publishing"
+    - name: log-publish-token
+      description: "Token for log publishing to DCP"
+    - name: out-log-path
+      description: "Path to log file"
+      default: "/cache/out.log"
   tasks:
     - name: script-downloader
       taskRef:
@@ -41,6 +49,12 @@ spec:
           value: {{ .Values.debugCleanroom.enclaveServiceBaseUrl }}
         - name: scripts-dir
           value: $(params.scripts-dir)
+        - name: log-publish-path
+          value: $(params.log-publish-path)
+        - name: log-publish-token
+          value: $(params.log-publish-token)
+        - name: out-log-path
+          value: $(params.out-log-path)
     - name: dataset-downloader
       runAfter:
         - script-downloader
@@ -55,6 +69,12 @@ spec:
           value: $(params.dataset-dir)
         - name: dataset-filename
           value: $(params.dataset-filename)
+        - name: log-publish-path
+          value: $(params.log-publish-path)
+        - name: log-publish-token
+          value: $(params.log-publish-token)
+        - name: out-log-path
+          value: $(params.out-log-path)
     - name: python-runner
       runAfter:
         - script-downloader
@@ -76,6 +96,12 @@ spec:
           value: $(params.result-dir)
         - name: result-filename
           value: $(params.result-filename)
+        - name: log-publish-path
+          value: $(params.log-publish-path)
+        - name: log-publish-token
+          value: $(params.log-publish-token)
+        - name: out-log-path
+          value: $(params.out-log-path)
     - name: result-publisher
       runAfter:
         - script-downloader
@@ -96,4 +122,10 @@ spec:
           value: $(params.scripts-dir)
         - name: entrypoint
           value: $(params.entrypoint)
+        - name: log-publish-path
+          value: $(params.log-publish-path)
+        - name: log-publish-token
+          value: $(params.log-publish-token)
+        - name: out-log-path
+          value: $(params.out-log-path)
 {{- end -}}

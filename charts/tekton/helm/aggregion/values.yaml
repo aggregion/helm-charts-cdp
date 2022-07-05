@@ -18,6 +18,7 @@ debugHasher:
 debugCleanroom:
   enabled: true
   enclaveServiceBaseUrl: http://...
+  dcpBaseUrl: http://backend
 
 sgx:
   device: "/dev/sgx"
@@ -30,6 +31,7 @@ sconeCleanroom:
   casCommonSessionName: "SHOULD BE MODIFIED"
   lasPort: 18766
   runMode: production
+  dcpBaseUrl: http://backend
   datasetDownloader:
     debug: false
     sconeHeap: 2G

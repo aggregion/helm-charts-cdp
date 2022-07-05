@@ -14,4 +14,5 @@ data:
   SCONE_TCS: "4"
   SCONE_MODE: "hw"
   COMMON_SESSION_NAME: "{{ .Values.sconeCleanroom.casCommonSessionName }}"
+  DCP_BASE_URL: "{{ .Values.sconeCleanroom.dcpBaseUrl }}" # Without trainilg slash
 {{- end -}}
