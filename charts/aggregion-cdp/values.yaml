@@ -41,6 +41,7 @@ gatekeeper:
     enableMetrics: false
     encryptionKey: xxXXxxXXxxXXxxXX
     skipOpenidProviderTlsVerify: true
+    skipAccessTokenClientIdCheck: true
     listen: 3000
     listenAdmin: 4000
     secureCookie: false
