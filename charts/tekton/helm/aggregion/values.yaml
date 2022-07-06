@@ -1,0 +1,64 @@
+# Default values for pipeline.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+imagePullSecrets:
+  - name: aggregionregistry
+
+nameOverride: ""
+
+serviceAccount:
+  create: false
+  annotations: {}
+  name: "default"
+
+debugHasher:
+  enabled: true
+
+debugCleanroom:
+  enabled: true
+  enclaveServiceBaseUrl: http://...
+
+sgx:
+  device: "/dev/sgx"
+
+sconeCleanroom:
+  enabled: false
+  enclaveServiceBaseUrl: http://...
+  casAddr: 185.184.79.2:18765
+  # sconeCleanroom.casCommonSessionName should be extracted from ESP
+  casCommonSessionName: "SHOULD BE MODIFIED"
+  lasPort: 18766
+  runMode: production
+  datasetDownloader:
+    debug: false
+    sconeHeap: 2G
+    resources:
+      requests:
+        memory: 3Gi
+      limits:
+        memory: 3Gi
+  pythonRunner:
+    debug: false
+    sconeHeap: 16G
+    resources:
+      requests:
+        memory: 20Gi
+      limits:
+        memory: 20Gi
+  resultPublisher:
+    debug: false
+    sconeHeap: 2G
+    resources:
+      requests:
+        memory: 3Gi
+      limits:
+        memory: 3Gi
+  scriptDownloader:
+    debug: false
+    sconeHeap: 2G
+    resources:
+      requests:
+        memory: 3Gi
+      limits:
+        memory: 3Gi

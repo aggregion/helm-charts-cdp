@@ -1,0 +1,79 @@
+{{- if .Values.watcher.enabled }}
+{{- $pipelineWatcherName := include "pipeline.watcher.fullname" . }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: "{{ $pipelineWatcherName }}"
+  {{- with .Values.watcher.annotations }}
+  annotations:
+      {{- toYaml . | nindent 6 }}
+  {{- end }}
+  labels:
+    {{- include "pipeline.watcher.labels" . | nindent 4 }}
+spec:
+  replicas: {{ .Values.watcher.replicaCount }}
+  selector:
+    matchLabels:
+      {{- include "pipeline.watcher.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+    {{- with .Values.watcher.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}
+      labels:
+        {{- include "pipeline.watcher.selectorLabels" . | nindent 8 }}
+    spec:
+      hostname: "{{ .Values.watcher.hostname }}"
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      restartPolicy: {{ .Values.watcher.restartPolicy }}
+      # serviceAccountName: {{ include "pipeline.serviceAccountName" . }}
+      # automountServiceAccountToken: true
+      securityContext:
+        {{- toYaml .Values.watcher.podSecurityContext | nindent 8 }}
+      containers:
+        - name: "main"
+          securityContext:
+            {{- toYaml .Values.watcher.securityContext | nindent 12 }}
+          image: "{{ .Values.watcher.image.repository }}:{{ .Values.watcher.image.tag }}"
+          imagePullPolicy: {{ .Values.watcher.image.pullPolicy }}
+          ports:
+            - name: http
+              containerPort: {{ .Values.watcher.configs.ports.http.container }}
+              protocol: TCP
+          envFrom:
+            - configMapRef:
+                name: "{{ $pipelineWatcherName }}-config"
+          # readinessProbe:
+          #   failureThreshold: 5
+          #   httpGet:
+          #     path: /healthcheck
+          #     port: {{ .Values.watcher.configs.listenInnerPort }}
+          #   initialDelaySeconds: 10
+          #   timeoutSeconds: 3
+          #   periodSeconds: 5
+          resources:
+            {{- toYaml .Values.watcher.resources | nindent 12 }}
+          volumeMounts: []
+
+      volumes: []
+      {{- with .Values.watcher.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.watcher.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.watcher.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+  {{- if .Values.watcher.updateStrategy }}
+  strategy:
+    {{- toYaml .Values.watcher.updateStrategy | nindent 4 }}
+  {{- end }}
+{{- end }}

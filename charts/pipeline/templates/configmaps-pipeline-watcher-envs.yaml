@@ -1,0 +1,14 @@
+{{- if .Values.watcher.enabled }}
+{{- $pipelineWatcherName := include "pipeline.watcher.fullname" . }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ $pipelineWatcherName }}-config
+  labels:
+    {{- include "pipeline.labels" . | nindent 4 }}
+data:
+  HTTP_PORT: "{{ .Values.watcher.configs.ports.http.container }}"
+  HTTP_HOSTNAME: "{{ .Values.watcher.configs.httpHostname }}"
+  NODE_ENV: "{{ .Values.watcher.configs.nodeEnv }}"
+  LOG_LEVEL: "{{ .Values.watcher.configs.logLevel }}"
+{{- end }}

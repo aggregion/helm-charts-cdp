@@ -1,0 +1,127 @@
+# Default values for pipeline.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+imagePullSecrets:
+  - name: aggregionregistry
+
+nameOverride: ""
+
+serviceAccount:
+  create: false
+  annotations: {}
+  nameOverride: ""
+
+runner:
+  enabled: true
+  # serviceAccountEnabled: if you want to rollout only service account without the deployment
+  serviceAccountEnabled: true
+  replicaCount: 1
+  annotations:
+    reloader.stakater.com/auto: "true"
+  image:
+    repository: registry.aggregion.com/pipeline-runner
+    pullPolicy: IfNotPresent
+    tag: bcb186be
+  configs:
+    amqpUrl: "amqp://..."
+    ports:
+      http:
+        container: 6601
+        service: 9100
+    httpHostname: 0.0.0.0
+    nodeEnv: production
+    # runner.configs.pipelinesCreateQueueName should be equals to CDP.backend.configs.pipelineRunner.queue
+    pipelinesCreateQueueName: create_pipeline_runner
+    logLevel: info
+    amqpPrefetchCount: 1
+    # URL to CloudEvent listener (it's "watcher" in this chart)
+    cloudEventsListener: "http://watcher:9101"
+    pipelines:
+      debugHasher:
+        namespace: "pipelines"
+        pvcSize: "10Mi"
+        storageClassName: "default"
+        annotations:
+          aggregion.dev/instance: "common"
+        podTemplate:
+          nodeSelector:
+            enclave: nodejs
+        pipelineName: "debug-hasher"
+      debugCleanroom:
+        namespace: "pipelines"
+        pvcSize: "1000Mi"
+        storageClassName: "default"
+        annotations:
+          aggregion.dev/instance: "common"
+        podTemplate:
+          nodeSelector:
+            enclave: nodejs
+        pipelineName: "debug-cleanroom"
+      sconeCleanroom:
+        namespace: "pipelines"
+        pvcSize: "1000Mi"
+        storageClassName: "default"
+        annotations:
+          aggregion.dev/instance: "common"
+        podTemplate:
+          nodeSelector:
+            enclave: sgx2
+          volumes:
+            - name: dev-sgx
+              hostPath:
+                path: /dev/sgx
+        pipelineName: "scone-cleanroom"
+    basePipelineOptions:
+      namespace: "pipelines"
+      pvcSize: "10Mi"
+      storageClassName: "default"
+      annotations:
+        aggregion.dev/instance: "common"
+      podTemplate: {}
+  resuources: {}
+  restartPolicy: Always
+  nameOverride: ""
+  fullnameOverride: ""
+  podAnnotations:
+    prometheus.io/scrape: "true"
+    prometheus.io/path: /metrics
+    prometheus.io/port: "6601"
+  podSecurityContext: {}
+  securityContext: {}
+  nodeSelector: {}
+  tolerations: []
+  affinity: {}
+  updateStrategy: {}
+
+watcher:
+  enabled: true
+  replicaCount: 1
+  annotations:
+    reloader.stakater.com/auto: "true"
+  image:
+    repository: registry.aggregion.com/pipeline-watcher
+    pullPolicy: IfNotPresent
+    tag: bcb186be
+  configs:
+    ports:
+      http:
+        container: 6602
+        service: 9101
+    httpHostname: 0.0.0.0
+    nodeEnv: production
+    logLevel: info
+  resuources: {}
+  restartPolicy: Always
+  nameOverride: ""
+  fullnameOverride: ""
+  podAnnotations:
+    prometheus.io/scrape: "true"
+    prometheus.io/path: /metrics
+    prometheus.io/port: "6602"
+  podSecurityContext: {}
+  securityContext: {}
+  nodeSelector: {}
+  tolerations: []
+  affinity: {}
+  updateStrategy: {}

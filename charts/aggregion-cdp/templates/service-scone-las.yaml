@@ -9,7 +9,7 @@ spec:
   type: ClusterIP
   externalName: "{{ .Values.enclave.scone.lasServiceExternalName }}"
   ports:
-    - port: {{ .Values.enclave.scone.lasPort }}
+    - port: {{ .Values.enclave.scone.lasHostPort }}
       targetPort: lasport
       protocol: TCP
       name: lasport

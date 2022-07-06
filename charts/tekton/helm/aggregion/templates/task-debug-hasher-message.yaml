@@ -1,0 +1,16 @@
+{{- if (.Values.debugHasher.enabled) -}}
+{{- $name := .Release.Name -}}
+apiVersion: tekton.dev/v1beta1
+kind: Task
+metadata:
+  name: "debug-hash-message-{{ $name }}"
+spec:
+  steps:
+    - name: hash-message
+      image: ubuntu
+      command: ["bash", "-c"]
+      args: ["cat /cache/message.txt | md5sum | awk '{ print $1 }' | tee /cache/message_hashed.txt"]
+      volumeMounts:
+        - name: vol
+          mountPath: /cache
+{{- end -}}

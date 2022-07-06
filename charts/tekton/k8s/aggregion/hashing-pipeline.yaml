@@ -1,0 +1,84 @@
+apiVersion: tekton.dev/v1beta1
+kind: Task
+metadata:
+  name: save-message
+  namespace: tekton-pipelines
+spec:
+  params:
+    - name: input-message
+      description: 'Input message'
+      default: 'Hello'
+  steps:
+    - name: write-message
+      image: ubuntu
+      command: ["bash", "-c"]
+      args: ["echo '$(params.input-message)' | tee /cache/message.txt"]
+      volumeMounts:
+        - name: vol
+          mountPath: /cache
+---
+apiVersion: tekton.dev/v1beta1
+kind: Task
+metadata:
+  name: hash-message
+  namespace: tekton-pipelines
+spec:
+  steps:
+    - name: hash-message
+      image: ubuntu
+      command: ["bash", "-c"]
+      args: ["cat /cache/message.txt | md5sum | awk '{ print $1 }' | tee /cache/message_hashed.txt"]
+      volumeMounts:
+        - name: vol
+          mountPath: /cache
+---
+apiVersion: tekton.dev/v1beta1
+kind: Task
+metadata:
+  name: save-result
+  namespace: tekton-pipelines
+spec:
+  steps:
+    - name: save-result
+      image: ubuntu
+      command: ["bash", "-c"]
+      args: ["cat /cache/message_hashed.txt | tee $(results.res.path)"]
+      volumeMounts:
+        - name: vol
+          mountPath: /cache
+  results:
+    - name: res
+      description: Hashed result
+---
+apiVersion: tekton.dev/v1beta1
+kind: Pipeline
+metadata:
+  name: hashing
+  namespace: tekton-pipelines
+spec:
+  params:
+    - name: input-message
+      description: 'Input message'
+      default: 'Hello'
+  tasks:
+    - name: task1
+      taskRef:
+        name: save-message
+      params:
+        - name: input-message
+          value: $(params.input-message)
+    - name: task2
+      runAfter:
+        - task1
+      taskRef:
+        name: hash-message
+    - name: task3
+      runAfter:
+        - task1
+        - task2
+      taskRef:
+        name: save-result
+  results:
+    - name: res
+      description: Hashed result
+      value: "$(tasks.task3.results.res)"

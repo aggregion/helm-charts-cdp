@@ -1,0 +1,12 @@
+{{- if .Values.sconeCleanroom.enabled -}}
+{{- $name := .Release.Name -}}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: "scone-cleanroom-python-runner-config-{{ $name }}"
+data:
+  SCONE_HEAP: "{{ .Values.sconeCleanroom.pythonRunner.sconeHeap }}"
+  {{- if .Values.sconeCleanroom.pythonRunner.debug }}
+  SCONE_LOG: "7"
+  {{- end }}
+{{- end -}}

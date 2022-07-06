@@ -45,6 +45,7 @@ spec:
             - npm
             - run
             - start:worker:bc_checker
+            # - --ignore-scripts
           envFrom:
             - configMapRef:
                 name: "{{ $backendName }}-config"
@@ -66,6 +67,7 @@ spec:
             - npm
             - run
             - start:worker:bc_syncer
+            # - --ignore-scripts
           envFrom:
             - configMapRef:
                 name: "{{ $backendName }}-config"

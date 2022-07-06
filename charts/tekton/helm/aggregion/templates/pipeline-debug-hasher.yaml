@@ -1,0 +1,34 @@
+{{- if (.Values.debugHasher.enabled) -}}
+{{- $name := .Release.Name -}}
+apiVersion: tekton.dev/v1beta1
+kind: Pipeline
+metadata:
+  name: "debug-hasher-{{ $name }}"
+spec:
+  params:
+    - name: input-message
+      description: 'Input message'
+      default: 'Hello'
+  tasks:
+    - name: task1
+      taskRef:
+        name: "debug-save-message-{{ $name }}"
+      params:
+        - name: input-message
+          value: $(params.input-message)
+    - name: task2
+      runAfter:
+        - task1
+      taskRef:
+        name: "debug-hash-message-{{ $name }}"
+    - name: task3
+      runAfter:
+        - task1
+        - task2
+      taskRef:
+        name: "debug-save-result-{{ $name }}"
+  results:
+    - name: res
+      description: Hashed result
+      value: "$(tasks.task3.results.res)"
+{{- end -}}

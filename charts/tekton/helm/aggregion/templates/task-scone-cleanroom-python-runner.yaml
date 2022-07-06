@@ -1,0 +1,76 @@
+{{- if (.Values.sconeCleanroom.enabled) -}}
+{{- $name := .Release.Name -}}
+apiVersion: tekton.dev/v1beta1
+kind: Task
+metadata:
+  name: "scone-python-runner-{{ $name }}"
+  annotations:
+    experimental.tekton.dev/execution-mode: hermetic
+spec:
+  params:
+    # Token for access to datasets
+    - name: access-token
+      description: "AccessToken"
+    # For dataset
+    - name: dataset-dir
+      description: "Dirname of dataset"
+      default: "/cache/data"
+    - name: dataset-filename
+      description: "Filename of dataset"
+      default: "dataset.tsv"
+    # For scripts
+    - name: scripts-dir
+      description: "Dirname of scripts"
+      default: "/cache/scripts"
+    - name: entrypoint
+      description: "Executable file for running in python runner"
+      default: main.py
+    # For results
+    - name: result-dir
+      description: "Dirname for results"
+      default: "/cache/result"
+    - name: result-filename
+      description: "Filename of result file"
+      default: "result.tsv"
+  steps:
+    - name: python-runner
+      image: registry.aggregion.com/cleanroom/python-runner-production:latest
+      imagePullPolicy: Always
+      securityContext:
+        privileged: true
+      volumeMounts:
+        - name: vol
+          mountPath: /cache
+        - name: dev-sgx
+          mountPath: "{{ .Values.sgx.device }}"
+      env:
+        - name: "LAS_HOST"
+          valueFrom:
+            fieldRef:
+              fieldPath: status.hostIP
+        # Token for access to datasets
+        - name: "JOB"
+          value: "$(params.access-token)"
+        # For dataset
+        - name: "DATA_DIR"
+          value: "$(params.dataset-dir)"
+        - name: "DATASET_PATH"
+          value: "$(params.dataset-filename)"
+        # For scripts
+        - name: "SCRIPTS_DIR"
+          value: "$(params.scripts-dir)"
+        - name: "SCRIPTS_ENTRYPOINT"
+          value: "$(params.entrypoint)"
+        # For results
+        - name: "RESULT_DIR"
+          value: "$(params.result-dir)"
+        - name: "RESULT_PATH"
+          value: "$(params.result-filename)"
+      envFrom:
+        - configMapRef:
+            name: "scone-cleanroom-common-config-{{ $name }}"
+        - configMapRef:
+            name: "scone-cleanroom-python-runner-config-{{ $name }}"
+      resources:
+        {{ .Values.sconeCleanroom.pythonRunner.resources | toJson }}
+{{- end -}}

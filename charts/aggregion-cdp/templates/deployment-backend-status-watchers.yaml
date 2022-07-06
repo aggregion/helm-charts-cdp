@@ -1,0 +1,82 @@
+{{- if (.Values.backend.enabled) }}
+{{- if or (.Values.backend.configs.servicePipelineDebugHasherStatusWatcherEnabled) (.Values.backend.configs.servicePipelineDebugCleanroomStatusWatcherEnabled) }}
+{{- $backendName := include "cdp.backend.fullname" . }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: "{{ $backendName }}-status-watchers"
+  {{- with .Values.backend.annotations }}
+  annotations:
+      {{- toYaml . | nindent 6 }}
+  {{- end }}
+  labels:
+    {{- include "cdp.backend.labels" . | nindent 4 }}
+spec:
+  replicas: {{ .Values.backend.replicaCount }}
+  selector:
+    matchLabels:
+      {{- include "cdp.backend.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      {{- with .Values.backend.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      labels:
+        {{- include "cdp.backend.selectorLabels" . | nindent 8 }}
+    spec:
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      restartPolicy: {{ .Values.backend.restartPolicy }}
+      serviceAccountName: {{ include "cdp.serviceAccountName" . }}
+      containers:
+        {{- if (.Values.backend.configs.servicePipelineDebugHasherStatusWatcherEnabled) }}
+        - name: "debug-hasher-status-watcher"
+          securityContext:
+            {{- toYaml .Values.backend.securityContext | nindent 12 }}
+          image: "{{ .Values.backend.image.repository }}:{{ .Values.backend.image.tag }}"
+          imagePullPolicy: {{ .Values.backend.image.pullPolicy }}
+          args:
+            - npm
+            - run
+            - start:worker:debug_pipeline_status_watcher
+            # - --ignore-scripts
+          envFrom:
+            - configMapRef:
+                name: "{{ $backendName }}-config"
+            - secretRef:
+                name: "{{ $backendName }}-secrets"
+        {{- end }}
+        {{- if (.Values.backend.configs.servicePipelineDebugCleanroomStatusWatcherEnabled) }}
+        - name: "debug-cleanroom-status-watcher"
+          securityContext:
+            {{- toYaml .Values.backend.securityContext | nindent 12 }}
+          image: "{{ .Values.backend.image.repository }}:{{ .Values.backend.image.tag }}"
+          imagePullPolicy: {{ .Values.backend.image.pullPolicy }}
+          args:
+            - npm
+            - run
+            - start:worker:cleanroom_pipeline_status_watcher
+            # - --ignore-scripts
+          envFrom:
+            - configMapRef:
+                name: "{{ $backendName }}-config"
+            - secretRef:
+                name: "{{ $backendName }}-secrets"
+        {{- end }}
+      {{- with .Values.backend.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.backend.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+  {{- if .Values.backend.updateStrategy }}
+  strategy:
+    {{- toYaml .Values.backend.updateStrategy | nindent 4 }}
+  {{- end }}
+{{- end }}
+{{- end }}

@@ -1,0 +1,33 @@
+{{- if (.Values.debugCleanroom.enabled) -}}
+{{- $name := .Release.Name -}}
+apiVersion: tekton.dev/v1beta1
+kind: Task
+metadata:
+  name: "debug-script-downloader-{{ $name }}"
+spec:
+  params:
+    - name: enclave-service-base-url
+      description: Internal port of enclave service
+    # Token for access to datasets
+    - name: access-token
+      description: 'AccessToken'
+    # For scripts
+    - name: scripts-dir
+      description: "Dirname of scripts"
+      default: "/cache/scripts"
+  steps:
+    - name: script-downloader
+      image: registry.aggregion.com/cleanroom/scripts-downloader-debug:latest
+      volumeMounts:
+        - name: vol
+          mountPath: /cache
+      env:
+        - name: "ENCLAVE_SERVICE_BASE_URL"
+          value: "$(params.enclave-service-base-url)"
+        # Token for access to datasets
+        - name: "JOB"
+          value: "$(params.access-token)"
+        # For scripts
+        - name: "SCRIPTS_DIR"
+          value: "$(params.scripts-dir)"
+{{- end -}}

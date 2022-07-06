@@ -1,0 +1,49 @@
+{{- if (.Values.sconeCleanroom.enabled) -}}
+{{- $name := .Release.Name -}}
+apiVersion: tekton.dev/v1beta1
+kind: Task
+metadata:
+  name: "scone-script-downloader-{{ $name }}"
+spec:
+  params:
+    - name: enclave-service-base-url
+      description: Internal port of enclave service
+    # Token for access to datasets
+    - name: access-token
+      description: 'AccessToken'
+    # For scripts
+    - name: scripts-dir
+      description: "Dirname of scripts"
+      default: "/cache/scripts"
+  steps:
+    - name: script-downloader
+      image: registry.aggregion.com/cleanroom/scripts-downloader-production:latest
+      imagePullPolicy: Always
+      securityContext:
+        privileged: true
+      volumeMounts:
+        - name: vol
+          mountPath: /cache
+        - name: dev-sgx
+          mountPath: "{{ .Values.sgx.device }}"
+      env:
+        - name: "LAS_HOST"
+          valueFrom:
+            fieldRef:
+              fieldPath: status.hostIP
+        - name: "ENCLAVE_SERVICE_BASE_URL"
+          value: "$(params.enclave-service-base-url)"
+        # Token for access to datasets
+        - name: "JOB"
+          value: "$(params.access-token)"
+        # For scripts
+        - name: "SCRIPTS_DIR"
+          value: "$(params.scripts-dir)"
+      envFrom:
+        - configMapRef:
+            name: "scone-cleanroom-common-config-{{ $name }}"
+        - configMapRef:
+            name: "scone-cleanroom-script-downloader-config-{{ $name }}"
+      resources:
+        {{ .Values.sconeCleanroom.scriptDownloader.resources | toJson }}
+{{- end -}}

@@ -25,7 +25,7 @@ spec:
       labels:
         name: "{{ $enclaveName }}-scone-las"
     spec:
-      hostNetwork: true
+      # hostNetwork: true
       {{- with .Values.imagePullSecrets }}
       imagePullSecrets:
         {{- toYaml . | nindent 8 }}
@@ -57,7 +57,7 @@ spec:
           {{- end }}
           ports:
             - containerPort: {{ .Values.enclave.scone.lasPort }}
-              hostPort: {{ .Values.enclave.scone.lasPort }}
+              hostPort: {{ .Values.enclave.scone.lasHostPort }}
               name: lasport
           volumeMounts:
             - mountPath: "{{ .Values.enclave.sgx.device }}"

@@ -1,0 +1,16 @@
+
+{{- if or (.Values.runner.enabled) (.Values.runner.serviceAccountEnabled) }}apiVersion: rbac.authorization.k8s.io/v1
+{{- $pipelineRunnerName := include "pipeline.runner.fullname" . }}
+{{- $pipelineRunnerServiceAccount := include "pipeline.serviceAccountName" . }}
+kind: RoleBinding
+metadata:
+  name: {{ $pipelineRunnerName }}-rb
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: {{ $pipelineRunnerName }}-role
+subjects:
+  - kind: ServiceAccount
+    namespace: {{ .Release.Namespace }}
+    name: {{ $pipelineRunnerServiceAccount }}
+{{- end }}

@@ -44,6 +44,7 @@ spec:
             - npm
             - run
             - start:worker:matching_status_watcher
+            # - --ignore-scripts
           envFrom:
             - configMapRef:
                 name: "{{ $backendName }}-config"

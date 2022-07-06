@@ -1,0 +1,12 @@
+{{- if .Values.sconeCleanroom.enabled -}}
+{{- $name := .Release.Name -}}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: "scone-cleanroom-dataset-downloader-config-{{ $name }}"
+data:
+  SCONE_HEAP: "{{ .Values.sconeCleanroom.datasetDownloader.sconeHeap }}"
+  {{- if .Values.sconeCleanroom.datasetDownloader.debug }}
+  SCONE_LOG: "7"
+  {{- end }}
+{{- end -}}

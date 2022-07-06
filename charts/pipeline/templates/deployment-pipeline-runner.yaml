@@ -1,0 +1,80 @@
+{{- if .Values.runner.enabled }}
+{{- $pipelineRunnerName := include "pipeline.runner.fullname" . }}
+{{- $pipelineRunnerServiceAccount := include "pipeline.serviceAccountName" . }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: "{{ $pipelineRunnerName }}"
+  {{- with .Values.runner.annotations }}
+  annotations:
+      {{- toYaml . | nindent 6 }}
+  {{- end }}
+  labels:
+    {{- include "pipeline.runner.labels" . | nindent 4 }}
+spec:
+  replicas: {{ .Values.runner.replicaCount }}
+  selector:
+    matchLabels:
+      {{- include "pipeline.runner.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+    {{- with .Values.runner.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}
+      labels:
+        {{- include "pipeline.runner.selectorLabels" . | nindent 8 }}
+    spec:
+      hostname: "{{ .Values.runner.hostname }}"
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      restartPolicy: {{ .Values.runner.restartPolicy }}
+      serviceAccountName: {{ $pipelineRunnerServiceAccount }}
+      automountServiceAccountToken: true
+      securityContext:
+        {{- toYaml .Values.runner.podSecurityContext | nindent 8 }}
+      containers:
+        - name: "main"
+          securityContext:
+            {{- toYaml .Values.runner.securityContext | nindent 12 }}
+          image: "{{ .Values.runner.image.repository }}:{{ .Values.runner.image.tag }}"
+          imagePullPolicy: {{ .Values.runner.image.pullPolicy }}
+          ports:
+            - name: http
+              containerPort: {{ .Values.runner.configs.ports.http.container }}
+              protocol: TCP
+          envFrom:
+            - configMapRef:
+                name: "{{ $pipelineRunnerName }}-config"
+          # readinessProbe:
+          #   failureThreshold: 5
+          #   httpGet:
+          #     path: /healthcheck
+          #     port: {{ .Values.runner.configs.listenInnerPort }}
+          #   initialDelaySeconds: 10
+          #   timeoutSeconds: 3
+          #   periodSeconds: 5
+          resources:
+            {{- toYaml .Values.runner.resources | nindent 12 }}
+          volumeMounts: []
+
+      volumes: []
+      {{- with .Values.runner.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.runner.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.runner.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+  {{- if .Values.runner.updateStrategy }}
+  strategy:
+    {{- toYaml .Values.runner.updateStrategy | nindent 4 }}
+  {{- end }}
+{{- end }}

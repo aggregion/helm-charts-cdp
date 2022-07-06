@@ -1,0 +1,17 @@
+{{- if .Values.watcher.enabled }}
+{{- $pipelineWatcherName := include "pipeline.watcher.fullname" . }}
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ $pipelineWatcherName }}-svc
+  labels:
+    {{- include "pipeline.watcher.labels" . | nindent 4 }}
+spec:
+  ports:
+    - port: {{ .Values.watcher.configs.ports.http.service }}
+      targetPort: http
+      protocol: TCP
+      name: http
+  selector:
+    {{- include "pipeline.watcher.selectorLabels" . | nindent 4 }}
+{{- end }}

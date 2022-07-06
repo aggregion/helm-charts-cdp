@@ -1,0 +1,52 @@
+{{ if .Values.pruner.enabled }}
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: tekton-resource-pruner
+  labels:
+    tektonconfig.operator.tekton.dev/pruner: "true"
+spec:
+  schedule: "{{ .Values.pruner.schedule }}"
+  concurrencyPolicy: Forbid
+  suspend: false
+  jobTemplate:
+    metadata:
+      creationTimestamp: null
+    spec:
+      backoffLimit: {{ .Values.pruner.backoffLimit }}
+      template:
+        metadata:
+          creationTimestamp: null
+        spec:
+          containers:
+            - name: pruner-tkn-tekton-pipelines
+              image: >-
+                gcr.io/tekton-releases/dogfooding/tkn@sha256:025de221fb059ca24a3b2d988889ea34bce48dc76c0cf0d6b4499edb8c21325f
+              command:
+                - /bin/sh
+                - '-c'
+                - >-
+                  function prune() { n=$1; a=$2; resources=$3; old_ifs=" ";
+                  IFS=","; for r in $resources; do tkn $r delete -n=$n $a -f;
+                  done; IFS=$old_ifs; }; echo $conf; for c in $*; do ns=$(echo
+                  $c | cut -d ";" -f 1); args=$(echo $c | cut -d ";" -f 2);
+                  resources=$(echo $c | cut -d ";" -f 3); prune $ns $args
+                  $resources; done;
+              args:
+                - '-s'
+                - ' default;--keep=3;taskrun,pipelinerun infra;--keep=3;taskrun,pipelinerun pipelines;--keep=3;taskrun,pipelinerun tekton-operator;--keep=3;taskrun,pipelinerun tekton-pipelines;--keep=3;taskrun,pipelinerun'
+              resources: {}
+              terminationMessagePath: /dev/termination-log
+              terminationMessagePolicy: FallbackToLogsOnError
+              imagePullPolicy: IfNotPresent
+          restartPolicy: OnFailure
+          terminationGracePeriodSeconds: 30
+          dnsPolicy: ClusterFirst
+          serviceAccountName: {{ .Values.controllerServiceAccount.name }}
+          serviceAccount: {{ .Values.controllerServiceAccount.name }}
+          securityContext: {}
+          schedulerName: default-scheduler
+      ttlSecondsAfterFinished: 3600
+  successfulJobsHistoryLimit: 3
+  failedJobsHistoryLimit: 1
+{{- end }}

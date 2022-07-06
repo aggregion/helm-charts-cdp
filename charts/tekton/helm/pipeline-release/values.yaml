@@ -1,0 +1,93 @@
+# Default values for pipeline.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+imagePullSecrets:
+  - name: aggregionregistry
+
+nameOverride: ""
+
+controllerServiceAccount:
+  create: false
+  annotations: {}
+  name: "tekton-pipelines-controller"
+
+webhookServiceAccount:
+  create: false
+  annotations: {}
+  name: "tekton-pipelines-webhook"
+
+cloudevent:
+  # tekton events in CloudEvents format for our "pipeline-watcher" service
+  enabled: false
+  # webhook URL for CloudEvents from tekton (watcher)
+  webhookUrl: http://webhook
+
+namespace:
+  create: false
+
+controller:
+  replicaCount: 1
+  affinity:
+    nodeAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+        nodeSelectorTerms:
+          - matchExpressions:
+              - key: kubernetes.io/os
+                operator: NotIn
+                values:
+                  - windows
+  securityContext:
+    allowPrivilegeEscalation: false
+    capabilities:
+      drop:
+        - all
+    # User 65532 is the distroless nonroot user ID
+    runAsUser: 65532
+    runAsGroup: 65532
+  k8sMinVersion: "1.21.0-0"
+
+webhook:
+  replicaCount: 1
+  affinity:
+    nodeAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+        nodeSelectorTerms:
+          - matchExpressions:
+              - key: kubernetes.io/os
+                operator: NotIn
+                values:
+                  - windows
+    podAntiAffinity:
+      preferredDuringSchedulingIgnoredDuringExecution:
+        - podAffinityTerm:
+            labelSelector:
+              matchLabels:
+                app.kubernetes.io/name: webhook
+                app.kubernetes.io/component: webhook
+                app.kubernetes.io/instance: default
+                app.kubernetes.io/part-of: tekton-pipelines
+            topologyKey: kubernetes.io/hostname
+          weight: 100
+  resources:
+    requests:
+      cpu: 100m
+      memory: 100Mi
+    limits:
+      cpu: 500m
+      memory: 500Mi
+  securityContext:
+    allowPrivilegeEscalation: false
+    capabilities:
+      drop:
+        - all
+    # User 65532 is the distroless nonroot user ID
+    runAsUser: 65532
+    runAsGroup: 65532
+  k8sMinVersion: "1.21.0-0"
+
+# For cleaning of PipelineRuns, TaskRuns and PVCs
+pruner:
+  enabled: true
+  schedule: "*/5 * * * *"
+  backoffLimit: 24

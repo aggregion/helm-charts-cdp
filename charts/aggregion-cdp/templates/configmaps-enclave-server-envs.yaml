@@ -15,6 +15,7 @@ metadata:
 data:
   {{- if not (.Values.enclave.scone.enabled) }}
   PROVIDE_NAME: "{{ .Values.backend.configs.providerInstanceId }}"
+  PROVIDER_SECRET: "{{ .Values.enclave.configs.providerSecret }}"
   {{- end }}
   {{ $envPrefix }}SERVER_PORT: "{{ .Values.enclave.configs.listenPort }}"
   {{ $envPrefix }}SERVER_INNER_PORT: "{{ .Values.enclave.configs.listenInnerPort }}"
@@ -38,7 +39,7 @@ data:
 
   SCONE_HEAP: "{{ .Values.enclave.scone.heapSize }}"
   SCONE_MODE: "hw"
-  SCONE_LAS_ADDR: "{{ $enclaveName }}-scone-las"
+  SCONE_LAS_ADDR: "{{ $enclaveName }}-scone-las:{{ .Values.enclave.scone.lasHostPort }}"
   SCONE_STACK: "4M"
   SCONE_TCS: "4"
   SCONE_ALLOW_DLOPEN: "1"
