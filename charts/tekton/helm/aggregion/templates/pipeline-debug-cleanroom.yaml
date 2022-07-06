@@ -118,10 +118,6 @@ spec:
           value: $(params.dataset-dir)
         - name: dataset-filename
           value: $(params.dataset-filename)
-        - name: scripts-dir
-          value: $(params.scripts-dir)
-        - name: entrypoint
-          value: $(params.entrypoint)
         - name: log-publish-path
           value: $(params.log-publish-path)
         - name: log-publish-token
