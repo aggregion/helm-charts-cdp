@@ -14,39 +14,39 @@ spec:
     # For dataset
     - name: dataset-dir
       description: "Dirname of dataset"
-      default: "/cache/data"
+      default: "data"
     - name: dataset-filename
       description: "Filename of dataset"
       default: "dataset.tsv"
     # For results
     - name: result-dir
       description: "Dirname for results"
-      default: "/cache/result"
+      default: "result"
     - name: result-filename
       description: "Filename of result file"
       default: "result.tsv"
-    # For scripts
-    - name: scripts-dir
-      description: "Dirname of scripts"
-      default: "/cache/scripts"
-    - name: entrypoint
-      description: "Executable file for running in python runner"
-      default: main.py
     # Logs publishing
     - name: log-publish-path
       description: "Path of DCP for log publishing"
     - name: log-publish-token
       description: "Token for log publishing to DCP"
-    - name: out-log-path
+    - name: out-log-file-path
       description: "Path to log file"
-      default: "/cache/out.log"
+      default: "out.log"
+    - name: out-exitcode-file-path
+      description: "File path for saving exit code of main process (1st step)"
+      default: "exit-code.log"
+    # Common
+    - name: shared-vol-path
+      description: "Shared volume path"
+      default: "/cache" # Without trailing slash
   steps:
     - name: result-publisher
       image: registry.aggregion.com/cleanroom/result-publisher-debug:latest
       imagePullPolicy: Always
       volumeMounts:
         - name: vol
-          mountPath: /cache
+          mountPath: $(params.shared-vol-path)
       env:
         - name: "ENCLAVE_SERVICE_BASE_URL"
           value: "$(params.enclave-service-base-url)"
@@ -55,29 +55,35 @@ spec:
           value: "$(params.access-token)"
         # For dataset
         - name: "DATA_DIR"
-          value: "$(params.dataset-dir)"
+          value: "$(params.shared-vol-path)/$(params.dataset-dir)"
         - name: "DATASET_PATH"
           value: "$(params.dataset-filename)"
         # For results
         - name: "RESULT_DIR"
-          value: "$(params.result-dir)"
+          value: "$(params.shared-vol-path)/$(params.result-dir)"
         - name: "RESULT_PATH"
           value: "$(params.result-filename)"
         # Logs
         - name: "LOG_PATH"
-          value: "$(params.out-log-path)"
+          value: "$(params.shared-vol-path)/$(params.out-log-file-path)"
+        - name: "MAIN_PROCESS_EXIT_CODE_PATH"
+          value: "$(params.shared-vol-path)/$(params.out-exitcode-file-path)"
     - name: log-publisher
       image: curlimages/curl
       imagePullPolicy: IfNotPresent
       volumeMounts:
         - name: vol
-          mountPath: /cache
+          mountPath: $(params.shared-vol-path)
       onError: continue
       script: |
         #!/bin/sh
         curl -vvv -X POST -H "Content-Type: plain/text" -H "token: $(params.log-publish-token)" \
-          --data-binary "@$(params.out-log-path)" \
+          --data-binary "@$LOG_PATH" \
           $DCP_BASE_URL$(params.log-publish-path)
+        exit `cat $MAIN_PROCESS_EXIT_CODE_PATH`
+      env:
+        - name: "MAIN_PROCESS_EXIT_CODE_PATH"
+          value: "$(params.shared-vol-path)/$(params.out-exitcode-file-path)"
       envFrom:
         - configMapRef:
             name: "debug-cleanroom-common-config-{{ $name }}"
