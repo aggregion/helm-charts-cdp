@@ -12,21 +12,21 @@ spec:
     # For dataset
     - name: dataset-dir
       description: "Dirname of dataset"
-      default: "/cache/data"
+      default: "data"
     - name: dataset-filename
       description: "Filename of dataset"
       default: "dataset.tsv"
     # For results
     - name: result-dir
       description: "Dirname for results"
-      default: "/cache/result"
+      default: "result"
     - name: result-filename
       description: "Filename of result file"
       default: "result.tsv"
     # For scripts
     - name: scripts-dir
       description: "Dirname of scripts"
-      default: "/cache/scripts"
+      default: "scripts"
     - name: entrypoint
       description: "Executable file for running in python runner"
       default: main.py
@@ -35,9 +35,9 @@ spec:
       description: "Path of DCP for log publishing"
     - name: log-publish-token
       description: "Token for log publishing to DCP"
-    - name: out-log-path
+    - name: out-log-file-path
       description: "Path to log file"
-      default: "/cache/out.log"
+      default: "out.log"
   tasks:
     - name: script-downloader
       taskRef:
@@ -53,8 +53,8 @@ spec:
           value: $(params.log-publish-path)
         - name: log-publish-token
           value: $(params.log-publish-token)
-        - name: out-log-path
-          value: $(params.out-log-path)
+        - name: out-log-file-path
+          value: $(params.out-log-file-path)
     - name: dataset-downloader
       runAfter:
         - script-downloader
@@ -73,8 +73,8 @@ spec:
           value: $(params.log-publish-path)
         - name: log-publish-token
           value: $(params.log-publish-token)
-        - name: out-log-path
-          value: $(params.out-log-path)
+        - name: out-log-file-path
+          value: $(params.out-log-file-path)
     - name: python-runner
       runAfter:
         - script-downloader
@@ -100,8 +100,8 @@ spec:
           value: $(params.log-publish-path)
         - name: log-publish-token
           value: $(params.log-publish-token)
-        - name: out-log-path
-          value: $(params.out-log-path)
+        - name: out-log-file-path
+          value: $(params.out-log-file-path)
     - name: result-publisher
       runAfter:
         - script-downloader
@@ -126,6 +126,6 @@ spec:
           value: $(params.log-publish-path)
         - name: log-publish-token
           value: $(params.log-publish-token)
-        - name: out-log-path
-          value: $(params.out-log-path)
+        - name: out-log-file-path
+          value: $(params.out-log-file-path)
 {{- end -}}
