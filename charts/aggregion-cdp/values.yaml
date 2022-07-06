@@ -23,6 +23,29 @@ serviceAccount:
   annotations: {}
   name: "default"
 
+
+gatekeeper:
+  enabled: false
+  image:
+    repository: "registry.aggregion.com/gatekeeper"
+    tag: "1.4.2"
+    pullPolicy: IfNotPresent
+    podSecurityContext: {}
+    securityContext: {}
+  config:
+    clientId: dcp
+    clientSecret: XXxxXXxxXXxxXXxxXXxxXXxxXXxxXXxx
+    discoveryUrl: http://keycloak/realms/ad1/.well-known/openid-configuration
+    enableDefaultDeny: true
+    enableRefreshTokens: true
+    enableMetrics: false
+    encryptionKey: xxXXxxXXxxXXxxXX
+    skipOpenidProviderTlsVerify: true
+    listen: 3000
+    listenAdmin: 4000
+    secureCookie: false
+    redirectionUrl: https://test.youdomaindom.com
+
 frontend:
   enabled: true
   replicaCount: 1
