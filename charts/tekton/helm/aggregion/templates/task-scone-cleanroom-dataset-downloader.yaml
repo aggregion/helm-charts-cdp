@@ -85,6 +85,9 @@ spec:
           $DCP_BASE_URL$(params.log-publish-path)
         exit `cat $MAIN_PROCESS_EXIT_CODE_PATH`
       env:
+        # Logs
+        - name: "LOG_PATH"
+          value: "$(params.shared-vol-path)/$(params.out-log-file-path)"
         - name: "MAIN_PROCESS_EXIT_CODE_PATH"
           value: "$(params.shared-vol-path)/$(params.out-exitcode-file-path)"
       envFrom:
