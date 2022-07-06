@@ -56,7 +56,7 @@ spec:
       volumeMounts:
         - name: vol
           mountPath: $(params.shared-vol-path)
-      onError: continue
+      # onError: continue
       script: |
         #!/bin/sh
         curl -vvv -X POST -H "Content-Type: plain/text" -H "token: $(params.log-publish-token)" \
