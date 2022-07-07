@@ -46,6 +46,8 @@ gatekeeper:
     listenAdmin: 4000
     secureCookie: false
     redirectionUrl: https://test.youdomaindom.com
+    storeUrl: redis://127.0.0.1:6379
+    verbose: true
 
 frontend:
   enabled: true
