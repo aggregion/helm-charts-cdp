@@ -42,8 +42,8 @@ spec:
       default: "/cache" # Without trailing slash
   steps:
     - name: result-publisher
-      image: registry.aggregion.com/cleanroom/result-publisher-debug:latest
-      imagePullPolicy: Always
+      image: "{{ .Values.debugCleanroom.resultPublisher.image }}:{{ .Values.debugCleanroom.resultPublisher.imageTag }}"
+      imagePullPolicy: "{{ .Values.debugCleanroom.resultPublisher.imagePullPolicy }}"
       volumeMounts:
         - name: vol
           mountPath: $(params.shared-vol-path)

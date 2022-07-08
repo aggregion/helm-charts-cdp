@@ -47,8 +47,8 @@ spec:
       default: "/cache" # Without trailing slash
   steps:
     - name: python-runner
-      image: registry.aggregion.com/cleanroom/python-runner-debug:latest
-      imagePullPolicy: Always
+      image: "{{ .Values.debugCleanroom.pythonRunner.image }}:{{ .Values.debugCleanroom.pythonRunner.imageTag }}"
+      imagePullPolicy: "{{ .Values.debugCleanroom.pythonRunner.imagePullPolicy }}"
       volumeMounts:
         - name: vol
           mountPath: $(params.shared-vol-path)

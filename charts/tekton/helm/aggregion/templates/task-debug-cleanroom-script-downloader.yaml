@@ -32,7 +32,8 @@ spec:
       default: "/cache" # Without trailing slash
   steps:
     - name: script-downloader
-      image: registry.aggregion.com/cleanroom/scripts-downloader-debug:latest
+      image: "{{ .Values.debugCleanroom.scriptDownloader.image }}:{{ .Values.debugCleanroom.scriptDownloader.imageTag }}"
+      imagePullPolicy: "{{ .Values.debugCleanroom.scriptDownloader.imagePullPolicy }}"
       volumeMounts:
         - name: vol
           mountPath: $(params.shared-vol-path)

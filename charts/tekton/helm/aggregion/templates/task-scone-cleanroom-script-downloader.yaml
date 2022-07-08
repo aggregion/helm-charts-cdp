@@ -32,8 +32,8 @@ spec:
       default: "/cache" # Without trailing slash
   steps:
     - name: script-downloader
-      image: registry.aggregion.com/cleanroom/scripts-downloader-production:latest
-      imagePullPolicy: Always
+      image: "{{ .Values.sconeCleanroom.scriptDownloader.image }}:{{ .Values.sconeCleanroom.scriptDownloader.imageTag }}"
+      imagePullPolicy: "{{ .Values.sconeCleanroom.scriptDownloader.imagePullPolicy }}"
       securityContext:
         privileged: true
       volumeMounts:

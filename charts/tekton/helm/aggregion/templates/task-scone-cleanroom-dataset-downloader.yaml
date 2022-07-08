@@ -35,8 +35,8 @@ spec:
       default: "/cache" # Without trailing slash
   steps:
     - name: dataset-downloader
-      image: registry.aggregion.com/cleanroom/dataset-downloader-production:latest
-      imagePullPolicy: Always
+      image: "{{ .Values.sconeCleanroom.datasetDownloader.image }}:{{ .Values.sconeCleanroom.datasetDownloader.imageTag }}"
+      imagePullPolicy: "{{ .Values.sconeCleanroom.datasetDownloader.imagePullPolicy }}"
       securityContext:
         privileged: true
       volumeMounts:
