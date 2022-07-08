@@ -19,6 +19,22 @@ debugCleanroom:
   enabled: true
   enclaveServiceBaseUrl: http://...
   dcpBaseUrl: http://backend
+  datasetDownloader:
+    image: registry.aggregion.com/cleanroom/dataset-downloader-debug
+    imageTag: latest
+    imagePullPolicy: IfNotPresent
+  pythonRunner:
+    image: registry.aggregion.com/cleanroom/python-runner-debug
+    imageTag: latest
+    imagePullPolicy: IfNotPresent
+  resultPublisher:
+    image: registry.aggregion.com/cleanroom/result-publisher-debug
+    imageTag: latest
+    imagePullPolicy: IfNotPresent
+  scriptDownloader:
+    image: registry.aggregion.com/cleanroom/scripts-downloader-debug
+    imageTag: latest
+    imagePullPolicy: IfNotPresent
 
 sgx:
   device: "/dev/sgx"
@@ -33,6 +49,9 @@ sconeCleanroom:
   runMode: production
   dcpBaseUrl: http://backend
   datasetDownloader:
+    image: registry.aggregion.com/cleanroom/dataset-downloader-production
+    imageTag: 0.3.6
+    imagePullPolicy: IfNotPresent
     debug: false
     sconeHeap: 2G
     resources:
@@ -41,6 +60,9 @@ sconeCleanroom:
       limits:
         memory: 3Gi
   pythonRunner:
+    image: registry.aggregion.com/cleanroom/python-runner-production
+    imageTag: 0.3.0
+    imagePullPolicy: IfNotPresent
     debug: false
     sconeHeap: 16G
     resources:
@@ -49,6 +71,9 @@ sconeCleanroom:
       limits:
         memory: 20Gi
   resultPublisher:
+    image: registry.aggregion.com/cleanroom/result-publisher-production
+    imageTag: 0.2.8
+    imagePullPolicy: IfNotPresent
     debug: false
     sconeHeap: 2G
     resources:
@@ -57,6 +82,9 @@ sconeCleanroom:
       limits:
         memory: 3Gi
   scriptDownloader:
+    image: registry.aggregion.com/cleanroom/scripts-downloader-production
+    imageTag: 0.4.6
+    imagePullPolicy: IfNotPresent
     debug: false
     sconeHeap: 2G
     resources:

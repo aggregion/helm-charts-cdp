@@ -35,8 +35,8 @@ spec:
       default: "/cache" # Without trailing slash
   steps:
     - name: dataset-downloader
-      image: registry.aggregion.com/cleanroom/dataset-downloader-debug:latest
-      imagePullPolicy: Always
+      image: "{{ .Values.debugCleanroom.datasetDownloader.image }}:{{ .Values.debugCleanroom.datasetDownloader.imageTag }}"
+      imagePullPolicy: "{{ .Values.debugCleanroom.datasetDownloader.imagePullPolicy }}"
       volumeMounts:
         - name: vol
           mountPath: $(params.shared-vol-path)

@@ -49,8 +49,8 @@ spec:
       default: "/cache" # Without trailing slash
   steps:
     - name: python-runner
-      image: registry.aggregion.com/cleanroom/python-runner-production:latest
-      imagePullPolicy: Always
+      image: "{{ .Values.sconeCleanroom.pythonRunner.image }}:{{ .Values.sconeCleanroom.pythonRunner.imageTag }}"
+      imagePullPolicy: "{{ .Values.sconeCleanroom.pythonRunner.imagePullPolicy }}"
       securityContext:
         privileged: true
       volumeMounts:

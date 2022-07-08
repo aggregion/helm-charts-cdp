@@ -49,8 +49,8 @@ spec:
       default: "/cache" # Without trailing slash
   steps:
     - name: result-publisher
-      image: registry.aggregion.com/cleanroom/result-publisher-production:latest
-      imagePullPolicy: Always
+      image: "{{ .Values.sconeCleanroom.resultPublisher.image }}:{{ .Values.sconeCleanroom.resultPublisher.imageTag }}"
+      imagePullPolicy: "{{ .Values.sconeCleanroom.resultPublisher.imagePullPolicy }}"
       securityContext:
         privileged: true
       volumeMounts:
