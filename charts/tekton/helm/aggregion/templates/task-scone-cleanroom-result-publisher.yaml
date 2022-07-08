@@ -91,7 +91,7 @@ spec:
       resources:
         {{ .Values.sconeCleanroom.resultPublisher.resources | toJson }}
     - name: log-publisher
-      image: curlimages/curl
+      image: registry.aggregion.com/curl:latest
       imagePullPolicy: IfNotPresent
       volumeMounts:
         - name: vol
