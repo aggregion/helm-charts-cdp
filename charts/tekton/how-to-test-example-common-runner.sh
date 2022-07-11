@@ -45,6 +45,6 @@ helm upgrade --install -n pipelines \
     --set sconeCleanroom.casCommonSessionName=someid \
     --set sconeCleanroom.enabled=true \
     --set sconeCleanroom.enclaveServiceBaseUrl=http://aggregion-cdp-enclave-cdp-test1.cdpstage-dmpd-918-test.svc.cluster.local:8010 \
-    --set sconeCleanroom.lasAddr=18766 \
+    --set sconeCleanroom.lasPort=18766 \
     --set sconeCleanroom.scriptDownloader.debug=true \
     pipeline-charts ./aggregion
