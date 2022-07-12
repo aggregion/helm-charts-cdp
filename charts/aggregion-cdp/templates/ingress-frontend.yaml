@@ -43,6 +43,13 @@ spec:
                 name: "{{ $backendName }}"
                 port:
                   name: "httpapi"
+          - path: "/graphql-schema"
+            pathType: "Prefix"
+            backend:
+              service:
+                name: "{{ $backendName }}"
+                port:
+                  name: "httpapi"
           - path: "/graphql-subscriptions"
             pathType: "Prefix"
             backend:
@@ -137,6 +144,10 @@ spec:
           {{- end }}
           {{- else }} # <= 1.22
           - path: "/graphql"
+            backend:
+              serviceName: "{{ $backendName }}"
+              servicePort: "httpapi"
+          - path: "/graphql-schema"
             backend:
               serviceName: "{{ $backendName }}"
               servicePort: "httpapi"
