@@ -9,7 +9,7 @@ metadata:
   labels:
     {{- include "cdp.backend.labels" . | nindent 4 }}
 spec:
-  backoffLimit: 10
+  backoffLimit: 1
   template:
     metadata:
       annotations:
