@@ -1,0 +1,60 @@
+{{- if .Values.oidcprovider.enabled }}
+{{- $oidcProviderName := include "cdp.oidcprovider.fullname" . }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: "{{ $oidcProviderName }}"
+  {{- with .Values.oidcprovider.annotations }}
+  annotations:
+      {{- toYaml . | nindent 6 }}
+  {{- end }}
+  labels:
+    {{- include "cdp.oidcprovider.labels" . | nindent 4 }}
+spec:
+  replicas: {{ .Values.oidcprovider.replicaCount }}
+  selector:
+    matchLabels:
+      {{- include "cdp.oidcprovider.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      {{- with .Values.oidcprovider.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      labels:
+        {{- include "cdp.oidcprovider.selectorLabels" . | nindent 8 }}
+    spec:
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      restartPolicy: {{ .Values.oidcprovider.restartPolicy }}
+      serviceAccountName: {{ include "cdp.serviceAccountName" . }}
+      containers:
+        - name: "oidcprovider"
+          securityContext:
+            {{- toYaml .Values.oidcprovider.securityContext | nindent 12 }}
+
+          image: "{{ .Values.oidcprovider.image.repository }}:{{ .Values.oidcprovider.image.tag }}"
+          imagePullPolicy: {{ .Values.oidcprovider.image.pullPolicy }}
+          ports:
+            - name: http
+              containerPort: {{ .Values.oidcprovider.config.port }}
+
+          envFrom:
+            - configMapRef:
+                name: "{{ $oidcProviderName }}-config"
+
+      {{- with .Values.oidcprovider.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.oidcprovider.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+  {{- if .Values.oidcprovider.updateStrategy }}
+  strategy:
+    {{- toYaml .Values.oidcprovider.updateStrategy | nindent 4 }}
+  {{- end }}
+{{- end }}
