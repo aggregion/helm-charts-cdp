@@ -758,6 +758,9 @@ oidcprovider:
     tag: latest
   tolerations: []
   affinity: {}
+  service:
+    type: ClusterIP
+    port: 80
   config:
     port: 9055
     clientId: keycloak
