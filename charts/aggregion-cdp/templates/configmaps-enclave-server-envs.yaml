@@ -25,8 +25,16 @@ data:
   {{ $envPrefix }}CH_DATABASE_NAME: "{{ .Values.backend.configs.clickhouseDb }}"
   {{ $envPrefix }}SERVICES_HOST: "localhost"
   {{ $envPrefix }}SERVICES_PORT: "8322"
+  {{- if (.Values.enclave.configs.dmpBaseURL) }}
+  {{ $envPrefix }}DMP_BASE_URL: "{{ .Values.enclave.configs.dmpBaseURL }}"
+  {{- else }}
   {{ $envPrefix }}DMP_BASE_URL: "http://{{ $backendName }}:{{ .Values.backend.service.api.port }}/enclave"
+  {{- end }}
+  {{- if (.Values.enclave.configs.dataserviceBaseURL) }}
+  {{ $envPrefix }}DATASERVICE_BASE_URL: "{{ .Values.enclave.configs.dataserviceBaseURL }}"
+  {{- else }}
   {{ $envPrefix }}DATASERVICE_BASE_URL: "http://{{ $dataserviceName }}:{{ .Values.dataservice.service.port }}"
+  {{- end }}
   {{ $envPrefix }}DATASERVICE_TOKEN: "{{ .Values.enclave.configs.dataserviceToken }}"
   {{ $envPrefix }}DISABLE_PRETTY_LOGS: "{{ .Values.enclave.configs.prettyLogs }}"
   {{ $envPrefix }}WORKER_HEAP_SIZE_MB: "{{ .Values.enclave.configs.workerHeapSizeMb }}"
