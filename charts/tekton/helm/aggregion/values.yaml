@@ -61,7 +61,7 @@ sconeCleanroom:
         memory: 3Gi
   pythonRunner:
     image: registry.aggregion.com/cleanroom/python-runner-production
-    imageTag: 0.3.0
+    imageTag: 0.4.2
     imagePullPolicy: IfNotPresent
     debug: false
     sconeHeap: 16G
