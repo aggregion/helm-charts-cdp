@@ -1,4 +1,4 @@
-{{- if .Values.authservice.enabled }}
+{{- if .Values.oidcprovider.enabled }}
 {{- $oidcProviderName := include "cdp.oidcprovider.fullname" . }}
 {{- $authserviceName := include "cdp.authservice.fullname" . }}
 apiVersion: v1
