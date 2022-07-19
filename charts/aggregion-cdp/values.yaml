@@ -315,7 +315,7 @@ backend:
       queue: "create_pipeline_runner"
       pipelines:
         cleanroom:
-          namespace: "pipelines"
+          # namespace: "pipelines"
           # pvcSize: "1Gi"
           # storageClassName: "longhorn"
           # serviceAccountName: "pipelines-dev1-runner-sa"
