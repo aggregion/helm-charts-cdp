@@ -1,6 +1,6 @@
 #!/bin/bash
 
-pip3 install yq
+# pip3 install yq
 
 cat ../charts/aggregion-cdp/values.yaml | yq -y '{
   gatekeeper: {

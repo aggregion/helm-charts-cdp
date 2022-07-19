@@ -1,6 +1,6 @@
 #!/bin/bash
 
-pip3 install yq
+# pip3 install yq
 
 cat ../charts/tekton/helm/pipeline-release/values.yaml | yq -y '{
   cloudevent: {
