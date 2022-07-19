@@ -13,5 +13,5 @@ spec:
       protocol: TCP
       name: http
   selector:
-    {{- include "cdp.authservice.selectorLabels" . | nindent 4 }}
+    {{- include "cdp.oidcprovider.selectorLabels" . | nindent 4 }}
 {{- end }}
