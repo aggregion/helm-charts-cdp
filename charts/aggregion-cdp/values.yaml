@@ -744,3 +744,50 @@ authservice:
     jwtSecretKey: authservice_secret_key
     localAccessPolicyCanConfigure: owner
     localAccessPolicyEnabled: false
+oidcprovider:
+  enabled: false
+  replicaCount: 1
+  nameOverride: ""
+  annotations:
+    reloader.stakater.com/auto: "true"
+  podAnnotations: {}
+  restartPolicy: Always
+  updateStrategy: null
+  securityContext: {}
+  image:
+    repository: registry.aggregion.com/oidc-provider
+    pullPolicy: IfNotPresent
+    tag: latest
+  tolerations: []
+  affinity: {}
+  service:
+    type: ClusterIP
+    port: 80
+  ingress:
+    enabled: false
+    annotations:
+      kubernetes.io/ingress.class: nginx
+      nginx.ingress.kubernetes.io/proxy-body-size: 128000m
+      nginx.ingress.kubernetes.io/proxy-read-timeout: "3600"
+      nginx.ingress.kubernetes.io/proxy-send-timeout: "3600"
+      nginx.ingress.kubernetes.io/limit-rps: "1000"
+      nginx.ingress.kubernetes.io/limit-rpm: "60000"
+    hosts:
+      - host: auth.local
+    tls: []
+  config:
+    port: 9055
+    clientId: keycloak
+    clientSecret: secret
+    clientScopes: "openid profile"
+    clientRedirectUris:
+      - "http://localhost:8080/auth/realms/master/broker/oidc/endpoint"
+    clientPostLogoutRedirectUris:
+      - "http://localhost:8080/auth/realms/master/broker/oidc/endpoint/logout_response"
+    cookiesKeys:
+      - 16a6d259dbf8887e76e0702f8af2059dd3092138340b63dbe67db5c866d530ad
+      - 9be003e7425596421b5d4aa07621c93de3a5f3b4e984ae0ec8e4c1ae939555be
+    logLevel: trace
+    logPrettyPrint: false
+    successSignupRedirectUri: http://localhost:9055/signup
+    i18nextDebug: false

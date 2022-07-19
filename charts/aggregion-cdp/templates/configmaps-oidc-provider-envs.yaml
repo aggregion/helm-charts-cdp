@@ -1,0 +1,25 @@
+{{- if .Values.oidcprovider.enabled }}
+{{- $oidcProviderName := include "cdp.oidcprovider.fullname" . }}
+{{- $authserviceName := include "cdp.authservice.fullname" . }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ $oidcProviderName }}-config
+  labels:
+    {{- include "cdp.oidcprovider.labels" . | nindent 4 }}
+data:
+  APPLICATION_PORT: {{ .Values.oidcprovider.config.port | quote }}
+  AUTH_SERVICE_ENDPOINT: "http://{{ $authserviceName }}:{{ .Values.authservice.service.port }}"
+  CLIENT_ID: {{ .Values.oidcprovider.config.clientId | quote }}
+  CLIENT_SECRET: {{ .Values.oidcprovider.config.clientSecret | quote }}
+  CLIENT_REDIRECT_URIS: {{ .Values.oidcprovider.config.clientRedirectUris | toJson }}
+  CLIENT_POST_LOGOUT_REDIRECT_URIS: {{ .Values.oidcprovider.config.clientPostLogoutRedirectUris | toJson }}
+  CLIENT_SCOPES: {{ .Values.oidcprovider.config.clientScopes | quote }}
+  COOKIES_KEYS: {{ .Values.oidcprovider.config.cookiesKeys | toJson }}
+  REDIS_URI: "redis://{{ .Values.backend.configs.redisHost }}:{{ .Values.backend.configs.redisPort }}"
+  ADAPTER: "redis"
+  LOG_LEVEL: {{ .Values.oidcprovider.config.logLevel | quote }}
+  LOG_PRETTY_PRINT: {{ .Values.oidcprovider.config.logPrettyPrint | quote }}
+  SUCCESS_SIGNUP_REDIRECT_URI: {{ .Values.oidcprovider.config.successSignupRedirectUri | quote }}
+  I18NEXT_DEBUG: {{ .Values.oidcprovider.config.i18nextDebug | quote }}
+{{- end }}
