@@ -33,13 +33,8 @@ data:
   RABBITMQ_RETRY_POLICY_SEQUENCE_ATTEMPTS_NUMBER: "5"
   RABBITMQ_RETRY_POLICY_MAX_ATTEMPTS: "150"
   RABBITMQ_RETRY_POLICY_DELAY: "60"
-  HEALTHCHECK_PORT: "9047"
-  HEALTHCHECK_LIVENESS_PATH: "/healthcheck/live"
-  HEALTHCHECK_READINESS_PATH: "/healthcheck/ready"
-  HEALTHCHECK_SHUTDOWN_TIMEOUT_MS: "5000"
-  WORKERS_INSTANCE_SYNCER_HEALTHCHECK_PORT: "9046"
-  WORKERS_INSTANCE_SYNCER_HEALTHCHECK_PATH: "/healthcheck"
-  WORKERS_INSTANCE_SYNCER_HEALTHCHECK_READINESS_PATH: "/healthcheck"
-  WORKERS_INSTANCE_SYNCER_HEALTHCHECK_LIVENESS_PATH: "/healthcheck/live"
-  WORKERS_INSTANCE_SYNCER_SHUTDOWN_TIMEOUT_MS: "5000"
+  HEALTHCHECK_PORT: {{ .Values.dataservice.monitoring.common.healthcheckPort | quote }}
+  HEALTHCHECK_LIVENESS_PATH: {{ .Values.dataservice.monitoring.common.livenessPath | quote }}
+  HEALTHCHECK_READINESS_PATH: {{ .Values.dataservice.monitoring.common.readinessPath | quote }}
+  HEALTHCHECK_SHUTDOWN_TIMEOUT_MS: {{ .Values.dataservice.monitoring.common.healthcheckShutdownTimeoutMs | quote }}
 {{- end }}
