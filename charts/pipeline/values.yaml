@@ -12,6 +12,7 @@ serviceAccount:
   annotations: {}
   nameOverride: ""
 
+# Runner creates Pipeline resources in k8s
 runner:
   enabled: true
   # serviceAccountEnabled: if you want to rollout only service account without the deployment
@@ -24,6 +25,7 @@ runner:
     pullPolicy: IfNotPresent
     tag: bcb186be
   configs:
+    # amqpUrl: RabbitMQ instance from aggregion-externals chart. Should be common for DCP (CDP) and this service.
     amqpUrl: "amqp://..."
     ports:
       http:
@@ -35,7 +37,7 @@ runner:
     pipelinesCreateQueueName: create_pipeline_runner
     logLevel: info
     amqpPrefetchCount: 1
-    # URL to CloudEvent listener (it's "watcher" in this chart)
+    # cloudEventsListener: URL to CloudEvent listener (the "watcher" presents in this chart)
     cloudEventsListener: "http://watcher:9101"
     pipelines:
       debugHasher:
