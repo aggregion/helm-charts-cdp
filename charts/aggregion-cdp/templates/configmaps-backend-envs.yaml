@@ -3,6 +3,7 @@
 {{- $enclaveName := include "cdp.enclave.fullname" . }}
 {{- $dataserviceName := include "cdp.dataservice.fullname" . }}
 {{- $authserviceName := include "cdp.authservice.fullname" . }}
+{{- $oidcProviderName := include "cdp.oidcprovider.fullname" . }}
 apiVersion: v1
 kind: ConfigMap
 metadata:
@@ -42,6 +43,7 @@ data:
   DATA_SERVICE_ENDPOINT: "http://{{ $dataserviceName }}:{{ .Values.dataservice.service.port }}/api/"
   DATA_SERVICE_TOKEN: "{{ .Values.dataservice.config.accessToken }}"
   AUTH_SERVICE_ENDPOINT: "http://{{ $authserviceName }}:{{ .Values.authservice.service.port }}"
+  OIDC_PROVIDER_ENDPOINT: "http://{{ $oidcProviderName }}:{{ .Values.oidcprovider.service.port }}"
   DEPLOY_CONTROLLER_USE_EXTERNAL_S3: "{{ .Values.backend.configs.dcUseExternalS3 }}"
   WEBHOOK_TOKEN_EXPIRATION_TIME: "{{ .Values.backend.configs.webhookTokenExpirationTime }}"
   METADATA_SEED_API_URL: "{{ .Values.backend.configs.metadataSeedApiUrl }}"
