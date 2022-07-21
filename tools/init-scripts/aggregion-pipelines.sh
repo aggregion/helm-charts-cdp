@@ -2,7 +2,9 @@
 
 # pip3 install yq
 
-cat ../charts/tekton/helm/aggregion/values.yaml | yq -y '{
+cd $(dirname $0)
+
+cat ../../charts/tekton/helm/aggregion/values.yaml | yq -y '{
   sgx: {
     device: .sgx.device,
   },

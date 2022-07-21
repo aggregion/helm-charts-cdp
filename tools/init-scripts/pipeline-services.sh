@@ -2,7 +2,9 @@
 
 # pip3 install yq
 
-cat ../charts/pipeline/values.yaml | yq -y '{
+cd $(dirname $0)
+
+cat ../../charts/pipeline/values.yaml | yq -y '{
   runner: {
     enabled: .runner.enabled,
     configs: {

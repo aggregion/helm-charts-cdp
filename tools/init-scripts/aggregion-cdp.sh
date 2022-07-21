@@ -2,7 +2,9 @@
 
 # pip3 install yq
 
-cat ../charts/aggregion-cdp/values.yaml | yq -y '{
+cd $(dirname $0)
+
+cat ../../charts/aggregion-cdp/values.yaml | yq -y '{
   gatekeeper: {
     enabled: .gatekeeper.enabled,
     config: {
