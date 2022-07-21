@@ -45,6 +45,22 @@ spec:
                 name: "{{ $dataServiceName }}-config"
             - secretRef:
                 name: "{{ $dataServiceName }}-secrets"
+          {{- if .Values.dataservice.monitoring.glossary.livenessEnabled }}
+          livenessProbe:
+            httpGet:
+              path: {{ .Values.dataservice.monitoring.common.livenessPath }}
+              port: {{ .Values.dataservice.monitoring.common.healthcheckPort }}
+            initialDelaySeconds: 3
+            periodSeconds: 5
+          {{- end }}
+          {{- if .Values.dataservice.monitoring.glossary.readinessEnabled }}
+          readinessProbe:
+            httpGet:
+              path: {{ .Values.dataservice.monitoring.common.readinessPath }}
+              port: {{ .Values.dataservice.monitoring.common.healthcheckPort }}
+            initialDelaySeconds: 3
+            periodSeconds: 5
+          {{- end }}
 
         - name: "glossary-updater"
           securityContext:
@@ -60,6 +76,22 @@ spec:
                 name: "{{ $dataServiceName }}-config"
             - secretRef:
                 name: "{{ $dataServiceName }}-secrets"
+          {{- if .Values.dataservice.monitoring.glossary.livenessEnabled }}
+          livenessProbe:
+            httpGet:
+              path: {{ .Values.dataservice.monitoring.common.livenessPath }}
+              port: {{ .Values.dataservice.monitoring.common.healthcheckPort }}
+            initialDelaySeconds: 3
+            periodSeconds: 5
+          {{- end }}
+          {{- if .Values.dataservice.monitoring.glossary.readinessEnabled }}
+          readinessProbe:
+            httpGet:
+              path: {{ .Values.dataservice.monitoring.common.readinessPath }}
+              port: {{ .Values.dataservice.monitoring.common.healthcheckPort }}
+            initialDelaySeconds: 3
+            periodSeconds: 5
+          {{- end }}
 
         - name: "glossary-term-syncer"
           securityContext:
@@ -75,6 +107,22 @@ spec:
                 name: "{{ $dataServiceName }}-config"
             - secretRef:
                 name: "{{ $dataServiceName }}-secrets"
+          {{- if .Values.dataservice.monitoring.glossary.livenessEnabled }}
+          livenessProbe:
+            httpGet:
+              path: {{ .Values.dataservice.monitoring.common.livenessPath }}
+              port: {{ .Values.dataservice.monitoring.common.healthcheckPort }}
+            initialDelaySeconds: 3
+            periodSeconds: 5
+          {{- end }}
+          {{- if .Values.dataservice.monitoring.glossary.readinessEnabled }}
+          readinessProbe:
+            httpGet:
+              path: {{ .Values.dataservice.monitoring.common.readinessPath }}
+              port: {{ .Values.dataservice.monitoring.common.healthcheckPort }}
+            initialDelaySeconds: 3
+            periodSeconds: 5
+          {{- end }}
 
         - name: "glossary-term-updater"
           securityContext:
@@ -90,6 +138,22 @@ spec:
                 name: "{{ $dataServiceName }}-config"
             - secretRef:
                 name: "{{ $dataServiceName }}-secrets"
+          {{- if .Values.dataservice.monitoring.glossary.livenessEnabled }}
+          livenessProbe:
+            httpGet:
+              path: {{ .Values.dataservice.monitoring.common.livenessPath }}
+              port: {{ .Values.dataservice.monitoring.common.healthcheckPort }}
+            initialDelaySeconds: 3
+            periodSeconds: 5
+          {{- end }}
+          {{- if .Values.dataservice.monitoring.glossary.readinessEnabled }}
+          readinessProbe:
+            httpGet:
+              path: {{ .Values.dataservice.monitoring.common.readinessPath }}
+              port: {{ .Values.dataservice.monitoring.common.healthcheckPort }}
+            initialDelaySeconds: 3
+            periodSeconds: 5
+          {{- end }}
       {{- with .Values.dataservice.affinity }}
       affinity:
         {{- toYaml . | nindent 8 }}

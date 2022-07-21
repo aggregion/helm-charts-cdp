@@ -645,6 +645,27 @@ dataservice:
     tag: latest
   tolerations: []
   affinity: {}
+  monitoring:
+    common:
+      livenessPath: /heathcheck/liveness
+      readinessPath: /heathcheck/readiness
+      healthcheckPort: 9047
+      healthcheckShutdownTimeoutMs: 5000
+    datasetLogs:
+      livenessEnabled: false
+      readinessEnabled: false
+    datasetSyncer:
+      livenessEnabled: false
+      readinessEnabled: false
+    datasetUpdater:
+      livenessEnabled: false
+      readinessEnabled: false
+    glossary:
+      livenessEnabled: false
+      readinessEnabled: false
+    instanceSyncer:
+      livenessEnabled: false
+      readinessEnabled: false
   service:
     type: ClusterIP
     port: 80 # external
