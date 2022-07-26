@@ -1,0 +1,70 @@
+{{- if .Values.gatekeeper.enabled }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "cdp.frontend.fullname" . }}-gatekeeper-templates
+  labels:
+    {{- include "cdp.frontend.labels" . | nindent 4 }}
+data:
+  error.html.tmpl: |
+    <!DOCTYPE html>
+    <html>
+    <head>
+      <title>Error</title>
+      <style>
+        .oops {
+          font-size: 9em;
+          letter-spacing: 2px;
+        }
+        .message {
+          font-size: 3em;
+        }
+        .center {
+          margin-left: auto;
+          margin-right: auto;
+        }
+      </style>
+    </head>
+    <body>
+      <table class="center">
+        <tr>
+          <th class="oops">Oops!</th>
+        </tr>
+        <tr>
+          <th class="message">400 Bad Request</th>
+        </tr>
+        <tr>
+          <th>Sorry, an error has occured, please contact your administrator</th>
+        </tr>
+      </table>
+    </body>
+    </html>
+
+  sign_in.html.tmpl: |
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>{{ .title }}</title>
+        <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+
+        <script src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+
+        <script>
+        $(document).ready(function(){
+            $('[data-toggle="tooltip"]').tooltip();
+        });
+        </script>
+    </head>
+    <body>
+    <div class="container-fluid vertical-center">
+        <div class="row-fluid"  >
+            <div class="jumbotron centering text-center">
+               <a href="{{ .redirect }}">Sign In Here</a>
+            </div>
+        </div>
+    </div>
+    </body>
+    </html>
+{{- end }}
