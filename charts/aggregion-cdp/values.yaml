@@ -666,6 +666,9 @@ dataservice:
     instanceSyncer:
       livenessEnabled: false
       readinessEnabled: false
+    api:
+      livenessEnabled: false
+      readinessEnabled: false
   service:
     type: ClusterIP
     port: 80 # external
