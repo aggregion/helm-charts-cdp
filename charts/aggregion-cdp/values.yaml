@@ -647,8 +647,8 @@ dataservice:
   affinity: {}
   probes:
     common:
-      livenessPath: /heathcheck/liveness
-      readinessPath: /heathcheck/readiness
+      livenessPath: /healthcheck/liveness
+      readinessPath: /healthcheck/readiness
       healthcheckPort: 9047
       healthcheckShutdownTimeoutMs: 5000
     datasetLogs:
