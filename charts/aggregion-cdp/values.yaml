@@ -645,7 +645,7 @@ dataservice:
     tag: latest
   tolerations: []
   affinity: {}
-  monitoring:
+  probes:
     common:
       livenessPath: /heathcheck/liveness
       readinessPath: /heathcheck/readiness
