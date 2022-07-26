@@ -50,16 +50,18 @@ spec:
             httpGet:
               path: {{ .Values.dataservice.probes.common.livenessPath }}
               port: {{ .Values.dataservice.probes.common.healthcheckPort }}
-            initialDelaySeconds: 3
-            periodSeconds: 5
+            timeoutSeconds: 3
+            initialDelaySeconds: 5
+            periodSeconds: 15
           {{- end }}
           {{- if .Values.dataservice.probes.datasetUpdater.readinessEnabled }}
           readinessProbe:
             httpGet:
               path: {{ .Values.dataservice.probes.common.readinessPath }}
               port: {{ .Values.dataservice.probes.common.healthcheckPort }}
-            initialDelaySeconds: 3
-            periodSeconds: 5
+            timeoutSeconds: 3
+            initialDelaySeconds: 5
+            periodSeconds: 15
           {{- end }}
       {{- with .Values.dataservice.affinity }}
       affinity:
