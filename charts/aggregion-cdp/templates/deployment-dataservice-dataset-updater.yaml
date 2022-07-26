@@ -45,19 +45,19 @@ spec:
                 name: "{{ $dataServiceName }}-config"
             - secretRef:
                 name: "{{ $dataServiceName }}-secrets"
-          {{- if .Values.dataservice.monitoring.datasetUpdater.livenessEnabled }}
+          {{- if .Values.dataservice.probes.datasetUpdater.livenessEnabled }}
           livenessProbe:
             httpGet:
-              path: {{ .Values.dataservice.monitoring.common.livenessPath }}
-              port: {{ .Values.dataservice.monitoring.common.healthcheckPort }}
+              path: {{ .Values.dataservice.probes.common.livenessPath }}
+              port: {{ .Values.dataservice.probes.common.healthcheckPort }}
             initialDelaySeconds: 3
             periodSeconds: 5
           {{- end }}
-          {{- if .Values.dataservice.monitoring.datasetUpdater.readinessEnabled }}
+          {{- if .Values.dataservice.probes.datasetUpdater.readinessEnabled }}
           readinessProbe:
             httpGet:
-              path: {{ .Values.dataservice.monitoring.common.readinessPath }}
-              port: {{ .Values.dataservice.monitoring.common.healthcheckPort }}
+              path: {{ .Values.dataservice.probes.common.readinessPath }}
+              port: {{ .Values.dataservice.probes.common.healthcheckPort }}
             initialDelaySeconds: 3
             periodSeconds: 5
           {{- end }}

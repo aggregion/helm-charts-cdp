@@ -33,8 +33,8 @@ data:
   RABBITMQ_RETRY_POLICY_SEQUENCE_ATTEMPTS_NUMBER: "5"
   RABBITMQ_RETRY_POLICY_MAX_ATTEMPTS: "150"
   RABBITMQ_RETRY_POLICY_DELAY: "60"
-  HEALTHCHECK_PORT: {{ .Values.dataservice.monitoring.common.healthcheckPort | quote }}
-  HEALTHCHECK_LIVENESS_PATH: {{ .Values.dataservice.monitoring.common.livenessPath | quote }}
-  HEALTHCHECK_READINESS_PATH: {{ .Values.dataservice.monitoring.common.readinessPath | quote }}
-  HEALTHCHECK_SHUTDOWN_TIMEOUT_MS: {{ .Values.dataservice.monitoring.common.healthcheckShutdownTimeoutMs | quote }}
+  HEALTHCHECK_PORT: {{ .Values.dataservice.probes.common.healthcheckPort | quote }}
+  HEALTHCHECK_LIVENESS_PATH: {{ .Values.dataservice.probes.common.livenessPath | quote }}
+  HEALTHCHECK_READINESS_PATH: {{ .Values.dataservice.probes.common.readinessPath | quote }}
+  HEALTHCHECK_SHUTDOWN_TIMEOUT_MS: {{ .Values.dataservice.probes.common.healthcheckShutdownTimeoutMs | quote }}
 {{- end }}
