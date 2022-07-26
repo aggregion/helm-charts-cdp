@@ -66,6 +66,22 @@ spec:
                 name: "{{ $dataServiceName }}-config"
             - secretRef:
                 name: "{{ $dataServiceName }}-secrets"
+          {{- if .Values.dataservice.probes.api.livenessEnabled }}
+          livenessProbe:
+            httpGet:
+              path: {{ .Values.dataservice.probes.common.livenessPath }}
+              port: {{ .Values.dataservice.probes.common.healthcheckPort }}
+            initialDelaySeconds: 3
+            periodSeconds: 5
+          {{- end }}
+          {{- if .Values.dataservice.probes.api.readinessEnabled }}
+          readinessProbe:
+            httpGet:
+              path: {{ .Values.dataservice.probes.common.readinessPath }}
+              port: {{ .Values.dataservice.probes.common.healthcheckPort }}
+            initialDelaySeconds: 3
+            periodSeconds: 5
+          {{- end }}
       {{- with .Values.dataservice.affinity }}
       affinity:
         {{- toYaml . | nindent 8 }}
