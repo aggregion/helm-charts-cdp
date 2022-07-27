@@ -52,7 +52,7 @@ spec:
           livenessProbe:
             httpGet:
               path: {{ .Values.dataservice.probes.common.livenessPath }}
-              port: "9048"
+              port: 9048
             initialDelaySeconds: 3
             periodSeconds: 5
           {{- end }}
@@ -60,7 +60,7 @@ spec:
           readinessProbe:
             httpGet:
               path: {{ .Values.dataservice.probes.common.readinessPath }}
-              port: "9048"
+              port: 9048
             initialDelaySeconds: 3
             periodSeconds: 5
           {{- end }}
@@ -86,7 +86,7 @@ spec:
           livenessProbe:
             httpGet:
               path: {{ .Values.dataservice.probes.common.livenessPath }}
-              port: "9049"
+              port: 9049
             initialDelaySeconds: 3
             periodSeconds: 5
           {{- end }}
@@ -94,7 +94,7 @@ spec:
           readinessProbe:
             httpGet:
               path: {{ .Values.dataservice.probes.common.readinessPath }}
-              port: "9049"
+              port: 9049
             initialDelaySeconds: 3
             periodSeconds: 5
           {{- end }}
@@ -120,7 +120,7 @@ spec:
           livenessProbe:
             httpGet:
               path: {{ .Values.dataservice.probes.common.livenessPath }}
-              port: "9050"
+              port: 9050
             initialDelaySeconds: 3
             periodSeconds: 5
           {{- end }}
@@ -128,7 +128,7 @@ spec:
           readinessProbe:
             httpGet:
               path: {{ .Values.dataservice.probes.common.readinessPath }}
-              port: "9050"
+              port: 9050
             initialDelaySeconds: 3
             periodSeconds: 5
           {{- end }}
@@ -154,7 +154,7 @@ spec:
           livenessProbe:
             httpGet:
               path: {{ .Values.dataservice.probes.common.livenessPath }}
-              port: "9051"
+              port: 9051
             initialDelaySeconds: 3
             periodSeconds: 5
           {{- end }}
@@ -162,7 +162,7 @@ spec:
           readinessProbe:
             httpGet:
               path: {{ .Values.dataservice.probes.common.readinessPath }}
-              port: "9051"
+              port: 9051
             initialDelaySeconds: 3
             periodSeconds: 5
           {{- end }}
