@@ -45,11 +45,14 @@ spec:
                 name: "{{ $dataServiceName }}-config"
             - secretRef:
                 name: "{{ $dataServiceName }}-secrets"
+          env:
+            - name: HEALTHCHECK_PORT
+              value: "9048"
           {{- if .Values.dataservice.probes.glossary.livenessEnabled }}
           livenessProbe:
             httpGet:
               path: {{ .Values.dataservice.probes.common.livenessPath }}
-              port: {{ .Values.dataservice.probes.common.healthcheckPort }}
+              port: "9048"
             initialDelaySeconds: 3
             periodSeconds: 5
           {{- end }}
@@ -57,7 +60,7 @@ spec:
           readinessProbe:
             httpGet:
               path: {{ .Values.dataservice.probes.common.readinessPath }}
-              port: {{ .Values.dataservice.probes.common.healthcheckPort }}
+              port: "9048"
             initialDelaySeconds: 3
             periodSeconds: 5
           {{- end }}
@@ -76,11 +79,14 @@ spec:
                 name: "{{ $dataServiceName }}-config"
             - secretRef:
                 name: "{{ $dataServiceName }}-secrets"
+          env:
+            - name: HEALTHCHECK_PORT
+              value: "9049"
           {{- if .Values.dataservice.probes.glossary.livenessEnabled }}
           livenessProbe:
             httpGet:
               path: {{ .Values.dataservice.probes.common.livenessPath }}
-              port: {{ .Values.dataservice.probes.common.healthcheckPort }}
+              port: "9049"
             initialDelaySeconds: 3
             periodSeconds: 5
           {{- end }}
@@ -88,7 +94,7 @@ spec:
           readinessProbe:
             httpGet:
               path: {{ .Values.dataservice.probes.common.readinessPath }}
-              port: {{ .Values.dataservice.probes.common.healthcheckPort }}
+              port: "9049"
             initialDelaySeconds: 3
             periodSeconds: 5
           {{- end }}
@@ -107,11 +113,14 @@ spec:
                 name: "{{ $dataServiceName }}-config"
             - secretRef:
                 name: "{{ $dataServiceName }}-secrets"
+          env:
+            - name: HEALTHCHECK_PORT
+              value: "9050"
           {{- if .Values.dataservice.probes.glossary.livenessEnabled }}
           livenessProbe:
             httpGet:
               path: {{ .Values.dataservice.probes.common.livenessPath }}
-              port: {{ .Values.dataservice.probes.common.healthcheckPort }}
+              port: "9050"
             initialDelaySeconds: 3
             periodSeconds: 5
           {{- end }}
@@ -119,7 +128,7 @@ spec:
           readinessProbe:
             httpGet:
               path: {{ .Values.dataservice.probes.common.readinessPath }}
-              port: {{ .Values.dataservice.probes.common.healthcheckPort }}
+              port: "9050"
             initialDelaySeconds: 3
             periodSeconds: 5
           {{- end }}
@@ -138,11 +147,14 @@ spec:
                 name: "{{ $dataServiceName }}-config"
             - secretRef:
                 name: "{{ $dataServiceName }}-secrets"
+          env:
+            - name: HEALTHCHECK_PORT
+              value: "9051"
           {{- if .Values.dataservice.probes.glossary.livenessEnabled }}
           livenessProbe:
             httpGet:
               path: {{ .Values.dataservice.probes.common.livenessPath }}
-              port: {{ .Values.dataservice.probes.common.healthcheckPort }}
+              port: "9051"
             initialDelaySeconds: 3
             periodSeconds: 5
           {{- end }}
@@ -150,7 +162,7 @@ spec:
           readinessProbe:
             httpGet:
               path: {{ .Values.dataservice.probes.common.readinessPath }}
-              port: {{ .Values.dataservice.probes.common.healthcheckPort }}
+              port: "9051"
             initialDelaySeconds: 3
             periodSeconds: 5
           {{- end }}
