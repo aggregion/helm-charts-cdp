@@ -45,7 +45,7 @@ data:
     <html lang="ru">
     <head>
         <meta charset="UTF-8">
-        <title>{{ .title }}</title>
+        <title>{{`{{ .title }}`}}</title>
         <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
     </head>
     <style>
@@ -89,12 +89,12 @@ data:
     <div class="container">
       <div class="form">
         <h1>Войти через</h1>
-        {{ if .aggregion }}
-        <a href="{{ .redirect }}&kc_idp_hint={{ .aggregion }}" class="button button-aggregion">Aggregion</a>
-        {{ end }}
-        {{ if .activeDirectory }}
-        <a href="{{ .redirect }}&kc_idp_hint={{ .activeDirectory }}" class="button button-ad">Active Directory</a>
-        {{ end }}
+        {{`{{ if .aggregion }}`}}
+        <a href="{{`{{ .redirect }}`}}&kc_idp_hint={{`{{ .aggregion }}`}}" class="button button-aggregion">Aggregion</a>
+        {{`{{ end }}`}}
+        {{`{{ if .activeDirectory }}`}}
+        <a href="{{`{{ .redirect }}`}}&kc_idp_hint={{`{{ .activeDirectory }}`}}" class="button button-ad">Active Directory</a>
+        {{`{{ end }}`}}
       </div>
     </div>
 
