@@ -42,26 +42,11 @@ data:
 
   sign_in.html.tmpl: |
     <!DOCTYPE html>
-    <html lang="en">
+    <html lang="ru">
     <head>
         <meta charset="UTF-8">
         <title>{{ .title }}</title>
         <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
-        <script>
-          window.onload = function() {
-            const redirectUrl = "{{ .redirect }}";
-            const identityProviders = JSON.parse("{\"agg\":\"aggregion-oidc\",\"ad\":\"oidc\"}");
-
-            const providerIds = Object.keys(identityProviders);
-
-            for (let id of providerIds) {
-              let el = document.getElementById(`#${id}Button`);
-
-              el.style.display = "block";
-              el.href = redirectUrl  + '&kc_idp_hint=' + identityProviders[id];
-            }
-          };
-        </script>
     </head>
     <style>
       * {
@@ -104,8 +89,12 @@ data:
     <div class="container">
       <div class="form">
         <h1>Войти через</h1>
-        <a id="#aggButton" href="#agg" class="button button-aggregion" style="display: none;">Aggregion</a>
-        <a id="#adButton" href="#ad" class="button button-ad" style="display: none;">Active Directory</a>
+        {{ if .aggregion }}
+        <a href="{{ .redirect }}&kc_idp_hint={{ .aggregion }}" class="button button-aggregion">Aggregion</a>
+        {{ end }}
+        {{ if .activeDirectory }}
+        <a href="{{ .redirect }}&kc_idp_hint={{ .activeDirectory }}" class="button button-ad">Active Directory</a>
+        {{ end }}
       </div>
     </div>
 

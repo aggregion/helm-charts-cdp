@@ -48,8 +48,10 @@ gatekeeper:
     redirectionUrl: https://test.youdomaindom.com
     storeUrl: redis://127.0.0.1:6379
     verbose: true
+    # tags is a map where key is identity provider id in the template and value is identity provider id in Keycloak
     tags:
-      identityProviders: "{\"agg\":\"aggregion-oidc\",\"ad\":\"oidc\"}"
+      aggregion: "aggregion-oidc"
+      activeDirectory: "oidc"
 
 frontend:
   enabled: true
