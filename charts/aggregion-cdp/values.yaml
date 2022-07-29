@@ -48,6 +48,8 @@ gatekeeper:
     redirectionUrl: https://test.youdomaindom.com
     storeUrl: redis://127.0.0.1:6379
     verbose: true
+    tags:
+      identityProviders: "{\"agg\":\"aggregion-oidc\",\"ad\":\"oidc\"}"
 
 frontend:
   enabled: true

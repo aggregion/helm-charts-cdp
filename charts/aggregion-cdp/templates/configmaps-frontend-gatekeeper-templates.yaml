@@ -46,25 +46,69 @@ data:
     <head>
         <meta charset="UTF-8">
         <title>{{ .title }}</title>
-        <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
-
-        <script src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
-        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
-
+        <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
         <script>
-        $(document).ready(function(){
-            $('[data-toggle="tooltip"]').tooltip();
-        });
+          window.onload = function() {
+            const redirectUrl = "{{ .redirect }}";
+            const identityProviders = JSON.parse("{\"agg\":\"aggregion-oidc\",\"ad\":\"oidc\"}");
+
+            const providerIds = Object.keys(identityProviders);
+
+            for (let id of providerIds) {
+              let el = document.getElementById(`#${id}Button`);
+
+              el.style.display = "block";
+              el.href = redirectUrl  + '&kc_idp_hint=' + identityProviders[id];
+            }
+          };
         </script>
     </head>
+    <style>
+      * {
+        font-family: 'Open Sans';
+      }
+      h1 {
+        font-size: 1.5rem;
+        color: gray;
+        text-align: center;
+      }
+      .form {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+      }
+      .button {
+        width: 20rem;
+        display: block;
+        color: #fff;
+        border-radius: 4px;
+        font-size: 1rem;
+        text-decoration: none;
+        text-align: center;
+        margin-bottom: 1rem;
+        padding: 0.7rem;
+        font-weight: bold;
+      }
+      .button-aggregion {
+        background-color: #e31235;
+        border: #e31235;
+      }
+      .button-ad {
+        background-color: #0067b8;
+        border: #0067b8;
+      }
+    </style>
     <body>
-    <div class="container-fluid vertical-center">
-        <div class="row-fluid"  >
-            <div class="jumbotron centering text-center">
-               <a href="{{ .redirect }}">Sign In Here</a>
-            </div>
-        </div>
+
+    <div class="container">
+      <div class="form">
+        <h1>Войти через</h1>
+        <a id="#aggButton" href="#agg" class="button button-aggregion" style="display: none;">Aggregion</a>
+        <a id="#adButton" href="#ad" class="button button-ad" style="display: none;">Active Directory</a>
+      </div>
     </div>
+
     </body>
     </html>
 {{- end }}
