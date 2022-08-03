@@ -12,6 +12,8 @@ spec:
       protocol: TCP
     - port: 80
       protocol: TCP
+    - port: 443
+      protocol: TCP  
     to:
     - ipBlock:
         cidr: ENTER_YOUR_IP/32
