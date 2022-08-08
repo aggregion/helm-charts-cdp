@@ -48,18 +48,14 @@ spec:
                 name: "{{ $backendName }}-config"
             - secretRef:
                 name: "{{ $backendName }}-secrets"
+          {{- if .Values.backend.probes.datasetUploader.livenessEnabled }}
+          {{- include "cdp.livenessProbe" . | indent 10 }}
+          {{- end }}
+          {{- if .Values.backend.probes.datasetUploader.readinessEnabled }}
+          {{- include "cdp.readinessProbe" . | indent 10 }}
+          {{- end }}
           resources:
             {{- toYaml .Values.backend.resources.datasetUploader | nindent 12 }}
-          env:
-            - name: "HEALTH_CHECK_PORT"
-              value: "8308"
-          # livenessProbe:
-          #   httpGet:
-          #     path: /healthcheck
-          #     port: 8308
-          #   failureThreshold: 5
-          #   periodSeconds: 30
-          #   timeoutSeconds: 20
           volumeMounts:
             - mountPath: /home/node/app/config/local.json
               subPath: local.json
