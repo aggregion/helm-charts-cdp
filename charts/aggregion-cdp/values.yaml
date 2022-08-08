@@ -166,7 +166,15 @@ backend:
     numberOfCustomers: 0
     accountsAndUsers: 0
     resources: {}
-
+  probes:
+    common:
+      livenessPath: /healthcheck/liveness
+      readinessPath: /healthcheck/readiness
+      healthcheckPort: 9047
+      healthcheckShutdownTimeoutMs: 5000
+    api:
+      livenessEnabled: false
+      readinessEnabled: false
   configs:
     # infrastructure dependencies
     mongoUrl: "mongodb://mongo:27017/dmp"
