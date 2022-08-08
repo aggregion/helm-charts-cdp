@@ -46,22 +46,10 @@ spec:
             - secretRef:
                 name: "{{ $dataServiceName }}-secrets"
           {{- if .Values.dataservice.probes.datasetSyncer.livenessEnabled }}
-          livenessProbe:
-            httpGet:
-              path: {{ .Values.dataservice.probes.common.livenessPath }}
-              port: {{ .Values.dataservice.probes.common.healthcheckPort }}
-            timeoutSeconds: 3
-            initialDelaySeconds: 5
-            periodSeconds: 15
+          {{ include "cdp.livenessProbe" . | indent 10 }}
           {{- end }}
           {{- if .Values.dataservice.probes.datasetSyncer.readinessEnabled }}
-          readinessProbe:
-            httpGet:
-              path: {{ .Values.dataservice.probes.common.readinessPath }}
-              port: {{ .Values.dataservice.probes.common.healthcheckPort }}
-            timeoutSeconds: 3
-            initialDelaySeconds: 5
-            periodSeconds: 20
+          {{ include "cdp.readinessProbe" . | indent 10 }}
           {{- end }}
       {{- with .Values.dataservice.affinity }}
       affinity:

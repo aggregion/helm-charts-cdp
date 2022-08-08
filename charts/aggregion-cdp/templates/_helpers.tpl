@@ -169,3 +169,45 @@ Create the name of the service account to use
 {{-   default "default" .Values.serviceAccount.name }}
 {{- end }}
 {{- end }}
+
+
+{{/*
+Return readiness probe
+*/}}
+{{- define "cdp.readinessProbe" -}}
+{{- $readinessProbe := .Values.readinessProbe | default .Values.readinessProbe -}}
+{{- if $readinessProbe }}
+{{- if $readinessProbe.enabled }}
+readinessProbe:
+  httpGet:
+    path: {{ .Values.readinessProbe.readinessPath }}
+    port: {{ .Values.readinessProbe.healthcheckPort }}
+  initialDelaySeconds: {{ $readinessProbe.initialDelaySeconds | default .Values.readinessProbe.initialDelaySeconds }}
+  periodSeconds: {{ $readinessProbe.periodSeconds | default .Values.readinessProbe.periodSeconds }}
+  timeoutSeconds: {{ $readinessProbe.timeoutSeconds | default .Values.readinessProbe.timeoutSeconds }}
+  successThreshold: {{ $readinessProbe.successThreshold | default .Values.readinessProbe.successThreshold }}
+  failureThreshold: {{ $readinessProbe.failureThreshold | default .Values.readinessProbe.failureThreshold}}
+{{- end -}}
+{{- end -}}
+{{- end -}}
+
+
+{{/*
+Return liveness probe
+*/}}
+{{- define "cdp.livenessProbe" -}}
+{{- $livenessProbe := .Values.livenessProbe | default .Values.livenessProbe -}}
+{{- if $livenessProbe }}
+{{- if $livenessProbe.enabled }}
+livenessProbe:
+  httpGet:
+    path: {{ .Values.livenessProbe.livenessPath }}
+    port: {{ .Values.livenessProbe.healthcheckPort }}
+  initialDelaySeconds: {{ $livenessProbe.initialDelaySeconds | default .Values.livenessProbe.initialDelaySeconds }}
+  periodSeconds: {{ $livenessProbe.periodSeconds | default .Values.livenessProbe.periodSeconds }}
+  timeoutSeconds: {{ $livenessProbe.timeoutSeconds | default .Values.livenessProbe.timeoutSeconds }}
+  successThreshold: {{ $livenessProbe.successThreshold | default .Values.livenessProbe.successThreshold }}
+  failureThreshold: {{ $livenessProbe.failureThreshold | default .Values.livenessProbe.failureThreshold}}
+{{- end -}}
+{{- end -}}
+{{- end -}}
