@@ -48,6 +48,9 @@ spec:
                 name: "{{ $backendName }}-config"
             - secretRef:
                 name: "{{ $backendName }}-secrets"
+          env:
+            - name: HEALTHCHECK_PORT
+              value: {{ 9047 | quote }}
         {{- end }}
         {{- if (.Values.backend.configs.servicePipelineDebugCleanroomStatusWatcherEnabled) }}
         - name: "debug-cleanroom-status-watcher"
@@ -65,6 +68,9 @@ spec:
                 name: "{{ $backendName }}-config"
             - secretRef:
                 name: "{{ $backendName }}-secrets"
+          env:
+            - name: HEALTHCHECK_PORT
+              value: {{ 9048 | quote }}
         {{- end }}
       {{- with .Values.backend.affinity }}
       affinity:
