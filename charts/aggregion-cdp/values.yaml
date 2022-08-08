@@ -184,6 +184,9 @@ backend:
     blockchainUpdater:
       livenessEnabled: false
       readinessEnabled: false
+    datasetUploader:
+      livenessEnabled: false
+      readinessEnabled: false
   configs:
     # infrastructure dependencies
     mongoUrl: "mongodb://mongo:27017/dmp"
