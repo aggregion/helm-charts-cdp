@@ -24,6 +24,26 @@ serviceAccount:
   name: "default"
 
 
+livenessProbe:
+  enabled: true
+  livenessPath: /healthcheck/liveness
+  healthcheckPort: 9047
+  initialDelaySeconds: 5
+  periodSeconds: 15
+  timeoutSeconds: 5
+  successThreshold: 1
+  failureThreshold: 5
+
+readinessProbe:
+  enabled: true
+  readinessPath: /healthcheck/readiness
+  healthcheckPort: 9047
+  initialDelaySeconds: 5
+  periodSeconds: 15
+  timeoutSeconds: 5
+  successThreshold: 1
+  failureThreshold: 5
+
 gatekeeper:
   enabled: false
   image:
