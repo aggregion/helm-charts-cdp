@@ -122,9 +122,14 @@ metadata:
     prometheus.io/probe: "true"
 spec:
   ports:
+    {{- range $index, $val := .Values.dataservice.glossaryContainers }}
+    {{- with $.Values.dataservice }}
+    {{- $hcport := $val.healthcheckPort }}
     - protocol: TCP
-      port: {{ .Values.dataservice.probes.common.healthcheckPort }}
-      targetPort: {{ .Values.dataservice.probes.common.healthcheckPort }}
+      port: {{ $hcport }}
+      targetPort: {{ $hcport }}
+    {{- end -}}
+    {{- end }}
   selector:
     app.kubernetes.io/component: "{{ $component }}"
     app.kubernetes.io/name: "{{ $dataServiceName }}"
