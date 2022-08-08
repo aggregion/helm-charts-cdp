@@ -31,15 +31,18 @@ spec:
       restartPolicy: {{ .Values.dataservice.restartPolicy }}
       serviceAccountName: {{ include "cdp.serviceAccountName" . }}
       containers:
-        - name: "glossary-syncer"
+        {{- range $index, $val := .Values.dataservice.glossaryContainers }}
+        {{- with $.Values.dataservice }}
+        {{- $hcport := (add .probes.common.healthcheckPort $index 1) }}
+        - name: {{ $val | quote }}
           securityContext:
-            {{- toYaml .Values.dataservice.securityContext | nindent 12 }}
-          image: "{{ .Values.dataservice.imageApi.repository }}:{{ .Values.dataservice.imageApi.tag }}"
-          imagePullPolicy: {{ .Values.dataservice.imageApi.pullPolicy }}
+            {{- toYaml .securityContext | nindent 12 }}
+          image: "{{ .imageApi.repository }}:{{ .imageApi.tag }}"
+          imagePullPolicy: {{ .imageApi.pullPolicy }}
           args:
             - npm
             - run
-            - start:worker:glossary-syncer:prod
+            - start:worker:{{ $val }}:prod
           envFrom:
             - configMapRef:
                 name: "{{ $dataServiceName }}-config"
@@ -47,133 +50,27 @@ spec:
                 name: "{{ $dataServiceName }}-secrets"
           env:
             - name: HEALTHCHECK_PORT
-              value: "9048"
-          {{- if .Values.dataservice.probes.glossary.livenessEnabled }}
+              value: {{ $hcport }}
+          {{- if .probes.glossary.livenessEnabled }}
           livenessProbe:
             httpGet:
-              path: {{ .Values.dataservice.probes.common.livenessPath }}
-              port: 9048
+              path: {{ .probes.common.livenessPath }}
+              port: {{ $hcport }}
             timeoutSeconds: 3
             initialDelaySeconds: 5
             periodSeconds: 15
           {{- end }}
-          {{- if .Values.dataservice.probes.glossary.readinessEnabled }}
+          {{- if .probes.glossary.readinessEnabled }}
           readinessProbe:
             httpGet:
-              path: {{ .Values.dataservice.probes.common.readinessPath }}
-              port: 9048
+              path: {{ .probes.common.readinessPath }}
+              port: {{ $hcport }}
             timeoutSeconds: 3
             initialDelaySeconds: 5
             periodSeconds: 15
-          {{- end }}
-
-        - name: "glossary-updater"
-          securityContext:
-            {{- toYaml .Values.dataservice.securityContext | nindent 12 }}
-          image: "{{ .Values.dataservice.imageApi.repository }}:{{ .Values.dataservice.imageApi.tag }}"
-          imagePullPolicy: {{ .Values.dataservice.imageApi.pullPolicy }}
-          args:
-            - npm
-            - run
-            - start:worker:glossary-updater:prod
-          envFrom:
-            - configMapRef:
-                name: "{{ $dataServiceName }}-config"
-            - secretRef:
-                name: "{{ $dataServiceName }}-secrets"
-          env:
-            - name: HEALTHCHECK_PORT
-              value: "9049"
-          {{- if .Values.dataservice.probes.glossary.livenessEnabled }}
-          livenessProbe:
-            httpGet:
-              path: {{ .Values.dataservice.probes.common.livenessPath }}
-              port: 9049
-            timeoutSeconds: 3
-            initialDelaySeconds: 5
-            periodSeconds: 15
-          {{- end }}
-          {{- if .Values.dataservice.probes.glossary.readinessEnabled }}
-          readinessProbe:
-            httpGet:
-              path: {{ .Values.dataservice.probes.common.readinessPath }}
-              port: 9049
-            timeoutSeconds: 3
-            initialDelaySeconds: 5
-            periodSeconds: 15
-          {{- end }}
-
-        - name: "glossary-term-syncer"
-          securityContext:
-            {{- toYaml .Values.dataservice.securityContext | nindent 12 }}
-          image: "{{ .Values.dataservice.imageApi.repository }}:{{ .Values.dataservice.imageApi.tag }}"
-          imagePullPolicy: {{ .Values.dataservice.imageApi.pullPolicy }}
-          args:
-            - npm
-            - run
-            - start:worker:glossary-term-syncer:prod
-          envFrom:
-            - configMapRef:
-                name: "{{ $dataServiceName }}-config"
-            - secretRef:
-                name: "{{ $dataServiceName }}-secrets"
-          env:
-            - name: HEALTHCHECK_PORT
-              value: "9050"
-          {{- if .Values.dataservice.probes.glossary.livenessEnabled }}
-          livenessProbe:
-            httpGet:
-              path: {{ .Values.dataservice.probes.common.livenessPath }}
-              port: 9050
-            timeoutSeconds: 3
-            initialDelaySeconds: 5
-            periodSeconds: 15
-          {{- end }}
-          {{- if .Values.dataservice.probes.glossary.readinessEnabled }}
-          readinessProbe:
-            httpGet:
-              path: {{ .Values.dataservice.probes.common.readinessPath }}
-              port: 9050
-            timeoutSeconds: 3
-            initialDelaySeconds: 5
-            periodSeconds: 15
-          {{- end }}
-
-        - name: "glossary-term-updater"
-          securityContext:
-            {{- toYaml .Values.dataservice.securityContext | nindent 12 }}
-          image: "{{ .Values.dataservice.imageApi.repository }}:{{ .Values.dataservice.imageApi.tag }}"
-          imagePullPolicy: {{ .Values.dataservice.imageApi.pullPolicy }}
-          args:
-            - npm
-            - run
-            - start:worker:glossary-term-updater:prod
-          envFrom:
-            - configMapRef:
-                name: "{{ $dataServiceName }}-config"
-            - secretRef:
-                name: "{{ $dataServiceName }}-secrets"
-          env:
-            - name: HEALTHCHECK_PORT
-              value: "9051"
-          {{- if .Values.dataservice.probes.glossary.livenessEnabled }}
-          livenessProbe:
-            httpGet:
-              path: {{ .Values.dataservice.probes.common.livenessPath }}
-              port: 9051
-            timeoutSeconds: 3
-            initialDelaySeconds: 5
-            periodSeconds: 15
-          {{- end }}
-          {{- if .Values.dataservice.probes.glossary.readinessEnabled }}
-          readinessProbe:
-            httpGet:
-              path: {{ .Values.dataservice.probes.common.readinessPath }}
-              port: 9051
-            timeoutSeconds: 3
-            initialDelaySeconds: 5
-            periodSeconds: 15
-          {{- end }}
+        {{- end -}}
+        {{- end -}}
+        {{- end }}
       {{- with .Values.dataservice.affinity }}
       affinity:
         {{- toYaml . | nindent 8 }}
