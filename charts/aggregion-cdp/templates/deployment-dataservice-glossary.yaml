@@ -51,7 +51,7 @@ spec:
                 name: "{{ $dataServiceName }}-secrets"
           env:
             - name: HEALTHCHECK_PORT
-              value: {{ $hcport }}
+              value: {{ $hcport | quote }}
           {{- if .probes.glossary.livenessEnabled }}
           livenessProbe:
             httpGet:
