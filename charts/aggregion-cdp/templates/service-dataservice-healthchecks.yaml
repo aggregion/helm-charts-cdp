@@ -1,0 +1,137 @@
+{{- if .Values.dataservice.enabled }}
+{{- $dataServiceName := include "cdp.dataservice.fullname" . }}
+
+{{- if .Values.dataservice.probes.api.livenessEnabled }}
+apiVersion: v1
+kind: Service
+metadata:
+  name: "hc-{{ include "cdp.dataservice.fullname" . }}"
+  annotations:
+    prometheus.io/healthcheck: "true"
+    prometheus.io/probe: "true"
+spec:
+  ports:
+    - name: dataservice-hc
+      protocol: TCP
+      port: {{ .Values.dataservice.probes.common.healthcheckPort }}
+      targetPort: {{ .Values.dataservice.probes.common.healthcheckPort }}
+  selector:
+    app.kubernetes.io/component: "dataservice"
+    app.kubernetes.io/name: "{{ $dataServiceName }}"
+  type: ClusterIP
+---
+{{- end -}}
+
+
+{{- if .Values.dataservice.probes.datasetLogs.livenessEnabled }}
+{{- $component := "dataset-logs" }}
+apiVersion: v1
+kind: Service
+metadata:
+  name: "hc-{{ include "cdp.dataservice.fullname" . }}-{{ $component }}"
+  annotations:
+    prometheus.io/healthcheck: "true"
+    prometheus.io/probe: "true"
+spec:
+  ports:
+    - protocol: TCP
+      port: {{ .Values.dataservice.probes.common.healthcheckPort }}
+      targetPort: {{ .Values.dataservice.probes.common.healthcheckPort }}
+  selector:
+    app.kubernetes.io/component: "{{ $component }}"
+    app.kubernetes.io/name: "{{ $dataServiceName }}"
+  type: ClusterIP
+---
+{{- end -}}
+
+
+{{- if .Values.dataservice.probes.datasetSyncer.livenessEnabled }}
+{{- $component := "dataset-syncer" }}
+apiVersion: v1
+kind: Service
+metadata:
+  name: "hc-{{ include "cdp.dataservice.fullname" . }}-{{ $component }}"
+  annotations:
+    prometheus.io/healthcheck: "true"
+    prometheus.io/probe: "true"
+spec:
+  ports:
+    - name: dataservice-hc
+      protocol: TCP
+      port: {{ .Values.dataservice.probes.common.healthcheckPort }}
+      targetPort: {{ .Values.dataservice.probes.common.healthcheckPort }}
+  selector:
+    app.kubernetes.io/component: "{{ $component }}"
+    app.kubernetes.io/name: "{{ $dataServiceName }}"
+  type: ClusterIP
+---
+{{- end -}}
+
+
+{{- if .Values.dataservice.probes.datasetUpdater.livenessEnabled }}
+{{- $component := "dataset-updater" }}
+apiVersion: v1
+kind: Service
+metadata:
+  name: "hc-{{ include "cdp.dataservice.fullname" . }}-{{ $component }}"
+  annotations:
+    prometheus.io/healthcheck: "true"
+    prometheus.io/probe: "true"
+spec:
+  ports:
+    - protocol: TCP
+      port: {{ .Values.dataservice.probes.common.healthcheckPort }}
+      targetPort: {{ .Values.dataservice.probes.common.healthcheckPort }}
+  selector:
+    app.kubernetes.io/component: "{{ $component }}"
+    app.kubernetes.io/name: "{{ $dataServiceName }}"
+  type: ClusterIP
+---
+{{- end -}}
+
+
+{{- if .Values.dataservice.probes.instanceSyncer.livenessEnabled }}
+{{- $component := "instance-syncer" }}
+apiVersion: v1
+kind: Service
+metadata:
+  name: "hc-{{ include "cdp.dataservice.fullname" . }}-{{ $component }}"
+  annotations:
+    prometheus.io/healthcheck: "true"
+    prometheus.io/probe: "true"
+spec:
+  ports:
+    - protocol: TCP
+      port: {{ .Values.dataservice.probes.common.healthcheckPort }}
+      targetPort: {{ .Values.dataservice.probes.common.healthcheckPort }}
+  selector:
+    app.kubernetes.io/component: "{{ $component }}"
+    app.kubernetes.io/name: "{{ $dataServiceName }}"
+  type: ClusterIP
+---
+{{- end -}}
+
+
+{{- if .Values.dataservice.probes.glossary.livenessEnabled }}
+{{- $component := "glossary" }}
+apiVersion: v1
+kind: Service
+metadata:
+  name: "hc-{{ include "cdp.dataservice.fullname" . }}-{{ $component }}"
+  annotations:
+    prometheus.io/healthcheck: "true"
+    prometheus.io/probe: "true"
+spec:
+  ports:
+    - protocol: TCP
+      port: {{ .Values.dataservice.probes.common.healthcheckPort }}
+      targetPort: {{ .Values.dataservice.probes.common.healthcheckPort }}
+  selector:
+    app.kubernetes.io/component: "{{ $component }}"
+    app.kubernetes.io/name: "{{ $dataServiceName }}"
+  type: ClusterIP
+---
+{{- end -}}
+
+
+{{- end }}

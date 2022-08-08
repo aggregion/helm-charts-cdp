@@ -10,6 +10,7 @@ metadata:
   {{- end }}
   labels:
     {{- include "cdp.dataservice.labels" . | nindent 4 }}
+    app.kubernetes.io/component: "glossary"
 spec:
   replicas: {{ .Values.dataservice.replicaCount }}
   selector:
