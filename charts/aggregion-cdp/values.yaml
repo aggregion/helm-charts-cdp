@@ -175,6 +175,12 @@ backend:
     api:
       livenessEnabled: false
       readinessEnabled: false
+    debugHasherStatusWatcher:
+      livenessEnabled: false
+      readinessEnabled: false
+    cleanroomStatusWatcher:
+      livenessEnabled: false
+      readinessEnabled: false
   configs:
     # infrastructure dependencies
     mongoUrl: "mongodb://mongo:27017/dmp"
