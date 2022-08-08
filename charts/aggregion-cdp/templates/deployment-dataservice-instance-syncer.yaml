@@ -47,10 +47,10 @@ spec:
             - secretRef:
                 name: "{{ $dataServiceName }}-secrets"
           {{- if .Values.dataservice.probes.instanceSyncer.livenessEnabled }}
-          {{ include "cdp.livenessProbe" . | indent 10 }}
+          {{- include "cdp.livenessProbe" . | indent 10 }}
           {{- end }}
           {{- if .Values.dataservice.probes.instanceSyncer.readinessEnabled }}
-          {{ include "cdp.readinessProbe" . | indent 10 }}
+          {{- include "cdp.readinessProbe" . | indent 10 }}
           {{- end }}
       {{- with .Values.dataservice.affinity }}
       affinity:
