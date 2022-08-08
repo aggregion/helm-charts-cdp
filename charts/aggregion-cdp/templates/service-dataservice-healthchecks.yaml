@@ -125,7 +125,7 @@ spec:
     {{- range $index, $val := .Values.dataservice.glossaryContainers }}
     {{- with $.Values.dataservice }}
     - protocol: TCP
-      name: "hc-{{ $val.name }}"
+      name: {{ $val.healthcheckPortName }}
       port: {{ $val.healthcheckPort }}
       targetPort: {{ $val.healthcheckPort }}
     {{- end -}}
