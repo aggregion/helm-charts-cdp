@@ -2,6 +2,7 @@
 {{- $dataServiceName := include "cdp.dataservice.fullname" . }}
 
 {{- if .Values.dataservice.probes.api.livenessEnabled }}
+{{- $component := "dataservice" }}
 apiVersion: v1
 kind: Service
 metadata:
@@ -11,12 +12,11 @@ metadata:
     prometheus.io/probe: "true"
 spec:
   ports:
-    - name: dataservice-hc
-      protocol: TCP
+    - protocol: TCP
       port: {{ .Values.dataservice.probes.common.healthcheckPort }}
       targetPort: {{ .Values.dataservice.probes.common.healthcheckPort }}
   selector:
-    app.kubernetes.io/component: "dataservice"
+    app.kubernetes.io/component: "{{ $component }}"
     app.kubernetes.io/name: "{{ $dataServiceName }}"
   type: ClusterIP
 ---
@@ -56,8 +56,7 @@ metadata:
     prometheus.io/probe: "true"
 spec:
   ports:
-    - name: dataservice-hc
-      protocol: TCP
+    - protocol: TCP
       port: {{ .Values.dataservice.probes.common.healthcheckPort }}
       targetPort: {{ .Values.dataservice.probes.common.healthcheckPort }}
   selector:
