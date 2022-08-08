@@ -720,6 +720,11 @@ dataservice:
     endpoint: "http://aggregion-cdp-dataservice-EDIT_THAT.NAMESPACE.svc.cluster.local:9045/api"
     clickhouseUseDirectConnection: true # since 2021-12-13
     clickhouseIsMocked: false # since 2021-12-13
+  glossaryContainers:
+    - glossary-updater
+    - glossary-updater
+    - glossary-term-syncer
+    - glossary-term-updater
 
 metadataSeed:
   enabled: false
