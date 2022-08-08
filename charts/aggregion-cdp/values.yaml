@@ -721,10 +721,14 @@ dataservice:
     clickhouseUseDirectConnection: true # since 2021-12-13
     clickhouseIsMocked: false # since 2021-12-13
   glossaryContainers:
-    - glossary-syncer
-    - glossary-updater
-    - glossary-term-syncer
-    - glossary-term-updater
+    - name: glossary-syncer
+      healthcheckPort: 9048
+    - name: glossary-updater
+      healthcheckPort: 9049
+    - name: glossary-term-syncer
+      healthcheckPort: 9050
+    - name: glossary-term-updater
+      healthcheckPort: 9051
 
 metadataSeed:
   enabled: false
