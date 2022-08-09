@@ -70,4 +70,9 @@ data:
   PIPELINES_DEBUG_HASHER_TIMEOUT: "{{ .Values.backend.configs.pipelineRunner.pipelines.debugHasher.timeout }}"
   PIPELINES_DEBUG_HASHER_NAME: "{{ .Values.backend.configs.pipelineRunner.pipelines.debugHasher.pipelineName }}"
   PIPELINES_DEBUG_HASHER_RESULT_QUEUE: "{{ .Values.backend.configs.pipelineRunner.pipelines.debugHasher.statusQueue }}"
+
+  HEALTHCHECK_PORT: {{ .Values.backend.probes.common.healthcheckPort | quote }}
+  HEALTHCHECK_LIVENESS_PATH: {{ .Values.backend.probes.common.livenessPath | quote }}
+  HEALTHCHECK_READINESS_PATH: {{ .Values.backend.probes.common.readinessPath | quote }}
+  HEALTHCHECK_SHUTDOWN_TIMEOUT_MS: {{ .Values.backend.probes.common.healthcheckShutdownTimeoutMs | quote }}
 {{- end }}
