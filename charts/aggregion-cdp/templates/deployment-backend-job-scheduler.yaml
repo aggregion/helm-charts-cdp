@@ -1,0 +1,83 @@
+{{- if and (.Values.backend.enabled) (.Values.backend.configs.serviceJobSchedulerEnabled) }}
+{{- $backendName := include "cdp.backend.fullname" . }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: "{{ $backendName }}-job-scheduler"
+  {{- with .Values.backend.annotations }}
+  annotations:
+    {{- toYaml . | nindent 6 }}
+  {{- end }}
+  labels:
+    {{- include "cdp.authservice.labels" . | nindent 4 }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      {{- include "cdp.backend.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      {{- with .Values.backend.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      labels:
+        {{- include "cdp.backend.selectorLabels" . | nindent 8 }}
+    spec:
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      restartPolicy: {{ .Values.backend.restartPolicy }}
+      serviceAccountName: {{ include "cdp.serviceAccountName" . }}
+      securityContext:
+        {{- toYaml .Values.backend.podSecurityContext | nindent 8 }}
+      containers:
+        - name: "backend-job-scheduler"
+          image: "{{ .Values.backend.image.repository }}:{{ .Values.backend.image.tag }}"
+          imagePullPolicy: "Always"
+          args:
+            - npm
+            - run
+            - start:worker:job_scheduler
+          envFrom:
+            - configMapRef:
+                name: "{{ $backendName }}-config"
+            - secretRef:
+                name: "{{ $backendName }}-secrets"
+          {{- if .Values.backend.probes.jobScheduler.livenessEnabled }}
+          {{- include "cdp.livenessProbe" . | indent 10 }}
+          {{- end }}
+          {{- if .Values.backend.probes.jobScheduler.readinessEnabled }}
+          {{- include "cdp.readinessProbe" . | indent 10 }}
+          {{- end }}
+          resources:
+            {{- toYaml .Values.backend.resources.jobScheduler | nindent 12 }}
+          volumeMounts:
+            - mountPath: /home/node/app/config/local.json
+              subPath: local.json
+              name: local-config-volume
+      volumes:
+        - name: local-config-volume
+          configMap:
+            name: "{{ $backendName }}-config-files"
+            items:
+              - key: local.json
+                path: local.json
+      {{- with .Values.backend.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.backend.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.backend.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+  {{- if .Values.backend.updateStrategy }}
+  strategy:
+    {{- toYaml .Values.backend.updateStrategy | nindent 4 }}
+  {{- end }}
+{{- end }}

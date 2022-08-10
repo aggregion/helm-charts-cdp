@@ -187,6 +187,9 @@ backend:
     datasetUploader:
       livenessEnabled: false
       readinessEnabled: false
+    jobScheduler:
+      livenessEnabled: false
+      readinessEnabled: false
   configs:
     # infrastructure dependencies
     mongoUrl: "mongodb://mongo:27017/dmp"
@@ -228,6 +231,7 @@ backend:
     servicePanelSegmentUploaderEnabled: false
     servicePipelineDebugHasherStatusWatcherEnabled: true
     servicePipelineDebugCleanroomStatusWatcherEnabled: true
+    serviceJobSchedulerEnabled: false
     interactionIV: "dc189cc59c532e75e957f5dc64f03b82"
     # control access policy module
     authLocalAccessPolicyEnabled: false
@@ -504,6 +508,7 @@ backend:
                 args:
                   status: 'ready4review'
               then: ['TEAMLEAD', 'DATA_RESEARCHER']
+          setSchedule: ['TEAMLEAD']
         Job:
           debug: ['TEAMLEAD', 'DATA_RESEARCHER']
           run: ['TEAMLEAD']
@@ -527,7 +532,6 @@ backend:
     datalabProxy:
       type: ClusterIP
       port: 8080
-
   pvc:
     accessModes:
       - ReadWriteOnce
@@ -553,6 +557,7 @@ backend:
       # requests:
       #   cpu: 100m
       #   memory: 128Mi
+    jobScheduler: {}
   nodeSelector: {}
   tolerations: []
   affinity: {}
