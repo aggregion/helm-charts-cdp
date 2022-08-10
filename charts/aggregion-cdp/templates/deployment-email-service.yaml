@@ -1,0 +1,54 @@
+{{- if .Values.emailservice.enabled }}
+{{- $emailServiceName := include "cdp.emailservice.fullname" . }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: "{{ $emailServiceName }}"
+  {{- with .Values.emailservice.annotations }}
+  annotations:
+      {{- toYaml . | nindent 6 }}
+  {{- end }}
+  labels:
+    {{- include "cdp.emailservice.labels" . | nindent 4 }}
+spec:
+  replicas: {{ .Values.emailservice.replicaCount }}
+  selector:
+    matchLabels:
+      {{- include "cdp.emailservice.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      {{- with .Values.emailservice.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      labels:
+        {{- include "cdp.emailservice.selectorLabels" . | nindent 8 }}
+    spec:
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      restartPolicy: {{ .Values.emailservice.restartPolicy }}
+      serviceAccountName: {{ include "cdp.serviceAccountName" . }}
+      containers:
+        - name: "emailservice"
+          securityContext:
+            {{- toYaml .Values.emailservice.securityContext | nindent 12 }}
+          image: "{{ .Values.emailservice.image.repository }}:{{ .Values.emailservice.image.tag }}"
+          imagePullPolicy: {{ .Values.emailservice.image.pullPolicy }}
+          envFrom:
+            - configMapRef:
+                name: "{{ $emailServiceName }}-config"
+      {{- with .Values.emailservice.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.emailservice.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+  {{- if .Values.emailservice.updateStrategy }}
+  strategy:
+    {{- toYaml .Values.emailservice.updateStrategy | nindent 4 }}
+  {{- end }}
+{{- end }}
