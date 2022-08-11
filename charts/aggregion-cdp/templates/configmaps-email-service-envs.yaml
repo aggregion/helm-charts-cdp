@@ -1,0 +1,15 @@
+{{- if .Values.emailservice.enabled }}
+{{- $emailServiceName := include "cdp.emailservice.fullname" . }}
+{{- $backendName := include "cdp.backend.fullname" . }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ $emailServiceName }}-config
+  labels:
+    {{- include "cdp.emailservice.labels" . | nindent 4 }}
+data:
+  RABBITMQ_URL: {{ .Values.backend.configs.rabbitmqUrl | quote }}
+  CONSUMING_QUEUE_NAME: {{ .Values.emailservice.config.queueName | quote }}
+  DMP_BACKEND_URL: "http://{{ $backendName }}:{{ .Values.backend.service.api.port }}"
+  DMP_BACKEND_TOKEN: {{ .Values.backend.configs.dmpSecret | quote }}
+{{- end }}

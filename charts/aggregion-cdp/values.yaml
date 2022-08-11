@@ -879,3 +879,22 @@ oidcprovider:
     successSignupRedirectUri: http://localhost:9055/signup
     i18nextDebug: false
     nodeEnv: production
+
+emailservice:
+  enabled: false
+  replicaCount: 1
+  nameOverride: ""
+  annotations:
+    reloader.stakater.com/auto: "true"
+  image:
+    repository: registry.aggregion.com/email-service
+    pullPolicy: IfNotPresent
+    tag: latest
+  podAnnotations: {}
+  restartPolicy: Always
+  updateStrategy: null
+  securityContext: {}
+  tolerations: []
+  affinity: {}
+  config:
+    queueName: emails
