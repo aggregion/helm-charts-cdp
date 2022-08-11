@@ -22,5 +22,6 @@ data:
   LOG_PRETTY_PRINT: {{ .Values.oidcprovider.config.logPrettyPrint | quote }}
   SUCCESS_SIGNUP_REDIRECT_URI: {{ .Values.oidcprovider.config.successSignupRedirectUri | quote }}
   I18NEXT_DEBUG: {{ .Values.oidcprovider.config.i18nextDebug | quote }}
+  RABBITMQ_URL: {{ .Values.backend.configs.rabbitmqUrl | quote }}
   NODE_ENV: {{ .Values.oidcprovider.config.nodeEnv | quote }}
 {{- end }}
