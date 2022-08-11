@@ -12,4 +12,6 @@ data:
   CONSUMING_QUEUE_NAME: {{ .Values.emailservice.config.queueName | quote }}
   DMP_BACKEND_URL: "http://{{ $backendName }}:{{ .Values.backend.service.api.port }}"
   DMP_BACKEND_TOKEN: {{ .Values.backend.configs.dmpSecret | quote }}
+  LOG_LEVEL: {{ .Values.emailservice.config.logLevel | quote }}
+  LOG_PRETTY_PRINT: {{ .Values.emailservice.config.logPrettyPrint | quote }}
 {{- end }}
