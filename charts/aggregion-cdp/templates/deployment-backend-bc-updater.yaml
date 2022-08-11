@@ -11,6 +11,7 @@ metadata:
   {{- end }}
   labels:
     {{- include "cdp.backend.labels" . | nindent 4 }}
+    app.kubernetes.io/component: "bc-updater"
 spec:
   replicas: {{ .Values.backend.replicaCount }}
   selector:
@@ -24,6 +25,7 @@ spec:
       {{- end }}
       labels:
         {{- include "cdp.backend.selectorLabels" . | nindent 8 }}
+        app.kubernetes.io/component: "bc-updater"
     spec:
       {{- with .Values.imagePullSecrets }}
       imagePullSecrets:

@@ -1,0 +1,118 @@
+{{- if .Values.backend.enabled }}
+{{- $backendName := include "cdp.backend.fullname" . }}
+
+{{- if .Values.backend.probes.api.livenessEnabled }}
+{{- $component := "backend-api" }}
+apiVersion: v1
+kind: Service
+metadata:
+  name: "hc-{{ include "cdp.backend.fullname" . }}"
+  annotations:
+    prometheus.io/healthcheck: "true"
+    prometheus.io/probe: "true"
+spec:
+  ports:
+    - protocol: TCP
+      port: {{ .Values.backend.probes.common.healthcheckPort }}
+      targetPort: {{ .Values.backend.probes.common.healthcheckPort }}
+  selector:
+    app.kubernetes.io/component: "{{ $component }}"
+    app.kubernetes.io/name: "{{ $backendName }}"
+  type: ClusterIP
+---
+{{- end -}}
+
+{{- if .Values.backend.probes.blockchainUpdater.livenessEnabled }}
+{{- $component := "bc-updater" }}
+apiVersion: v1
+kind: Service
+metadata:
+  name: "hc-{{ include "cdp.backend.fullname" . }}-{{ $component }}"
+  annotations:
+    prometheus.io/healthcheck: "true"
+    prometheus.io/probe: "true"
+spec:
+  ports:
+    - protocol: TCP
+      port: {{ .Values.backend.probes.common.healthcheckPort }}
+      targetPort: {{ .Values.backend.probes.common.healthcheckPort }}
+  selector:
+    app.kubernetes.io/component: "{{ $component }}"
+    app.kubernetes.io/name: "{{ $backendName }}"
+  type: ClusterIP
+---
+{{- end -}}
+
+{{- if .Values.backend.probes.datasetUploader.livenessEnabled }}
+{{- $component := "dataset-uploader" }}
+apiVersion: v1
+kind: Service
+metadata:
+  name: "hc-{{ include "cdp.backend.fullname" . }}-{{ $component }}"
+  annotations:
+    prometheus.io/healthcheck: "true"
+    prometheus.io/probe: "true"
+spec:
+  ports:
+    - protocol: TCP
+      port: {{ .Values.backend.probes.common.healthcheckPort }}
+      targetPort: {{ .Values.backend.probes.common.healthcheckPort }}
+  selector:
+    app.kubernetes.io/component: "{{ $component }}"
+    app.kubernetes.io/name: "{{ $backendName }}"
+  type: ClusterIP
+---
+{{- end -}}
+
+{{- if .Values.backend.probes.jobScheduler.livenessEnabled }}
+{{- $component := "job-scheduler" }}
+apiVersion: v1
+kind: Service
+metadata:
+  name: "hc-{{ include "cdp.backend.fullname" . }}-{{ $component }}"
+  annotations:
+    prometheus.io/healthcheck: "true"
+    prometheus.io/probe: "true"
+spec:
+  ports:
+    - protocol: TCP
+      port: {{ .Values.backend.probes.common.healthcheckPort }}
+      targetPort: {{ .Values.backend.probes.common.healthcheckPort }}
+  selector:
+    app.kubernetes.io/component: "{{ $component }}"
+    app.kubernetes.io/name: "{{ $backendName }}"
+  type: ClusterIP
+---
+{{- end -}}
+
+{{- if or .Values.backend.probes.debugHasherStatusWatcher.livenessEnabled .Values.backend.probes.cleanroomStatusWatcher.livenessEnabled }}
+{{- $component := "status-watcher" }}
+apiVersion: v1
+kind: Service
+metadata:
+  name: "hc-{{ include "cdp.backend.fullname" . }}-{{ $component }}"
+  annotations:
+    prometheus.io/healthcheck: "true"
+    prometheus.io/probe: "true"
+spec:
+  ports:
+    {{- if .Values.backend.probes.debugHasherStatusWatcher.livenessEnabled }}
+    - protocol: TCP
+      name: "debug-hasher"
+      port: 9047
+      targetPort: 9047
+    {{- end }}
+    {{- if .Values.backend.probes.cleanroomStatusWatcher.livenessEnabled }}
+    - protocol: TCP
+      name: "cleanroom"
+      port: 9048
+      targetPort: 9049
+    {{- end }}
+  selector:
+    app.kubernetes.io/component: "{{ $component }}"
+    app.kubernetes.io/name: "{{ $backendName }}"
+  type: ClusterIP
+---
+{{- end -}}
+
+{{- end }}

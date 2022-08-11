@@ -10,6 +10,7 @@ metadata:
   {{- end }}
   labels:
     {{- include "cdp.authservice.labels" . | nindent 4 }}
+    app.kubernetes.io/component: "job-scheduler"
 spec:
   replicas: 1
   selector:
@@ -23,6 +24,7 @@ spec:
       {{- end }}
       labels:
         {{- include "cdp.backend.selectorLabels" . | nindent 8 }}
+        app.kubernetes.io/component: "job-scheduler"
     spec:
       {{- with .Values.imagePullSecrets }}
       imagePullSecrets:
