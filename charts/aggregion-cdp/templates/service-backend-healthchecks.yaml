@@ -106,7 +106,7 @@ spec:
     - protocol: TCP
       name: "cleanroom"
       port: 9048
-      targetPort: 9049
+      targetPort: 9048
     {{- end }}
   selector:
     app.kubernetes.io/component: "{{ $component }}"
