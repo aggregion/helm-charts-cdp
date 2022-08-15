@@ -720,6 +720,9 @@ dataservice:
     api:
       livenessEnabled: false
       readinessEnabled: false
+    atlasEntitySyncer:
+      livenessEnabled: false
+      readinessEnabled: false
   service:
     type: ClusterIP
     port: 80 # external
