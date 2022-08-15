@@ -11,6 +11,9 @@ data:
   local.json: |
     {
       "server": {
+        {{- if .Values.enclave.scone.enabled }}
+        "sharedSessionProvider": [{"type": "SCONE"}],
+        {{- end }}
         "auth": {
           "disableAuthentication": {{ not .Values.backend.configs.enclaveAuthEnabled }}
           {{- if .Values.backend.configs.enclaveAuthEnabled }}
