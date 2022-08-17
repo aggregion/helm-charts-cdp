@@ -6,7 +6,7 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: "hc-{{ $serviceName }}"
+  name: "hc-{{ $serviceName | lower }}"
   annotations:
     prometheus.io/healthcheck: "true"
     prometheus.io/probe: "true"
