@@ -360,16 +360,16 @@ backend:
       personalAccessToken: "xJ51bxxa1ZrQXiMdoYFt"
       host: "https://gitlab.cas-dcap.aggregion.com"
     pipelineRunner:
-      debugMode: true
+      debugMode: false
       queue: "create_pipeline_runner"
       pipelines:
         cleanroom:
-          namespace: "pipelines"
-          pvcSize: "1Gi"
-          storageClassName: "longhorn"
-          serviceAccountName: "pipelines-dev1-runner-sa"
-          timeout: "1h0m0s"
-          pipelineName: "debug-cleanroom"
+          # namespace: "pipelines"
+          # pvcSize: "1Gi"
+          # storageClassName: "longhorn"
+          # serviceAccountName: "pipelines-dev1-runner-sa"
+          # timeout: "1h0m0s"
+          pipelineName: "debug-cleanroom" # should be replaced to "scone-cleanroom" for production
           statusQueue: "pipeline_cleanroom_event_status"
         debugHasher:
           namespace: "pipelines"
@@ -568,7 +568,6 @@ enclave:
   replicaCount: 1
   annotations:
     reloader.stakater.com/auto: "true"
-
   hostname: "enclave"
   sgx:
     nodeWithSgxSelector: {}
