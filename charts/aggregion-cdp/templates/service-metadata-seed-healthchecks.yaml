@@ -1,0 +1,25 @@
+{{- if .Values.metadataSeed.enabled }}
+{{- $serviceName := include "cdp.metadataSeed.fullname" . }}
+
+{{- if .Values.metadataSeed.probes.metadataSeed.livenessEnabled }}
+{{- $component := "metadata-seed" }}
+apiVersion: v1
+kind: Service
+metadata:
+  name: "hc-{{ $serviceName }}"
+  annotations:
+    prometheus.io/healthcheck: "true"
+    prometheus.io/probe: "true"
+spec:
+  ports:
+    - protocol: TCP
+      port: {{ .Values.metadataSeed.probes.common.healthcheckPort }}
+      targetPort: {{ .Values.metadataSeed.probes.common.healthcheckPort }}
+  selector:
+    app.kubernetes.io/component: "{{ $component }}"
+    app.kubernetes.io/name: "{{ $serviceName }}"
+  type: ClusterIP
+---
+{{- end -}}
+
+{{- end }}
