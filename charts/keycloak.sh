@@ -1,9 +1,8 @@
 #!/bin/sh
 
-helm repo add bitnami https://charts.bitnami.com/bitnami
-helm dependency build
+helm dependency build aggregion-keycloak
 
-
+export DEPLOY_HOSTNAME=example.domain.ltd
 export KUBE_NAMESPACE=keycloak-namespace
 
 # if keycloak already installed - use existing passwords
@@ -18,8 +17,8 @@ export KEYCLOAK_PASSWORD=$(cat /dev/urandom | env LC_CTYPE=C tr -dc a-zA-Z0-9 | 
 fi
 
 
-
-helm upgrade --install --namespace $KUBE_NAMESPACE keycloak aggregion-keycloak -f aggregion-keycloak/Values.yaml \
+helm upgrade --install --create-namespace --namespace $KUBE_NAMESPACE keycloak aggregion-keycloak -f aggregion-keycloak/Values.yaml \
+  --set keycloak.enabled=true \
   --set auth.adminPassword=${KEYCLOAK_PASSWORD} \
-  --set postgresql.postgresqlPassword=$POSTGRESQL_PASSWORD \
+  --set global.postgresql.auth.postgresPassword=${POSTGRESQL_PASSWORD} \
   --set ingress.hostname=kc.${DEPLOY_HOSTNAME}
