@@ -797,6 +797,15 @@ metadataSeed:
     repository: registry.aggregion.com/metadata-seed
     tag: latest
     pullPolicy: IfNotPresent
+  probes:
+    common:
+      livenessPath: /healthcheck/liveness
+      readinessPath: /healthcheck/readiness
+      healthcheckPort: 9047
+      healthcheckShutdownTimeoutMs: 5000
+    metadataSeed:
+      livenessEnabled: false
+      readinessEnabled: false
   config:
     port: 8100
     logLevel: trace
