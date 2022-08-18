@@ -306,6 +306,8 @@ backend:
     # ```
     #
     # END Block for current provider
+    eosHealthcheckTimeoutMs: 1000
+    eosHealthcheckIntervalMs: 10000
 
     httpSchema: "http"
 
@@ -772,6 +774,8 @@ dataservice:
     endpoint: "http://aggregion-cdp-dataservice-EDIT_THAT.NAMESPACE.svc.cluster.local:9045/api"
     clickhouseUseDirectConnection: true # since 2021-12-13
     clickhouseIsMocked: false # since 2021-12-13
+    eosHealthcheckTimeoutMs: 1000
+    eosHealthcheckIntervalMs: 10000
   glossaryContainers:
     - name: glossary-syncer
       healthcheckPort: 9048

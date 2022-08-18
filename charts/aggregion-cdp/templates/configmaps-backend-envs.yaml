@@ -75,4 +75,6 @@ data:
   HEALTHCHECK_LIVENESS_PATH: {{ .Values.backend.probes.common.livenessPath | quote }}
   HEALTHCHECK_READINESS_PATH: {{ .Values.backend.probes.common.readinessPath | quote }}
   HEALTHCHECK_SHUTDOWN_TIMEOUT_MS: {{ .Values.backend.probes.common.healthcheckShutdownTimeoutMs | quote }}
+  BCMQ_HEALTHCHECK_INTERVAL_MS: {{ .Values.backend.configs.eosHealthcheckIntervalMs | quote }}
+  BCMQ_HEALTHCHECK_TIMEOUT_MS: {{ .Values.backend.configs.eosHealthcheckTimeoutMs | quote }}
 {{- end }}
