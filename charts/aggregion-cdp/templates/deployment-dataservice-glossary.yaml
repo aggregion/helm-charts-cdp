@@ -70,7 +70,7 @@ spec:
             timeoutSeconds: 3
             initialDelaySeconds: 5
             periodSeconds: 15
-        {{- end -}}
+          {{- end -}}
         {{- end -}}
         {{- end }}
       {{- with .Values.dataservice.affinity }}
