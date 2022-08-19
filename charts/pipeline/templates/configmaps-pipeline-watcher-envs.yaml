@@ -7,8 +7,16 @@ metadata:
   labels:
     {{- include "pipeline.labels" . | nindent 4 }}
 data:
-  HTTP_PORT: "{{ .Values.watcher.configs.ports.http.container }}"
+  HEALTHCHECK_LIVENESS_PATH: {{ .Values.watcher.probes.livenessPath | quote }}
+  HEALTHCHECK_PORT: {{ .Values.watcher.probes.healthcheckPort | quote }}
+  HEALTHCHECK_READINESS_PATH: {{ .Values.watcher.probes.readinessPath | quote }}
+  HEALTHCHECK_SHUTDOWN_TIMEOUT_MS: {{ .Values.watcher.probes.healthcheckShutdownTimeoutMs | quote }}
   HTTP_HOSTNAME: "{{ .Values.watcher.configs.httpHostname }}"
-  NODE_ENV: "{{ .Values.watcher.configs.nodeEnv }}"
+  HTTP_PORT: "{{ .Values.watcher.configs.ports.http.container }}"
   LOG_LEVEL: "{{ .Values.watcher.configs.logLevel }}"
+  NODE_ENV: "{{ .Values.watcher.configs.nodeEnv }}"
+  RABBITMQ_HEARTBEAT_INTERVAL: "30"
+  RABBITMQ_RETRY_POLICY_DELAY: "60"
+  RABBITMQ_RETRY_POLICY_MAX_ATTEMPTS: "150"
+  RABBITMQ_RETRY_POLICY_SEQUENCE_ATTEMPTS_NUMBER: "5"
 {{- end }}

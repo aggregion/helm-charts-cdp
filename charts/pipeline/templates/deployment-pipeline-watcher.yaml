@@ -10,6 +10,7 @@ metadata:
   {{- end }}
   labels:
     {{- include "pipeline.watcher.labels" . | nindent 4 }}
+    app.kubernetes.io/component: "pipeline-watcher"
 spec:
   replicas: {{ .Values.watcher.replicaCount }}
   selector:
@@ -23,8 +24,8 @@ spec:
     {{- end }}
       labels:
         {{- include "pipeline.watcher.selectorLabels" . | nindent 8 }}
+        app.kubernetes.io/component: "pipeline-watcher"
     spec:
-      hostname: "{{ .Values.watcher.hostname }}"
       {{- with .Values.imagePullSecrets }}
       imagePullSecrets:
         {{- toYaml . | nindent 8 }}
@@ -47,14 +48,24 @@ spec:
           envFrom:
             - configMapRef:
                 name: "{{ $pipelineWatcherName }}-config"
-          # readinessProbe:
-          #   failureThreshold: 5
-          #   httpGet:
-          #     path: /healthcheck
-          #     port: {{ .Values.watcher.configs.listenInnerPort }}
-          #   initialDelaySeconds: 10
-          #   timeoutSeconds: 3
-          #   periodSeconds: 5
+          {{- if .Values.watcher.probes.livenessEnabled }}
+          livenessProbe:
+            httpGet:
+              path: {{ .Values.watcher.probes.livenessPath }}
+              port: 9047
+            timeoutSeconds: 3
+            initialDelaySeconds: 5
+            periodSeconds: 15
+          {{- end }}
+          {{- if .Values.watcher.probes.readinessEnabled }}
+          readinessProbe:
+            httpGet:
+              path: {{ .Values.watcher.probes.readinessPath }}
+              port: 9047
+            timeoutSeconds: 3
+            initialDelaySeconds: 5
+            periodSeconds: 15
+          {{- end }}
           resources:
             {{- toYaml .Values.watcher.resources | nindent 12 }}
           volumeMounts: []
