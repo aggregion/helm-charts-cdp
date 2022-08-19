@@ -11,6 +11,7 @@ metadata:
   {{- end }}
   labels:
     {{- include "pipeline.runner.labels" . | nindent 4 }}
+    app.kubernetes.io/component: "pipeline-runner"
 spec:
   replicas: {{ .Values.runner.replicaCount }}
   selector:
@@ -24,8 +25,8 @@ spec:
     {{- end }}
       labels:
         {{- include "pipeline.runner.selectorLabels" . | nindent 8 }}
+        app.kubernetes.io/component: "pipeline-runner"
     spec:
-      hostname: "{{ .Values.runner.hostname }}"
       {{- with .Values.imagePullSecrets }}
       imagePullSecrets:
         {{- toYaml . | nindent 8 }}
@@ -48,14 +49,24 @@ spec:
           envFrom:
             - configMapRef:
                 name: "{{ $pipelineRunnerName }}-config"
-          # readinessProbe:
-          #   failureThreshold: 5
-          #   httpGet:
-          #     path: /healthcheck
-          #     port: {{ .Values.runner.configs.listenInnerPort }}
-          #   initialDelaySeconds: 10
-          #   timeoutSeconds: 3
-          #   periodSeconds: 5
+          {{- if .Values.runner.probes.livenessEnabled }}
+          livenessProbe:
+            httpGet:
+              path: {{ .Values.runner.probes.livenessPath }}
+              port: 9047
+            timeoutSeconds: 3
+            initialDelaySeconds: 5
+            periodSeconds: 15
+          {{- end }}
+          {{- if .Values.runner.probes.readinessEnabled }}
+          readinessProbe:
+            httpGet:
+              path: {{ .Values.runner.probes.readinessPath }}
+              port: 9047
+            timeoutSeconds: 3
+            initialDelaySeconds: 5
+            periodSeconds: 15
+          {{- end }}
           resources:
             {{- toYaml .Values.runner.resources | nindent 12 }}
           volumeMounts: []

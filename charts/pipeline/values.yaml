@@ -24,6 +24,13 @@ runner:
     repository: registry.aggregion.com/pipeline-runner
     pullPolicy: IfNotPresent
     tag: bcb186be
+  probes:
+    livenessPath: /healthcheck/liveness
+    readinessPath: /healthcheck/readiness
+    healthcheckPort: 9047
+    healthcheckShutdownTimeoutMs: 5000
+    livenessEnabled: false
+    readinessEnabled: false
   configs:
     # amqpUrl: RabbitMQ instance from aggregion-externals chart. Should be common for DCP (CDP) and this service.
     amqpUrl: "amqp://..."
@@ -81,7 +88,7 @@ runner:
       annotations:
         aggregion.dev/instance: "common"
       podTemplate: {}
-  resuources: {}
+  resources: {}
   restartPolicy: Always
   nameOverride: ""
   fullnameOverride: ""
@@ -105,6 +112,13 @@ watcher:
     repository: registry.aggregion.com/pipeline-watcher
     pullPolicy: IfNotPresent
     tag: bcb186be
+  probes:
+    livenessPath: /healthcheck/liveness
+    readinessPath: /healthcheck/readiness
+    healthcheckPort: 9047
+    healthcheckShutdownTimeoutMs: 5000
+    livenessEnabled: false
+    readinessEnabled: false
   configs:
     ports:
       http:
@@ -113,7 +127,7 @@ watcher:
     httpHostname: 0.0.0.0
     nodeEnv: production
     logLevel: info
-  resuources: {}
+  resources: {}
   restartPolicy: Always
   nameOverride: ""
   fullnameOverride: ""
