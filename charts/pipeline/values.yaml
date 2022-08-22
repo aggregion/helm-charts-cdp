@@ -12,6 +12,25 @@ serviceAccount:
   annotations: {}
   nameOverride: ""
 
+livenessProbe:
+  enabled: true
+  livenessPath: /healthcheck/liveness
+  healthcheckPort: 9047
+  initialDelaySeconds: 5
+  periodSeconds: 15
+  timeoutSeconds: 5
+  successThreshold: 1
+  failureThreshold: 5
+
+readinessProbe:
+  enabled: true
+  readinessPath: /healthcheck/readiness
+  healthcheckPort: 9047
+  initialDelaySeconds: 5
+  periodSeconds: 15
+  timeoutSeconds: 5
+  successThreshold: 1
+  failureThreshold: 5
 # Runner creates Pipeline resources in k8s
 runner:
   enabled: true

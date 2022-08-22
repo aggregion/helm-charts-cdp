@@ -48,23 +48,27 @@ spec:
           envFrom:
             - configMapRef:
                 name: "{{ $pipelineWatcherName }}-config"
-          {{- if .Values.watcher.probes.livenessEnabled }}
+          {{- if and (.Values.livenessProbe.enabled) (.Values.watcher.probes.livenessEnabled) }}
           livenessProbe:
             httpGet:
               path: {{ .Values.watcher.probes.livenessPath }}
-              port: 9047
-            timeoutSeconds: 3
-            initialDelaySeconds: 5
-            periodSeconds: 15
+              port: {{ .Values.watcher.probes.healthcheckPort }}
+            timeoutSeconds: {{ .Values.livenessProbe.timeoutSeconds }}
+            initialDelaySeconds: {{ .Values.livenessProbe.initialDelaySeconds }}
+            periodSeconds: {{ .Values.livenessProbe.periodSeconds }}
+            successThreshold: {{ .Values.livenessProbe.successThreshold }}
+            failureThreshold: {{ .Values.livenessProbe.failureThreshold }}
           {{- end }}
-          {{- if .Values.watcher.probes.readinessEnabled }}
+          {{- if and (.Values.readinessProbe.enabled) (.Values.watcher.probes.readinessEnabled) }}
           readinessProbe:
             httpGet:
               path: {{ .Values.watcher.probes.readinessPath }}
-              port: 9047
-            timeoutSeconds: 3
-            initialDelaySeconds: 5
-            periodSeconds: 15
+              port: {{ .Values.watcher.probes.healthcheckPort }}
+            timeoutSeconds: {{ .Values.readinessProbe.timeoutSeconds }}
+            initialDelaySeconds: {{ .Values.readinessProbe.initialDelaySeconds }}
+            periodSeconds: {{ .Values.readinessProbe.periodSeconds }}
+            successThreshold: {{ .Values.readinessProbe.successThreshold }}
+            failureThreshold: {{ .Values.readinessProbe.failureThreshold }}
           {{- end }}
           resources:
             {{- toYaml .Values.watcher.resources | nindent 12 }}
