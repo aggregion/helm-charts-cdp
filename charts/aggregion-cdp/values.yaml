@@ -882,6 +882,13 @@ oidcprovider:
     hosts:
       - host: auth.local
     tls: []
+  probes:
+    livenessPath: /healthcheck/liveness
+    readinessPath: /healthcheck/readiness
+    healthcheckPort: 9047
+    healthcheckShutdownTimeoutMs: 5000
+    livenessEnabled: false
+    readinessEnabled: false
   config:
     port: 9055
     clientId: keycloak
