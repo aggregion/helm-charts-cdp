@@ -388,10 +388,10 @@ backend:
     userRolesMap:
       Query:
         Project:
-          get: ['DATA_ASSET_OWNER', 'DATA_STEWARD', 'DATA_RESEARCHER', 'TEAMLEAD', 'ADMIN']
-          list: ['DATA_ASSET_OWNER', 'DATA_STEWARD', 'DATA_RESEARCHER', 'TEAMLEAD', 'ADMIN']
-          incominglist: ['DATA_ASSET_OWNER', 'DATA_STEWARD', 'DATA_RESEARCHER', 'TEAMLEAD']
-          outcominglist: ['DATA_ASSET_OWNER', 'DATA_STEWARD', 'DATA_RESEARCHER', 'TEAMLEAD']
+          get: ['DATA_RESEARCHER', 'TEAMLEAD', 'ADMIN']
+          list: ['DATA_RESEARCHER', 'TEAMLEAD', 'ADMIN']
+          incominglist: ['DATA_RESEARCHER', 'TEAMLEAD']
+          outcominglist: ['DATA_RESEARCHER', 'TEAMLEAD']
         DataLabVM:
           get: ['TEAMLEAD', 'DATA_RESEARCHER', 'ADMIN']
           list: ['TEAMLEAD', 'DATA_RESEARCHER', 'ADMIN']
