@@ -6,7 +6,6 @@ dependencies:
 - condition: postgresql.enabled
   name: postgresql
   version: 11.x.x
-  condition: keycloak.enabled
 - name: common
   version: 1.x.x
   condition: keycloak.enabled
