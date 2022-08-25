@@ -185,7 +185,16 @@ backend:
     cleanroomStatusWatcher:
       livenessEnabled: false
       readinessEnabled: false
-    blockchainUpdater:
+    bcDatasetRequestsUpdater:
+      livenessEnabled: false
+      readinessEnabled: false
+    bcScriptsUpdater:
+      livenessEnabled: false
+      readinessEnabled: false
+    bcProjectsUpdater:
+      livenessEnabled: false
+      readinessEnabled: false
+    bcInteractionsUpdater:
       livenessEnabled: false
       readinessEnabled: false
     datasetUploader:
