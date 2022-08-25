@@ -22,7 +22,7 @@ spec:
 ---
 {{- end -}}
 
-{{- if .Values.backend.probes.blockchainUpdater.livenessEnabled }}
+{{- if or .Values.backend.probes.bcDatasetRequestsUpdater.livenessEnabled .Values.backend.probes.bcInteractionsUpdater.livenessEnabled .Values.backend.probes.bcProjectsUpdater.livenessEnabled .Values.backend.probes.bcScriptsUpdater.livenessEnabled }}
 {{- $component := "bc-updater" }}
 apiVersion: v1
 kind: Service
@@ -33,9 +33,30 @@ metadata:
     prometheus.io/probe: "true"
 spec:
   ports:
+    {{- if .Values.backend.probes.bcDatasetRequestsUpdater.livenessEnabled }}
     - protocol: TCP
-      port: {{ .Values.backend.probes.common.healthcheckPort }}
-      targetPort: {{ .Values.backend.probes.common.healthcheckPort }}
+      name: "bc-datasetrequests-updater"
+      port: 9047
+      targetPort: 9047
+    {{- end }}
+    {{- if .Values.backend.probes.bcInteractionsUpdater.livenessEnabled }}
+    - protocol: TCP
+      name: "bc-interactions-updater"
+      port: 9048
+      targetPort: 9048
+    {{- end }}
+    {{- if .Values.backend.probes.bcProjectsUpdater.livenessEnabled }}
+    - protocol: TCP
+      name: "bc-projects-updater"
+      port: 9049
+      targetPort: 9049
+    {{- end }}
+    {{- if .Values.backend.probes.bcScriptsUpdater.livenessEnabled }}
+    - protocol: TCP
+      name: "bc-scripts-updater"
+      port: 9050
+      targetPort: 9050
+    {{- end }}
   selector:
     app.kubernetes.io/component: "{{ $component }}"
     app.kubernetes.io/name: "{{ $backendName }}"
