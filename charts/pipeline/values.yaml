@@ -42,7 +42,7 @@ runner:
   image:
     repository: registry.aggregion.com/pipeline-runner
     pullPolicy: IfNotPresent
-    tag: bcb186be
+    tag: 0c1f86c5
   probes:
     livenessPath: /healthcheck/liveness
     readinessPath: /healthcheck/readiness
@@ -130,7 +130,7 @@ watcher:
   image:
     repository: registry.aggregion.com/pipeline-watcher
     pullPolicy: IfNotPresent
-    tag: bcb186be
+    tag: ca9ec12e
   probes:
     livenessPath: /healthcheck/liveness
     readinessPath: /healthcheck/readiness

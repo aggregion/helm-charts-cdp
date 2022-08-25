@@ -86,7 +86,7 @@ frontend:
   image:
     repository: registry.aggregion.com/dmp-frontend
     pullPolicy: IfNotPresent
-    tag: "develop"
+    tag: "feature-DMPD-918-prod-story-67100656-1684"
   restartPolicy: Always
   nameOverride: ""
   fullnameOverride: ""
@@ -140,7 +140,7 @@ backend:
   image:
     repository: registry.aggregion.com/dmp-backend
     pullPolicy: IfNotPresent
-    tag: "develop"
+    tag: "feature-DMPD-918-prod-story-80c67b20-1208"
 
   crond:
     image:
@@ -164,7 +164,7 @@ backend:
     image:
       repository: registry.aggregion.com/dmp-seed
       tag: latest
-      pullPolicy: IfNotPresent
+      pullPolicy: Always
     useConfig: retailer
     once: 1
     numberOfCustomers: 0
@@ -697,13 +697,13 @@ dataservice:
   updateStrategy: null
   securityContext: {}
   imageApi:
-    repository: registry.aggregion.com/dataservice-api
+    repository: registry.aggregion.com/dataservice
     pullPolicy: IfNotPresent
-    tag: latest
+    tag: dcp-master-9b43c8ec-21
   imageAtlasEntitySyncer:
     repository: registry.aggregion.com/atlas-entity-syncer
     pullPolicy: IfNotPresent
-    tag: latest
+    tag: master-4aadef97-71
   imageJobRunner:
     repository: curlimages/curl
     pullPolicy: IfNotPresent
@@ -811,7 +811,7 @@ metadataSeed:
     schedule: "0 * * * *"
   image:
     repository: registry.aggregion.com/metadata-seed
-    tag: latest
+    tag: dcp-master-3cdacb7c-19
     pullPolicy: IfNotPresent
   probes:
     common:
@@ -872,7 +872,7 @@ oidcprovider:
   securityContext: {}
   image:
     repository: registry.aggregion.com/oidc-provider
-    pullPolicy: IfNotPresent
+    pullPolicy: Always
     tag: latest
   tolerations: []
   affinity: {}
@@ -925,7 +925,7 @@ emailservice:
     reloader.stakater.com/auto: "true"
   image:
     repository: registry.aggregion.com/email-service
-    pullPolicy: IfNotPresent
+    pullPolicy: Always
     tag: latest
   podAnnotations: {}
   restartPolicy: Always
