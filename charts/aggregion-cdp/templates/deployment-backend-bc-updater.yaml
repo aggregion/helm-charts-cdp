@@ -55,7 +55,7 @@ spec:
           {{- if .Values.backend.probes.bcDatasetRequestsUpdater.livenessEnabled }}
           livenessProbe:
             httpGet:
-              path: {{.Values.backend.probes.common.livenessPath }}
+              path: {{ .Values.backend.probes.common.livenessPath }}
               port: 9047
             timeoutSeconds: 3
             initialDelaySeconds: 5
@@ -64,7 +64,7 @@ spec:
           {{- if .Values.backend.probes.bcDatasetRequestsUpdater.readinessEnabled }}
           readinessProbe:
             httpGet:
-              path: {{.Values.backend.probes.common.readinessPath }}
+              path: {{ .Values.backend.probes.common.readinessPath }}
               port: 9047
             timeoutSeconds: 3
             initialDelaySeconds: 5
@@ -94,7 +94,7 @@ spec:
           {{- if .Values.backend.probes.bcInteractionsUpdater.livenessEnabled }}
           livenessProbe:
             httpGet:
-              path: {{.Values.backend.probes.common.livenessPath }}
+              path: {{ .Values.backend.probes.common.livenessPath }}
               port: 9048
             timeoutSeconds: 3
             initialDelaySeconds: 5
@@ -103,7 +103,7 @@ spec:
           {{- if .Values.backend.probes.bcInteractionsUpdater.readinessEnabled }}
           readinessProbe:
             httpGet:
-              path: {{.Values.backend.probes.common.readinessPath }}
+              path: {{ .Values.backend.probes.common.readinessPath }}
               port: 9048
             timeoutSeconds: 3
             initialDelaySeconds: 5
@@ -133,7 +133,7 @@ spec:
           {{- if .Values.backend.probes.bcProjectsUpdater.livenessEnabled }}
           livenessProbe:
             httpGet:
-              path: {{.Values.backend.probes.common.livenessPath }}
+              path: {{ .Values.backend.probes.common.livenessPath }}
               port: 9049
             timeoutSeconds: 3
             initialDelaySeconds: 5
@@ -142,7 +142,7 @@ spec:
           {{- if .Values.backend.probes.bcProjectsUpdater.readinessEnabled }}
           readinessProbe:
             httpGet:
-              path: {{.Values.backend.probes.common.readinessPath }}
+              path: {{ .Values.backend.probes.common.readinessPath }}
               port: 9049
             timeoutSeconds: 3
             initialDelaySeconds: 5
@@ -172,7 +172,7 @@ spec:
           {{- if .Values.backend.probes.bcScriptsUpdater.livenessEnabled }}
           livenessProbe:
             httpGet:
-              path: {{.Values.backend.probes.common.livenessPath }}
+              path: {{ .Values.backend.probes.common.livenessPath }}
               port: 9050
             timeoutSeconds: 3
             initialDelaySeconds: 5
@@ -181,7 +181,7 @@ spec:
           {{- if .Values.backend.probes.bcScriptsUpdater.readinessEnabled }}
           readinessProbe:
             httpGet:
-              path: {{.Values.backend.probes.common.readinessPath }}
+              path: {{ .Values.backend.probes.common.readinessPath }}
               port: 9050
             timeoutSeconds: 3
             initialDelaySeconds: 5
