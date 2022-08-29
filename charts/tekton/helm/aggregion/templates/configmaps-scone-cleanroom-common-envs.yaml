@@ -16,4 +16,7 @@ data:
   COMMON_SESSION_NAME: "{{ .Values.sconeCleanroom.casCommonSessionName }}"
   DCP_BASE_URL: "{{ .Values.sconeCleanroom.dcpBaseUrl }}" # Without trainilg slash
   SCONE_CAS_ADDR: "{{ .Values.sconeCleanroom.casAddr }}"
+  {{- if not .Values.sconeCleanroom.nodeTlsRejectUnauthorized }}
+  NODE_TLS_REJECT_UNAUTHORIZED: "0"
+  {{- end }}
 {{- end -}}

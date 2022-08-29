@@ -19,6 +19,7 @@ debugCleanroom:
   enabled: true
   enclaveServiceBaseUrl: http://...
   dcpBaseUrl: http://backend
+  nodeTlsRejectUnauthorized: true
   datasetDownloader:
     image: registry.aggregion.com/cleanroom/dataset-downloader-debug
     imageTag: latest
@@ -48,6 +49,7 @@ sconeCleanroom:
   lasPort: 18766
   runMode: production
   dcpBaseUrl: http://backend
+  nodeTlsRejectUnauthorized: true
   datasetDownloader:
     image: registry.aggregion.com/cleanroom/dataset-downloader-production
     imageTag: 0.3.6
