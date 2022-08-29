@@ -6,4 +6,7 @@ metadata:
   name: "debug-cleanroom-common-config-{{ $name }}"
 data:
   DCP_BASE_URL: "{{ .Values.debugCleanroom.dcpBaseUrl }}" # Without trainilg slash
+  {{- if not .Values.debugCleanroom.nodeTlsRejectUnauthorized }}
+  NODE_TLS_REJECT_UNAUTHORIZED: "0"
+  {{- end }}
 {{- end -}}
