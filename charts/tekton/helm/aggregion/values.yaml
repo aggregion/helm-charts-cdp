@@ -52,7 +52,7 @@ sconeCleanroom:
   nodeTlsRejectUnauthorized: true
   datasetDownloader:
     image: registry.aggregion.com/cleanroom/dataset-downloader-production
-    imageTag: 0.3.6
+    imageTag: 0.5.5
     imagePullPolicy: IfNotPresent
     debug: false
     sconeHeap: 2G
@@ -63,7 +63,7 @@ sconeCleanroom:
         memory: 3Gi
   pythonRunner:
     image: registry.aggregion.com/cleanroom/python-runner-production
-    imageTag: 0.4.2
+    imageTag: 0.5.6
     imagePullPolicy: IfNotPresent
     debug: false
     sconeHeap: 16G
@@ -74,7 +74,7 @@ sconeCleanroom:
         memory: 20Gi
   resultPublisher:
     image: registry.aggregion.com/cleanroom/result-publisher-production
-    imageTag: 0.2.8
+    imageTag: 0.5.1
     imagePullPolicy: IfNotPresent
     debug: false
     sconeHeap: 2G
@@ -85,7 +85,7 @@ sconeCleanroom:
         memory: 3Gi
   scriptDownloader:
     image: registry.aggregion.com/cleanroom/scripts-downloader-production
-    imageTag: 0.4.6
+    imageTag: 0.6.0
     imagePullPolicy: IfNotPresent
     debug: false
     sconeHeap: 2G
