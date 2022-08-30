@@ -27,6 +27,5 @@ data:
   NODE_ENV: {{ .Values.oidcprovider.config.nodeEnv | quote }}
   RABBITMQ_URI: {{ .Values.backend.configs.rabbitmqUrl | quote }}
   REDIS_URI: "redis://{{ .Values.backend.configs.redisHost }}:{{ .Values.backend.configs.redisPort }}"
-  SUCCESS_PASSWORD_RESET_REDIRECT_URI: {{ .Values.oidcprovider.config.successPasswordResetRedirectUri | quote }}
   SUCCESS_SIGNUP_REDIRECT_URI: {{ .Values.oidcprovider.config.successSignupRedirectUri | quote }}
 {{- end }}
