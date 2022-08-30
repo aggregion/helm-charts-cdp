@@ -1,4 +1,4 @@
-{{- if and (.Values.backend.enabled) (.Values.backend.configs.serviceBlockchainUpdaterEnabled) }}
+{{- if and (.Values.backend.enabled) (.Values.backend.configs.serviceBlockchainUpdaterEnabled) not (.Values.backend.configs.serviceBlockchainUpdaterOldStyle) }}
 {{- $name := "backend" }}
 {{- $backendName := include "cdp.backend.fullname" . }}
 apiVersion: apps/v1

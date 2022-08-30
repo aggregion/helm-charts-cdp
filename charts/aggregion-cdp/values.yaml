@@ -203,6 +203,9 @@ backend:
     jobScheduler:
       livenessEnabled: false
       readinessEnabled: false
+    blockchainUpdater:
+      livenessEnabled: false
+      readinessEnabled: false
   configs:
     # infrastructure dependencies
     mongoUrl: "mongodb://mongo:27017/dmp"
@@ -245,6 +248,7 @@ backend:
     servicePipelineDebugHasherStatusWatcherEnabled: true
     servicePipelineDebugCleanroomStatusWatcherEnabled: true
     serviceJobSchedulerEnabled: false
+    serviceBlockchainUpdaterOldStyle: false
     interactionIV: "dc189cc59c532e75e957f5dc64f03b82"
     # control access policy module
     authLocalAccessPolicyEnabled: false
