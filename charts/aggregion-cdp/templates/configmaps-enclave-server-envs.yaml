@@ -41,6 +41,9 @@ data:
   {{ $envPrefix }}WORKER_HEAP_SIZE_MB: "{{ .Values.enclave.configs.workerHeapSizeMb }}"
   {{ $envPrefix }}RABBITMQ_URL: "{{ .Values.backend.configs.rabbitmqUrl }}"
   {{ $envPrefix }}GFR_IGNORING_STRINGS: "{{ .Values.enclave.configs.gfr.ignoreStrings | toJson }}"
+  {{- if not .Values.enclave.configs.nodeTlsRejectUnauthorized }}
+  {{ $envPrefix }}NODE_TLS_REJECT_UNAUTHORIZED: "0"
+  {{- end }}
 
   {{- if .Values.enclave.scone.enabled }}
   CONFIG_FILE: "/var/local.json"
@@ -62,7 +65,4 @@ data:
   {{- end }}
   {{- end }}
 
-  {{- if not .Values.enclave.configs.nodeTlsRejectUnauthorized }}
-  {{ $envPrefix }}NODE_TLS_REJECT_UNAUTHORIZED: "0"
-  {{- end }}
 {{- end }}
