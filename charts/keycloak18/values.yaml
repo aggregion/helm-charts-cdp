@@ -11,12 +11,15 @@ keycloak:
 ## @param global.storageClass Global StorageClass for Persistent Volume(s)
 ##
 global:
-  imageRegistry: ""
+  imageRegistry: "registry.aggregion.com"
   ## E.g.
   ## imagePullSecrets:
   ##   - myRegistryKeySecretName
   ##
-  imagePullSecrets: []
+  imagePullSecrets:
+    - aggregionregistry
+    # - registry-aggregion
+    # - registry-harbor
   storageClass: ""
 
 ## @section Common parameters
