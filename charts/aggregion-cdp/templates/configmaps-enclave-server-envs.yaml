@@ -63,9 +63,6 @@ data:
   {{- end }}
 
   {{- if not .Values.enclave.configs.nodeTlsRejectUnauthorized }}
-  NODE_TLS_REJECT_UNAUTHORIZED: "0"
-  {{- if not eq $envPrefix "" }}
   {{ $envPrefix }}NODE_TLS_REJECT_UNAUTHORIZED: "0"
-  {{- end }}
   {{- end }}
 {{- end }}
