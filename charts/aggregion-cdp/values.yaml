@@ -932,6 +932,11 @@ oidcprovider:
     successSignupRedirectUri: http://localhost:9055/signup
     i18nextDebug: false
     nodeEnv: production
+    ttl:
+      accessToken: 3600
+      idToken: 3600
+      interaction: 172800
+      refreshToken: 1209600
 
 emailservice:
   enabled: false
