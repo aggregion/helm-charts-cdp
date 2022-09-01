@@ -8,35 +8,35 @@ metadata:
     {{- include "cdp.dataservice.labels" . | nindent 4 }}
 data:
   APP_NAME: {{ .Values.dataservice.config.appName | quote }}
-  LOG_LEVEL: {{ .Values.dataservice.config.logLevel | quote }}
-  LOG_PRETTY_PRINT: {{ .Values.dataservice.config.logPrettyPrint | quote }}
-  NODE_ENV: {{ .Values.dataservice.config.nodeEnv | quote }}
-  PORT: {{ .Values.dataservice.config.port | quote }}
-  MONGO_DB_URI: {{ .Values.dataservice.config.mongoDbUri | quote }}
-  MONGO_DB_URI_TEST: {{ .Values.dataservice.config.mongoDbUriTest | quote }}
-  MONGO_DEBUG: {{ .Values.dataservice.config.mongoDebug | quote }}
-  TOKEN_EXPIRATION_TIME_IN_SEC: {{ .Values.dataservice.config.tokenExpirationTimeInSec | quote }}
-  TOKEN_SECRET_KEY: {{ .Values.dataservice.config.tokenSecretKey | quote }}
-  TOKEN_ISSUER: {{ .Values.dataservice.config.tokenIssuer | quote }}
+  BCMQ_HEALTHCHECK_INTERVAL_MS: {{ .Values.dataservice.config.eosHealthcheckIntervalMs | quote }}
+  BCMQ_HEALTHCHECK_TIMEOUT_MS: {{ .Values.dataservice.config.eosHealthcheckTimeoutMs | quote }}
+  BCMQ_LIMIT: {{ .Values.dataservice.config.bcmqLimit | quote }}
+  BCMQ_POLLING_INTERVAL: {{ .Values.dataservice.config.bcmqPollingInterval | quote }}
   BLOCKCHAIN_NODE_URL: {{ .Values.backend.configs.eosNodeUrl | quote }}
   BLOCKCHAIN_WALLET_ORG_ID: {{ .Values.backend.configs.eosWalletOwnerOrgId | quote }}
   BLOCKCHAIN_WALLET_PUBLIC_KEY: {{ .Values.backend.configs.eosWalletOwnerPub | quote }}
-  BCMQ_POLLING_INTERVAL: {{ .Values.dataservice.config.bcmqPollingInterval | quote }}
-  BCMQ_LIMIT: {{ .Values.dataservice.config.bcmqLimit | quote }}
-  TRINO_HOST: {{ .Values.dataservice.config.trinoHost | quote }}
-  TRINO_PORT: {{ .Values.dataservice.config.trinoPort | quote }}
-  RABBITMQ_URI: {{ .Values.dataservice.config.rabbitmqUri | quote }}
-  PROVIDER_INSTANCE_ID: {{ .Values.backend.configs.providerInstanceId | quote }}
-  CLICKHOUSE_USE_DIRECT_CONNECTION: {{ .Values.dataservice.config.clickhouseUseDirectConnection | quote }}
   CLICKHOUSE_IS_MOCKED: {{ .Values.dataservice.config.clickhouseIsMocked | quote }}
-  RABBITMQ_HEARTBEAT_INTERVAL: "30"
-  RABBITMQ_RETRY_POLICY_SEQUENCE_ATTEMPTS_NUMBER: "5"
-  RABBITMQ_RETRY_POLICY_MAX_ATTEMPTS: "150"
-  RABBITMQ_RETRY_POLICY_DELAY: "60"
-  HEALTHCHECK_PORT: {{ .Values.dataservice.probes.common.healthcheckPort | quote }}
+  CLICKHOUSE_USE_DIRECT_CONNECTION: {{ .Values.dataservice.config.clickhouseUseDirectConnection | quote }}
   HEALTHCHECK_LIVENESS_PATH: {{ .Values.dataservice.probes.common.livenessPath | quote }}
+  HEALTHCHECK_PORT: {{ .Values.dataservice.probes.common.healthcheckPort | quote }}
   HEALTHCHECK_READINESS_PATH: {{ .Values.dataservice.probes.common.readinessPath | quote }}
   HEALTHCHECK_SHUTDOWN_TIMEOUT_MS: {{ .Values.dataservice.probes.common.healthcheckShutdownTimeoutMs | quote }}
-  BCMQ_HEALTHCHECK_INTERVAL_MS: {{ .Values.dataservice.config.eosHealthcheckIntervalMs | quote }}
-  BCMQ_HEALTHCHECK_TIMEOUT_MS: {{ .Values.dataservice.config.eosHealthcheckTimeoutMs | quote }}
+  LOG_LEVEL: {{ .Values.dataservice.config.logLevel | quote }}
+  LOG_PRETTY_PRINT: {{ .Values.dataservice.config.logPrettyPrint | quote }}
+  MONGO_DB_URI: {{ .Values.dataservice.config.mongoDbUri | quote }}
+  MONGO_DB_URI_TEST: {{ .Values.dataservice.config.mongoDbUriTest | quote }}
+  MONGO_DEBUG: {{ .Values.dataservice.config.mongoDebug | quote }}
+  NODE_ENV: {{ .Values.dataservice.config.nodeEnv | quote }}
+  PORT: {{ .Values.dataservice.config.port | quote }}
+  PROVIDER_INSTANCE_ID: {{ .Values.backend.configs.providerInstanceId | quote }}
+  RABBITMQ_HEARTBEAT_INTERVAL: "30"
+  RABBITMQ_RETRY_POLICY_DELAY: "60"
+  RABBITMQ_RETRY_POLICY_MAX_ATTEMPTS: "150"
+  RABBITMQ_RETRY_POLICY_SEQUENCE_ATTEMPTS_NUMBER: "5"
+  RABBITMQ_URI: {{ .Values.dataservice.config.rabbitmqUri | quote }}
+  TOKEN_EXPIRATION_TIME_IN_SEC: {{ .Values.dataservice.config.tokenExpirationTimeInSec | quote }}
+  TOKEN_ISSUER: {{ .Values.dataservice.config.tokenIssuer | quote }}
+  TOKEN_SECRET_KEY: {{ .Values.dataservice.config.tokenSecretKey | quote }}
+  TRINO_HOST: {{ .Values.dataservice.config.trinoHost | quote }}
+  TRINO_PORT: {{ .Values.dataservice.config.trinoPort | quote }}
 {{- end }}

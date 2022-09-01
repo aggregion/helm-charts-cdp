@@ -8,10 +8,18 @@ metadata:
   labels:
     {{- include "cdp.emailservice.labels" . | nindent 4 }}
 data:
-  RABBITMQ_URI: {{ .Values.backend.configs.rabbitmqUrl | quote }}
   CONSUMING_QUEUE_NAME: {{ .Values.emailservice.config.queueName | quote }}
-  DMP_BACKEND_URL: "http://{{ $backendName }}:{{ .Values.backend.service.api.port }}"
   DMP_BACKEND_TOKEN: {{ .Values.backend.configs.dmpSecret | quote }}
+  DMP_BACKEND_URL: "http://{{ $backendName }}:{{ .Values.backend.service.api.port }}"
+  HEALTHCHECK_LIVENESS_PATH: {{ .Values.emailservice.probes.livenessPath | quote }}
+  HEALTHCHECK_PORT: {{ .Values.emailservice.probes.healthcheckPort | quote }}
+  HEALTHCHECK_READINESS_PATH: {{ .Values.emailservice.probes.readinessPath | quote }}
+  HEALTHCHECK_SHUTDOWN_TIMEOUT_MS: {{ .Values.emailservice.probes.healthcheckShutdownTimeoutMs | quote }}
   LOG_LEVEL: {{ .Values.emailservice.config.logLevel | quote }}
   LOG_PRETTY_PRINT: {{ .Values.emailservice.config.logPrettyPrint | quote }}
+  RABBITMQ_HEARTBEAT_INTERVAL: {{ 30 | quote }}
+  RABBITMQ_RETRY_POLICY_DELAY: {{ 60 | quote }}
+  RABBITMQ_RETRY_POLICY_MAX_ATTEMPTS: {{ 150 | quote }}
+  RABBITMQ_RETRY_POLICY_SEQUENCE_ATTEMPTS_NUMBER: {{ 5 | quote }}
+  RABBITMQ_URI: {{ .Values.backend.configs.rabbitmqUrl | quote }}
 {{- end }}
