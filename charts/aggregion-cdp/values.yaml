@@ -855,6 +855,15 @@ authservice:
   service:
     type: ClusterIP
     port: 80 # external
+  probes:
+    common:
+      livenessPath: /healthcheck/liveness
+      readinessPath: /healthcheck/readiness
+      healthcheckPort: 9047
+      healthcheckShutdownTimeoutMs: 5000
+    authservice:
+      livenessEnabled: false
+      readinessEnabled: false
   config:
     appName: authservice-api
     logLevel: trace
