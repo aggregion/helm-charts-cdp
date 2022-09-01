@@ -8,17 +8,21 @@ metadata:
     {{- include "cdp.authservice.labels" . | nindent 4 }}
 data:
   APP_NAME: {{ .Values.authservice.config.appName | quote }}
-  LOG_LEVEL: {{ .Values.authservice.config.logLevel | quote }}
-  LOG_PRETTY_PRINT: {{ .Values.authservice.config.logPrettyPrint | quote }}
-  NODE_ENV: {{ .Values.authservice.config.nodeEnv | quote }}
-  PORT: {{ .Values.authservice.config.port | quote }}
-  MONGO_DB_URI: {{ .Values.authservice.config.mongoDbUri | quote }}
-  MONGO_DEBUG: {{ .Values.authservice.config.mongoDebug | quote }}
-  JWT_TOKEN_EXPIRATION_TIME: {{ .Values.authservice.config.jwtTokenExpirationTimeInSeconds | quote }}
+  HEALTHCHECK_LIVENESS_PATH: {{ .Values.authservice.probes.livenessPath | quote }}
+  HEALTHCHECK_PORT: {{ .Values.authservice.probes.healthcheckPort | quote }}
+  HEALTHCHECK_READINESS_PATH: {{ .Values.authservice.probes.readinessPath | quote }}
+  HEALTHCHECK_SHUTDOWN_TIMEOUT_MS: {{ .Values.authservice.probes.healthcheckShutdownTimeoutMs | quote }}
   JWT_INVITE_EXPIRATION_TIME: {{ .Values.authservice.config.jwtInviteExpirationTimeInSeconds | quote }}
   JWT_SECRET_KEY: {{ .Values.authservice.config.jwtSecretKey | quote }}
+  JWT_TOKEN_EXPIRATION_TIME: {{ .Values.authservice.config.jwtTokenExpirationTimeInSeconds | quote }}
   LOCAL_ACCESS_POLICY_CAN_CONFIGURE: {{ .Values.authservice.config.localAccessPolicyCanConfigure | quote }}
   LOCAL_ACCESS_POLICY_ENABLED: {{ .Values.authservice.config.localAccessPolicyEnabled | quote }}
   LOCAL_PROVIDER_NAME: {{ .Values.backend.configs.providerName | quote }}
+  LOG_LEVEL: {{ .Values.authservice.config.logLevel | quote }}
+  LOG_PRETTY_PRINT: {{ .Values.authservice.config.logPrettyPrint | quote }}
+  MONGO_DB_URI: {{ .Values.authservice.config.mongoDbUri | quote }}
+  MONGO_DEBUG: {{ .Values.authservice.config.mongoDebug | quote }}
+  NODE_ENV: {{ .Values.authservice.config.nodeEnv | quote }}
+  PORT: {{ .Values.authservice.config.port | quote }}
   PROVIDER_INSTANCE_ID: {{ .Values.backend.configs.providerInstanceId | quote }}
 {{- end }}
