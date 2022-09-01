@@ -17,7 +17,7 @@ data:
   CLIENT_SCOPES: {{ .Values.oidcprovider.config.clientScopes | quote }}
   CLIENT_SECRET: {{ .Values.oidcprovider.config.clientSecret | quote }}
   COOKIES_KEYS: {{ .Values.oidcprovider.config.cookiesKeys | toJson | quote }}
-  FEATURES_RP_INITIATED_LOGOUT: {{ .Values.oidcprovider.config.features.rpInitiatedLogout }}
+  FEATURES_RP_INITIATED_LOGOUT: {{ .Values.oidcprovider.config.features.rpInitiatedLogout | quote }}
   HEALTHCHECK_LIVENESS_PATH: {{ .Values.oidcprovider.probes.livenessPath | quote }}
   HEALTHCHECK_PORT: {{ .Values.backend.probes.common.healthcheckPort | quote }}
   HEALTHCHECK_READINESS_PATH: {{ .Values.oidcprovider.probes.readinessPath | quote }}
