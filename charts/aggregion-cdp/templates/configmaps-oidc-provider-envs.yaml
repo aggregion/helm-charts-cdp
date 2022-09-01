@@ -19,7 +19,7 @@ data:
   COOKIES_KEYS: {{ .Values.oidcprovider.config.cookiesKeys | toJson | quote }}
   FEATURES_RP_INITIATED_LOGOUT: {{ .Values.oidcprovider.config.features.rpInitiatedLogout | quote }}
   HEALTHCHECK_LIVENESS_PATH: {{ .Values.oidcprovider.probes.livenessPath | quote }}
-  HEALTHCHECK_PORT: {{ .Values.backend.probes.common.healthcheckPort | quote }}
+  HEALTHCHECK_PORT: {{ .Values.oidcprovider.probes.healthcheckPort | quote }}
   HEALTHCHECK_READINESS_PATH: {{ .Values.oidcprovider.probes.readinessPath | quote }}
   HEALTHCHECK_SHUTDOWN_TIMEOUT_MS: {{ .Values.oidcprovider.probes.healthcheckShutdownTimeoutMs | quote }}
   I18NEXT_DEBUG: {{ .Values.oidcprovider.config.i18nextDebug | quote }}
