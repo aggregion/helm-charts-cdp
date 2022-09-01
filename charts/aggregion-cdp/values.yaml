@@ -954,6 +954,13 @@ emailservice:
   securityContext: {}
   tolerations: []
   affinity: {}
+  probes:
+    livenessPath: /healthcheck/liveness
+    readinessPath: /healthcheck/readiness
+    healthcheckPort: 9047
+    healthcheckShutdownTimeoutMs: 5000
+    livenessEnabled: false
+    readinessEnabled: false
   config:
     queueName: emails
     logLevel: trace
