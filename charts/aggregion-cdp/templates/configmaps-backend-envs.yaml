@@ -13,6 +13,9 @@ metadata:
 data:
   API_ENDPOINT: "http://{{ $backendName }}:{{ .Values.backend.service.api.port }}/graphql"
   REACT_APP_CURRENCY: "{{ .Values.frontend.configs.currency }}"
+  {{- if .Values.oidcprovider.enabled }}
+  ENABLE_USER_INVITATION_FEATURE: "true"
+  {{- end }}
   ATLAS_URL: "{{ .Values.backend.configs.atlasUrl }}"
   FILES_ENDPOINT: "http://{{ $backendName }}:{{ .Values.backend.service.api.port }}/"
   SERVER_PORT: "{{ .Values.backend.configs.listenPort }}"
