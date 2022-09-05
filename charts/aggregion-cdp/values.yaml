@@ -57,8 +57,9 @@ gatekeeper:
     clientSecret: XXxxXXxxXXxxXXxxXXxxXXxxXXxxXXxx
     discoveryUrl: http://keycloak/realms/ad1/.well-known/openid-configuration
     enableDefaultDeny: true
-    enableRefreshTokens: true
+    enableJsonLogging: true
     enableMetrics: false
+    enableRefreshTokens: true
     enableSessionCookies: true
     encryptionKey: xxXXxxXXxxXXxxXX
     skipOpenidProviderTlsVerify: true
