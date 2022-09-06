@@ -237,6 +237,12 @@ backend:
     dataserviceViaFrontendEnabled: false
     logLevel: "debug"
     migrationEnabled: true
+    # auth service client settings
+    authService:
+      concurrency: 20
+      cache:
+        enabled: true
+        ttl: 60
     # services to be enabled or not
     serviceMatchingStatusWatcherEnabled: true
     serviceMatchingStatusResponseWatcherEnabled: true
