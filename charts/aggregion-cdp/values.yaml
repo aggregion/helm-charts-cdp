@@ -406,6 +406,9 @@ backend:
           timeout: "1h0m0s"
           pipelineName: "debug-hasher"
           statusQueue: "pipeline_debug_hasher_event_status"
+    metrics:
+      isEnabled: false
+      path: "/metrics"
     userRolesMap:
       Query:
         Project:
