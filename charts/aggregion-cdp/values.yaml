@@ -44,6 +44,11 @@ readinessProbe:
   successThreshold: 1
   failureThreshold: 5
 
+metrics:
+  enabled: false
+  serviceMonitor:
+    enabled: false
+
 gatekeeper:
   enabled: false
   image:

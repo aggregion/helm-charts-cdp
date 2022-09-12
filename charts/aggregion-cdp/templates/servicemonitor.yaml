@@ -1,0 +1,32 @@
+{{- if and .Values.metrics.enabled .Values.metrics.serviceMonitor.enabled }}
+apiVersion: monitor.coreos.com
+kind: ServiceMonitor
+metadata:
+  labels:
+    serviceMonitorSelector: prometheus
+  name: "sm-{{ include "cdp.backend.fullname" . }}"
+  namespace: monitoring
+spec:
+  endpoints:
+    {{- if and .Values.backend.configs.servicePipelineDebugHasherStatusWatcherEnabled .Values.backend.probes.debugHasherStatusWatcher.livenessEnabled }}
+    - interval: 30s
+      port: "debug-hasher"
+      path: {{ .Values.backend.configs.metrics.path }}
+    {{- end }}
+    {{- if and .Values.backend.configs.servicePipelineDebugCleanroomStatusWatcherEnabled .Values.backend.probes.cleanroomStatusWatcher.livenessEnabled }}
+    - interval: 30s
+      port: "cleanroom"
+      path: {{ .Values.backend.configs.metrics.path }}
+    {{- end }}
+    {{- if and .Values.backend.enabled .Values.backend.probes.api.livenessEnabled }}
+    - interval: 30s
+      port: "backend-api"
+      path: {{ .Values.backend.configs.metrics.path }}
+    {{- end }}
+  namespaceSelector:
+    matchNames:
+      - {{ .Values.backend.configs.datalabDmpNamespace }}
+  selector:
+    matchLabels:
+      operated-prometheus: "true"
+{{- end }}
