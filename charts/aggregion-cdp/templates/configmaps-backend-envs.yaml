@@ -84,5 +84,5 @@ data:
   BCMQ_HEALTHCHECK_INTERVAL_MS: {{ .Values.backend.configs.eosHealthcheckIntervalMs | quote }}
   BCMQ_HEALTHCHECK_TIMEOUT_MS: {{ .Values.backend.configs.eosHealthcheckTimeoutMs | quote }}
   METRICS_PATH: {{ .Values.backend.configs.metrics.path }}
-  METRICS_ENABLED: {{ .Values.backend.configs.metrics.isEnabled | quote }}
+  METRICS_ENABLED: {{ and .Values.metrics.enabled .Values.backend.configs.metrics.isEnabled | quote }}
 {{- end }}
