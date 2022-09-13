@@ -10,6 +10,7 @@ metadata:
 data:
   ADAPTER: "redis"
   APPLICATION_PORT: {{ .Values.oidcprovider.config.port | quote }}
+  AUTH_PAGE_URL: "https://{{ (index .Values.frontend.ingress.hosts 0).host }}"
   AUTH_SERVICE_ENDPOINT: "http://{{ $authserviceName }}:{{ .Values.authservice.service.port }}"
   CLIENT_ID: {{ .Values.oidcprovider.config.clientId | quote }}
   CLIENT_POST_LOGOUT_REDIRECT_URIS: {{ .Values.oidcprovider.config.clientPostLogoutRedirectUris | toJson | quote }}
