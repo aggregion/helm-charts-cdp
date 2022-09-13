@@ -635,6 +635,11 @@ enclave:
     repository: registry.aggregion.com/enclave-external-services
     pullPolicy: IfNotPresent
     tag: "develop"
+  probes:
+    livenessPath: /healthcheck/liveness
+    readinessPath: /healthcheck/readiness
+    livenessEnabled: false
+    readinessEnabled: false
   configs:
     # the key (pair with public key) is used to authenticate another enclaves
     dataserviceToken: "dataserviceToken"
