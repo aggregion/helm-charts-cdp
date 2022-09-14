@@ -29,6 +29,7 @@ data:
   NODE_ENV: {{ .Values.oidcprovider.config.nodeEnv | quote }}
   RABBITMQ_URI: {{ .Values.backend.configs.rabbitmqUrl | quote }}
   REDIS_URI: "redis://{{ .Values.backend.configs.redisHost }}:{{ .Values.backend.configs.redisPort }}"
+  SESSION_KEYS: {{ .Values.oidcprovider.config.sessionKeys | toJson | quote }}
   SUCCESS_SIGNUP_REDIRECT_URI: {{ .Values.oidcprovider.config.successSignupRedirectUri | quote }}
   TTL_ACCESS_TOKEN: {{ .Values.oidcprovider.config.ttl.accessToken | quote }}
   TTL_ID_TOKEN: {{ .Values.oidcprovider.config.ttl.idToken | quote }}
