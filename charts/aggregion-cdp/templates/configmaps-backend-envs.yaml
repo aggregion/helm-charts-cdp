@@ -68,7 +68,7 @@ data:
   PIPELINES_CLEANROOM_TIMEOUT: "{{ .Values.backend.configs.pipelineRunner.pipelines.cleanroom.timeout }}"
   PIPELINES_CLEANROOM_NAME: "{{ .Values.backend.configs.pipelineRunner.pipelines.cleanroom.pipelineName }}"
   PIPELINES_CLEANROOM_RESULT_QUEUE: "{{ .Values.backend.configs.pipelineRunner.pipelines.cleanroom.statusQueue }}"
-  PIPELINES_STOPPER_QUEUE: {{ .Values.backend.configs.pipelineStopper.queue | quote }}
+  PIPELINE_STOPPER_QUEUE: {{ .Values.backend.configs.pipelineStopper.queue | quote }}
 
   PIPELINES_DEBUG_HASHER_NAMESPACE: "{{ .Values.backend.configs.pipelineRunner.pipelines.debugHasher.namespace }}"
   PIPELINES_DEBUG_HASHER_PVC_SIZE: "{{ .Values.backend.configs.pipelineRunner.pipelines.debugHasher.pvcSize }}"
