@@ -23,6 +23,11 @@ spec:
       port: "backend-api"
       path: {{ .Values.backend.configs.metrics.path }}
     {{- end }}
+    {{- if and .Values.backend.configs.serviceDatasetUploaderEnabled .Values.backend.probes.datasetUploader.livenessEnabled }}
+    - interval: 30s
+      port: "dataset-uploader"
+      path: {{ .Values.backend.configs.metrics.path }}
+    {{- end }}
   namespaceSelector:
     matchNames:
       - {{ .Values.backend.configs.datalabDmpNamespace }}
