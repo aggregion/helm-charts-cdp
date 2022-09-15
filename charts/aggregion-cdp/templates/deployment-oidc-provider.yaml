@@ -50,6 +50,14 @@ spec:
           {{- if .Values.oidcprovider.probes.readinessEnabled }}
           {{- include "cdp.readinessProbe" . | indent 10 }}
           {{- end }}
+          volumeMounts:
+            - name: oidc-provider-dist-jwks
+              mountPath: /home/node/apps/oidc-provider/dist/jwks.json
+              subPath: jwks.json
+      volumes:
+        - name: oidc-provider--dist-jwks
+          configMap:
+            name: "{{ $oidcProviderName }}-dist-jwks"
       {{- with .Values.oidcprovider.affinity }}
       affinity:
         {{- toYaml . | nindent 8 }}

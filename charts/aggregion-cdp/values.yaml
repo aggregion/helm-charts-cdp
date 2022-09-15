@@ -961,6 +961,43 @@ oidcprovider:
       idToken: 3600
       interaction: 172800
       refreshToken: 1209600
+  jwks: |
+    {
+      "keys": [
+        {
+          "e": "AQAB",
+          "n": "vw6qrT-aX_WB0hzkkfrqSPQ-C3gJBpGbj1Y7S0pJznbx54mDMrVNPQPng_sV5_ACDl9WfzvcHFsYmxrK7Rt1BaV1Gu6QqlxSSee9S5SouWXyelzGV-UdVX2yu0ftr5MrFWFjOLtn9ptbv9r2Lisl5V5br1HF04J1lgGTn5VFEY4VlJb26X5voPO-SwHQoufveeAhE2U-ZsHwdAdScptcLvMe8DCLPJyI3jQYYTfcdxcFQMJ_m-haYVd6KTx5w1jlwO4QDfuZliTgt_p1kUrdhZ1hQ8Y5F9i4edOTcUB_GiYNO7T9xTUQvJFFF52jBXY6TetABVeJoW3M2JFyg0x8Qw",
+          "d": "h7qFqfqLUyx4g6oe_03_7sAE6-TklJQQrS2Xhg9Ki7CYfeKFIBsIuhXx_SL9Fv68lzVHn7AI2OQmgNnx26wr4E0A-pcMktpvYy2MnwsHKl6wehk6luqfgkKAHOgmhRrJ-rBq6rzISLtp3MxTI81naKE2BUDUh0QhAOYx16cVoDfRPQ-pcBFHKpxfwRM6lIVFfBhisARNG5eMUDshU9L3DsQH43Ggc5jz3SwdwprJpACrs022RhzW73AgQFg5CmWruEzqkShENlOQP4VIy9O24ahxhPM_h8prtPsKIQjym8pZAhYvwMdZpMJW8YIOKm8XswSUZMTDKeCeHQAXuUAsoQ",
+          "p": "_KKZ8uI3d2_DrPfBB4y15xiH9qOTwOS4m262KeKtCXif1UTAcVwwxneHIUZgJF_2vchV3dO2R5mUr6QuOWNw7DrYcpw0MA-AcDLcRtxcMYC0VxQFwr5fgdTrlQUv48nfSmyVGjHJM4WkMxhnHE6BY11jnQZPPyPxVNGOGVrgE9s",
+          "q": "wZobJ-b5mTu8h-Mk1TqTDz7yRiAHhgUu-bl-2oLSJNKz5KSOcUY8GedfwsyKbjraj0Ja6wXy5o9JCJs-vaNyL094O052f95gv-bRcYH1T212fPoX0fL4az8MLdGmShA8Q_Hj__92DllFF5szUR-Y51XmIzE3bLWdxJdCk8aVWbk",
+          "dp": "pnq0PlUKPh-db7cYMdRs7mvA9SvYKw3OBUdQrYtdgddGZHDY7BrXXYHYv3mz02SVoXyJ8RMZlFdFnvTvLQw1lsY0alo7HcypU8aAWAXQjyKENLnSDgILx--6isoPQ-l8xnuFSeyy7MvNZ4pWMFYfd45MHWbSBAa4eq9ZF6ZF8W8",
+          "dq": "JQ5aJEkRfULx0xCm_Ck5_LEPrlxzFDPpyeK3ZRulHWc3B4x3tza6Sjr_GUoNNQwOyVzqChIZbAgA8qTEXYfrUyLi4HckN1VZL2H-tLsrOQi6pTE5XfYjlmN68Uovif2Ri2_BND6xWg28K8iJCf4CRkUqx5GkCiq5B-fr1l0sOQ",
+          "qi": "uzQZM2x2Pz5mEkWAkQbnKCXjEb-93bHnpcghuRe47foeSJ3KEcd7oisqofOpJsGFi7Vcd-ea5TZY_iGwm6nJFl_vh3yvZJ4oQJGvxNsk9rzunG-AIpCjk_v2MabwNIaeWoaWxn6Yx7Tq7HgDjKEbJyKg1Vj1yMzqHM_BLyvMo5Y",
+          "kty": "RSA",
+          "kid": "KYjPVqZoPdwWEDrHFCuGd6bJVcI_pLLuSTyUoCcr8Qk",
+          "use": "sig"
+        },
+        {
+          "crv": "P-256",
+          "x": "02k-sv38EpqMFWL341El0MTprqTwTYDhM6T1OnWqXD4",
+          "y": "VBpjfAJyFAQZpIVFxvgIWy6Qxe3EVhiml0bwhCJE9Go",
+          "d": "NHPW36e0GCxfPFfCi3POln6Js3oeCUWY6v9dHuSoizs",
+          "kty": "EC",
+          "kid": "K4zIY2QJmXJsXBsIjUy_q-rpn7uaKkuFBHw_LInAw2o",
+          "alg": "ES256",
+          "use": "sig"
+        },
+        {
+          "crv": "Ed25519",
+          "x": "qrP9L_uydoCd3tJ3aGTKq6c86c0SYeQRVBT0jlHXpKw",
+          "d": "bEUmioKn7zFczd9MiQ35E1gDXIHtsMFNptEF6uCTUJs",
+          "kty": "OKP",
+          "kid": "71JJSTk5kk5i75rMo1V6wEUWWj6qGdEl87-M7Bb06xA",
+          "alg": "EdDSA",
+          "use": "sig"
+        }
+      ]
+    }
 
 emailservice:
   enabled: false

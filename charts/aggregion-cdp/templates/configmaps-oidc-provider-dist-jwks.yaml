@@ -1,0 +1,13 @@
+{{- if and .Values.oidcprovider.enabled }}
+{{- $oidcProviderName := include "cdp.oidcprovider.fullname" . }}
+{{- $authserviceName := include "cdp.authservice.fullname" . }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ $oidcProviderName }}-dist-jwks
+  labels:
+    {{- include "cdp.oidcprovider.labels" . | nindent 4 }}
+data:
+  jwks.json: |
+    {{- .Values.oidcprovider.jwks | nindent 4 }}
+{{- end }}
