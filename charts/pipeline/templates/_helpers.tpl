@@ -41,6 +41,10 @@ If release name contains chart name it will be used as a full name.
 {{- printf "%s" (include "pipeline.fullname" (list . "watcher")) }}
 {{- end }}
 
+{{- define "pipeline.stopper.fullname" -}}
+{{- printf "%s" (include "pipeline.fullname" (list . "stopper")) }}
+{{- end }}
+
 {{/*
 Common labels
 */}}
@@ -69,6 +73,10 @@ app.kubernetes.io/managed-by: {{ .Release.Service }}
 {{- include "pipeline.component.labels" (list . "watcher") }}
 {{- end }}
 
+{{- define "pipeline.stopper.labels" -}}
+{{- include "pipeline.component.labels" (list . "stopper") }}
+{{- end }}
+
 {{/*
 Selector labels
 */}}
@@ -88,6 +96,10 @@ app.kubernetes.io/instance: "{{ .Release.Name }}"
 
 {{- define "pipeline.watcher.selectorLabels" -}}
 {{- include "pipeline.selectorLabels" (list . "watcher") }}
+{{- end }}
+
+{{- define "pipeline.stopper.selectorLabels" -}}
+{{- include "pipeline.selectorLabels" (list . "stopper") }}
 {{- end }}
 
 {{- define "pipeline.selectorLabels.explicitly" -}}
