@@ -1,0 +1,96 @@
+{{- if .Values.stopper.enabled }}
+{{- $pipelineStopperName := include "pipeline.stopper.fullname" . }}
+{{- $pipelineStopperServiceAccount := include "pipeline.serviceAccountName" . }}
+{{- $component := "pipeline-stopper"}}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: "{{ $pipelineStopperName }}"
+  {{- with .Values.stopper.annotations }}
+  annotations:
+      {{- toYaml . | nindent 6 }}
+  {{- end }}
+  labels:
+    {{- include "pipeline.stopper.labels" . | nindent 4 }}
+    app.kubernetes.io/component: {{ $component }}
+spec:
+  replicas: {{ .Values.runner.replicaCount }}
+  selector:
+    matchLabels:
+      {{- include "pipeline.stopper.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+    {{- with .Values.stopper.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}
+      labels:
+        {{- include "pipeline.stopper.selectorLabels" . | nindent 8 }}
+        app.kubernetes.io/component: {{ $component }}
+    spec:
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      restartPolicy: {{ .Values.stopper.restartPolicy }}
+      serviceAccountName: {{ $pipelineStopperServiceAccount }}
+      automountServiceAccountToken: true
+      securityContext:
+        {{- toYaml .Values.stopper.podSecurityContext | nindent 8 }}
+      containers:
+        - name: "main"
+          securityContext:
+            {{- toYaml .Values.stopper.securityContext | nindent 12 }}
+          image: "{{ .Values.stopper.image.repository }}:{{ .Values.runner.image.tag }}"
+          imagePullPolicy: {{ .Values.stopper.image.pullPolicy }}
+          ports:
+            - name: http
+              containerPort: {{ .Values.stopper.configs.ports.http.container }}
+              protocol: TCP
+          envFrom:
+            - configMapRef:
+                name: "{{ $pipelineStopperName }}-config"
+          {{- if and (.Values.livenessProbe.enabled) (.Values.stopper.probes.livenessEnabled) }}
+          livenessProbe:
+            httpGet:
+              path: {{ .Values.stopper.probes.livenessPath }}
+              port: {{ .Values.stopper.probes.healthcheckPort }}
+            timeoutSeconds: {{ .Values.livenessProbe.timeoutSeconds }}
+            initialDelaySeconds: {{ .Values.livenessProbe.initialDelaySeconds }}
+            periodSeconds: {{ .Values.livenessProbe.periodSeconds }}
+            successThreshold: {{ .Values.livenessProbe.successThreshold }}
+            failureThreshold: {{ .Values.livenessProbe.failureThreshold }}
+          {{- end }}
+          {{- if and (.Values.readinessProbe.enabled) (.Values.stopper.probes.readinessEnabled) }}
+          readinessProbe:
+            httpGet:
+              path: {{ .Values.stopper.probes.readinessPath }}
+              port: {{ .Values.stopper.probes.healthcheckPort }}
+            timeoutSeconds: {{ .Values.readinessProbe.timeoutSeconds }}
+            initialDelaySeconds: {{ .Values.readinessProbe.initialDelaySeconds }}
+            periodSeconds: {{ .Values.readinessProbe.periodSeconds }}
+            successThreshold: {{ .Values.readinessProbe.successThreshold }}
+            failureThreshold: {{ .Values.readinessProbe.failureThreshold }}
+          {{- end }}
+          resources:
+            {{- toYaml .Values.stopper.resources | nindent 12 }}
+          volumeMounts: []
+
+      volumes: []
+      {{- with .Values.stopper.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.stopper.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.stopper.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+  {{- if .Values.stopper.updateStrategy }}
+  strategy:
+    {{- toYaml .Values.stopper.updateStrategy | nindent 4 }}
+  {{- end }}
+{{- end }}

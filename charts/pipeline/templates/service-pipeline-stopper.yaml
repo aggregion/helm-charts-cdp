@@ -1,0 +1,17 @@
+{{- if .Values.stopper.enabled }}
+{{- $pipelineStopperName := include "pipeline.stopper.fullname" . }}
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ $pipelineStopperName }}-svc
+  labels:
+    {{- include "pipeline.stopper.labels" . | nindent 4 }}
+spec:
+  ports:
+    - port: {{ .Values.stopper.configs.ports.http.service }}
+      targetPort: http
+      protocol: TCP
+      name: http
+  selector:
+    {{- include "pipeline.stopper.selectorLabels" . | nindent 4 }}
+{{- end }}

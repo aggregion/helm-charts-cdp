@@ -31,6 +31,16 @@ readinessProbe:
   timeoutSeconds: 5
   successThreshold: 1
   failureThreshold: 5
+
+redis:
+  host: redis
+  port: 6379
+
+cache:
+  stopPipeline:
+    ttl: 8640000
+    prefix: stop_pipeline
+
 # Runner creates Pipeline resources in k8s
 runner:
   enabled: true
@@ -107,6 +117,56 @@ runner:
       annotations:
         aggregion.dev/instance: "common"
       podTemplate: {}
+  resources: {}
+  restartPolicy: Always
+  nameOverride: ""
+  fullnameOverride: ""
+  podAnnotations:
+    prometheus.io/scrape: "true"
+    prometheus.io/path: /metrics
+    prometheus.io/port: "6601"
+  podSecurityContext: {}
+  securityContext: {}
+  nodeSelector: {}
+  tolerations: []
+  affinity: {}
+  updateStrategy: {}
+
+stopper:
+  enabled: false
+  # serviceAccountEnabled: if you want to rollout only service account without the deployment
+  serviceAccountEnabled: true
+  replicaCount: 1
+  annotations:
+    reloader.stakater.com/auto: "true"
+  image:
+    repository: registry.aggregion.com/pipeline-stopper
+    pullPolicy: IfNotPresent
+    tag: 0c1f86c5
+  probes:
+    livenessPath: /healthcheck/liveness
+    readinessPath: /healthcheck/readiness
+    healthcheckPort: 9047
+    healthcheckShutdownTimeoutMs: 5000
+    livenessEnabled: false
+    readinessEnabled: false
+  configs:
+    # amqpUrl: RabbitMQ instance from aggregion-externals chart. Should be common for DCP (CDP) and this service.
+    amqpUrl: "amqp://..."
+    ports:
+      http:
+        container: 6601
+        service: 9100
+    httpHostname: 0.0.0.0
+    nodeEnv: production
+    # runner.configs.pipelinesCreateQueueName should be equals to CDP.backend.configs.pipelineRunner.queue
+    pipelinesQueueName: pipeline_stopper
+    logLevel: info
+    amqpPrefetchCount: 1
+    # cloudEventsListener: URL to CloudEvent listener (the "watcher" presents in this chart)
+    cloudEventsListener: "http://watcher:9101"
+    pipelines:
+      namespace: "pipelines"
   resources: {}
   restartPolicy: Always
   nameOverride: ""

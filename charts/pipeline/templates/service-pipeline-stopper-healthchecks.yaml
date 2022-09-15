@@ -1,0 +1,25 @@
+{{- if .Values.stopper.enabled }}
+{{- $serviceName := include "pipeline.stopper.fullname" . }}
+
+{{- if .Values.stopper.probes.livenessEnabled }}
+{{- $component := "pipeline-stopper" }}
+apiVersion: v1
+kind: Service
+metadata:
+  name: "hc-{{ $serviceName | lower }}"
+  annotations:
+    prometheus.io/healthcheck: "true"
+    prometheus.io/probe: "true"
+spec:
+  ports:
+    - protocol: TCP
+      port: {{ .Values.stopper.probes.healthcheckPort }}
+      targetPort: {{ .Values.stopper.probes.healthcheckPort }}
+  selector:
+    app.kubernetes.io/component: {{ $component | quote }}
+    app.kubernetes.io/name: {{ $serviceName | quote }}
+  type: ClusterIP
+---
+{{- end -}}
+
+{{- end }}
