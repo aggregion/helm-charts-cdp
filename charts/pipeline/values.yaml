@@ -52,7 +52,7 @@ runner:
   image:
     repository: registry.aggregion.com/pipeline-runner
     pullPolicy: IfNotPresent
-    tag: 0c1f86c5
+    tag: 4f5c9a1c
   probes:
     livenessPath: /healthcheck/liveness
     readinessPath: /healthcheck/readiness
@@ -133,7 +133,7 @@ runner:
   updateStrategy: {}
 
 stopper:
-  enabled: false
+  enabled: true
   # serviceAccountEnabled: if you want to rollout only service account without the deployment
   serviceAccountEnabled: true
   replicaCount: 1
@@ -142,7 +142,7 @@ stopper:
   image:
     repository: registry.aggregion.com/pipeline-stopper
     pullPolicy: IfNotPresent
-    tag: 0c1f86c5
+    tag: 4f5c9a1c
   probes:
     livenessPath: /healthcheck/liveness
     readinessPath: /healthcheck/readiness
@@ -190,7 +190,7 @@ watcher:
   image:
     repository: registry.aggregion.com/pipeline-watcher
     pullPolicy: IfNotPresent
-    tag: ca9ec12e
+    tag: 4f5c9a1c
   probes:
     livenessPath: /healthcheck/liveness
     readinessPath: /healthcheck/readiness
