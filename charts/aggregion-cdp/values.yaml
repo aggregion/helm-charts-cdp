@@ -391,6 +391,8 @@ backend:
     gitlab:
       personalAccessToken: "xJ51bxxa1ZrQXiMdoYFt"
       host: "https://gitlab.cas-dcap.aggregion.com"
+    pipelineStopper:
+      queue: "pipeline_stopper"
     pipelineRunner:
       debugMode: false
       queue: "create_pipeline_runner"
