@@ -142,7 +142,7 @@ stopper:
   image:
     repository: registry.aggregion.com/pipeline-stopper
     pullPolicy: IfNotPresent
-    tag: 74152a90
+    tag: 40d334d0
   probes:
     livenessPath: /healthcheck/liveness
     readinessPath: /healthcheck/readiness
