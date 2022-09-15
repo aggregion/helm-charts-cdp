@@ -14,7 +14,7 @@ metadata:
     {{- include "pipeline.stopper.labels" . | nindent 4 }}
     app.kubernetes.io/component: {{ $component }}
 spec:
-  replicas: {{ .Values.runner.replicaCount }}
+  replicas: {{ .Values.stopper.replicaCount }}
   selector:
     matchLabels:
       {{- include "pipeline.stopper.selectorLabels" . | nindent 6 }}
@@ -41,7 +41,7 @@ spec:
         - name: "main"
           securityContext:
             {{- toYaml .Values.stopper.securityContext | nindent 12 }}
-          image: "{{ .Values.stopper.image.repository }}:{{ .Values.runner.image.tag }}"
+          image: "{{ .Values.stopper.image.repository }}:{{ .Values.stopper.image.tag }}"
           imagePullPolicy: {{ .Values.stopper.image.pullPolicy }}
           ports:
             - name: http
