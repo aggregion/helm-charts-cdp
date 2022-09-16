@@ -52,7 +52,7 @@ runner:
   image:
     repository: registry.aggregion.com/pipeline-runner
     pullPolicy: IfNotPresent
-    tag: 4f5c9a1c
+    tag: 1e8c54fd
   probes:
     livenessPath: /healthcheck/liveness
     readinessPath: /healthcheck/readiness
@@ -142,7 +142,7 @@ stopper:
   image:
     repository: registry.aggregion.com/pipeline-stopper
     pullPolicy: IfNotPresent
-    tag: 40d334d0
+    tag: 1e8c54fd
   probes:
     livenessPath: /healthcheck/liveness
     readinessPath: /healthcheck/readiness
