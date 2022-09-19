@@ -35,4 +35,6 @@ data:
   TTL_ID_TOKEN: {{ .Values.oidcprovider.config.ttl.idToken | quote }}
   TTL_INTERACTION: {{ .Values.oidcprovider.config.ttl.interaction | quote }}
   TTL_REFRESH_TOKEN: {{ .Values.oidcprovider.config.ttl.refreshToken | quote }}
+  METRICS_ENABLED: {{ and .Values.metrics.enabled .Values.oidcprovider.enabled | quote }}
+  METRICS_PATH: {{ .Values.metrics.path }}
 {{- end }}

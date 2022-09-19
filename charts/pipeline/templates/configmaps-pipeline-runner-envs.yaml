@@ -19,6 +19,7 @@ data:
   HTTP_PORT: "{{ .Values.runner.configs.ports.http.container }}"
   LOG_LEVEL: "{{ .Values.runner.configs.logLevel }}"
   METRICS_ENABLED: {{ and .Values.runner.enabled .Values.metrics.enabled | quote }}
+  METRICS_PATH: {{ .Values.metrics.path }}
   NODE_ENV: "{{ .Values.runner.configs.nodeEnv }}"
   PIPELINES_BASE_PIPELINER_RUNNER: {{ .Values.runner.configs.basePipelineOptions | toJson | quote }}
   PIPELINES_CREATE_RUNNER_QUEUE_NAME: "{{ .Values.runner.configs.pipelinesCreateQueueName }}"

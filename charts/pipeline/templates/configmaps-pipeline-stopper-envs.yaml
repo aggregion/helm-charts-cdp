@@ -19,6 +19,7 @@ data:
   HTTP_PORT: {{ .Values.stopper.configs.ports.http.container | quote }}
   LOG_LEVEL: {{ .Values.stopper.configs.logLevel | quote }}
   METRICS_ENABLED: {{ and .Values.stopper.enabled .Values.metrics.enabled | quote }}
+  METRICS_PATH: {{ .Values.metrics.path }}
   NODE_ENV: {{ .Values.stopper.configs.nodeEnv | quote }}
   PIPELINES_NAMESPACE: {{ .Values.stopper.configs.pipelines.namespace | quote }}
   PIPELINES_WATCHER_URL: {{ .Values.stopper.configs.cloudEventsListener | quote }}

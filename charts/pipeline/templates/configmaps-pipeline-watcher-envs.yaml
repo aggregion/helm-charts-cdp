@@ -15,6 +15,7 @@ data:
   HTTP_PORT: "{{ .Values.watcher.configs.ports.http.container }}"
   LOG_LEVEL: "{{ .Values.watcher.configs.logLevel }}"
   METRICS_ENABLED: {{ and .Values.watcher.enabled .Values.metrics.enabled | quote }}
+  METRICS_PATH: {{ .Values.metrics.path }}
   NODE_ENV: "{{ .Values.watcher.configs.nodeEnv }}"
   RABBITMQ_HEARTBEAT_INTERVAL: "30"
   RABBITMQ_RETRY_POLICY_DELAY: "60"

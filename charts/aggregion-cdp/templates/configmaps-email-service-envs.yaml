@@ -22,4 +22,6 @@ data:
   RABBITMQ_RETRY_POLICY_MAX_ATTEMPTS: {{ 150 | quote }}
   RABBITMQ_RETRY_POLICY_SEQUENCE_ATTEMPTS_NUMBER: {{ 5 | quote }}
   RABBITMQ_URI: {{ .Values.backend.configs.rabbitmqUrl | quote }}
+  METRICS_ENABLED: {{ and .Values.metrics.enabled .Values.emailservice.enabled | quote }}
+  METRICS_PATH: {{ .Values.metrics.path }}
 {{- end }}
