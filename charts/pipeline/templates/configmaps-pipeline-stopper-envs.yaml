@@ -9,6 +9,8 @@ metadata:
 data:
   AMQP_PREFETCH_COUNT: {{ 1 | quote }}
   AMQP_URL: {{ .Values.stopper.configs.amqpUrl | quote }}
+  CACHE_STOP_PIPELINE_PREFIX: {{ .Values.cache.stopPipeline.prefix | quote }}
+  CACHE_STOP_PIPELINE_TTL_MS: {{ .Values.cache.stopPipeline.ttl | quote }}
   HEALTHCHECK_LIVENESS_PATH: {{ .Values.stopper.probes.livenessPath | quote }}
   HEALTHCHECK_PORT: {{ .Values.stopper.probes.healthcheckPort | quote }}
   HEALTHCHECK_READINESS_PATH: {{ .Values.stopper.probes.readinessPath | quote }}
@@ -16,6 +18,7 @@ data:
   HTTP_HOSTNAME: {{ .Values.stopper.configs.httpHostname | quote }}
   HTTP_PORT: {{ .Values.stopper.configs.ports.http.container | quote }}
   LOG_LEVEL: {{ .Values.stopper.configs.logLevel | quote }}
+  METRICS_ENABLED: {{ and .Values.stopper.enabled .Values.metrics.enabled | quote }}
   NODE_ENV: {{ .Values.stopper.configs.nodeEnv | quote }}
   PIPELINES_NAMESPACE: {{ .Values.stopper.configs.pipelines.namespace | quote }}
   PIPELINES_WATCHER_URL: {{ .Values.stopper.configs.cloudEventsListener | quote }}
@@ -25,6 +28,4 @@ data:
   RABBITMQ_RETRY_POLICY_MAX_ATTEMPTS: {{ 150 | quote }}
   RABBITMQ_RETRY_POLICY_SEQUENCE_ATTEMPTS_NUMBER: {{ 5 | quote }}
   REDIS_URL: "redis://{{ .Values.redis.host }}:{{ .Values.redis.port }}"
-  CACHE_STOP_PIPELINE_PREFIX: {{ .Values.cache.stopPipeline.prefix | quote }}
-  CACHE_STOP_PIPELINE_TTL_MS: {{ .Values.cache.stopPipeline.ttl | quote }}
 {{- end }}

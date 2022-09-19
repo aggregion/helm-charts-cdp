@@ -1,0 +1,32 @@
+{{- if and .Values.metrics.enabled .Values.metrics.serviceMonitor.enabled }}
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  labels:
+    serviceMonitorSelector: prometheus
+  name: "sm-{{ include "pipeline.fullname" . }}"
+  namespace: monitoring
+spec:
+  endpoints:
+    {{- if and .Values.runner.enabled .Values.runner.probes.livenessEnabled }}
+    - interval: 30s
+      port: "pipeline-runner"
+      path: {{ .Values.metrics.path }}
+    {{- end }}
+    {{- if and .Values.stopper.enabled .Values.stopper.probes.livenessEnabled }}
+    - interval: 30s
+      port: "pipeline-stopper"
+      path: {{ .Values.metrics.path }}
+    {{- end }}
+    {{- if and .Values.watcher.enabled .Values.watcher.probes.livenessEnabled }}
+    - interval: 30s
+      port: "pipeline-watcher"
+      path: {{ .Values.metrics.path }}
+    {{- end }}
+  namespaceSelector:
+    matchNames:
+      - {{ .Values.runner.configs.basePipelineOptions.namespace }}
+  selector:
+    matchLabels:
+      operated-prometheus: "true"
+{{- end }}

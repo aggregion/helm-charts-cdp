@@ -32,6 +32,12 @@ readinessProbe:
   successThreshold: 1
   failureThreshold: 5
 
+metrics:
+  enabled: false
+  path: "/metrics"
+  serviceMonitor:
+    enabled: false
+
 redis:
   host: redis
   port: 6379
@@ -75,6 +81,7 @@ runner:
     amqpPrefetchCount: 1
     # cloudEventsListener: URL to CloudEvent listener (the "watcher" presents in this chart)
     cloudEventsListener: "http://watcher:9101"
+
     pipelines:
       debugHasher:
         namespace: "pipelines"
