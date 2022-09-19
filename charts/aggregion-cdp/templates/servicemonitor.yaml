@@ -60,7 +60,22 @@ spec:
     {{- end }}
     {{- if and .Values.dataservice.glossarySyncers.enabled .Values.dataservice.probes.glossary.livenessEnabled }}
     - interval: 30s
-      port: "glossary"
+      port: "glossary-syncer"
+      path: {{ .Values.metrics.path }}
+    {{- end }}
+    {{- if and .Values.dataservice.glossarySyncers.enabled .Values.dataservice.probes.glossary.livenessEnabled }}
+    - interval: 30s
+      port: "glossary-updater"
+      path: {{ .Values.metrics.path }}
+    {{- end }}
+    {{- if and .Values.dataservice.glossarySyncers.enabled .Values.dataservice.probes.glossary.livenessEnabled }}
+    - interval: 30s
+      port: "glossary-term-syncer"
+      path: {{ .Values.metrics.path }}
+    {{- end }}
+    {{- if and .Values.dataservice.glossarySyncers.enabled .Values.dataservice.probes.glossary.livenessEnabled }}
+    - interval: 30s
+      port: "glossary-term-updater"
       path: {{ .Values.metrics.path }}
     {{- end }}
     {{- if and .Values.dataservice.configAtlasSyncer.enabled .Values.dataservice.probes.atlasEntitySyncer.livenessEnabled }}
