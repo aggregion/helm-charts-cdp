@@ -10,9 +10,12 @@ metadata:
   annotations:
     prometheus.io/healthcheck: "true"
     prometheus.io/probe: "true"
+  labels:
+    operated-prometheus: "true"
 spec:
   ports:
     - protocol: TCP
+      name: {{ $component | quote }}
       port: {{ .Values.emailservice.probes.healthcheckPort }}
       targetPort: {{ .Values.emailservice.probes.healthcheckPort }}
   selector:

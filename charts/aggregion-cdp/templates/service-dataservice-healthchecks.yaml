@@ -10,9 +10,12 @@ metadata:
   annotations:
     prometheus.io/healthcheck: "true"
     prometheus.io/probe: "true"
+  labels:
+    operated-prometheus: "true"
 spec:
   ports:
     - protocol: TCP
+      name: {{ $component | quote }}
       port: {{ .Values.dataservice.probes.common.healthcheckPort }}
       targetPort: {{ .Values.dataservice.probes.common.healthcheckPort }}
   selector:
@@ -32,9 +35,12 @@ metadata:
   annotations:
     prometheus.io/healthcheck: "true"
     prometheus.io/probe: "true"
+  labels:
+    operated-prometheus: "true"
 spec:
   ports:
     - protocol: TCP
+      name: {{ $component | quote }}
       port: {{ .Values.dataservice.probes.common.healthcheckPort }}
       targetPort: {{ .Values.dataservice.probes.common.healthcheckPort }}
   selector:
@@ -54,9 +60,12 @@ metadata:
   annotations:
     prometheus.io/healthcheck: "true"
     prometheus.io/probe: "true"
+  labels:
+    operated-prometheus: "true"
 spec:
   ports:
     - protocol: TCP
+      name: {{ $component | quote }}
       port: {{ .Values.dataservice.probes.common.healthcheckPort }}
       targetPort: {{ .Values.dataservice.probes.common.healthcheckPort }}
   selector:
@@ -76,9 +85,12 @@ metadata:
   annotations:
     prometheus.io/healthcheck: "true"
     prometheus.io/probe: "true"
+  labels:
+    operated-prometheus: "true"
 spec:
   ports:
     - protocol: TCP
+      name: {{ $component | quote }}
       port: {{ .Values.dataservice.probes.common.healthcheckPort }}
       targetPort: {{ .Values.dataservice.probes.common.healthcheckPort }}
   selector:
@@ -98,9 +110,12 @@ metadata:
   annotations:
     prometheus.io/healthcheck: "true"
     prometheus.io/probe: "true"
+  labels:
+    operated-prometheus: "true"
 spec:
   ports:
     - protocol: TCP
+      name: {{ $component | quote }}
       port: {{ .Values.dataservice.probes.common.healthcheckPort }}
       targetPort: {{ .Values.dataservice.probes.common.healthcheckPort }}
   selector:
@@ -120,6 +135,8 @@ metadata:
   annotations:
     prometheus.io/healthcheck: "true"
     prometheus.io/probe: "true"
+  labels:
+    operated-prometheus: "true"
 spec:
   ports:
     {{- range $index, $val := .Values.dataservice.glossaryContainers }}
@@ -146,9 +163,12 @@ metadata:
   annotations:
     prometheus.io/healthcheck: "true"
     prometheus.io/probe: "true"
+  labels:
+    operated-prometheus: "true"
 spec:
   ports:
     - protocol: TCP
+      name: {{ $component | quote }}
       port: {{ .Values.dataservice.probes.common.healthcheckPort }}
       targetPort: {{ .Values.dataservice.probes.common.healthcheckPort }}
   selector:

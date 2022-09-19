@@ -26,4 +26,6 @@ data:
   PORT: {{ .Values.authservice.config.port | quote }}
   PROVIDER_INSTANCE_ID: {{ .Values.backend.configs.providerInstanceId | quote }}
   REDIS_URL: "redis://{{ .Values.backend.configs.redisHost }}:{{ .Values.backend.configs.redisPort }}"
+  METRICS_ENABLED: {{ and .Values.metrics.enabled .Values.authservice.enabled | quote }}
+  METRICS_PATH: {{ .Values.metrics.path }}
 {{- end }}

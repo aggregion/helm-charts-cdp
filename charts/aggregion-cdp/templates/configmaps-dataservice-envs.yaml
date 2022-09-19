@@ -39,4 +39,6 @@ data:
   TOKEN_SECRET_KEY: {{ .Values.dataservice.config.tokenSecretKey | quote }}
   TRINO_HOST: {{ .Values.dataservice.config.trinoHost | quote }}
   TRINO_PORT: {{ .Values.dataservice.config.trinoPort | quote }}
+  METRICS_ENABLED: {{ and .Values.metrics.enabled .Values.dataservice.enabled | quote }}
+  METRICS_PATH: {{ .Values.metrics.path }}
 {{- end }}

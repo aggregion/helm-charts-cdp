@@ -28,6 +28,61 @@ spec:
       port: "dataset-uploader"
       path: {{ .Values.backend.configs.metrics.path }}
     {{- end }}
+    {{- if and .Values.authservice.enabled .Values.authservice.probes.livenessEnabled }}
+    - interval: 30s
+      port: "auth-service"
+      path: {{ .Values.metrics.path }}
+    {{- end }}
+    {{- if and .Values.dataservice.enabled .Values.dataservice.probes.api.livenessEnabled }}
+    - interval: 30s
+      port: "dataservice"
+      path: {{ .Values.metrics.path }}
+    {{- end }}
+    {{- if and .Values.dataservice.datasetLogsSyncers.enabled .Values.dataservice.probes.datasetLogs.livenessEnabled }}
+    - interval: 30s
+      port: "dataset-logs"
+      path: {{ .Values.metrics.path }}
+    {{- end }}
+    {{- if and .Values.dataservice.datasetDatasetSyncer.enabled .Values.dataservice.probes.datasetSyncer.livenessEnabled }}
+    - interval: 30s
+      port: "dataset-syncer"
+      path: {{ .Values.metrics.path }}
+    {{- end }}
+    {{- if and .Values.dataservice.datasetDatasetUpdater.enabled .Values.dataservice.probes.datasetUpdater.livenessEnabled }}
+    - interval: 30s
+      port: "dataset-updater"
+      path: {{ .Values.metrics.path }}
+    {{- end }}
+    {{- if and .Values.dataservice.datasetInstanceSyncer.enabled .Values.dataservice.probes.instanceSyncer.livenessEnabled }}
+    - interval: 30s
+      port: "instance-syncer"
+      path: {{ .Values.metrics.path }}
+    {{- end }}
+    {{- if and .Values.dataservice.glossarySyncers.enabled .Values.dataservice.probes.glossary.livenessEnabled }}
+    - interval: 30s
+      port: "glossary"
+      path: {{ .Values.metrics.path }}
+    {{- end }}
+    {{- if and .Values.dataservice.configAtlasSyncer.enabled .Values.dataservice.probes.atlasEntitySyncer.livenessEnabled }}
+    - interval: 30s
+      port: "atlas-entity-syncer"
+      path: {{ .Values.metrics.path }}
+    {{- end }}
+    {{- if and .Values.emailservice.enabled .Values.metrics.enabled }}
+    - interval: 30s
+      port: "email-service"
+      path: {{ .Values.metrics.path }}
+    {{- end }}
+    {{- if and .Values.metadataSeed.enabled .Values.metrics.enabled }}
+    - interval: 30s
+      port: "metadata-seed"
+      path: {{ .Values.metrics.path }}
+    {{- end }}
+    {{- if and .Values.oidcprovider.enabled .Values.metrics.enabled }}
+    - interval: 30s
+      port: "oidc-provider"
+      path: {{ .Values.metrics.path }}
+    {{- end }}
   namespaceSelector:
     matchNames:
       - {{ .Values.backend.configs.datalabDmpNamespace }}
