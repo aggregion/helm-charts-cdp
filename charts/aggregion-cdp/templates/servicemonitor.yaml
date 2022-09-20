@@ -28,6 +28,31 @@ spec:
       port: "dataset-uploader"
       path: {{ .Values.backend.configs.metrics.path }}
     {{- end }}
+    {{- if and .Values.backend.configs.serviceJobSchedulerEnabled .Values.backend.probes.jobScheduler.livenessEnabled }}
+    - interval: 30s
+      port: "job-scheduler"
+      path: {{ .Values.backend.configs.metrics.path }}
+    {{- end }}
+    {{- if and .Values.backend.configs.serviceBlockchainUpdaterEnabled .Values.backend.probes.bcDatasetRequestsUpdater.livenessEnabled }}
+    - interval: 30s
+      port: "bc-datasetrequests-updater"
+      path: {{ .Values.backend.configs.metrics.path }}
+    {{- end }}
+    {{- if and .Values.backend.configs.serviceBlockchainUpdaterEnabled .Values.backend.probes.bcInteractionsUpdater.livenessEnabled }}
+    - interval: 30s
+      port: "bc-interactions-updater"
+      path: {{ .Values.backend.configs.metrics.path }}
+    {{- end }}
+    {{- if and .Values.backend.configs.serviceBlockchainUpdaterEnabled .Values.backend.probes.bcProjectsUpdater.livenessEnabled }}
+    - interval: 30s
+      port: "bc-projects-updater"
+      path: {{ .Values.backend.configs.metrics.path }}
+    {{- end }}
+    {{- if and .Values.backend.configs.serviceBlockchainUpdaterEnabled .Values.backend.probes.bcScriptsUpdater.livenessEnabled }}
+    - interval: 30s
+      port: "bc-scripts-updater"
+      path: {{ .Values.backend.configs.metrics.path }}
+    {{- end }}
     {{- if and .Values.authservice.enabled .Values.authservice.probes.livenessEnabled }}
     - interval: 30s
       port: "auth-service"
