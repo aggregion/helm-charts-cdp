@@ -34,6 +34,8 @@ metadata:
   annotations:
     prometheus.io/healthcheck: "true"
     prometheus.io/probe: "true"
+  labels:
+    operated-prometheus: "true"
 spec:
   ports:
     {{- if .Values.backend.probes.bcDatasetRequestsUpdater.livenessEnabled }}
@@ -100,9 +102,12 @@ metadata:
   annotations:
     prometheus.io/healthcheck: "true"
     prometheus.io/probe: "true"
+  labels:
+    operated-prometheus: "true"
 spec:
   ports:
     - protocol: TCP
+      name: {{ $component | quote }}
       port: {{ .Values.backend.probes.common.healthcheckPort }}
       targetPort: {{ .Values.backend.probes.common.healthcheckPort }}
   selector:
