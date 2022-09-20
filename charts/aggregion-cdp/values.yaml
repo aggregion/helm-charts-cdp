@@ -78,6 +78,7 @@ gatekeeper:
     serverReadTimeout: 600s
     serverWriteTimeout: 600s
     serverIdleTimeout: 600s
+    signInPage: /opt/gatekeeper/templates/sign_in.html.tmpl
     upstreamResponseHeaderTimeout: 600s
     verbose: true
     # tags is a map where key is identity provider id in the template and value is identity provider id in Keycloak
