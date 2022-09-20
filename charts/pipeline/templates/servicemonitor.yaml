@@ -4,7 +4,7 @@ kind: ServiceMonitor
 metadata:
   labels:
     serviceMonitorSelector: prometheus
-  name: "sm-{{ include "pipeline.fullname" . }}"
+  name: "sm-{{ include "pipeline.fullname" (list . "pipeline") }}"
   namespace: monitoring
 spec:
   endpoints:
