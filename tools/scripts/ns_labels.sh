@@ -5,6 +5,7 @@ ns="$1"
 kubectl create ns $1
 kubectl create ns dc
 kubectl create ns datalab
+kubectl create ns gitlab
 kubectl create ns ingress-nginx
 kubectl create ns pipelines
 kubectl create ns tekton-pipelines
