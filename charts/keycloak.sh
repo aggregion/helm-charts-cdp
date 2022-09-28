@@ -8,8 +8,8 @@ export DEPLOY_HOSTNAME=kc.example.domain.ltd
 export KUBE_NAMESPACE=keycloak-namespace
 
 # if keycloak already installed - use existing passwords
-export POSTGRESQL_PASSWORD=$(kubectl get secret --namespace "$KUBE_NAMESPACE" keycloak-chart-postgresql -o jsonpath="{.data.postgres-password}" | base64 --decode)
-export KEYCLOAK_PASSWORD=$(kubectl get secret --namespace "$KUBE_NAMESPACE" keycloak-chart-keycloak -o jsonpath="{.data.admin-password}" | base64 --decode)
+export POSTGRESQL_PASSWORD=$(kubectl get secret --namespace "$KUBE_NAMESPACE" keycloak-postgresql -o jsonpath="{.data.postgres-password}" | base64 --decode)
+export KEYCLOAK_PASSWORD=$(kubectl get secret --namespace "$KUBE_NAMESPACE" keycloak -o jsonpath="{.data.admin-password}" | base64 --decode)
 
 # otherwise generete new one
 if [ "$POSTGRESQL_PASSWORD" == "" ]
