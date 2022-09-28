@@ -1,6 +1,6 @@
 #!/bin/sh
 
-#helm dependency build aggregion-keycloak
+#helm dependency build ./keycloak19
 
 cd $(dirname $0)
 
@@ -19,7 +19,7 @@ export KEYCLOAK_PASSWORD=$(cat /dev/urandom | env LC_CTYPE=C tr -dc a-zA-Z0-9 | 
 fi
 
 
-helm upgrade --install --create-namespace --namespace $KUBE_NAMESPACE keycloak ./keycloak19 \
+helm upgrade --install --create-namespace --namespace $KUBE_NAMESPACE \
   --set keycloak.enabled=true \
   --set auth.adminPassword=${KEYCLOAK_PASSWORD} \
   --set global.postgresql.auth.postgresPassword=${POSTGRESQL_PASSWORD} \
@@ -32,3 +32,4 @@ helm upgrade --install --create-namespace --namespace $KUBE_NAMESPACE keycloak .
   --set "extraEnvVars[2].value=DEBUG" \
   --set "extraEnvVars[3].name=\"KEYCLOAK_EXTRA_ARGS\"" \
   --set "extraEnvVars[3].value=\"--spi-login-protocol-openid-connect-legacy-logout-redirect-uri=true\"" \
+  keycloak ./keycloak19
