@@ -88,8 +88,29 @@ spec:
                 name: "{{ $enclaveName }}-services-config"
             - secretRef:
                 name: "{{ $enclaveName }}-services-secrets"
-          # livenessProbe:
-          # readinessProbe:
+          
+          {{- if and (.Values.livenessProbe.enabled) (.Values.enclave.probes.livenessEnabled) }}
+          livenessProbe:
+            httpGet:
+              path: {{ .Values.enclave.probes.livenessPath }}
+              port: {{ .Values.enclave.configs.listenInnerPort }}
+            timeoutSeconds: {{ .Values.livenessProbe.timeoutSeconds }}
+            initialDelaySeconds: {{ .Values.livenessProbe.initialDelaySeconds }}
+            periodSeconds: {{ .Values.livenessProbe.periodSeconds }}
+            successThreshold: {{ .Values.livenessProbe.successThreshold }}
+            failureThreshold: {{ .Values.livenessProbe.failureThreshold }}
+          {{- end}}
+          {{- if and (.Values.readinessProbe.enabled) (.Values.enclave.probes.readinessEnabled) }}
+          readinessProbe:
+            httpGet:
+              path: {{ .Values.enclave.probes.readinessPath }}
+              port: {{ .Values.enclave.configs.listenInnerPort }}
+            timeoutSeconds: {{ .Values.readinessProbe.timeoutSeconds }}
+            initialDelaySeconds: {{ .Values.readinessProbe.initialDelaySeconds }}
+            periodSeconds: {{ .Values.readinessProbe.periodSeconds }}
+            successThreshold: {{ .Values.readinessProbe.successThreshold }}
+            failureThreshold: {{ .Values.readinessProbe.failureThreshold }}
+          {{- end }}
           resources:
             {{- toYaml .Values.enclave.resources.services | nindent 12 }}
           volumeMounts:
