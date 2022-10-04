@@ -21,7 +21,7 @@ atlas:
   podManagementPolicy: OrderedReady
   image:
     repository: "aggregion/atlas"
-    pullPolicy: Always
+    pullPolicy: IfNotPresent
     tag: "master-005181ec-26"
   service:
     type: ClusterIP
@@ -107,7 +107,7 @@ hadoop:
   podManagementPolicy: OrderedReady
   image:
     repository: "registry.aggregion.com/atlas/hadoop"
-    pullPolicy: Always
+    pullPolicy: IfNotPresent
     tag: "latest"
   service:
     type: ClusterIP
@@ -162,7 +162,7 @@ hbaseMaster:
   storageSize: "1G"
   image:
     repository: "aggregion/hbase"
-    pullPolicy: Always
+    pullPolicy: IfNotPresent
     tag: "latest"
   listenPort: 16010
   securityContext: {}
@@ -175,7 +175,7 @@ hbaseRegion:
   storageSize: "1G"
   image:
     repository: "aggregion/hbase"
-    pullPolicy: Always
+    pullPolicy: IfNotPresent
     tag: "latest"
   listenPort: 16010
   securityContext: {}
@@ -196,7 +196,7 @@ kafka:
   podManagementPolicy: OrderedReady
   image:
     repository: "docker.io/bitnami/kafka"
-    pullPolicy: Always
+    pullPolicy: IfNotPresent
     tag: "2"
   service:
     type: ClusterIP
@@ -236,7 +236,7 @@ solr:
   podManagementPolicy: OrderedReady
   image:
     repository: "registry.aggregion.com/atlas/solr"
-    pullPolicy: Always
+    pullPolicy: IfNotPresent
     tag: "latest"
   service:
     type: ClusterIP
@@ -278,7 +278,7 @@ zookeeper:
   podManagementPolicy: OrderedReady
   image:
     repository: "aggregion/kubernetes-zookeeper"
-    pullPolicy: Always
+    pullPolicy: IfNotPresent
     tag: "1.0-3.4.10"
   service:
     type: ClusterIP
