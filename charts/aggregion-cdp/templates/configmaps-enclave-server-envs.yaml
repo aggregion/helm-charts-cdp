@@ -41,6 +41,7 @@ data:
   {{ $envPrefix }}WORKER_HEAP_SIZE_MB: "{{ .Values.enclave.configs.workerHeapSizeMb }}"
   {{ $envPrefix }}RABBITMQ_URL: "{{ .Values.backend.configs.rabbitmqUrl }}"
   {{ $envPrefix }}GFR_IGNORING_STRINGS: "{{ .Values.enclave.configs.gfr.ignoreStrings | toJson }}"
+  {{ $envPrefix }}GFR_MEMORY_LIMIT_BYTES: "{{ .Values.enclave.configs.gfr.estimatedMemoryUsage }}"
   {{- if not .Values.enclave.configs.nodeTlsRejectUnauthorized }}
   {{ $envPrefix }}NODE_TLS_REJECT_UNAUTHORIZED: "0"
   {{- end }}
