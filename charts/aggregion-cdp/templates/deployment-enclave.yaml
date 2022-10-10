@@ -59,7 +59,7 @@ spec:
               path: {{ .Values.enclave.probes.livenessPath }}
               port: {{ .Values.enclave.configs.listenInnerPort }}
             timeoutSeconds: {{ .Values.livenessProbe.timeoutSeconds }}
-            initialDelaySeconds: {{ .Values.livenessProbe.initialDelaySeconds }}
+            initialDelaySeconds: {{ .Values.enclave.probes.livenessInitialDelaySeconds }}
             periodSeconds: {{ .Values.livenessProbe.periodSeconds }}
             successThreshold: {{ .Values.livenessProbe.successThreshold }}
             failureThreshold: {{ .Values.livenessProbe.failureThreshold }}
@@ -70,7 +70,7 @@ spec:
               path: {{ .Values.enclave.probes.readinessPath }}
               port: {{ .Values.enclave.configs.listenInnerPort }}
             timeoutSeconds: {{ .Values.readinessProbe.timeoutSeconds }}
-            initialDelaySeconds: {{ .Values.readinessProbe.initialDelaySeconds }}
+            initialDelaySeconds: {{ .Values.enclave.probes.readinessInitialDelaySeconds }}
             periodSeconds: {{ .Values.readinessProbe.periodSeconds }}
             successThreshold: {{ .Values.readinessProbe.successThreshold }}
             failureThreshold: {{ .Values.readinessProbe.failureThreshold }}

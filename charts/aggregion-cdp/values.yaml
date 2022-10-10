@@ -642,6 +642,8 @@ enclave:
   probes:
     livenessPath: /healthcheck/liveness
     readinessPath: /healthcheck/readiness
+    livenessInitialDelaySeconds: 60
+    readinessInitialDelaySeconds: 60
     livenessEnabled: false
     readinessEnabled: false
   configs:
