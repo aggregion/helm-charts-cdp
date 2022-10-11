@@ -3,9 +3,9 @@ entries:
   aggregion-cdp:
   - apiVersion: v2
     appVersion: 1.17.0
-    created: "2022-10-10T18:56:15.220608291Z"
+    created: "2022-10-11T13:02:31.261413512Z"
     description: A Helm chart for Kubernetes to deploy Aggregion CDP
-    digest: 90b82feb24601eff6e0cf35cae966f98a5a8108849f984b121ae6d72aa4af066
+    digest: 5211965cfb429b3f709fdefdfc0a87e918da1af5d86c8dd6e14e8b4ef37328a0
     name: aggregion-cdp
     type: application
     urls:
@@ -2924,9 +2924,9 @@ entries:
   aggregion-dc:
   - apiVersion: v2
     appVersion: 1.16.0
-    created: "2022-10-10T18:56:15.221919908Z"
+    created: "2022-10-11T13:02:31.262435948Z"
     description: A Helm chart for Kubernetes to install Deploy Controller
-    digest: 77a97a29b567c7f14fa230369d0b2c0dd345a162d6a0c164138972cc7d88a48b
+    digest: dc09d2fd2b97e8d30ccd3679a0b583ef6e205610e15feb5927f6c4c64d539d3a
     name: aggregion-dc
     type: application
     urls:
@@ -2995,11 +2995,11 @@ entries:
   aggregion-debug:
   - apiVersion: v2
     appVersion: 1.16.0
-    created: "2022-10-10T18:56:15.222470515Z"
+    created: "2022-10-11T13:02:31.262887275Z"
     description: 'A Helm chart for Kubernetes to deploy single instance of clickhouse,
       mongo, rabbitmq and redis. It''s not recommend to use it in the production.
       Use charts from official rep for this purpose. '
-    digest: b1de493f6feb3c1b1959ada23a4c7d1ee4f408312a5c4a4526c755ecc69e46f1
+    digest: 846246cfa6882dbbe49652bcaef429d732f23c37d9dac22ddea9c9f171d7fb5f
     name: aggregion-debug
     type: application
     urls:
@@ -3020,11 +3020,11 @@ entries:
   aggregion-externals:
   - apiVersion: v2
     appVersion: 1.16.0
-    created: "2022-10-10T18:56:15.22362363Z"
+    created: "2022-10-11T13:02:31.263733839Z"
     description: 'A Helm chart for Kubernetes to deploy single instance of clickhouse,
       mongo, rabbitmq and redis. It''s not recommend to use it in the production.
       Use charts from official rep for this purpose. '
-    digest: 655e8709e8fc1de36260af3964976f53e4c039160f2a3f4d7b708f8c416b1664
+    digest: f2ef321309b581c72a8a886e5e2c94552eb8e61d4913f41bc9ada5d71436cb0f
     name: aggregion-externals
     type: application
     urls:
@@ -3081,11 +3081,11 @@ entries:
   atlas:
   - apiVersion: v2
     appVersion: 1.0.0
-    created: "2022-10-10T18:56:15.226053362Z"
+    created: "2022-10-11T13:02:31.265792208Z"
     description: 'A Helm chart for Kubernetes to deploy single instance of atlas,
       cassandra, hadoop, hbase, kafka, solr, zookeeper. It''s not recommend to use
       it in the production. Use charts from official rep for this purpose. '
-    digest: acf45f5f627d794394de3a81eec9ca8a1460cb86ba22fbd25a3485be9fe8276d
+    digest: b5254ca632fa2afdbcb19913ed09c38f8e4d424f78c4223c2905a41e0184f315
     name: atlas
     type: application
     urls:
@@ -3166,9 +3166,9 @@ entries:
   enclave-script-resolver:
   - apiVersion: v2
     appVersion: 1.16.0
-    created: "2022-10-10T18:56:15.227226077Z"
+    created: "2022-10-11T13:02:31.266520991Z"
     description: A Helm chart for Kubernetes
-    digest: b50e9ea7f3bdc1b2851e01c4bf80004ac87fc722ea550661ff7b932b0b2634bb
+    digest: 08246f5a3179c6f891b6dc6dcf17238c6b4f6cec07b3ebb0a6b191444489f638
     name: enclave-script-resolver
     type: application
     urls:
@@ -3187,9 +3187,9 @@ entries:
   enclave-storage-service:
   - apiVersion: v2
     appVersion: 1.16.0
-    created: "2022-10-10T18:56:15.227757984Z"
+    created: "2022-10-11T13:02:31.267174786Z"
     description: A Helm chart for Kubernetes
-    digest: b24351ad80b6f63b7d92b3fdae73a8e11b51f4eb372e6a04cafcdf2a026834fc
+    digest: 85ae8b84cfb5e87ef1d06b306efd099932bd598bf2f92d903a3d310c1b00c808
     name: enclave-storage-service
     type: application
     urls:
@@ -3200,7 +3200,7 @@ entries:
       category: DeveloperTools
     apiVersion: v2
     appVersion: 19.0.1
-    created: "2022-10-10T18:56:15.2366649Z"
+    created: "2022-10-11T13:02:31.275069817Z"
     dependencies:
     - condition: postgresql.enabled
       name: postgresql
@@ -3213,7 +3213,7 @@ entries:
     description: Keycloak is a high performance Java-based identity and access management
       solution. It lets developers add an authentication layer to their applications
       with minimum effort.
-    digest: 5f112268ffae33022b0fe333ce68ea9f6028bf794eaf7a891284741b88f45ece
+    digest: 58a09e45adc92aedac482c60bb5165c8f03e97c3cb88970f5c6f7c5071d001a2
     home: https://www.keycloak.org
     icon: https://bitnami.com/assets/stacks/keycloak/img/keycloak-stack-220x234.png
     keywords:
@@ -3230,7 +3230,7 @@ entries:
       category: DeveloperTools
     apiVersion: v2
     appVersion: 16.1.1
-    created: "2022-10-10T18:56:15.244345599Z"
+    created: "2022-10-11T13:02:31.282768679Z"
     dependencies:
     - condition: postgresql.enabled
       name: postgresql
@@ -3243,7 +3243,7 @@ entries:
     description: Keycloak is a high performance Java-based identity and access management
       solution. It lets developers add an authentication layer to their applications
       with minimum effort.
-    digest: 693e81acfb612a9ca8bee4ba2a33b7e9d4e4b8d07d1f79445243ca96cd5c9643
+    digest: b80f02e43d1bdd056805c256282c995ffde172db862ad161b66f00b3c76eff6e
     home: https://www.keycloak.org
     icon: https://bitnami.com/assets/stacks/keycloak/img/keycloak-stack-220x234.png
     keywords:
@@ -3261,7 +3261,7 @@ entries:
       category: DeveloperTools
     apiVersion: v2
     appVersion: 18.0.2
-    created: "2022-10-10T18:56:15.253551719Z"
+    created: "2022-10-11T13:02:31.292306246Z"
     dependencies:
     - condition: postgresql.enabled
       name: postgresql
@@ -3274,7 +3274,7 @@ entries:
     description: Keycloak is a high performance Java-based identity and access management
       solution. It lets developers add an authentication layer to their applications
       with minimum effort.
-    digest: 54b58dc3122d4b52d731546b9dae65158a487e9c45f26d23b95f76fddb05d0ae
+    digest: ba6b2dc8c39dd7b0ead68494227b0922b53f991d9a041fb7cdd86b354e2481a2
     home: https://www.keycloak.org
     icon: https://bitnami.com/assets/stacks/keycloak/img/keycloak-stack-220x234.png
     maintainers:
@@ -3287,9 +3287,9 @@ entries:
   pipeline:
   - apiVersion: v2
     appVersion: 1.0.0
-    created: "2022-10-10T18:56:15.254684834Z"
+    created: "2022-10-11T13:02:31.29340137Z"
     description: A Helm chart for Kubernetes to deploy Aggregion CDP
-    digest: 4adeb16e66aef29d0cd94dd525795625d96c65896619bb63e591b732b14db2c1
+    digest: 8f482da8f0b907013960e84b5ad5278c6ebf23a4184add677ed37c8a3824cd80
     name: pipeline
     type: application
     urls:
@@ -3328,9 +3328,9 @@ entries:
   trino:
   - apiVersion: v2
     appVersion: "355"
-    created: "2022-10-10T18:56:15.255249841Z"
+    created: "2022-10-11T13:02:31.293913388Z"
     description: Fast distributed SQL query engine for big data analytics
-    digest: a2b80e39eab8c6618ed60e449da0c2f931f91628e5ec3e1f56a0b516780d6fd1
+    digest: 2556293398396748a2ff9e5630ab638e2253d230de806c213e5b2d1c3f0ec829
     home: https://trino.io/
     icon: https://trino.io/assets/trino.png
     maintainers:
@@ -3377,4 +3377,4 @@ entries:
     urls:
     - https://aggregion.github.io/helm-charts-cdp/charts/trino-0.2.0.tgz
     version: 0.2.0
-generated: "2022-10-10T18:56:15.214057206Z"
+generated: "2022-10-11T13:02:31.255974387Z"
