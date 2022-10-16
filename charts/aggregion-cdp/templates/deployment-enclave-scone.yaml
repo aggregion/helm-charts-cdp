@@ -55,15 +55,28 @@ spec:
                 name: "{{ $enclaveName }}-config"
             - secretRef:
                 name: "{{ $enclaveName }}-secrets"
-          # livenessProbe:
-          # readinessProbe:
-          #   failureThreshold: 5
-          #   httpGet:
-          #     path: /healthcheck
-          #     port: {{ .Values.enclave.configs.listenPort }}
-          #   initialDelaySeconds: 60
-          #   timeoutSeconds: 3
-          #   periodSeconds: 5
+          {{- if and (.Values.livenessProbe.enabled) (.Values.enclave.probes.livenessEnabled) }}
+          livenessProbe:
+            httpGet:
+              path: {{ .Values.enclave.probes.livenessPath }}
+              port: {{ .Values.enclave.configs.listenInnerPort }}
+            timeoutSeconds: {{ .Values.livenessProbe.timeoutSeconds }}
+            initialDelaySeconds: {{ .Values.enclave.probes.livenessInitialDelaySeconds }}
+            periodSeconds: {{ .Values.livenessProbe.periodSeconds }}
+            successThreshold: {{ .Values.livenessProbe.successThreshold }}
+            failureThreshold: {{ .Values.livenessProbe.failureThreshold }}
+          {{- end}}
+          {{- if and (.Values.readinessProbe.enabled) (.Values.enclave.probes.readinessEnabled) }}
+          readinessProbe:
+            httpGet:
+              path: {{ .Values.enclave.probes.readinessPath }}
+              port: {{ .Values.enclave.configs.listenInnerPort }}
+            timeoutSeconds: {{ .Values.readinessProbe.timeoutSeconds }}
+            initialDelaySeconds: {{ .Values.enclave.probes.readinessInitialDelaySeconds }}
+            periodSeconds: {{ .Values.readinessProbe.periodSeconds }}
+            successThreshold: {{ .Values.readinessProbe.successThreshold }}
+            failureThreshold: {{ .Values.readinessProbe.failureThreshold }}
+          {{- end }}
           resources:
             {{- toYaml .Values.enclave.resources.server | nindent 12 }}
           volumeMounts:
@@ -89,28 +102,6 @@ spec:
             - secretRef:
                 name: "{{ $enclaveName }}-services-secrets"
           
-          {{- if and (.Values.livenessProbe.enabled) (.Values.enclave.probes.livenessEnabled) }}
-          livenessProbe:
-            httpGet:
-              path: {{ .Values.enclave.probes.livenessPath }}
-              port: {{ .Values.enclave.configs.listenInnerPort }}
-            timeoutSeconds: {{ .Values.livenessProbe.timeoutSeconds }}
-            initialDelaySeconds: {{ .Values.enclave.probes.livenessInitialDelaySeconds }}
-            periodSeconds: {{ .Values.livenessProbe.periodSeconds }}
-            successThreshold: {{ .Values.livenessProbe.successThreshold }}
-            failureThreshold: {{ .Values.livenessProbe.failureThreshold }}
-          {{- end}}
-          {{- if and (.Values.readinessProbe.enabled) (.Values.enclave.probes.readinessEnabled) }}
-          readinessProbe:
-            httpGet:
-              path: {{ .Values.enclave.probes.readinessPath }}
-              port: {{ .Values.enclave.configs.listenInnerPort }}
-            timeoutSeconds: {{ .Values.readinessProbe.timeoutSeconds }}
-            initialDelaySeconds: {{ .Values.enclave.probes.readinessInitialDelaySeconds }}
-            periodSeconds: {{ .Values.readinessProbe.periodSeconds }}
-            successThreshold: {{ .Values.readinessProbe.successThreshold }}
-            failureThreshold: {{ .Values.readinessProbe.failureThreshold }}
-          {{- end }}
           resources:
             {{- toYaml .Values.enclave.resources.services | nindent 12 }}
           volumeMounts:
