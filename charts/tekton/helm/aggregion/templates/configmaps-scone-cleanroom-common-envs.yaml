@@ -13,6 +13,8 @@ data:
   SCONE_MPROTECT: "0"
   SCONE_TCS: "4"
   SCONE_MODE: "hw"
+  SCONE_SIGTERM: "1"
+  SCONE_SIGPIPE: "1"
   COMMON_SESSION_NAME: "{{ .Values.sconeCleanroom.casCommonSessionName }}"
   DCP_BASE_URL: "{{ .Values.sconeCleanroom.dcpBaseUrl }}" # Without trainilg slash
   SCONE_CAS_ADDR: "{{ .Values.sconeCleanroom.casAddr }}"
