@@ -46,6 +46,10 @@ controller:
     runAsUser: 65532
     runAsGroup: 65532
   k8sMinVersion: "1.21.0-0"
+  registryProxy:
+    enabled: false
+    port: 32500
+    proxyPass: http://registry
 
 webhook:
   replicaCount: 1

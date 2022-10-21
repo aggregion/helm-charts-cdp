@@ -1,0 +1,16 @@
+{{- if .Values.controller.registryProxy.enabled }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: controller-registry-proxy-conf
+data:
+  registry.conf: |
+    server {
+      server_name: localhost;
+      listen: {{ .Values.controller.registryProxy.port }};
+
+      location / {
+        proxy_pass {{ .Values.controller.registryProxy.proxyPass }};
+      }
+    }
+{{- end }}
