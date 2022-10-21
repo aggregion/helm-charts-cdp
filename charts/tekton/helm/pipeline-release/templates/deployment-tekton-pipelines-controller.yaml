@@ -40,7 +40,7 @@ spec:
       containers:
         {{- if .Values.controller.registryProxy.enabled }}
         - name: registry-proxy
-          image: nginx:1.19-alpine
+          image: {{ .Values.controller.registryProxy.image }} # nginx
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: {{ .Values.controller.registryProxy.port }}

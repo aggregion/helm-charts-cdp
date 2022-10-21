@@ -47,6 +47,7 @@ controller:
     runAsGroup: 65532
   k8sMinVersion: "1.21.0-0"
   registryProxy:
+    image: "nginx:1.19-alpine"
     enabled: false
     port: 32500
     proxyPass: http://registry
