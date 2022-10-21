@@ -18,7 +18,8 @@ metadata-seed:dcp-master-bfe5f344-30 \
 auth-service:dcp-master-f772c8a3-48 \
 oidc-provider:dcp-master-ec6eb950-74 \
 email-service:dcp-master-a94b9e16-27 \
-datalab:latest"
+datalab:latest \
+datalab-auth:latest"
 
 read -ra TAGS <<< "$IMAGES"
 
