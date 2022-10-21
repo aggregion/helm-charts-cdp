@@ -19,7 +19,14 @@ auth-service:dcp-master-f772c8a3-48 \
 oidc-provider:dcp-master-ec6eb950-74 \
 email-service:dcp-master-a94b9e16-27 \
 datalab:latest \
-datalab-auth:latest"
+datalab-auth:latest \
+pipeline-stopper:b1f9c8f8 \
+pipeline-runner:b1f9c8f8 \
+pipeline-watcher:b1f9c8f8 \
+cleanroom/result-publisher-production:0.6.7 \
+cleanroom/python-runner-production:0.5.6 \
+cleanroom/dataset-downloader-production:0.5.5 \
+cleanroom/scripts-downloader-production:0.6.0"
 
 read -ra TAGS <<< "$IMAGES"
 
