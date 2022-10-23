@@ -51,6 +51,7 @@ controller:
     enabled: false
     port: 32500
     proxyPass: http://registry
+    proxySetHeaderHost: ""
 
 webhook:
   replicaCount: 1

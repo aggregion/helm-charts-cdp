@@ -11,6 +11,9 @@ data:
 
       location / {
         proxy_pass {{ .Values.controller.registryProxy.proxyPass }};
+        {{- if .Values.controller.registryProxy.proxySetHeaderHost }}
+        proxy_set_header Host {{ .Values.controller.registryProxy.proxySetHeaderHost }};
+        {{- end }}
       }
     }
 {{- end }}
