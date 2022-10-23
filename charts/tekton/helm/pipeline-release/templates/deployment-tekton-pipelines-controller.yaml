@@ -115,6 +115,7 @@ spec:
           configMap:
             name: config-registry-cert
         {{- if .Values.controller.registryProxy.enabled }}
-        - name: controller-registry-proxy-conf
-
+        - name: registry-proxy-conf
+          configMap:
+            name: controller-registry-proxy-conf
         {{- end }}
