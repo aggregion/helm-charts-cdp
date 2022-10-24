@@ -29,7 +29,8 @@ cleanroom/dataset-downloader-production:0.5.5 \
 cleanroom/scripts-downloader-production:0.6.0 \
 tekton/prunner:v0.36.0 \
 tekton/webhook:v0.36.0 \
-tekton/controller:v0.36.0"
+tekton/controller:v0.36.0 \
+rancher/pause:3.6"
 
 read -ra TAGS <<< "$IMAGES"
 
