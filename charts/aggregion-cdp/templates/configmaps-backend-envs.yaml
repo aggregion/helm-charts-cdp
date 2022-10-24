@@ -86,4 +86,11 @@ data:
   BCMQ_HEALTHCHECK_TIMEOUT_MS: {{ .Values.backend.configs.eosHealthcheckTimeoutMs | quote }}
   METRICS_PATH: {{ .Values.backend.configs.metrics.path }}
   METRICS_ENABLED: {{ and .Values.metrics.enabled .Values.backend.configs.metrics.isEnabled | quote }}
+  {{- if .Values.gatekeeper.enabled }}
+  GATEKEEPER_CLIENT_ID: {{ .Values.gatekeeper.config.clientId | quote }}
+  FEATURES_GET_USER_ROLES_FROM_HEADERS: {{ .Values.backend.configs.features.getUserRolesFromHeaders | quote }}
+  {{- else}}
+  FEATURES_GET_USER_ROLES_FROM_HEADERS: "false"
+  {{- end }}
+  FEATURES_USER_ROLES_MANAGMENT: {{ .Values.backend.configs.features.userRolesManagment | quote }}
 {{- end }}
