@@ -28,6 +28,7 @@ namespace:
 
 controller:
   replicaCount: 1
+  image: gcr.io/tekton-releases/github.com/tektoncd/pipeline/cmd/controller:v0.36.0@sha256:303da752778cfb1f9b25e1b4b2db0a6754dc4029f2246eca79cc9f9ec16ae201
   affinity:
     nodeAffinity:
       requiredDuringSchedulingIgnoredDuringExecution:
@@ -55,6 +56,7 @@ controller:
 
 webhook:
   replicaCount: 1
+  image: gcr.io/tekton-releases/github.com/tektoncd/pipeline/cmd/webhook:v0.36.0@sha256:d762e0e8033609e6908ce7689018624c9b6443a48bb0ecccf108eb88ccbde331
   affinity:
     nodeAffinity:
       requiredDuringSchedulingIgnoredDuringExecution:
@@ -97,3 +99,4 @@ pruner:
   enabled: true
   schedule: "*/5 * * * *"
   backoffLimit: 24
+  image: gcr.io/tekton-releases/dogfooding/tkn@sha256:025de221fb059ca24a3b2d988889ea34bce48dc76c0cf0d6b4499edb8c21325f

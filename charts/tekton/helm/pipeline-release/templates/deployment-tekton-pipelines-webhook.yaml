@@ -45,7 +45,7 @@ spec:
         - name: webhook
           # This is the Go import path for the binary that is containerized
           # and substituted here.
-          image: gcr.io/tekton-releases/github.com/tektoncd/pipeline/cmd/webhook:v0.36.0@sha256:d762e0e8033609e6908ce7689018624c9b6443a48bb0ecccf108eb88ccbde331
+          image: {{ .Values.webhook.image }}
           imagePullPolicy: IfNotPresent
           # Resource request required for autoscaler to take any action for a metric
           resources:
