@@ -26,7 +26,10 @@ pipeline-watcher:b1f9c8f8 \
 cleanroom/result-publisher-production:0.6.7 \
 cleanroom/python-runner-production:0.5.6 \
 cleanroom/dataset-downloader-production:0.5.5 \
-cleanroom/scripts-downloader-production:0.6.0"
+cleanroom/scripts-downloader-production:0.6.0 \
+tekton/prunner:v0.36.0 \
+tekton/webhook:v0.36.0 \
+tekton/controller:v0.36.0"
 
 read -ra TAGS <<< "$IMAGES"
 
