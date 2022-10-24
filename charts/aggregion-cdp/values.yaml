@@ -352,6 +352,13 @@ backend:
     # secret for hmac
     enclaveAuthSecret: "c2VjcmV0"
 
+    # features to enable/disable
+    features:
+      # getting user roles from 'x-auth-roles' header and saving it to account.usersRoles
+      getUserRolesFromHeaders: false
+      # enable/disable setUserRoles/removeUserRoles graphql actions
+      userRolesManagment: true
+
     # credentials to access deploy controller
     datalabUsername: admin
     # credentials to access deploy controller
