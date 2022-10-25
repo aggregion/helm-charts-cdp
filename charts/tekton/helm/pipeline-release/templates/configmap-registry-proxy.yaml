@@ -5,6 +5,10 @@ metadata:
   name: controller-registry-proxy-conf
 data:
   registry.conf: |
+    map $http_upgrade $connection_upgrade {
+      default Upgrade;
+      '' close;
+    }
     server {
       server_name localhost;
       listen {{ .Values.controller.registryProxy.port }};
@@ -14,6 +18,13 @@ data:
         {{- if .Values.controller.registryProxy.proxySetHeaderHost }}
         proxy_set_header Host {{ .Values.controller.registryProxy.proxySetHeaderHost }};
         {{- end }}
+        proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_set_header X-Forwarded-Port $server_port;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection $connection_upgrade;
+        proxy_http_version 1.1;
+        proxy_read_timeout 90000s;
+        proxy_send_timeout 90000s;
       }
     }
 {{- end }}
