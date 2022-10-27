@@ -11,6 +11,7 @@ metadata:
   {{- end }}
   labels:
     {{- include "cdp.enclave.labels" . | nindent 4 }}
+    app.kubernetes.io/component: enclave
 spec:
   replicas: {{ .Values.enclave.replicaCount }}
   selector:
