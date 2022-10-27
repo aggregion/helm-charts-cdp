@@ -95,7 +95,7 @@ frontend:
   image:
     repository: registry.aggregion.com/dmp-frontend
     pullPolicy: IfNotPresent
-    tag: "feature-DMPD-918-prod-story-67100656-1684"
+    tag: "release-22_sep-47de5668-1889"
   restartPolicy: Always
   nameOverride: ""
   fullnameOverride: ""
@@ -149,7 +149,7 @@ backend:
   image:
     repository: registry.aggregion.com/dmp-backend
     pullPolicy: IfNotPresent
-    tag: "feature-DMPD-918-prod-story-80c67b20-1208"
+    tag: "release-22_sep-906b7f90-1302"
 
   crond:
     image:
@@ -741,7 +741,7 @@ dataservice:
   imageApi:
     repository: registry.aggregion.com/dataservice
     pullPolicy: IfNotPresent
-    tag: dcp-master-9b43c8ec-21
+    tag: master-989043e9-31
   imageAtlasEntitySyncer:
     repository: registry.aggregion.com/atlas-entity-syncer
     pullPolicy: IfNotPresent
@@ -853,7 +853,7 @@ metadataSeed:
     schedule: "0 * * * *"
   image:
     repository: registry.aggregion.com/metadata-seed
-    tag: dcp-master-3cdacb7c-19
+    tag: dcp-master-b93bfd22-33
     pullPolicy: IfNotPresent
   probes:
     common:
@@ -883,7 +883,7 @@ authservice:
   image:
     repository: registry.aggregion.com/auth-service
     pullPolicy: IfNotPresent
-    tag: latest
+    tag: dcp-master-4bb66bb3-51
   tolerations: []
   affinity: {}
   service:
@@ -922,7 +922,7 @@ oidcprovider:
   image:
     repository: registry.aggregion.com/oidc-provider
     pullPolicy: Always
-    tag: latest
+    tag: dcp-master-4c911744-86
   tolerations: []
   affinity: {}
   service:
@@ -1022,7 +1022,7 @@ emailservice:
   image:
     repository: registry.aggregion.com/email-service
     pullPolicy: Always
-    tag: latest
+    tag: dcp-master-c9cb34e5-29
   podAnnotations: {}
   restartPolicy: Always
   updateStrategy: null

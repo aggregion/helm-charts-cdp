@@ -3,21 +3,21 @@
 AGG_REGISTRY="registry.aggregion.com"
 LOCAL_REGISTRY="localhost:5000"
 IMAGES="gatekeeper:1.4.2 \
-dmp-frontend:release-22_sep-12d24227-1773 \
-dmp-backend:release-22_sep-11f0ec10-1260 \
+dmp-frontend:release-22_sep-47de5668-1889 \
+dmp-backend:release-22_sep-906b7f90-1302 \
 cron-curl:0.0.1 \
 nginx:1.19-alpine \
 dmp-seed:latest \
 sconecuratedimages/aggregion:las-no-epid-scone-5.6.0 \
-enclave-server-signed:2.7.0 \
+enclave-server-signed:2.7.14 \
 enclave-external-services:develop \
-dataservice:dcp-master-a94b9e16-27 \
+dataservice:master-989043e9-31 \
 atlas-entity-syncer:dcp-master-1bbdc6e7-28 \
 curl:latest \
-metadata-seed:dcp-master-bfe5f344-30 \
-auth-service:dcp-master-f772c8a3-48 \
-oidc-provider:dcp-master-ec6eb950-74 \
-email-service:dcp-master-a94b9e16-27 \
+metadata-seed:dcp-master-b93bfd22-33 \
+auth-service:dcp-master-4bb66bb3-51 \
+oidc-provider:dcp-master-4c911744-86 \
+email-service:dcp-master-c9cb34e5-29 \
 datalab:latest \
 datalab-auth:latest \
 pipeline-stopper:b1f9c8f8 \
@@ -30,7 +30,8 @@ cleanroom/scripts-downloader-production:0.6.0 \
 tekton/prunner:v0.36.0 \
 tekton/webhook:v0.36.0 \
 tekton/controller:v0.36.0 \
-rancher/pause:3.6"
+rancher/pause:3.6 \
+trinodb/trino:master-105f5773-18"
 
 read -ra TAGS <<< "$IMAGES"
 
