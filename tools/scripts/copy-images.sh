@@ -31,7 +31,8 @@ tekton/prunner:v0.36.0 \
 tekton/webhook:v0.36.0 \
 tekton/controller:v0.36.0 \
 rancher/pause:3.6 \
-trinodb/trino:master-105f5773-18"
+trinodb/trino:master-105f5773-18 \
+keycloak:dcp-master-3cea8bc8-7"
 
 read -ra TAGS <<< "$IMAGES"
 
