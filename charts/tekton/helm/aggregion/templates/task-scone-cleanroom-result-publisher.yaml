@@ -83,6 +83,11 @@ spec:
           value: "$(params.shared-vol-path)/$(params.out-log-file-path)"
         - name: "MAIN_PROCESS_EXIT_CODE_PATH"
           value: "$(params.shared-vol-path)/$(params.out-exitcode-file-path)"
+        # Other
+        - name: "DATASERVICE_TOKEN"
+          value: "{{ .Values.sconeCleanroom.dataserviceToken }}"
+        - name: "DATASERVICE_URL"
+          value: "{{ .Values.sconeCleanroom.dataserviceUrl }}"
       envFrom:
         - configMapRef:
             name: "scone-cleanroom-common-config-{{ $name }}"
