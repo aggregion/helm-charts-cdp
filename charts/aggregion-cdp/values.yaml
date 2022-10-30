@@ -358,6 +358,8 @@ backend:
       getUserRolesFromHeaders: false
       # enable/disable setUserRoles/removeUserRoles graphql actions
       userRolesManagment: true
+      # enable/disalbe api to create frontend dumps (need only for dev stands)
+      frontendDumps: false
 
     # credentials to access deploy controller
     datalabUsername: admin

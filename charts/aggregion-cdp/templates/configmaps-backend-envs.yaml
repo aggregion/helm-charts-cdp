@@ -93,4 +93,5 @@ data:
   FEATURES_GET_USER_ROLES_FROM_HEADERS: "false"
   {{- end }}
   FEATURES_USER_ROLES_MANAGMENT: {{ .Values.backend.configs.features.userRolesManagment | quote }}
+  FEATURES_FRONTEND_DUMPS: {{ .Values.backend.configs.features.frontendDumps | quote }}
 {{- end }}
