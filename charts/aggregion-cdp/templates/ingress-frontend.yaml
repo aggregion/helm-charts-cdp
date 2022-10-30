@@ -87,6 +87,15 @@ spec:
                 port:
                   name: "httpapi"
           {{- end }}
+          {{- if $.Values.backend.configs.features.frontendDumps }}
+          - path: "/frontend-dumps"
+            pathType: "Prefix"
+            backend:
+              service:
+                name: "{{ $backendName }}"
+                port:
+                  name: "httpapi"
+          {{- end }}
           - path: "/webhooks"
             pathType: "Prefix"
             backend:
@@ -169,6 +178,12 @@ spec:
               servicePort: "httpapi"
           {{- if $.Values.metadataSeed.enabled }}
           - path: "/metadata-seed/seed-excel-data/error-report.xlsx"
+            backend:
+              serviceName: "{{ $backendName }}"
+              servicePort: "httpapi"
+          {{- end }}
+          {{- if $.Values.backend.configs.features.frontendDumps }}
+          - path: "/frontend-dumps"
             backend:
               serviceName: "{{ $backendName }}"
               servicePort: "httpapi"
