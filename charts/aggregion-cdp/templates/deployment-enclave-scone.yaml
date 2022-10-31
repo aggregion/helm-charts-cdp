@@ -56,6 +56,11 @@ spec:
                 name: "{{ $enclaveName }}-config"
             - secretRef:
                 name: "{{ $enclaveName }}-secrets"
+          env:
+            - name: "LAS_HOST"
+              valueFrom:
+                fieldRef:
+                  fieldPath: status.hostIP
           {{- if and (.Values.livenessProbe.enabled) (.Values.enclave.probes.livenessEnabled) }}
           livenessProbe:
             httpGet:
@@ -102,7 +107,7 @@ spec:
                 name: "{{ $enclaveName }}-services-config"
             - secretRef:
                 name: "{{ $enclaveName }}-services-secrets"
-          
+
           resources:
             {{- toYaml .Values.enclave.resources.services | nindent 12 }}
           volumeMounts:

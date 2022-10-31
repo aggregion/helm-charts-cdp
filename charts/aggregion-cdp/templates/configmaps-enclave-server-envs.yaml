@@ -53,6 +53,7 @@ data:
 
   SCONE_HEAP: "{{ .Values.enclave.scone.heapSize }}"
   SCONE_MODE: "hw"
+  LAS_HOST_PORT: {{ .Values.enclave.scone.lasHostPort | quote }}
   SCONE_LAS_ADDR: "{{ $enclaveName }}-scone-las:{{ .Values.enclave.scone.lasHostPort }}"
   SCONE_STACK: "4M"
   SCONE_TCS: "4"
