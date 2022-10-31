@@ -679,6 +679,7 @@ enclave:
     prometheus.io/scrape: "true"
     prometheus.io/path: /metrics
     prometheus.io/port: "8010"
+  updateStrategy: null
   podSecurityContext: {}
   securityContext: {}
     # capabilities:
