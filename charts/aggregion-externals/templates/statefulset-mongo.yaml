@@ -37,15 +37,37 @@ spec:
           ports:
             - name: service
               containerPort: {{ .Values.mongo.listenPort }}
-              protocol: TCP
-          # livenessProbe:
-          #   httpGet:
-          #     path: /
-          #     port: http
-          # readinessProbe:
-          #   httpGet:
-          #     path: /
-          #     port: http
+              protocol: TCP          
+          livenessProbe:
+            exec:
+              command:
+              - sh
+              - -c
+              - |
+                #!/usr/bin/env bash -e
+                set_response=$(mongo --quiet --eval "rs.status().ok")
+                if [ $set_response -eq 0 ] ; then
+                  exit 0
+                else
+                  exit 1
+                fi
+            initialDelaySeconds: 5
+            timeoutSeconds: 3
+          readinessProbe:
+            exec:
+              command:
+              - sh
+              - -c
+              - |
+                #!/usr/bin/env bash -e
+                set_response=$(mongo test --quiet --eval "db.stats().ok")
+                if [ $set_response -eq 1 ] ; then
+                  exit 0
+                else
+                  exit 1
+                fi
+            initialDelaySeconds: 20
+            timeoutSeconds: 5          
           volumeMounts:
             - name: data
               mountPath: /data/db
