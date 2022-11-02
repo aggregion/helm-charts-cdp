@@ -52,7 +52,7 @@ spec:
           {{- end }}
           volumeMounts:
             - name: oidc-provider-dist-jwks
-              mountPath: /home/node/apps/oidc-provider/dist/jwks.json
+              mountPath: /home/node/apps/oidc-provider/dist/src/jwks.json
               subPath: jwks.json
       volumes:
         - name: oidc-provider-dist-jwks
