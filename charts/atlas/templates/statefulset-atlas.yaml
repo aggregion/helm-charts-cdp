@@ -84,8 +84,8 @@ spec:
           #     - >-
           #         curl -s -m2 {{ $cassandraName }}-0.{{ $cassandraName }}.{{ .Release.Namespace }}.svc.cluster.local:9160;
           #         if [ $? -ne 52 ]; then echo 'cassandra livecheck fail'; exit 1; fi
-            initialDelaySeconds: 300
-            periodSeconds: 5    
+          #   initialDelaySeconds: 300
+          #   periodSeconds: 5    
       restartPolicy: {{ .Values.atlas.restartPolicy }}
       volumes:
         - name: data
