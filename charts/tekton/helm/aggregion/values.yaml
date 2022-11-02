@@ -78,7 +78,7 @@ sconeCleanroom:
         memory: 20Gi
   resultPublisher:
     image: registry.aggregion.com/cleanroom/result-publisher-production
-    imageTag: 0.5.1
+    imageTag: 0.6.7
     imagePullPolicy: IfNotPresent
     debug: false
     sconeHeap: 2G
