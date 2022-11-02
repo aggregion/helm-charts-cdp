@@ -39,30 +39,30 @@ spec:
               containerPort: {{ .Values.redis.listenPort }}
               protocol: TCP
           readinessProbe:
-             exec:
-               command:
-               - sh
-               - -c
-               - |
-                 #!/usr/bin/env bash -e
-                 set_response=$( redis-cli set liveness_test_key "SUCCESS" )
-                 if [ "$set_response" == "OK" ] ; then
-                   redis-cli del liveness_test_key
-                   exit 0
-                 fi
-                 if [ "$set_response" != "OK" ] ; then
-                   echo "Unable to get keys, something is wrong"
-                   exit 1
-                 fi
-             initialDelaySeconds: 10
-             timeoutSeconds: 5
-           livenessProbe:
-             exec:
-               command:
-               - redis-cli
-               - ping
-             initialDelaySeconds: 5
-             timeoutSeconds: 5            
+            exec:
+              command:
+              - sh
+              - -c
+              - |
+                #!/usr/bin/env bash -e
+                set_response=$( redis-cli set liveness_test_key "SUCCESS" )
+                if [ "$set_response" == "OK" ] ; then
+                  redis-cli del liveness_test_key
+                  exit 0
+                fi
+                if [ "$set_response" != "OK" ] ; then
+                  echo "Unable to get keys, something is wrong"
+                  exit 1
+                fi
+            initialDelaySeconds: 10
+            timeoutSeconds: 5
+          livenessProbe:
+            exec:
+              command:
+              - redis-cli
+              - ping
+            initialDelaySeconds: 5
+            timeoutSeconds: 5            
           volumeMounts:
             - name: data
               mountPath: /data
