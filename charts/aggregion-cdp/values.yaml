@@ -662,7 +662,8 @@ enclave:
     listenPort: 8321
     listenInnerPort: 8010
     datalabToken: ""
-    prettyLogs: ""
+    prettyLogs: "" # DEPRECATED
+    enablePrettyLogs: false
     workerHeapSizeMb: 5000
     sharedSecret: "shared-secret"
     providerSecret: "provider-secret"
