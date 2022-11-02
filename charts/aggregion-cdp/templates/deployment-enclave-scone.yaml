@@ -61,27 +61,27 @@ spec:
               valueFrom:
                 fieldRef:
                   fieldPath: status.hostIP
-          {{- if and (.Values.livenessProbe.enabled) (.Values.enclave.probes.livenessEnabled) }}
+          {{- if and (.Values.livenessProbe.enabled) (or (.Values.enclave.probes.livenessEnabled) (.Values.enclave.probes.liveness.enabled)) }}
           livenessProbe:
             httpGet:
               path: {{ .Values.enclave.probes.livenessPath }}
               port: {{ .Values.enclave.configs.listenInnerPort }}
-            timeoutSeconds: {{ .Values.livenessProbe.timeoutSeconds }}
-            initialDelaySeconds: {{ .Values.enclave.probes.livenessInitialDelaySeconds }}
-            periodSeconds: {{ .Values.livenessProbe.periodSeconds }}
-            successThreshold: {{ .Values.livenessProbe.successThreshold }}
-            failureThreshold: {{ .Values.livenessProbe.failureThreshold }}
-          {{- end}}
-          {{- if and (.Values.readinessProbe.enabled) (.Values.enclave.probes.readinessEnabled) }}
+            timeoutSeconds: {{ .Values.enclave.probes.liveness.timeoutSeconds | default .Values.livenessProbe.timeoutSeconds }}
+            initialDelaySeconds: {{ .Values.enclave.probes.liveness.initialDelaySeconds | default .Values.enclave.probes.livenessInitialDelaySeconds }}
+            periodSeconds: {{ .Values.enclave.probes.liveness.periodSeconds | default .Values.livenessProbe.periodSeconds }}
+            successThreshold: {{ .Values.enclave.probes.liveness.successThreshold | default .Values.livenessProbe.successThreshold }}
+            failureThreshold: {{ .Values.enclave.probes.liveness.failureThreshold | default .Values.livenessProbe.failureThreshold }}
+          {{- end }}
+          {{- if and (.Values.readinessProbe.enabled) (or (.Values.enclave.probes.readinessEnabled) (.Values.enclave.probes.readiness.enabled)) }}
           readinessProbe:
             httpGet:
               path: {{ .Values.enclave.probes.readinessPath }}
               port: {{ .Values.enclave.configs.listenInnerPort }}
-            timeoutSeconds: {{ .Values.readinessProbe.timeoutSeconds }}
-            initialDelaySeconds: {{ .Values.enclave.probes.readinessInitialDelaySeconds }}
-            periodSeconds: {{ .Values.readinessProbe.periodSeconds }}
-            successThreshold: {{ .Values.readinessProbe.successThreshold }}
-            failureThreshold: {{ .Values.readinessProbe.failureThreshold }}
+            timeoutSeconds: {{ .Values.enclave.probes.readiness.timeoutSeconds | default .Values.readinessProbe.timeoutSeconds }}
+            initialDelaySeconds: {{ .Values.enclave.probes.readiness.initialDelaySeconds | default .Values.enclave.probes.readinessInitialDelaySeconds }}
+            periodSeconds: {{ .Values.enclave.probes.readiness.periodSeconds | default .Values.readinessProbe.periodSeconds }}
+            successThreshold: {{ .Values.enclave.probes.readiness.successThreshold | default .Values.readinessProbe.successThreshold }}
+            failureThreshold: {{ .Values.enclave.probes.readiness.failureThreshold | default .Values.readinessProbe.failureThreshold }}
           {{- end }}
           resources:
             {{- toYaml .Values.enclave.resources.server | nindent 12 }}
