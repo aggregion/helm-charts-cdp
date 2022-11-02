@@ -48,7 +48,6 @@ spec:
           volumeMounts:
             - name: data
               mountPath: /opt/atlas/data
-              # subPath: atlas-data
           resources:
             {{- toYaml .Values.atlas.resources | nindent 12 }}
           env: # need refactoring
@@ -89,8 +88,7 @@ spec:
       restartPolicy: {{ .Values.atlas.restartPolicy }}
       volumes:
         - name: data
-          persistentVolumeClaim:
-            claimName: "{{ $atlasName }}-claim"
+          emptyDir: {}
       {{- with .Values.atlas.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
