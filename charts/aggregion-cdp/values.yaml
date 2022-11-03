@@ -638,9 +638,6 @@ backend:
     datasetUpdater:
       requests:
         memory: "100Mi"
-    glossaryContainers: # TODO: refactor
-      requests:
-        memory: "100Mi"
     instanceSyncer:
       requests:
         memory: "100Mi"
@@ -899,15 +896,27 @@ dataservice:
     - name: glossary-syncer
       healthcheckPort: 9048
       healthcheckPortName: gls-sync
+      resources:
+        requests:
+          memory: 100Mi
     - name: glossary-updater
       healthcheckPort: 9049
       healthcheckPortName: gls-upd
+      resources:
+        requests:
+          memory: 100Mi
     - name: glossary-term-syncer
       healthcheckPort: 9050
       healthcheckPortName: gls-term-sync
+      resources:
+        requests:
+          memory: 100Mi
     - name: glossary-term-updater
       healthcheckPort: 9051
       healthcheckPortName: gls-term-upd
+      resources:
+        requests:
+          memory: 100Mi
 
 metadataSeed:
   enabled: false
