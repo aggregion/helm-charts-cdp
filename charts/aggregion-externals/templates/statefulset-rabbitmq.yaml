@@ -44,11 +44,11 @@ spec:
           readinessProbe:
             exec:
               command:
-              - sh
+              - bash
               - -c
               - |
                 set_response=$( rabbitmq-diagnostics -q check_running );
-                if [[ "$set_response" == *"booted and running"* ]]; then
+                if [ "$set_response" == *"booted and running"* ]; then
                   exit 0;
                 else
                   exit 1;
@@ -58,11 +58,11 @@ spec:
           livenessProbe:
             exec:
               command:
-              - sh
+              - bash
               - -c
               - |
                 set_response=$( rabbitmq-diagnostics -q ping );
-                if [[ "$set_response" == "Ping succeeded" ]]; then
+                if [ "$set_response" == "Ping succeeded" ]; then
                   exit 0;
                 else
                   exit 1;
