@@ -44,7 +44,7 @@ spec:
           envFrom:
             - configMapRef:
                 name: "{{ $oidcProviderName }}-config"
-          esources:
+          resources:
             {{- toYaml .Values.backend.resources.oidcprovider | nindent 12 }}
           {{- if .Values.oidcprovider.probes.livenessEnabled }}
           {{- include "cdp.livenessProbe" . | indent 10 }}
