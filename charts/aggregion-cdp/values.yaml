@@ -651,10 +651,24 @@ enclave:
   probes:
     livenessPath: /healthcheck/liveness
     readinessPath: /healthcheck/readiness
-    livenessInitialDelaySeconds: 60
-    readinessInitialDelaySeconds: 60
-    livenessEnabled: false
-    readinessEnabled: false
+    readiness:
+      enabled: false
+      timeoutSeconds: 30
+      initialDelaySeconds: 10
+      periodSeconds: 40
+      successThreshold: 1
+      failureThreshold: 20
+    liveness:
+      enabled: false
+      timeoutSeconds: 30
+      initialDelaySeconds: 10
+      periodSeconds: 40
+      successThreshold: 1
+      failureThreshold: 20
+    livenessInitialDelaySeconds: 60 # DEPRECATED (see .enclave.probes.liveness.initialDelaySeconds)
+    readinessInitialDelaySeconds: 60 # DEPRECATED (see .enclave.probes.readiness.initialDelaySeconds)
+    livenessEnabled: false # DEPRECATED (see .enclave.probes.liveness.enabled)
+    readinessEnabled: false # DEPRECATED (see .enclave.probes.readiness.enabled)
   configs:
     # the key (pair with public key) is used to authenticate another enclaves
     dataserviceToken: "dataserviceToken"
@@ -662,7 +676,8 @@ enclave:
     listenPort: 8321
     listenInnerPort: 8010
     datalabToken: ""
-    prettyLogs: ""
+    prettyLogs: "" # DEPRECATED (see .enclave.configs.enablePrettyLogs)
+    enablePrettyLogs: false
     workerHeapSizeMb: 5000
     sharedSecret: "shared-secret"
     providerSecret: "provider-secret"

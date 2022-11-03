@@ -13,8 +13,6 @@ atlas:
   enabled: false
   nameOverride: ""
   fullnameOverride: ""
-  storageSize: "10G"
-  storageClass: ""
   restartPolicy: Always
   updateStrategy:
     type: RollingUpdate
@@ -270,8 +268,6 @@ zookeeper:
   replicas: 3
   nameOverride: ""
   fullnameOverride: ""
-  storageSize: "10G"
-  storageClass: ""
   restartPolicy: Always
   updateStrategy:
     type: RollingUpdate

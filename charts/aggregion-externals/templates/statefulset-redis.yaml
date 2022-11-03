@@ -59,12 +59,12 @@ spec:
           livenessProbe:
             exec:
               command:
-              - redisc li
-              - pin
+              - redis-cli
+              - ping
             initialDelaySeconds: 5
             timeoutSeconds: 5            
-          volumeMounts
-             - name: daa 
+          volumeMounts:
+            - name: data
               mountPath: /data
               subPath: redis-data
           resources:

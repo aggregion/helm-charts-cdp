@@ -9,4 +9,7 @@ data:
   {{- if .Values.sconeCleanroom.resultPublisher.debug }}
   SCONE_LOG: "7"
   {{- end }}
+  {{- range .Values.sconeCleanroom.resultPublisher.envs }}
+  {{ .name }}: {{ .value | quote }}
+  {{- end }}
 {{- end -}}

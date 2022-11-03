@@ -78,7 +78,7 @@ sconeCleanroom:
         memory: 20Gi
   resultPublisher:
     image: registry.aggregion.com/cleanroom/result-publisher-production
-    imageTag: 0.5.1
+    imageTag: 0.6.7
     imagePullPolicy: IfNotPresent
     debug: false
     sconeHeap: 2G
@@ -87,6 +87,9 @@ sconeCleanroom:
         memory: 3Gi
       limits:
         memory: 3Gi
+    envs: []
+      # - name: CLICKHOUSE_CLUSTER_NAME
+      #   value: "replicated"
   scriptDownloader:
     image: registry.aggregion.com/cleanroom/scripts-downloader-production
     imageTag: 0.6.0

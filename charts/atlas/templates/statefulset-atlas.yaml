@@ -48,7 +48,6 @@ spec:
           volumeMounts:
             - name: data
               mountPath: /opt/atlas/data
-              # subPath: atlas-data
           resources:
             {{- toYaml .Values.atlas.resources | nindent 12 }}
           env: # need refactoring
@@ -76,21 +75,20 @@ spec:
           # but Atlas will continue try to reach cassandr via old IP.
           # Check for open tcp port cassandra:9160 via curl, get error 'curl: (52) Empty reply from server'
           # If last command error code not equal to 52, we decide, that cassandra is unreachable and restart atlas to reconnect via new IP.
-          livenessProbe:
-            exec:
-              command:
-              - /bin/sh
-              - -c
-              - >-
-                  curl -s -m2 {{ $cassandraName }}-0.{{ $cassandraName }}.{{ .Release.Namespace }}.svc.cluster.local:9160;
-                  if [ $? -ne 52 ]; then echo 'cassandra livecheck fail'; exit 1; fi
-            initialDelaySeconds: 300
-            periodSeconds: 5    
+          # livenessProbe:
+          #   exec:
+          #     command:
+          #     - /bin/sh
+          #     - -c
+          #     - >-
+          #         curl -s -m2 {{ $cassandraName }}-0.{{ $cassandraName }}.{{ .Release.Namespace }}.svc.cluster.local:9160;
+          #         if [ $? -ne 52 ]; then echo 'cassandra livecheck fail'; exit 1; fi
+          #   initialDelaySeconds: 300
+          #   periodSeconds: 5    
       restartPolicy: {{ .Values.atlas.restartPolicy }}
       volumes:
         - name: data
-          persistentVolumeClaim:
-            claimName: "{{ $atlasName }}-claim"
+          emptyDir: {}
       {{- with .Values.atlas.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
