@@ -129,16 +129,16 @@ frontend:
     #  - secretName: chart-example-tls
     #    hosts:
     #      - chart-example.local
-  resources: {}
-    # limits:
-    #   cpu: 100m
-    #   memory: 128Mi
-    # requests:
-    #   cpu: 100m
-    #   memory: 128Mi
+  resources:
+    requests:
+      memory: 100Mi
+  gatekeeperResources:
+    requests:
+      memory: 100Mi
   nodeSelector: {}
   tolerations: []
   affinity: {}
+  updateStrategy: null
 
 backend:
   enabled: true
@@ -165,7 +165,9 @@ backend:
       repository: nginx
       tag: 1.19-alpine
       pullPolicy: IfNotPresent
-    resources: {}
+    resources:
+      requests:
+        memory: "50Mi"
 
   dbseed:
     enabled: false
@@ -588,24 +590,72 @@ backend:
     type: Recreate
 
   resources:
-    api: {}
-    migration: {}
-    matchingStatusWatcher: {}
+    api:
+      requests:
+        memory: "500Mi"
+    migration:
+      requests:
+        memory: "100Mi"
+    matchingStatusWatcher:
+      requests:
+        memory: "100Mi"
     matchingStatusResponseWatcher: {}
-    datasetUploader: {}
-    blockchainUpdater: {}
-    segments: {}
-    bcChecker: {}
+    atlasEntitySyncer:
+      requests:
+        memory: "200Mi"
+    datasetUploader:
+      requests:
+        memory: "200Mi"
+    blockchainUpdater:
+      requests:
+        memory: "500Mi"
+    segments:
+      requests:
+        memory: "500Mi"
+    bcChecker:
+      requests:
+        memory: "100Mi"
     bcSyncer: {}
     crond: {}
-    panelSegmentUploader: {}
-      # limits:
-      #   cpu: 100m
-      #   memory: 128Mi
-      # requests:
-      #   cpu: 100m
-      #   memory: 128Mi
-    jobScheduler: {}
+    panelSegmentUploader:
+      requests:
+        memory: "500Mi"
+    jobScheduler:
+      requests:
+        memory: "150Mi"
+    pipelineDebugHasherStatusWatcher:
+      requests:
+        memory: "200Mi"
+    pipelineDebugCleanroomStatusWatcher:
+      requests:
+        memory: "200Mi"
+    datasetLogsSyncer:
+      requests:
+        memory: "100Mi"
+    datasetSyncer:
+      requests:
+        memory: "100Mi"
+    datasetUpdater:
+      requests:
+        memory: "100Mi"
+    glossaryContainers: # TODO: refactor
+      requests:
+        memory: "100Mi"
+    instanceSyncer:
+      requests:
+        memory: "100Mi"
+    dataserviceApi:
+      requests:
+        memory: "500Mi"
+    emailservice:
+      requests:
+        memory: "100Mi"
+    metadataSeedApi:
+      requests:
+        memory: "100Mi"
+    oidcprovider:
+      requests:
+        memory: "100Mi"
   nodeSelector: {}
   tolerations: []
   affinity: {}

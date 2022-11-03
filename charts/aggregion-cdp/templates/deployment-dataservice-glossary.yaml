@@ -33,6 +33,7 @@ spec:
       restartPolicy: {{ .Values.dataservice.restartPolicy }}
       serviceAccountName: {{ include "cdp.serviceAccountName" . }}
       containers:
+        # TODO: refactor (separate contaiiners)
         {{- range $index, $val := .Values.dataservice.glossaryContainers }}
         {{- with $.Values.dataservice }}
         {{- $hcport := $val.healthcheckPort }}
@@ -53,6 +54,8 @@ spec:
           env:
             - name: HEALTHCHECK_PORT
               value: {{ $hcport | quote }}
+          resources:
+            {{- toYaml .Values.backend.resources.glossaryContainers | nindent 12 }}
           {{- if .probes.glossary.livenessEnabled }}
           livenessProbe:
             httpGet:

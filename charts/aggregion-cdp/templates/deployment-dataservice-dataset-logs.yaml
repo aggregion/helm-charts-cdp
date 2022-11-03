@@ -47,6 +47,8 @@ spec:
                 name: "{{ $dataServiceName }}-config"
             - secretRef:
                 name: "{{ $dataServiceName }}-secrets"
+          resources:
+            {{- toYaml .Values.backend.resources.datasetLogsSyncer | nindent 12 }}
           {{- if .Values.dataservice.probes.datasetLogs.livenessEnabled }}
           {{- include "cdp.livenessProbe" . | indent 10 }}
           {{- end }}
