@@ -53,6 +53,8 @@ spec:
           env:
             - name: HEALTHCHECK_PORT
               value: "9047"
+          resources:
+            {{- toYaml .Values.backend.resources.pipelineDebugHasherStatusWatcher | nindent 12 }}
           {{- if .Values.backend.probes.debugHasherStatusWatcher.livenessEnabled }}
           livenessProbe:
             httpGet:
@@ -71,8 +73,6 @@ spec:
             initialDelaySeconds: 5
             periodSeconds: 15
           {{- end -}}
-          resources:
-            {{- toYaml .Values.backend.resources.pipelineDebugHasherStatusWatcher | nindent 12 }}
         {{- end }}
         {{- if (.Values.backend.configs.servicePipelineDebugCleanroomStatusWatcherEnabled) }}
         - name: "debug-cleanroom-status-watcher"
