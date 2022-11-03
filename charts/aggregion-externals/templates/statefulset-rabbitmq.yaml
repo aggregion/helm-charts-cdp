@@ -41,14 +41,36 @@ spec:
             - name: front
               containerPort: {{ .Values.rabbit.listenFrontPort }}
               protocol: TCP
-          # livenessProbe:
-          #   httpGet:
-          #     path: /
-          #     port: http
-          # readinessProbe:
-          #   httpGet:
-          #     path: /
-          #     port: http
+          readinessProbe:
+            exec:
+              command:
+              - sh
+              - -c
+              - |
+                #!/usr/bin/env bash -e
+                set_response=$( rabbitmq-diagnostics -q check_running )
+                if [[ "$set_response" == *"booted and running"* ]] ; then
+                  exit 0
+                else
+                  exit 1
+                fi
+            initialDelaySeconds: 10
+            timeoutSeconds: 5
+          livenessProbe:
+            exec:
+              command:
+              - sh
+              - -c
+              - |
+                #!/usr/bin/env bash -e
+                set_response=$( rabbitmq-diagnostics -q ping )
+                if [ "$set_response" == "Ping succeeded" ] ; then
+                  exit 0
+                else
+                  exit 1
+                fi
+            initialDelaySeconds: 5
+            timeoutSeconds: 5
           volumeMounts:
             - name: data
               mountPath: /var/lib/rabbitmq
