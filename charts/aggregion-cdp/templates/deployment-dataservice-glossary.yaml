@@ -55,8 +55,8 @@ spec:
           env:
             - name: HEALTHCHECK_PORT
               value: {{ $hcport | quote }}
-          resources:
-            {{- toYaml $resources | nindent 12 }}
+          # resources:
+          #   {{- toYaml $resources | nindent 12 }}
           {{- if .probes.glossary.livenessEnabled }}
           livenessProbe:
             httpGet:
