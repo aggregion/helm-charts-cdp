@@ -37,6 +37,7 @@ spec:
         {{- range $index, $val := .Values.dataservice.glossaryContainers }}
         {{- with $.Values.dataservice }}
         {{- $hcport := $val.healthcheckPort }}
+        {{- $resources := $val.resources }}
         - name: {{ $val.name | quote }}
           securityContext:
             {{- toYaml .securityContext | nindent 12 }}
@@ -55,7 +56,7 @@ spec:
             - name: HEALTHCHECK_PORT
               value: {{ $hcport | quote }}
           resources:
-            {{- toYaml $val.resources | nindent 12 }}
+            {{- toYaml $resources | nindent 12 }}
           {{- if .probes.glossary.livenessEnabled }}
           livenessProbe:
             httpGet:
