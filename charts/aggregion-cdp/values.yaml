@@ -973,23 +973,39 @@ metadataSeed:
     dmpBackendBaseUrl: "http://dmpbackend"
 
 authservice:
+  # must be always `true` for production
   enabled: false
+  # number of replicated pods
   replicaCount: 1
+  # name to override default pod name
   nameOverride: ""
+  # authservice deployment annotations
   annotations:
     reloader.stakater.com/auto: "true"
+  # authservice pod annotations
   podAnnotations: {}
+  # restart policy
   restartPolicy: Always
+  # update strategy
   updateStrategy: null
+  # authservice security context
   securityContext: {}
   image:
+    # authservice image repository
     repository: registry.aggregion.com/auth-service
+    # authservice image pull policy
     pullPolicy: IfNotPresent
+    # authservice image tag
     tag: dcp-master-4bb66bb3-51
+  # tolerations for pod assignment
   tolerations: []
+  # affinity for pod assignment
   affinity: {}
+  # service configuration
   service:
+    # Kubernetes service type
     type: ClusterIP
+    # service HTTP port
     port: 80 # external
   probes:
     livenessPath: /healthcheck/liveness
@@ -999,17 +1015,27 @@ authservice:
     livenessEnabled: false
     readinessEnabled: false
   config:
+    # internal app name
     appName: authservice-api
+    # log level
     logLevel: trace
+    # set `true` if you need human-readable logging format
     logPrettyPrint: false
+    # NODE_ENV value
     nodeEnv: development
+    # port
     port: 9045 # internal
+    # mongo db connection string URI
     mongoDbUri: mongodb://127.0.0.1:27017/auth-service
+    # enables mongodb debug logs
     mongoDebug: false
-    jwtTokenExpirationTimeInSeconds: 31104000
+    # invitation token expiration time
     jwtInviteExpirationTimeInSeconds: 31104000
+    # jwt token secret key
     jwtSecretKey: authservice_secret_key
+    # value of 'canConfigure' field of invitation token payload
     localAccessPolicyCanConfigure: owner
+    # adds 'canConfigure' field to invitation token payload if enabled
     localAccessPolicyEnabled: false
 oidcprovider:
   enabled: false
