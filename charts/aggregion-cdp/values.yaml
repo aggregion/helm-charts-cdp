@@ -51,37 +51,62 @@ metrics:
     enabled: false
 
 gatekeeper:
-  enabled: false
+  # must be always `true` for production, it can be `false` only for dev purposes
+  enabled: true
   image:
+    # gatekeeper image repository
     repository: "registry.aggregion.com/gatekeeper"
+    # gatekeeper image tag
     tag: "1.4.2"
+    # gatekeeper image pull policy
     pullPolicy: IfNotPresent
-    podSecurityContext: {}
-    securityContext: {}
+  # gatekeeper config
   config:
+    # the client id for the 'client' application
     clientId: dcp
+    # the secret associated to the 'client' application (get it from Keycloak Administration Console)
     clientSecret: XXxxXXxxXXxxXXxxXXxxXXxxXXxxXXxx
+    # is the URL for retrieve the OpenID configuration (get it from Keycloak Administration Console -> Realm settings -> Endpoints -> OpenID Endpoint Configuration)
     discoveryUrl: http://keycloak/realms/ad1/.well-known/openid-configuration
+    # option blocks all requests without valid token on all basic HTTP methods (DELETE, GET, HEAD, OPTIONS, PATCH, POST, PUT, TRACE)
     enableDefaultDeny: true
+    # switch on json logging rather than text
     enableJsonLogging: true
+    # enable the prometheus metrics collector on /oauth/metrics
     enableMetrics: false
+    # set `false` if  you wish to ignore using refresh tokens and re-auth on expiration of access token
     enableRefreshTokens: true
+    # access and refresh tokens are session only i.e. removed on browser close
     enableSessionCookies: true
+    # encryption key used to encrypt the refresh token
     encryptionKey: xxXXxxXXxxXXxxXX
+    # skips the tls verification for openid provider communication
     skipOpenidProviderTlsVerify: true
+    # according RFC client id should not be checked on access token
     skipAccessTokenClientIdCheck: true
+    # port for main listener
     listen: 3000
+    # port for  admin-only endpoints (live-status, debug, prometheus...)
     listenAdmin: 4000
+    # enforces the cookie as secure
     secureCookie: false
+    # redirection url for the oauth callback url
     redirectionUrl: https://test.youdomaindom.com
+    # url for a store used to hold the refresh tokens, e.g redis://127.0.0.1:6379, file:///etc/tokens.file" or null (if you want to store refresh tokens in cookie)
     storeUrl: redis://127.0.0.1:6379
+    # the read timeout on the http server
     serverReadTimeout: 600s
+    # the write timeout on the http server
     serverWriteTimeout: 600s
+    # the idle timeout on the http server
     serverIdleTimeout: 600s
+    # path to custom template displayed for signin, to disable sign in page showing set empty value
     signInPage: /opt/gatekeeper/templates/sign_in.html.tmpl
+    # the timeout for upstream header response
     upstreamResponseHeaderTimeout: 600s
+    # switches on debug logging
     verbose: true
-    # tags is a map where key is identity provider id in the template and value is identity provider id in Keycloak
+    # tags (used in signInPage template) is a map where key is identity provider id in the template and value is identity provider id in Keycloak
     tags:
       title: "DCP | Вход"
       aggregion: "aggregion-oidc"
