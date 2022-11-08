@@ -1019,7 +1019,7 @@ authservice:
     appName: authservice-api
     # log level
     logLevel: trace
-    # set `true` if you need human-readable logging format
+    # set `true` to enable human-readable logging format
     logPrettyPrint: false
     # NODE_ENV env variable value
     nodeEnv: development
@@ -1121,7 +1121,7 @@ oidcprovider:
       rpInitiatedLogout: true
     # log level
     logLevel: trace
-    # set `true` if you need human-readable logging format
+    # set `true` to enable human-readable logging format
     logPrettyPrint: false
     # uri to which the user should be redirected after successful registration
     successSignupRedirectUri: http://localhost:9055/signup
@@ -1179,20 +1179,33 @@ oidcprovider:
     }
 
 emailservice:
+  # must be 'true' when oidcprovider enabled
   enabled: false
+  # number of replicated pods
   replicaCount: 1
+  # name to override default pod name
   nameOverride: ""
+  # emailservice deployment annotations
   annotations:
     reloader.stakater.com/auto: "true"
   image:
+    # emailservice image repository
     repository: registry.aggregion.com/email-service
+    # emailservice image pull policy
     pullPolicy: Always
+    # emailservice image tag
     tag: dcp-master-c9cb34e5-29
+  # emailservice pod annotations
   podAnnotations: {}
+  # restart policy
   restartPolicy: Always
+  # update strategy
   updateStrategy: null
+  # emailservice security context
   securityContext: {}
+  # tolerations for pod assignment
   tolerations: []
+  # affinity for pod assignment
   affinity: {}
   probes:
     livenessPath: /healthcheck/liveness
@@ -1202,6 +1215,9 @@ emailservice:
     livenessEnabled: false
     readinessEnabled: false
   config:
+    # RabbitMQ queue name to consume email tasks
     queueName: emails
+    # log level
     logLevel: trace
+    # set `true` to enable human-readable logging format
     logPrettyPrint: false
