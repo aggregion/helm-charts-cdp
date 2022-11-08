@@ -1021,7 +1021,7 @@ authservice:
     logLevel: trace
     # set `true` if you need human-readable logging format
     logPrettyPrint: false
-    # NODE_ENV value
+    # NODE_ENV env variable value
     nodeEnv: development
     # port
     port: 9045 # internal
@@ -1038,26 +1038,45 @@ authservice:
     # adds 'canConfigure' field to invitation token payload if enabled
     localAccessPolicyEnabled: false
 oidcprovider:
+  # enable if you want to use Aggregion OIDC Provider
   enabled: false
+  # number of replicated pods
   replicaCount: 1
+  # name to override default pod name
   nameOverride: ""
+  # oidcprovider deployment annotations
   annotations:
     reloader.stakater.com/auto: "true"
+  # oidcprovider pod annotations
   podAnnotations: {}
+  # restart policy
   restartPolicy: Always
+  # update strategy
   updateStrategy: null
+  # oidcprovider security context
   securityContext: {}
   image:
+    # oidcprovider image repository
     repository: registry.aggregion.com/oidc-provider
+    # oidcprovider image pull policy
     pullPolicy: Always
+    # oidcprovider image tag
     tag: dcp-master-4c911744-86
+  # tolerations for pod assignment
   tolerations: []
+  # affinity for pod assignment
   affinity: {}
+  # service configuration
   service:
+    # Kubernetes service type
     type: ClusterIP
+    # service HTTP port
     port: 80
+  # ingress parameters
   ingress:
+    # enable ingress record generation
     enabled: false
+    # ingress annotations
     annotations:
       kubernetes.io/ingress.class: nginx
       nginx.ingress.kubernetes.io/proxy-body-size: 128000m
@@ -1065,8 +1084,10 @@ oidcprovider:
       nginx.ingress.kubernetes.io/proxy-send-timeout: "3600"
       nginx.ingress.kubernetes.io/limit-rps: "1000"
       nginx.ingress.kubernetes.io/limit-rpm: "60000"
+    # hosts for ingress rules
     hosts:
       - host: auth.local
+    # ingress tls
     tls: []
   probes:
     livenessPath: /healthcheck/liveness
@@ -1076,33 +1097,49 @@ oidcprovider:
     livenessEnabled: false
     readinessEnabled: false
   config:
+    # port
     port: 9055
+    # client id of an external client
     clientId: keycloak
+    # client secret of an external client
     clientSecret: secret
+    # supported client scopes
     clientScopes: "openid profile"
+    # supported client redirect uris of an external client
     clientRedirectUris:
       - "http://localhost:8080/auth/realms/master/broker/oidc/endpoint"
+    # supported client post logout redirect uris of an external client
     clientPostLogoutRedirectUris:
       - "http://localhost:8080/auth/realms/master/broker/oidc/endpoint/logout_response"
+    # key list for keygrip (https://github.com/crypto-utils/keygrip)
     cookiesKeys:
       - 16a6d259dbf8887e76e0702f8af2059dd3092138340b63dbe67db5c866d530ad
       - 9be003e7425596421b5d4aa07621c93de3a5f3b4e984ae0ec8e4c1ae939555be
+    # oidc features
     features:
+      # enable RP-Initiated Logout features (https://openid.net/specs/openid-connect-rpinitiated-1_0-final.html)
       rpInitiatedLogout: true
+    # log level
     logLevel: trace
+    # set `true` if you need human-readable logging format
     logPrettyPrint: false
-    sessionKeys:
-      - NsfOo0Hb1XG9ZKrf68tnAqIpOFBPmAZ7
-      - yVLut2jqPn3FqlgkDne9tGigQp2ZkOkc
-      - Sn2IzRIRqemVbefu9zH4GdhNKKi2ZC58
+    # uri to which the user should be redirected after successful registration
     successSignupRedirectUri: http://localhost:9055/signup
+    # enable i18next lib logs
     i18nextDebug: false
+    # NODE_ENV env variable value
     nodeEnv: production
+    # ttl settings
     ttl:
+      # access token ttl
       accessToken: 3600
+      # id token ttl
       idToken: 3600
+      # interaction ttl
       interaction: 172800
+      # refresh token ttl
       refreshToken: 1209600
+  # JSON Web Key Set used by the provider for signing and decryption (https://github.com/panva/node-oidc-provider/tree/main/docs#jwks)
   jwks: |
     {
       "keys": [
