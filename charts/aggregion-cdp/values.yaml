@@ -52,7 +52,7 @@ metrics:
 
 gatekeeper:
   # must be always `true` for production, it can be `false` only for dev purposes
-  enabled: true
+  enabled: false
   image:
     # gatekeeper image repository
     repository: "registry.aggregion.com/gatekeeper"
