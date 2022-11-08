@@ -1007,6 +1007,7 @@ authservice:
     type: ClusterIP
     # service HTTP port
     port: 80 # external
+  # cofiguration of liveness, readiness probes
   probes:
     livenessPath: /healthcheck/liveness
     readinessPath: /healthcheck/readiness
@@ -1089,6 +1090,7 @@ oidcprovider:
       - host: auth.local
     # ingress tls
     tls: []
+  # cofiguration of liveness, readiness probes
   probes:
     livenessPath: /healthcheck/liveness
     readinessPath: /healthcheck/readiness
@@ -1207,6 +1209,7 @@ emailservice:
   tolerations: []
   # affinity for pod assignment
   affinity: {}
+  # cofiguration of liveness, readiness probes
   probes:
     livenessPath: /healthcheck/liveness
     readinessPath: /healthcheck/readiness
