@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: "{{ include "scone.cas.fullname" . }}-pvc"
+spec:
+  {{- if .Values.cas.pvc.storageClass }}
+  storageClassName: "{{ .Values.cas.pvc.storageClass }}"
+  {{- end }}
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: "{{ .Values.cas.pvc.storageSize }}"

@@ -1,0 +1,46 @@
+cas:
+  replicaCount: 1
+  image:
+    repository: registry.aggregion.com/sconecuratedimages/aggregion
+    pullPolicy: IfNotPresent
+    tag: "cas-scone-5.6.0-production"
+  imagePullSecrets: []
+  nameOverride: "scone-cas"
+  fullnameOverride: ""
+  podAnnotations: {}
+  podSecurityContext: {}
+  securityContext:
+    privileged: true
+  service:
+    http:
+      type: ClusterIP
+      port: 8081
+    grpc:
+      type: ClusterIP
+      port: 18765
+  ingress: # NOT SUPPORTED YET
+    enabled: false
+    className: ""
+    annotations: {}
+    hosts:
+      - host: chart-example.local
+        paths:
+          - path: /
+            pathType: ImplementationSpecific
+    tls: []
+  resources: {}
+  nodeSelector: {}
+  tolerations: []
+  affinity: {}
+  serviceAccount:
+    create: false
+    annotations: {}
+    name: ""
+  pvc:
+    storageClass: ""
+    storageSize: "1Gi"
+  config:
+    lasAddr: ""
+    logLevel: 5
+
+las: {} # TODO
