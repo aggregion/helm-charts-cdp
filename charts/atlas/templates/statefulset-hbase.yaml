@@ -66,6 +66,12 @@ spec:
               value: "false"
             - name: SERVICE_PRECONDITION
               value: "{{ $hadoopName }}-0.{{ $hadoopName }}.{{ .Release.Namespace }}.svc.cluster.local:{{ .Values.hadoop.service.port }} {{ $zookeeperName }}-0.{{ $zookeeperName }}.{{ .Release.Namespace }}.svc.cluster.local {{ $zookeeperName }}-1.{{ $zookeeperName }}.{{ .Release.Namespace }}.svc.cluster.local {{ $zookeeperName }}-2.{{ $zookeeperName }}.{{ .Release.Namespace }}.svc.cluster.local"
+            - name: HBASE_CONF_hbase_zookeeper_peerport
+              value: "{{ .Values.zookeeper.service.serverPort }}"
+            - name: HBASE_CONF_hbase_zookeeper_leaderport
+              value: "{{ .Values.zookeeper.service.leaderElectionPort }}"
+            - name: HBASE_CONF_hbase_zookeeper_property_clientPort
+              value: "{{ .Values.zookeeper.service.clientPort }}"
           ports:
             - name: client
               containerPort: {{ .Values.hbaseMaster.listenPort }}
@@ -107,7 +113,13 @@ spec:
             - name: MODE
               value: "region"
             - name: SERVICE_PRECONDITION
-              value: "{{ $hadoopName }}-0.{{ $hadoopName }}.{{ .Release.Namespace }}.svc.cluster.local:{{ .Values.hadoop.service.port }} {{ $zookeeperName }}-0.{{ $zookeeperName }}.{{ .Release.Namespace }}.svc.cluster.local {{ $zookeeperName }}-1.{{ $zookeeperName }}.{{ .Release.Namespace }}.svc.cluster.local {{ $zookeeperName }}-2.{{ $zookeeperName }}.{{ .Release.Namespace }}.svc.cluster.local localhost:{{ .Values.hbaseRegion.listenPort }}"
+              value: "{{ $hadoopName }}-0.{{ $hadoopName }}.{{ .Release.Namespace }}.svc.cluster.local:{{ .Values.hadoop.service.port }} {{ $zookeeperName }}-0.{{ $zookeeperName }}.{{ .Release.Namespace }}.svc.cluster.local {{ $zookeeperName }}-1.{{ $zookeeperName }}.{{ .Release.Namespace }}.svc.cluster.local {{ $zookeeperName }}-2.{{ $zookeeperName }}.{{ .Release.Namespace }}.svc.cluster.local localhost:{{ .Values.hbaseMaster.listenPort }}"
+            - name: HBASE_CONF_hbase_zookeeper_peerport
+              value: "{{ .Values.zookeeper.service.serverPort }}"
+            - name: HBASE_CONF_hbase_zookeeper_leaderport
+              value: "{{ .Values.zookeeper.service.leaderElectionPort }}"
+            - name: HBASE_CONF_hbase_zookeeper_property_clientPort
+              value: "{{ .Values.zookeeper.service.clientPort }}"
           ports:
             - name: client
               containerPort: {{ .Values.hbaseRegion.listenPort }}
