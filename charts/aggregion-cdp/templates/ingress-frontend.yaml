@@ -35,7 +35,7 @@ spec:
     - host: {{ .host | quote }}
       http:
         paths:
-          {{- if semverCompare ">=1.22-0" $.Capabilities.KubeVersion.GitVersion }}
+          {{- if semverCompare ">=1.21-0" $.Capabilities.KubeVersion.GitVersion }}
           - path: "/graphql"
             pathType: "Prefix"
             backend:
@@ -151,7 +151,7 @@ spec:
                 port:
                   name: "httpapi"
           {{- end }}
-          {{- else }} # <= 1.22
+          {{- else }} # <= 1.21
           - path: "/graphql"
             backend:
               serviceName: "{{ $backendName }}"
