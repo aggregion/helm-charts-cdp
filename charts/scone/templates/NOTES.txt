@@ -1,0 +1,40 @@
+1. Get the application URL by running these commands:
+{{- if .Values.cas.ingress.enabled }}
+{{- range $host := .Values.cas.ingress.hosts }}
+  {{- range .paths }}
+  http{{ if $.Values.cas.ingress.tls }}s{{ end }}://{{ $host.host }}{{ .path }}
+  {{- end }}
+{{- end }}
+{{- end }}
+
+{{- if contains "NodePort" .Values.cas.service.http.type }}
+  export CAS_HTTP_NODE_PORT=$(kubectl get --namespace {{ .Release.Namespace }} -o jsonpath="{.spec.ports[0].nodePort}" services {{ include "scone.cas.fullname" . }})
+  export CAS_HTTP_NODE_IP=$(kubectl get nodes --namespace {{ .Release.Namespace }} -o jsonpath="{.items[0].status.addresses[0].address}")
+  echo http://$CAS_HTTP_NODE_IP:$CAS_HTTP_NODE_PORT
+{{- else if contains "LoadBalancer" .Values.cas.service.http.type }}
+     NOTE: It may take a few minutes for the LoadBalancer IP to be available.
+           You can watch the status of by running 'kubectl get --namespace {{ .Release.Namespace }} svc -w {{ include "scone.cas.fullname" . }}'
+  export CAS_HTTP_SERVICE_IP=$(kubectl get svc --namespace {{ .Release.Namespace }} {{ include "scone.cas.fullname" . }} --template "{{"{{ range (index .status.loadBalancer.ingress 0) }}{{.}}{{ end }}"}}")
+  echo http://$CAS_HTTP_SERVICE_IP:{{ .Values.cas.service.http.port }}
+{{- else if contains "ClusterIP" .Values.cas.service.http.type }}
+  export CAS_POD_NAME=$(kubectl get pods --namespace {{ .Release.Namespace }} -l "app.kubernetes.io/name={{ include "scone.cas.name" . }},app.kubernetes.io/instance={{ .Release.Name }}" -o jsonpath="{.items[0].metadata.name}")
+  export CAS_CONTAINER_PORT=$(kubectl get pod --namespace {{ .Release.Namespace }} $CAS_POD_NAME -o jsonpath="{.spec.containers[0].ports[0].containerPort}")
+  echo "Visit http://127.0.0.1:8080 to use your application"
+  kubectl --namespace {{ .Release.Namespace }} port-forward $CAS_POD_NAME 8080:$CAS_CONTAINER_PORT
+{{- end }}
+
+{{- if contains "NodePort" .Values.cas.service.grpc.type }}
+  export CAS_GRPC_NODE_PORT=$(kubectl get --namespace {{ .Release.Namespace }} -o jsonpath="{.spec.ports[0].nodePort}" services {{ include "scone.cas.fullname" . }})
+  export CAS_GRPC_NODE_IP=$(kubectl get nodes --namespace {{ .Release.Namespace }} -o jsonpath="{.items[0].status.addresses[0].address}")
+  echo http://$CAS_GRPC_NODE_IP:$CAS_GRPC_NODE_PORT
+{{- else if contains "LoadBalancer" .Values.cas.service.grpc.type }}
+     NOTE: It may take a few minutes for the LoadBalancer IP to be available.
+           You can watch the status of by running 'kubectl get --namespace {{ .Release.Namespace }} svc -w {{ include "scone.cas.fullname" . }}'
+  export CAS_GRPC_SERVICE_IP=$(kubectl get svc --namespace {{ .Release.Namespace }} {{ include "scone.cas.fullname" . }} --template "{{"{{ range (index .status.loadBalancer.ingress 0) }}{{.}}{{ end }}"}}")
+  echo http://$CAS_GRPC_SERVICE_IP:{{ .Values.cas.service.grpc.port }}
+{{- else if contains "ClusterIP" .Values.cas.service.grpc.type }}
+  export CAS_POD_NAME=$(kubectl get pods --namespace {{ .Release.Namespace }} -l "app.kubernetes.io/name={{ include "scone.cas.name" . }},app.kubernetes.io/instance={{ .Release.Name }}" -o jsonpath="{.items[0].metadata.name}")
+  export CAS_CONTAINER_PORT=$(kubectl get pod --namespace {{ .Release.Namespace }} $CAS_POD_NAME -o jsonpath="{.spec.containers[0].ports[0].containerPort}")
+  echo "Visit http://127.0.0.1:8080 to use your application"
+  kubectl --namespace {{ .Release.Namespace }} port-forward $CAS_POD_NAME 8080:$CAS_CONTAINER_PORT
+{{- end }}

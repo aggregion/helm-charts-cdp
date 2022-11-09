@@ -1,0 +1,69 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: "{{ include "scone.cas.fullname" . }}"
+  labels:
+    {{- include "scone.cas.labels" . | nindent 4 }}
+spec:
+  replicas: {{ .Values.cas.replicaCount }}
+  selector:
+    matchLabels:
+      {{- include "scone.cas.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      {{- with .Values.cas.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      labels:
+        {{- include "scone.cas.selectorLabels" . | nindent 8 }}
+    spec:
+      {{- with .Values.cas.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      serviceAccountName: {{ include "scone.cas.serviceAccountName" . }}
+      securityContext:
+        {{- toYaml .Values.cas.podSecurityContext | nindent 8 }}
+      containers:
+        - name: {{ .Chart.Name }}
+          securityContext:
+            {{- toYaml .Values.cas.securityContext | nindent 12 }}
+          image: "{{ .Values.cas.image.repository }}:{{ .Values.cas.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.cas.image.pullPolicy }}
+          ports:
+            - name: http
+              containerPort: 8081
+              protocol: TCP
+            - name: grpc
+              containerPort: 18765
+              protocol: TCP
+          # livenessProbe:
+          #   httpGet:
+          #     path: /
+          #     port: http
+          # readinessProbe:
+          #   httpGet:
+          #     path: /
+          #     port: http
+          resources:
+            {{- toYaml .Values.cas.resources | nindent 12 }}
+          volumeMounts:
+            - mountPath: /etc/cas
+              name: data
+      volumes:
+        - name: data
+          persistentVolumeClaim:
+            claimName: "{{ include "scone.cas.fullname" . }}-pvc"
+      {{- with .Values.cas.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.cas.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.cas.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
