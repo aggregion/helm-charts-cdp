@@ -51,6 +51,18 @@ spec:
           volumeMounts:
             - mountPath: /etc/cas
               name: data
+          env:
+            {{- if .Values.cas.config.lasAddr }}
+            - name: "SCONE_LAS_ADDR"
+              value: {{ .Values.cas.config.lasAddr | quote }}
+            {{- else }}
+            - name: "SCONE_LAS_ADDR"
+              valueFrom:
+                fieldRef:
+                  fieldPath: status.hostIP
+            {{- end }}
+            - name: "SCONE_LOG_LEVEL"
+              value: {{ .Values.cas.config.logLevel | quote }}
       volumes:
         - name: data
           persistentVolumeClaim:
