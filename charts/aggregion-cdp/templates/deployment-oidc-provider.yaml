@@ -44,6 +44,8 @@ spec:
           envFrom:
             - configMapRef:
                 name: "{{ $oidcProviderName }}-config"
+          resources:
+            {{- toYaml .Values.backend.resources.oidcprovider | nindent 12 }}
           {{- if .Values.oidcprovider.probes.livenessEnabled }}
           {{- include "cdp.livenessProbe" . | indent 10 }}
           {{- end }}
@@ -52,7 +54,7 @@ spec:
           {{- end }}
           volumeMounts:
             - name: oidc-provider-dist-jwks
-              mountPath: /home/node/apps/oidc-provider/dist/jwks.json
+              mountPath: /home/node/apps/oidc-provider/dist/src/jwks.json
               subPath: jwks.json
       volumes:
         - name: oidc-provider-dist-jwks

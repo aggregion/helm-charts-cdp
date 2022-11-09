@@ -129,16 +129,16 @@ frontend:
     #  - secretName: chart-example-tls
     #    hosts:
     #      - chart-example.local
-  resources: {}
-    # limits:
-    #   cpu: 100m
-    #   memory: 128Mi
-    # requests:
-    #   cpu: 100m
-    #   memory: 128Mi
+  resources:
+    requests:
+      memory: 100Mi
+  gatekeeperResources:
+    requests:
+      memory: 100Mi
   nodeSelector: {}
   tolerations: []
   affinity: {}
+  updateStrategy: null
 
 backend:
   enabled: true
@@ -165,7 +165,9 @@ backend:
       repository: nginx
       tag: 1.19-alpine
       pullPolicy: IfNotPresent
-    resources: {}
+    resources:
+      requests:
+        memory: "50Mi"
 
   dbseed:
     enabled: false
@@ -358,6 +360,8 @@ backend:
       getUserRolesFromHeaders: false
       # enable/disable setUserRoles/removeUserRoles graphql actions
       userRolesManagment: true
+      # enable/disalbe api to create frontend dumps (need only for dev stands)
+      frontendDumps: false
 
     # credentials to access deploy controller
     datalabUsername: admin
@@ -586,24 +590,69 @@ backend:
     type: Recreate
 
   resources:
-    api: {}
-    migration: {}
-    matchingStatusWatcher: {}
+    api:
+      requests:
+        memory: "500Mi"
+    migration:
+      requests:
+        memory: "100Mi"
+    matchingStatusWatcher:
+      requests:
+        memory: "100Mi"
     matchingStatusResponseWatcher: {}
-    datasetUploader: {}
-    blockchainUpdater: {}
-    segments: {}
-    bcChecker: {}
+    atlasEntitySyncer:
+      requests:
+        memory: "200Mi"
+    datasetUploader:
+      requests:
+        memory: "200Mi"
+    blockchainUpdater:
+      requests:
+        memory: "500Mi"
+    segments:
+      requests:
+        memory: "500Mi"
+    bcChecker:
+      requests:
+        memory: "100Mi"
     bcSyncer: {}
     crond: {}
-    panelSegmentUploader: {}
-      # limits:
-      #   cpu: 100m
-      #   memory: 128Mi
-      # requests:
-      #   cpu: 100m
-      #   memory: 128Mi
-    jobScheduler: {}
+    panelSegmentUploader:
+      requests:
+        memory: "500Mi"
+    jobScheduler:
+      requests:
+        memory: "150Mi"
+    pipelineDebugHasherStatusWatcher:
+      requests:
+        memory: "200Mi"
+    pipelineDebugCleanroomStatusWatcher:
+      requests:
+        memory: "200Mi"
+    datasetLogsSyncer:
+      requests:
+        memory: "100Mi"
+    datasetSyncer:
+      requests:
+        memory: "100Mi"
+    datasetUpdater:
+      requests:
+        memory: "100Mi"
+    instanceSyncer:
+      requests:
+        memory: "100Mi"
+    dataserviceApi:
+      requests:
+        memory: "500Mi"
+    emailservice:
+      requests:
+        memory: "100Mi"
+    metadataSeedApi:
+      requests:
+        memory: "100Mi"
+    oidcprovider:
+      requests:
+        memory: "100Mi"
   nodeSelector: {}
   tolerations: []
   affinity: {}
@@ -649,10 +698,24 @@ enclave:
   probes:
     livenessPath: /healthcheck/liveness
     readinessPath: /healthcheck/readiness
-    livenessInitialDelaySeconds: 60
-    readinessInitialDelaySeconds: 60
-    livenessEnabled: false
-    readinessEnabled: false
+    readiness:
+      enabled: false
+      timeoutSeconds: 30
+      initialDelaySeconds: 10
+      periodSeconds: 40
+      successThreshold: 1
+      failureThreshold: 20
+    liveness:
+      enabled: false
+      timeoutSeconds: 30
+      initialDelaySeconds: 10
+      periodSeconds: 40
+      successThreshold: 1
+      failureThreshold: 20
+    livenessInitialDelaySeconds: 60 # DEPRECATED (see .enclave.probes.liveness.initialDelaySeconds)
+    readinessInitialDelaySeconds: 60 # DEPRECATED (see .enclave.probes.readiness.initialDelaySeconds)
+    livenessEnabled: false # DEPRECATED (see .enclave.probes.liveness.enabled)
+    readinessEnabled: false # DEPRECATED (see .enclave.probes.readiness.enabled)
   configs:
     # the key (pair with public key) is used to authenticate another enclaves
     dataserviceToken: "dataserviceToken"
@@ -660,7 +723,8 @@ enclave:
     listenPort: 8321
     listenInnerPort: 8010
     datalabToken: ""
-    prettyLogs: ""
+    prettyLogs: "" # DEPRECATED (see .enclave.configs.enablePrettyLogs)
+    enablePrettyLogs: false
     workerHeapSizeMb: 5000
     sharedSecret: "shared-secret"
     providerSecret: "provider-secret"
@@ -677,6 +741,7 @@ enclave:
     prometheus.io/scrape: "true"
     prometheus.io/path: /metrics
     prometheus.io/port: "8010"
+  updateStrategy: null
   podSecurityContext: {}
   securityContext: {}
     # capabilities:
@@ -831,15 +896,27 @@ dataservice:
     - name: glossary-syncer
       healthcheckPort: 9048
       healthcheckPortName: gls-sync
+      resources:
+        requests:
+          memory: 100Mi
     - name: glossary-updater
       healthcheckPort: 9049
       healthcheckPortName: gls-upd
+      resources:
+        requests:
+          memory: 100Mi
     - name: glossary-term-syncer
       healthcheckPort: 9050
       healthcheckPortName: gls-term-sync
+      resources:
+        requests:
+          memory: 100Mi
     - name: glossary-term-updater
       healthcheckPort: 9051
       healthcheckPortName: gls-term-upd
+      resources:
+        requests:
+          memory: 100Mi
 
 metadataSeed:
   enabled: false

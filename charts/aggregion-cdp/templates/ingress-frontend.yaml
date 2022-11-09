@@ -3,7 +3,7 @@
 {{- $backendName := include "cdp.backend.fullname" . -}}
 {{- $dataserviceName := include "cdp.dataservice.fullname" . }}
 {{- $datalabProxyName := printf "%s-dlproxy" $backendName -}}
-{{- if semverCompare ">=1.22-0" .Capabilities.KubeVersion.GitVersion -}}
+{{- if semverCompare ">=1.21-0" .Capabilities.KubeVersion.GitVersion -}}
 apiVersion: networking.k8s.io/v1
 {{- else if semverCompare ">=1.14-0" .Capabilities.KubeVersion.GitVersion -}}
 apiVersion: networking.k8s.io/v1beta1
@@ -80,6 +80,15 @@ spec:
                   name: "httpapi"
           {{- if $.Values.metadataSeed.enabled }}
           - path: "/metadata-seed/seed-excel-data/error-report.xlsx"
+            pathType: "Prefix"
+            backend:
+              service:
+                name: "{{ $backendName }}"
+                port:
+                  name: "httpapi"
+          {{- end }}
+          {{- if $.Values.backend.configs.features.frontendDumps }}
+          - path: "/frontend-dumps"
             pathType: "Prefix"
             backend:
               service:
@@ -169,6 +178,12 @@ spec:
               servicePort: "httpapi"
           {{- if $.Values.metadataSeed.enabled }}
           - path: "/metadata-seed/seed-excel-data/error-report.xlsx"
+            backend:
+              serviceName: "{{ $backendName }}"
+              servicePort: "httpapi"
+          {{- end }}
+          {{- if $.Values.backend.configs.features.frontendDumps }}
+          - path: "/frontend-dumps"
             backend:
               serviceName: "{{ $backendName }}"
               servicePort: "httpapi"

@@ -48,6 +48,8 @@ spec:
           envFrom:
             - configMapRef:
                 name: "{{ $dataServiceName }}-atlas-syncer-config"
+          resources:
+            {{- toYaml .Values.backend.resources.atlasEntitySyncer | nindent 12 }}
           {{- if .Values.dataservice.probes.atlasEntitySyncer.livenessEnabled }}
           {{- include "cdp.livenessProbe" . | indent 10 }}
           {{- end }}

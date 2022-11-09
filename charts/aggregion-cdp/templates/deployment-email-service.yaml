@@ -41,6 +41,8 @@ spec:
           envFrom:
             - configMapRef:
                 name: "{{ $emailServiceName }}-config"
+          resources:
+            {{- toYaml .Values.backend.resources.emailservice | nindent 12 }}
           {{- if .Values.emailservice.probes.livenessEnabled }}
           {{- include "cdp.livenessProbe" . | indent 10 }}
           {{- end }}
