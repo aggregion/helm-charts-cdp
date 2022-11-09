@@ -1,0 +1,100 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "perf-test.fullname" . }}-perfmon-collector
+  labels:
+    {{- include "perf-test.labels" . | nindent 4 }}
+spec:
+  {{- if not .Values.perfmonCollector.autoscaling.enabled }}
+  replicas: {{ .Values.perfmonCollector.replicaCount }}
+  {{- end }}
+  selector:
+    matchLabels:
+      {{- include "perf-test.selectorLabels" . | nindent 6 }}
+      app.kubernetes.io/component: perfmon-collector
+  template:
+    metadata:
+      {{- with .Values.perfmonCollector.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      labels:
+        {{- include "perf-test.selectorLabels" . | nindent 8 }}
+        app.kubernetes.io/component: perfmon-collector
+    spec:
+      {{- with .Values.perfmonCollector.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      serviceAccountName: {{ include "perf-test.serviceAccountName" . }}
+      securityContext:
+        {{- toYaml .Values.perfmonCollector.podSecurityContext | nindent 8 }}
+      volumes:
+        - name: kubeconfig
+          emptyDir: {}
+      initContainers:
+        - name: generate-kubeconfig
+          image: "busybox:latest"
+          volumeMounts:
+            - name: kubeconfig
+              mountPath: /root/.kube
+          command:
+            - /bin/sh
+            - -c
+            - |
+              SERVER=https://kubernetes.default.svc
+              SERVICEACCOUNT=/var/run/secrets/kubernetes.io/serviceaccount
+              CA=$(base64 -w 0 ${SERVICEACCOUNT}/ca.crt)
+              TOKEN=$(cat ${SERVICEACCOUNT}/token)
+              NAMESPACE=$(cat ${SERVICEACCOUNT}/namespace)
+
+              cat <<EOF > /root/.kube/config
+              apiVersion: v1
+              kind: Config
+              clusters:
+                - name: default-cluster
+                  cluster:
+                    certificate-authority-data: ${CA}
+                    server: ${SERVER}
+              contexts:
+                - name: default-context
+                  context:
+                    cluster: default-cluster
+                    namespace: default
+                    user: default-user
+              current-context: default-context
+              users:
+                - name: default-user
+                  user:
+                    token: ${TOKEN}
+              EOF
+              echo "Kubeconfig successfully generated!"
+              exit 0
+
+      containers:
+        - name: perfmon-collector
+          securityContext:
+            {{- toYaml .Values.perfmonCollector.securityContext | nindent 12 }}
+          image: "{{ .Values.perfmonCollector.image.repository }}:{{ .Values.perfmonCollector.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.perfmonCollector.image.pullPolicy }}
+          volumeMounts:
+            - name: kubeconfig
+              mountPath: /root/.kube
+          ports:
+            - name: http
+              containerPort: 8080
+              protocol: TCP
+          resources:
+            {{- toYaml .Values.perfmonCollector.resources | nindent 12 }}
+      {{- with .Values.perfmonCollector.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.perfmonCollector.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.perfmonCollector.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
