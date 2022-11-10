@@ -42,7 +42,7 @@ spec:
             - sleep
             - infinity
           env:
-            - key: BC_URI
+            - name: BC_URI
               value: {{ .Values.backend.configs.eosNodeUrl | quote }}
           volumeMounts:
             - name: secrets
