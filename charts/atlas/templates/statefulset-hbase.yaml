@@ -43,7 +43,7 @@ spec:
             {{- toYaml .Values.hbaseMaster.resources | nindent 12 }}
           env: # need refactor
             - name: HBASE_CONF_hbase_rootdir
-              value: "hdfs://{{ $hadoopName }}-0.{{ $hadoopName }}.{{ .Release.Namespace }}.svc.cluster.local:{{ .Values.hadoop.service.port }}/hbase"
+              value: "hdfs://{{ $hadoopName }}.{{ .Release.Namespace }}.svc.cluster.local:{{ .Values.hadoop.service.port }}/hbase"
             - name: HBASE_CONF_hbase_cluster_distributed
               value: "true"
             - name: HBASE_CONF_hbase_zookeeper_quorum
@@ -65,7 +65,7 @@ spec:
             - name: HBASE_MANAGES_ZK
               value: "false"
             - name: SERVICE_PRECONDITION
-              value: "{{ $hadoopName }}-0.{{ $hadoopName }}.{{ .Release.Namespace }}.svc.cluster.local:{{ .Values.hadoop.service.port }} {{ $zookeeperName }}-0.{{ $zookeeperName }}.{{ .Release.Namespace }}.svc.cluster.local {{ $zookeeperName }}-1.{{ $zookeeperName }}.{{ .Release.Namespace }}.svc.cluster.local {{ $zookeeperName }}-2.{{ $zookeeperName }}.{{ .Release.Namespace }}.svc.cluster.local"
+              value: "{{ $hadoopName }}.{{ .Release.Namespace }}.svc.cluster.local:{{ .Values.hadoop.service.port }} {{ $zookeeperName }}-0.{{ $zookeeperName }}.{{ .Release.Namespace }}.svc.cluster.local {{ $zookeeperName }}-1.{{ $zookeeperName }}.{{ .Release.Namespace }}.svc.cluster.local {{ $zookeeperName }}-2.{{ $zookeeperName }}.{{ .Release.Namespace }}.svc.cluster.local"
             - name: HBASE_CONF_hbase_zookeeper_peerport
               value: "{{ .Values.zookeeper.service.serverPort }}"
             - name: HBASE_CONF_hbase_zookeeper_leaderport
@@ -89,7 +89,7 @@ spec:
             {{- toYaml .Values.hbaseRegion.resources | nindent 12 }}
           env: # need refactor
             - name: HBASE_CONF_hbase_rootdir
-              value: "hdfs://{{ $hadoopName }}-0.{{ $hadoopName }}.{{ .Release.Namespace }}.svc.cluster.local:{{ .Values.hadoop.service.port }}/hbase"
+              value: "hdfs://{{ $hadoopName }}.{{ .Release.Namespace }}.svc.cluster.local:{{ .Values.hadoop.service.port }}/hbase"
             - name: HBASE_CONF_hbase_cluster_distributed
               value: "true"
             - name: HBASE_CONF_hbase_zookeeper_quorum
@@ -113,7 +113,7 @@ spec:
             - name: MODE
               value: "region"
             - name: SERVICE_PRECONDITION
-              value: "{{ $hadoopName }}-0.{{ $hadoopName }}.{{ .Release.Namespace }}.svc.cluster.local:{{ .Values.hadoop.service.port }} {{ $zookeeperName }}-0.{{ $zookeeperName }}.{{ .Release.Namespace }}.svc.cluster.local {{ $zookeeperName }}-1.{{ $zookeeperName }}.{{ .Release.Namespace }}.svc.cluster.local {{ $zookeeperName }}-2.{{ $zookeeperName }}.{{ .Release.Namespace }}.svc.cluster.local localhost:{{ .Values.hbaseMaster.listenPort }}"
+              value: "{{ $hadoopName }}.{{ .Release.Namespace }}.svc.cluster.local:{{ .Values.hadoop.service.port }} {{ $zookeeperName }}-0.{{ $zookeeperName }}.{{ .Release.Namespace }}.svc.cluster.local {{ $zookeeperName }}-1.{{ $zookeeperName }}.{{ .Release.Namespace }}.svc.cluster.local {{ $zookeeperName }}-2.{{ $zookeeperName }}.{{ .Release.Namespace }}.svc.cluster.local localhost:{{ .Values.hbaseMaster.listenPort }}"
             - name: HBASE_CONF_hbase_zookeeper_peerport
               value: "{{ .Values.zookeeper.service.serverPort }}"
             - name: HBASE_CONF_hbase_zookeeper_leaderport
