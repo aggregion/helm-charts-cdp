@@ -4,7 +4,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: "{{ $cleosName }}"
+  name: "{{ $cleosName }}-cleos"
   {{- with .Values.cleos.annotations }}
   annotations:
     {{- toYaml . | nindent 4 }}
