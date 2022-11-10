@@ -45,7 +45,8 @@ spec:
             - key: BC_URI
               value: {{ .Values.backend.configs.eosNodeUrl | quote }}
           volumeMounts:
-            - mountPath: /root/.keys/{{ .Values.backend.configs.eosWalletOwnerOrgId }}.pem
+            - name: secrets
+              mountPath: /root/.keys/{{ .Values.backend.configs.eosWalletOwnerOrgId }}.pem
               subPath: owner.pem
       volumes:
         - name: secrets
