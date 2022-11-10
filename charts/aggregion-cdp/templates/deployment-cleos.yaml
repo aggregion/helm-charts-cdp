@@ -51,7 +51,7 @@ spec:
       volumes:
         - name: secrets
           secret:
-            name: "{{ include "cdp.dataservice.fullname" . }}-secrets"
+            secretName: "{{ include "cdp.dataservice.fullname" . }}-secrets"
             items:
               - key: BCMQ_ORG_DECRYPT_KEY
                 path: owner.pem
