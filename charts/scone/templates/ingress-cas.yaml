@@ -1,3 +1,4 @@
+{{- if .Values.cas.enabled -}}
 {{- if .Values.cas.ingress.enabled -}}
 {{- $fullName := include "scone.cas.fullname" . -}}
 {{- if and .Values.cas.ingress.className (not (semverCompare ">=1.18-0" .Capabilities.KubeVersion.GitVersion)) }}
@@ -57,4 +58,5 @@ spec:
               {{- end }}
           {{- end }}
     {{- end }}
-{{- end }}
+{{- end -}}
+{{- end -}}

@@ -1,0 +1,93 @@
+{{- .Values.esp.enabled -}}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: "{{ include "scone.esp.fullname" . }}"
+  labels:
+    {{- include "scone.esp.labels" . | nindent 4 }}
+spec:
+  replicas: {{ .Values.esp.replicaCount }}
+  selector:
+    matchLabels:
+      {{- include "scone.esp.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      {{- with .Values.esp.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      labels:
+        {{- include "scone.esp.selectorLabels" . | nindent 8 }}
+    spec:
+      {{- with .Values.esp.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      serviceAccountName: {{ include "scone.esp.serviceAccountName" . }}
+      securityContext:
+        {{- toYaml .Values.esp.podSecurityContext | nindent 8 }}
+      containers:
+        - name: {{ .Chart.Name }}
+          securityContext:
+            {{- toYaml .Values.esp.securityContext | nindent 12 }}
+          image: "{{ .Values.esp.image.repository }}:{{ .Values.esp.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.esp.image.pullPolicy }}
+          ports:
+            - name: http
+              containerPort: 8081
+              protocol: TCP
+            - name: grpc
+              containerPort: 18765
+              protocol: TCP
+          # livenessProbe:
+          #   httpGet:
+          #     path: /
+          #     port: http
+          # readinessProbe:
+          #   httpGet:
+          #     path: /
+          #     port: http
+          resources:
+            {{- toYaml .Values.esp.resources | nindent 12 }}
+          volumeMounts:
+            - mountPath: /etc/cas
+              name: data
+          env:
+            - name: "MONGO_URI"
+              value: "mongodb://mongodb/session-provider"
+            - name: "KEYTAG_SECRET"
+              valueFrom:
+                secretKeyRef:
+                  name: "{{ .Values.esp.config.secretKeyName }}"
+                  key: "keytag_secret"
+            - name: "ADMIN_USERNAME"
+              valueFrom:
+                secretKeyRef:
+                  name: "{{ .Values.esp.config.secretKeyName }}"
+                  key: "admin_username"
+            - name: "ADMIN_PASSWORD"
+              valueFrom:
+                secretKeyRef:
+                  name: "{{ .Values.esp.config.secretKeyName }}"
+                  key: "admin_password"
+            - name: "PUBLIC_KEY"
+              value: "/usr/certs/cas.crt"
+            - name: "PRIVATE_KEY"
+              value: "/usr/certs/cas.key"
+      volumes:
+        - name: data
+          persistentVolumeClaim:
+            claimName: "{{ include "scone.esp.fullname" . }}-pvc"
+      {{- with .Values.esp.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.esp.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.esp.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+{{- end -}}
