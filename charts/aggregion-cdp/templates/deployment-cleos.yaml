@@ -1,0 +1,69 @@
+{{- if .Values.cleos.enabled }}
+{{- $cleosName := include "cdp.cleos.fullname" . }}
+{{- $dataServiceName := include "cdp.dataservice.fullname" . }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: "{{ $cleosName }}"
+  {{- with .Values.cleos.annotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+  labels:
+    {{- include "cdp.cleos.labels" . | nindent 4 }}
+spec:
+  replicas: {{ .Values.cleos.replicaCount }}
+  selector:
+    matchLabels:
+      {{- include "cdp.cleos.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      {{- with .Values.cleos.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      labels:
+        {{- include "cdp.cleos.selectorLabels" . | nindent 8 }}
+    spec:
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      restartPolicy: {{ .Values.cleos.restartPolicy }}
+      serviceAccountName: {{ include "cdp.serviceAccountName" . }}
+      containers:
+        - name: "cleos"
+          securityContext:
+            {{- toYaml .Values.cleos.securityContext | nindent 12 }}
+
+          image: "{{ .Values.cleos.image.repository }}:{{ .Values.cleos.image.tag }}"
+          imagePullPolicy: {{ .Values.cleos.image.pullPolicy }}
+          args:
+            - sleep
+            - infinity
+          env:
+            - key: BC_URI
+              value: {{ .Values.backend.configs.eosNodeUrl | quote }}
+          volumeMounts:
+            - mountPath: /root/.keys/{{ .Values.backend.configs.eosWalletOwnerOrgId }}.pem
+              subPath: owner.pem
+      volumes:
+        - name: secrets
+          secret:
+            name: "{{ include "cdp.dataservice.fullname" . }}-secrets"
+            items:
+              - key: BCMQ_ORG_DECRYPT_KEY
+                path: owner.pem
+      {{- with .Values.cleos.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.cleos.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+  {{- if .Values.cleos.updateStrategy }}
+  strategy:
+    {{- toYaml .Values.cleos.updateStrategy | nindent 4 }}
+  {{- end }}
+{{- end }}

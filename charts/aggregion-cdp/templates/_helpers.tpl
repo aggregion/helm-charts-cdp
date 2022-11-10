@@ -65,6 +65,10 @@ If release name contains chart name it will be used as a full name.
 {{- printf "%s" (include "cdp.fullname" (list . "emailservice")) }}
 {{- end }}
 
+{{- define "cdp.cleos.fullname" -}}
+{{- printf "%s" (include "cdp.fullname" (list . "cleos")) }}
+{{- end }}
+
 {{/*
 Common labels
 */}}
@@ -117,6 +121,10 @@ app.kubernetes.io/managed-by: {{ .Release.Service }}
 {{- include "cdp.component.labels" (list . "emailservice") }}
 {{- end }}
 
+{{- define "cdp.cleos.labels" -}}
+{{- include "cdp.component.labels" (list . "cleos") }}
+{{- end }}
+
 {{/*
 Selector labels
 */}}
@@ -160,6 +168,10 @@ app.kubernetes.io/instance: "{{ .Release.Name }}"
 
 {{- define "cdp.emailservice.selectorLabels" -}}
 {{- include "cdp.selectorLabels" (list . "emailservice") }}
+{{- end }}
+
+{{- define "cdp.cleos.selectorLabels" -}}
+{{- include "cdp.selectorLabels" (list . "cleos") }}
 {{- end }}
 
 {{- define "cdp.selectorLabels.explicitly" -}}
