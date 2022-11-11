@@ -2,7 +2,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: "{{ include "scone.esp.fullname" . }}"
+  name: "{{ include "scone.esp.fullname" . }}-server"
   labels:
     {{- include "scone.esp.labels" . | nindent 4 }}
 spec:
@@ -27,57 +27,67 @@ spec:
       securityContext:
         {{- toYaml .Values.esp.podSecurityContext | nindent 8 }}
       containers:
-        - name: {{ .Chart.Name }}
+        - name: "{{ .Chart.Name }}-back"
           securityContext:
             {{- toYaml .Values.esp.securityContext | nindent 12 }}
-          image: "{{ .Values.esp.image.repository }}:{{ .Values.esp.image.tag | default .Chart.AppVersion }}"
-          imagePullPolicy: {{ .Values.esp.image.pullPolicy }}
-          ports:
-            - name: http
-              containerPort: 8081
-              protocol: TCP
-            - name: grpc
-              containerPort: 18765
-              protocol: TCP
-          # livenessProbe:
-          #   httpGet:
-          #     path: /
-          #     port: http
-          # readinessProbe:
-          #   httpGet:
-          #     path: /
-          #     port: http
+          image: "{{ .Values.esp.back.image.repository }}:{{ .Values.esp.back.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.esp.back.image.pullPolicy }}
           resources:
-            {{- toYaml .Values.esp.resources | nindent 12 }}
+            {{- toYaml .Values.esp.back.resources | nindent 12 }}
           volumeMounts:
-            - mountPath: /etc/cas
-              name: data
+            - name: certs-secret
+              mountPath: /usr/certs/cas.crt
+              subPath: cas.crt
+              readOnly: true
+            - name: certs-secret
+              mountPath: /usr/certs/cas.key
+              subPath: cas.key
+              readOnly: true
           env:
             - name: "MONGO_URI"
-              value: "mongodb://mongodb/session-provider"
+              value: {{ .Values.esp.config.mongodbUri | quote }}
             - name: "KEYTAG_SECRET"
               valueFrom:
                 secretKeyRef:
-                  name: "{{ .Values.esp.config.secretKeyName }}"
+                  name: {{ .Values.esp.config.credsSecretKeyName | quote }}
                   key: "keytag_secret"
             - name: "ADMIN_USERNAME"
               valueFrom:
                 secretKeyRef:
-                  name: "{{ .Values.esp.config.secretKeyName }}"
+                  name: {{ .Values.esp.config.credsSecretKeyName | quote }}
                   key: "admin_username"
             - name: "ADMIN_PASSWORD"
               valueFrom:
                 secretKeyRef:
-                  name: "{{ .Values.esp.config.secretKeyName }}"
+                  name: {{ .Values.esp.config.credsSecretKeyName | quote }}
                   key: "admin_password"
             - name: "PUBLIC_KEY"
               value: "/usr/certs/cas.crt"
             - name: "PRIVATE_KEY"
               value: "/usr/certs/cas.key"
+        - name: "{{ .Chart.Name }}-front"
+          securityContext:
+            {{- toYaml .Values.esp.securityContext | nindent 12 }}
+          image: "{{ .Values.esp.front.image.repository }}:{{ .Values.esp.front.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.esp.front.image.pullPolicy }}
+          ports:
+            - name: http
+              containerPort: 6540
+              protocol: TCP
+          resources:
+            {{- toYaml .Values.esp.front.resources | nindent 12 }}
+          env:
+            - name: "API_URL"
+              value: "http://localhost:6533"
       volumes:
-        - name: data
-          persistentVolumeClaim:
-            claimName: "{{ include "scone.esp.fullname" . }}-pvc"
+        - name: certs-secret
+          secret:
+            secretName: {{ .Values.esp.config.certsSecretKeyName | quote }}
+            items:
+              - key: cas.crt
+                path: cas.crt
+              - key: cas.key
+                path: cas.key
       {{- with .Values.esp.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
