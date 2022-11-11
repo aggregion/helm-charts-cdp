@@ -1,5 +1,5 @@
 cas:
-  enabled: true
+  enabled: false
   replicaCount: 1
   image:
     repository: registry.aggregion.com/sconecuratedimages/aggregion
@@ -47,7 +47,7 @@ cas:
 las: {} # TODO
 
 esp:
-  enabled: true
+  enabled: false
   replicaCount: 1
   back:
     image:
