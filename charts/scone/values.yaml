@@ -1,4 +1,5 @@
 cas:
+  enabled: false
   replicaCount: 1
   image:
     repository: registry.aggregion.com/sconecuratedimages/aggregion
@@ -44,3 +45,54 @@ cas:
     logLevel: 5
 
 las: {} # TODO
+
+esp:
+  enabled: false
+  replicaCount: 1
+  back:
+    image:
+      repository: registry.aggregion.com/session-provider
+      pullPolicy: IfNotPresent
+      tag: "2.6.0"
+    resources: {}
+  front:
+    image:
+      repository: registry.aggregion.com/session-provider-ui
+      pullPolicy: IfNotPresent
+      tag: "latest"
+    resources: {}
+  imagePullSecrets: []
+  nameOverride: "esp"
+  fullnameOverride: ""
+  podAnnotations: {}
+  podSecurityContext: {}
+  securityContext:
+    privileged: true
+  service:
+    http:
+      type: ClusterIP
+      port: 8081
+  ingress: # NOT SUPPORTED YET
+    enabled: false
+    className: ""
+    annotations: {}
+    hosts:
+      - host: chart-example.local
+        paths:
+          - path: /
+            pathType: ImplementationSpecific
+    tls: []
+  nodeSelector: {}
+  tolerations: []
+  affinity: {}
+  serviceAccount:
+    create: false
+    annotations: {}
+    name: ""
+  pvc:
+    storageClass: ""
+    storageSize: "1Gi"
+  config:
+    credsSecretKeyName: "esp-creds-secret"
+    certsSecretKeyName: "esp-certs-secret"
+    mongodbUri: "mongodb://mongodb/session-provider"
