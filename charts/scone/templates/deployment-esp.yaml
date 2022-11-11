@@ -1,4 +1,4 @@
-{{- .Values.esp.enabled -}}
+{{- if .Values.esp.enabled -}}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
