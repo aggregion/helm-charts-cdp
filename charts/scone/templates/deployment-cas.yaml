@@ -36,9 +36,15 @@ spec:
             - name: http
               containerPort: 8081
               protocol: TCP
+              {{- if .Values.cas.service.http.hostPort }}
+              hostPort: {{ .Values.cas.service.http.hostPort }}
+              {{- end }}
             - name: grpc
               containerPort: 18765
               protocol: TCP
+              {{- if .Values.cas.service.grpc.hostPort }}
+              hostPort: {{ .Values.cas.service.grpc.hostPort }}
+              {{- end }}
           # livenessProbe:
           #   httpGet:
           #     path: /

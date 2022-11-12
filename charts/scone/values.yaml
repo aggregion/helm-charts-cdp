@@ -16,9 +16,11 @@ cas:
     http:
       type: ClusterIP
       port: 8081
+      hostPort: 8081
     grpc:
       type: ClusterIP
       port: 18765
+      hostPort: 18765
   ingress: # NOT SUPPORTED YET
     enabled: false
     className: ""
