@@ -101,7 +101,7 @@ spec:
           env: # need refactoring
             - name: ZOOKEEPER_HOST
               value: "{{ $zookeeperName }}-0.{{ $zookeeperName }}.{{ .Release.Namespace }}.svc.cluster.local,{{ $zookeeperName }}-1.{{ $zookeeperName }}.{{ .Release.Namespace }}.svc.cluster.local,{{ $zookeeperName }}-2.{{ $zookeeperName }}.{{ .Release.Namespace }}.svc.cluster.local"
-            - name: SOLR_ZunOOKEEPER_HOST
+            - name: SOLR_ZOOKEEPER_HOST
               value: "{{ $zookeeperName }}-0.{{ $zookeeperName }}.{{ .Release.Namespace }}.svc.cluster.local,{{ $zookeeperName }}-1.{{ $zookeeperName }}.{{ .Release.Namespace }}.svc.cluster.local,{{ $zookeeperName }}-2.{{ $zookeeperName }}.{{ .Release.Namespace }}.svc.cluster.local/solr"
             - name: CASSANDRA_HOST
               value: "{{ $cassandraName }}-0.{{ $cassandraName }}.{{ .Release.Namespace }}.svc.cluster.local"
