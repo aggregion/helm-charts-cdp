@@ -2,11 +2,12 @@
 
 NAMESPACE=$1
 KEYTAG_SECRET=$2
-ADMIN_USERNAME=$3
-ADMIN_PASSWORD=$4
+GUARD_TOKEN=$3
+ADMIN_USERNAME=$4
+ADMIN_PASSWORD=$5
 SECRET_NAME=esp-creds-secret
 
-HELP="bash ./create-esp-creds-secret.sh NAMESPACE KEYTAG_SECRET ADMIN_USERNAME ADMIN_PASSWORD"
+HELP="bash ./create-esp-creds-secret.sh NAMESPACE KEYTAG_SECRET GUARD_TOKEN ADMIN_USERNAME ADMIN_PASSWORD"
 
 if [ -z $NAMESPACE ];
 then
@@ -18,6 +19,13 @@ fi
 if [ -z $KEYTAG_SECRET ];
 then
   echo "Missed KEYTAG_SECRET"
+  echo $HELP
+  exit 1
+fi
+
+if [ -z $GUARD_TOKEN ];
+then
+  echo "Missed GUARD_TOKEN"
   echo $HELP
   exit 1
 fi
@@ -38,6 +46,7 @@ fi
 
 kubectl create secret generic $SECRET_NAME \
   --from-literal=keytag_secret=$KEYTAG_SECRET \
+  --from-literal=guard_token=$GUARD_TOKEN \
   --from-literal=admin_username=$ADMIN_USERNAME \
   --from-literal=admin_password=$ADMIN_PASSWORD \
   -n $NAMESPACE

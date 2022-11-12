@@ -51,6 +51,11 @@ spec:
                 secretKeyRef:
                   name: {{ .Values.esp.config.credsSecretKeyName | quote }}
                   key: "keytag_secret"
+            - name: "GUARD_TOKEN"
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.esp.config.credsSecretKeyName | quote }}
+                  key: "guard_token"
             - name: "ADMIN_USERNAME"
               valueFrom:
                 secretKeyRef:
