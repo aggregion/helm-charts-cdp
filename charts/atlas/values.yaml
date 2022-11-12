@@ -10,7 +10,7 @@ serviceAccount:
   name: "default"
 
 atlas:
-  enabled: false
+  enabled: true
   nameOverride: ""
   fullnameOverride: ""
   restartPolicy: Always
@@ -20,7 +20,7 @@ atlas:
   image:
     repository: "aggregion/atlas"
     pullPolicy: IfNotPresent
-    tag: "master-005181ec-26"
+    tag: "master-aad047e8-38"
   service:
     type: ClusterIP
     port: 21000
@@ -62,7 +62,7 @@ atlas:
     tls: []
 
 cassandra:
-  # enabled: false # should depends on "atlas"
+  enabled: true
   nameOverride: ""
   fullnameOverride: ""
   storageSize: "10G"
@@ -91,7 +91,7 @@ cassandra:
   affinity: {}
 
 hadoop:
-  # enabled: false # should depends on "atlas"
+  enabled: false
   nameOverride: ""
   fullnameOverride: ""
   dataStorageSize: "10G"
@@ -136,7 +136,7 @@ hadoopInit:
       memory: 200Mi
 
 hbase:
-  # enabled: false # should depends on "atlas"
+  enabled: false
   nameOverride: ""
   storageClass: ""
   fullnameOverride: ""
@@ -183,7 +183,7 @@ hbaseRegion:
       cpu: "0.05"
 
 kafka:
-  # enabled: false # should depends on "atlas"
+  enabled: false
   nameOverride: ""
   fullnameOverride: ""
   storageSize: "5G"
@@ -223,7 +223,7 @@ kafkaInit:
       memory: 200Mi
 
 solr:
-  # enabled: false # should depends on "atlas"
+  enabled: true
   nameOverride: ""
   fullnameOverride: ""
   storageSize: "10G"
@@ -233,9 +233,9 @@ solr:
     type: RollingUpdate
   podManagementPolicy: OrderedReady
   image:
-    repository: "registry.aggregion.com/atlas/solr"
+    repository: solr
     pullPolicy: IfNotPresent
-    tag: "latest"
+    tag: "8.11"
   service:
     type: ClusterIP
     port: 8983
@@ -264,7 +264,7 @@ solrInit:
       memory: 200Mi
 
 zookeeper:
-  # enabled: false # should depends on "atlas"
+  enabled: true
   replicas: 3
   nameOverride: ""
   fullnameOverride: ""

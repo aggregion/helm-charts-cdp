@@ -1,4 +1,4 @@
-{{- if .Values.atlas.enabled }}
+{{- if .Values.cassandra.enabled }}
 {{- $cassandraName := include "exts.cassandra.fullname" . }}
 apiVersion: v1
 kind: Service
@@ -13,6 +13,10 @@ spec:
       targetPort: client
       protocol: TCP
       name: client
+    - port: 9042
+      targetPort: cql
+      protocol: TCP
+      name: cql
   selector:
     {{- include "exts.cassandra.selectorLabels" . | nindent 4 }}
 {{- end }}

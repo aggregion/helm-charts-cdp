@@ -1,4 +1,4 @@
-{{- if .Values.atlas.enabled }}
+{{- if .Values.cassandra.enabled }}
 {{- $cassandraName := include "exts.cassandra.fullname" . }}
 apiVersion: v1
 kind: PersistentVolumeClaim
