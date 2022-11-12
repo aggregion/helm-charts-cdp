@@ -71,7 +71,7 @@ esp:
   service:
     http:
       type: ClusterIP
-      port: 6540
+      port: 80
   ingress: # NOT SUPPORTED YET
     enabled: false
     className: ""
