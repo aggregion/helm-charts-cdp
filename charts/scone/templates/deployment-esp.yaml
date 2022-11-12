@@ -77,7 +77,7 @@ spec:
           imagePullPolicy: {{ .Values.esp.front.image.pullPolicy }}
           ports:
             - name: http
-              containerPort: 6540
+              containerPort: 80
               protocol: TCP
           resources:
             {{- toYaml .Values.esp.front.resources | nindent 12 }}
