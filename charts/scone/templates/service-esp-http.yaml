@@ -1,3 +1,4 @@
+{{- if .Values.esp.enabled -}}
 apiVersion: v1
 kind: Service
 metadata:
@@ -11,5 +12,9 @@ spec:
       targetPort: http
       protocol: TCP
       name: http
+      {{- if eq .Values.esp.service.http.type "NodePort" }}
+      nodePort: {{ .Values.esp.service.http.nodePort }}
+      {{- end }}
   selector:
     {{- include "scone.esp.selectorLabels" . | nindent 4 }}
+{{- end -}}

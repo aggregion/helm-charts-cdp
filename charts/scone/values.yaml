@@ -72,6 +72,7 @@ esp:
     http:
       type: ClusterIP
       port: 80
+      nodePort: 31540 # if .Values.esp.service.http.type === 'NodePort'
   ingress: # NOT SUPPORTED YET
     enabled: false
     className: ""
