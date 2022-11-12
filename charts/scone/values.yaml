@@ -41,7 +41,8 @@ cas:
     name: ""
   pvc:
     storageClass: ""
-    storageSize: "1Gi"
+    storageSize: "3Gi"
+    persistentVolumeReclaimPolicy: "Retain"
   config:
     lasAddr: ""
     logLevel: 5
