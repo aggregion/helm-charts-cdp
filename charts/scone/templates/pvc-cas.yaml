@@ -9,7 +9,6 @@ spec:
   {{- end }}
   accessModes:
     - ReadWriteOnce
-  persistentVolumeReclaimPolicy: "{{ .Values.cas.pvc.persistentVolumeReclaimPolicy }}"
   resources:
     requests:
       storage: "{{ .Values.cas.pvc.storageSize }}"
