@@ -75,7 +75,7 @@ spec:
               value: {{ .Values.cas.config.proxy | quote }}
             - name: "HTTPS_PROXY"
               value: {{ .Values.cas.config.proxy | quote }}
-            {{- else }}
+            {{- end }}
       volumes:
         - name: data
           persistentVolumeClaim:
