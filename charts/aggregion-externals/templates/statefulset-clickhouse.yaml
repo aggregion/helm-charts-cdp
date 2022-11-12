@@ -1,4 +1,4 @@
-e{{- if .Values.clickhouse.enabled }}
+{{- if .Values.clickhouse.enabled }}
 {{- $clickhouseName := include "exts.clickhouse.fullname" . }}
 apiVersion: apps/v1
 kind: StatefulSet

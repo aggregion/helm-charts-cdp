@@ -80,8 +80,7 @@ spec:
       restartPolicy: {{ .Values.kafka.restartPolicy }}
       volumes:
         - name: data
-          persistentVolumeClaim:
-            claimName: "{{ $kafkaName }}-claim"
+          emptyDir: {}
       {{- with .Values.kafka.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}

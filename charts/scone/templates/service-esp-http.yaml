@@ -1,0 +1,20 @@
+{{- if .Values.esp.enabled -}}
+apiVersion: v1
+kind: Service
+metadata:
+  name: "{{ include "scone.esp.fullname" . }}-svc-http"
+  labels:
+    {{- include "scone.esp.labels" . | nindent 4 }}
+spec:
+  type: {{ .Values.esp.service.http.type }}
+  ports:
+    - port: {{ .Values.esp.service.http.port }}
+      targetPort: http
+      protocol: TCP
+      name: http
+      {{- if eq .Values.esp.service.http.type "NodePort" }}
+      nodePort: {{ .Values.esp.service.http.nodePort }}
+      {{- end }}
+  selector:
+    {{- include "scone.esp.selectorLabels" . | nindent 4 }}
+{{- end -}}

@@ -722,7 +722,7 @@ enclave:
     authPrivateKey: "PrivateKeyBody"
     listenPort: 8321
     listenInnerPort: 8010
-    datalabToken: ""
+    datalabToken: "" # DEPRECATED (using nowhere)
     prettyLogs: "" # DEPRECATED (see .enclave.configs.enablePrettyLogs)
     enablePrettyLogs: false
     workerHeapSizeMb: 5000
@@ -1117,3 +1117,19 @@ emailservice:
     queueName: emails
     logLevel: trace
     logPrettyPrint: false
+
+cleos:
+  enabled: false
+  replicaCount: 1
+  nameOverride: ""
+  annotations: {}
+  image:
+    repository: registry.aggregion.com/cleos
+    pullPolicy: Always
+    tag: latest
+  updateStrategy: null
+  podAnnotations: {}
+  restartPolicy: Always
+  securityContext: {}
+  tolerations: []
+  affinity: {}

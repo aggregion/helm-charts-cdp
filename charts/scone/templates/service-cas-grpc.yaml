@@ -1,0 +1,17 @@
+{{- if .Values.cas.enabled -}}
+apiVersion: v1
+kind: Service
+metadata:
+  name: "{{ include "scone.cas.fullname" . }}-svc-grpc"
+  labels:
+    {{- include "scone.cas.labels" . | nindent 4 }}
+spec:
+  type: {{ .Values.cas.service.grpc.type }}
+  ports:
+    - port: {{ .Values.cas.service.grpc.port }}
+      targetPort: grpc
+      protocol: TCP
+      name: grpc
+  selector:
+    {{- include "scone.cas.selectorLabels" . | nindent 4 }}
+{{- end -}}

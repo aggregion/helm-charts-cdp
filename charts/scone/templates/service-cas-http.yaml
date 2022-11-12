@@ -1,0 +1,17 @@
+{{- if .Values.cas.enabled -}}
+apiVersion: v1
+kind: Service
+metadata:
+  name: "{{ include "scone.cas.fullname" . }}-svc-http"
+  labels:
+    {{- include "scone.cas.labels" . | nindent 4 }}
+spec:
+  type: {{ .Values.cas.service.http.type }}
+  ports:
+    - port: {{ .Values.cas.service.http.port }}
+      targetPort: http
+      protocol: TCP
+      name: http
+  selector:
+    {{- include "scone.cas.selectorLabels" . | nindent 4 }}
+{{- end -}}

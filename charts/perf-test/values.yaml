@@ -31,7 +31,6 @@ perfmonCollector:
       #    hosts:
       #      - chart-example.local
 
-
   podAnnotations: {}
 
   podSecurityContext: {}
@@ -53,8 +52,6 @@ perfmonAgent:
   imagePullSecrets:
     - name: regcred
 
-
-
   podAnnotations: {}
 
   podSecurityContext: {}
@@ -74,5 +71,3 @@ serviceAccount:
   create: true
   annotations: {}
   name: ""
-
-
