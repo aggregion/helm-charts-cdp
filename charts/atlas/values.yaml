@@ -18,9 +18,9 @@ atlas:
     type: RollingUpdate
   podManagementPolicy: OrderedReady
   image:
-    repository: "aggregion/atlas"
+    repository: "registry.aggregion.com/atlas"
     pullPolicy: IfNotPresent
-    tag: "master-aad047e8-38"
+    tag: "1.39.0"
   service:
     type: ClusterIP
     port: 21000
@@ -141,7 +141,7 @@ solr:
     type: RollingUpdate
   podManagementPolicy: OrderedReady
   image:
-    repository: solr
+    repository: registry.aggregion.com/solr
     pullPolicy: IfNotPresent
     tag: "8.11"
   service:
