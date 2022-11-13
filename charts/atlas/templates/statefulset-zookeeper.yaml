@@ -1,4 +1,4 @@
-{{- if .Values.atlas.enabled }}
+{{- if .Values.zookeeper.enabled }}
 {{- $zookeeperName := include "exts.zookeeper.fullname" . }}
 apiVersion: apps/v1
 kind: StatefulSet

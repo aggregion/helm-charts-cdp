@@ -1,4 +1,4 @@
-{{- if .Values.atlas.enabled }}
+{{- if .Values.cassandra.enabled }}
 {{- $cassandraName := include "exts.cassandra.fullname" . }}
 apiVersion: apps/v1
 kind: StatefulSet
@@ -40,6 +40,9 @@ spec:
           ports:
             - name: client
               containerPort: {{ .Values.cassandra.listenPort }}
+              protocol: TCP
+            - name: cql
+              containerPort: 9042
               protocol: TCP
           volumeMounts:
             - name: data

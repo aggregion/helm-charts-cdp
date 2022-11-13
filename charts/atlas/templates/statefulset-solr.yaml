@@ -1,4 +1,4 @@
-{{- if .Values.atlas.enabled }}
+{{- if .Values.solr.enabled }}
 {{- $solrName := include "exts.solr.fullname" . }}
 {{- $zookeeperName := include "exts.zookeeper.fullname" . }}
 apiVersion: apps/v1
@@ -37,6 +37,10 @@ spec:
           securityContext:
             {{- toYaml .Values.solr.securityContext | nindent 12 }}
           image: "{{ .Values.solr.image.repository }}:{{ .Values.solr.image.tag | default .Chart.AppVersion }}"
+          command:
+            - /bin/sh
+            - '-c'
+            - SOLR_HOST=$(hostname).{{ $solrName }}.{{ .Release.Namespace }}.svc.cluster.local solr-foreground
           imagePullPolicy: {{ .Values.solr.image.pullPolicy }}
           ports:
             - name: client
@@ -49,9 +53,19 @@ spec:
           resources:
             {{- toYaml .Values.solr.resources | nindent 12 }}
           env: # need refactoring
+            - name: SOLR_OPTS
+              value: '-Dsolr.autoSoftCommit.maxTime=100'
+            - name: ZK_CREATE_CHROOT
+              value: 'true'
             - name: ZK_HOST
-              value: "{{ $zookeeperName }}-0.{{ $zookeeperName }}.{{ .Release.Namespace }}.svc.cluster.local,{{ $zookeeperName }}-1.{{ $zookeeperName }}.{{ .Release.Namespace }}.svc.cluster.local,{{ $zookeeperName }}-2.{{ $zookeeperName }}.{{ .Release.Namespace }}.svc.cluster.local"
+              value: "{{ $zookeeperName }}-0.{{ $zookeeperName }}.{{ .Release.Namespace }}.svc.cluster.local,{{ $zookeeperName }}-1.{{ $zookeeperName }}.{{ .Release.Namespace }}.svc.cluster.local,{{ $zookeeperName }}-2.{{ $zookeeperName }}.{{ .Release.Namespace }}.svc.cluster.local/solr"
       initContainers:
+        - name: wait-for-zookeeper
+          image: busybox
+          command:
+            - '/bin/sh'
+            - '-c'
+            - nc -vz "{{ $zookeeperName }}-2.{{ $zookeeperName }}.{{ .Release.Namespace }}.svc.cluster.local" 2181
         - name: solr-init
           image: "{{ .Values.solrInit.image.repository }}:{{ .Values.solrInit.image.tag | default .Chart.AppVersion }}"
           command: {{ .Values.solrInit.command }}

@@ -1,4 +1,4 @@
-{{- if .Values.atlas.enabled }}
+{{- if .Values.kafka.enabled }}
 {{- $kafkaName := include "exts.kafka.fullname" . }}
 {{- $zookeeperName := include "exts.zookeeper.fullname" . }}
 apiVersion: apps/v1
@@ -62,6 +62,12 @@ spec:
             - name: ALLOW_ANONYMOUS_LOGIN
               value: "yes"
       initContainers:
+        - name: wait-for-zookeeper
+          image: busybox
+          command:
+            - '/bin/sh'
+            - '-c'
+            - nc -vz "{{ $zookeeperName }}-2.{{ $zookeeperName }}.{{ .Release.Namespace }}.svc.cluster.local" 2181
         - name: kafka-init
           image: "{{ .Values.kafkaInit.image.repository }}:{{ .Values.kafkaInit.image.tag | default .Chart.AppVersion }}"
           command: {{ .Values.kafkaInit.command }}
