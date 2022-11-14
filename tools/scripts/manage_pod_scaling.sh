@@ -5,8 +5,8 @@
 # Date: 14.11.2022
 #
 
-DEBUG=true;
-# DEBUG=false;
+#DEBUG=true;
+DEBUG=false;
 
 display_usage() { 	
   echo -e "\nUsage: $0 [deploy|sts] [start|stop]\n" 
