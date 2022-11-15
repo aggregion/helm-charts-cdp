@@ -39,11 +39,11 @@ case $ACTION in
     ;;
 esac
 
-TEMP_FILE1="/var/tmp/pod_data.txt";
+TEMP_FILE1="/var/tmp/pod_data";
 ns_array=("NAMESPACE" "kube-system" "kube-node-lease" "kube-public" "local-path-storage" "monitoring" "logs" "ingress-nginx" "default" )  
 if [ $ACTION == "STOP" ]; then          
   if $DEBUG ; then echo -e "$ACTION executed on $TYPE\n"; echo -e "saving current running data"; fi
-  kubectl get $TYPE -A |awk -F" " '{ print $1,$2,$3 }' > $TEMP_FILE1
+  kubectl get $TYPE -A |awk -F" " '{ print $1,$2,$3 }' > $TEMP_FILE1.$TYPE
 fi
 
 if $DEBUG ; then 
@@ -71,6 +71,6 @@ while read -r namespace pod replica; do
       fi
     fi
   fi
-done < $TEMP_FILE1
+done < $TEMP_FILE1.$TYPE
 
 exit 0
