@@ -22,6 +22,9 @@ data:
             {{- else }}
             proxy_ssl_verify off;
             {{- end }}
+            {{- if .Values.config.headerHost }}
+            proxy_set_header Host {{ .Values.config.headerHost }};
+            {{- end }}
             {{- if .Values.config.auth.enabled }}
             proxy_set_header Authorization "Basic {{ printf "%s:%s" .Values.config.auth.login .Values.config.auth.password |  b64enc  }}";
             {{- end }}
