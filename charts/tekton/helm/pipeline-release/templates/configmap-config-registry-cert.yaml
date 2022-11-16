@@ -5,6 +5,8 @@ metadata:
   labels:
     app.kubernetes.io/instance: default
     app.kubernetes.io/part-of: tekton-pipelines
-# data:
-#  # Registry's self-signed certificate
-#  cert: |
+{{- if .Values.controller.registryCert }}
+  data:
+    # Registry's self-signed certificate
+    cert: {{- .Values.controller.registryCert | quote }}
+{{- end }}

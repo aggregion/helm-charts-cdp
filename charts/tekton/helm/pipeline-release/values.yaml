@@ -53,6 +53,7 @@ controller:
     port: 32500
     proxyPass: http://registry
     proxySetHeaderHost: ""
+  registryCert: ""
 
 webhook:
   replicaCount: 1
