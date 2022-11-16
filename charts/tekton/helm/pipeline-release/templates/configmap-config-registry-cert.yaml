@@ -6,8 +6,8 @@ metadata:
     app.kubernetes.io/instance: default
     app.kubernetes.io/part-of: tekton-pipelines
 {{- if .Values.controller.registryCert }}
-  data:
-    # Registry's self-signed certificate
-    cert: |
-      {{- .Values.controller.registryCert | nindent 6 }}
+data:
+  # Registry's self-signed certificate
+  cert: |
+    {{- .Values.controller.registryCert | nindent 4 }}
 {{- end }}
