@@ -42,6 +42,8 @@ cas:
   pvc:
     storageClass: ""
     storageSize: "1Gi"
+  updateStrategy:
+    type: Recreate
   config:
     lasAddr: ""
     logLevel: 5
