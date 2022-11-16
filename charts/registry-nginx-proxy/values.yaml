@@ -92,6 +92,6 @@ config:
 
 daemonset:
   enabled: true
-  #command: echo "$TRUSTED_CERT" | base64 -d > /etc/pki/ca-trust/source/anchors/local.aggregion.com-ca.crt && update-ca-trust
+  # command: echo "$TRUSTED_CERT" | base64 -d > /etc/pki/ca-trust/source/anchors/local.aggregion.com-ca.crt && update-ca-trust
   command: echo "$TRUSTED_CERT" | base64 -d > /usr/local/share/ca-certificates/local.aggregion.com-ca.crt && update-ca-certificates
   pauseImage: k8s.gcr.io/pause:3.1
