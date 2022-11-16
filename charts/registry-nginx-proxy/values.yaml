@@ -5,7 +5,7 @@
 replicaCount: 1
 
 image:
-  repository: nginx
+  repository: busybox
   pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart appVersion.
   tag: ""
@@ -93,6 +93,7 @@ config:
 
 daemonset:
   enabled: true
+  image: ubuntu:latest
   # command: echo "$TRUSTED_CERT" | base64 -d > /etc/pki/ca-trust/source/anchors/local.aggregion.com-ca.crt && update-ca-trust
   command: echo "$TRUSTED_CERT" | base64 -d > /usr/local/share/ca-certificates/local.aggregion.com-ca.crt && update-ca-certificates
   pauseImage: k8s.gcr.io/pause:3.1

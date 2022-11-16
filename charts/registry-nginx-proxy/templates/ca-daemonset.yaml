@@ -23,7 +23,7 @@ spec:
         - name: init-node
           command: ["nsenter"]
           args: ["--mount=/proc/1/ns/mnt", "--", "sh", "-c", "$(SETUP_SCRIPT)"]
-          image: ubuntu
+          image: {{ .Values.daemonset.image }}
           env:
             - name: TRUSTED_CERT
               valueFrom:
