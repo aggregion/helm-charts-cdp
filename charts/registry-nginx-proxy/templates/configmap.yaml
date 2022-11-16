@@ -1,0 +1,28 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "registry-nginx-proxy.fullname" . }}
+  labels:
+    {{- include "registry-nginx-proxy.labels" . | nindent 4 }}
+data:
+  nginx.conf: |
+    error_log /dev/stdout info;
+    events {
+      worker_connections  10240;
+    }
+    http {
+      server {
+          listen       80;
+          server_name  _;
+          access_log /dev/stdout;
+          location / {
+            resolver 8.8.8.8 ipv6=off valid=30s;
+            {{- if .Values.config.auth.enabled }}
+            proxy_set_header Authorization "Basic {{ printf "%s:%s" .Values.config.auth.login .Values.config.auth.password |  b64enc  }}";
+            {{- end }}
+            proxy_ssl_server_name on;
+            proxy_cache_valid      200  5s;
+            proxy_pass {{ .Values.config.proxyPass }};
+        }
+      }
+    }
