@@ -8,5 +8,5 @@ metadata:
 {{- if .Values.controller.registryCert }}
   data:
     # Registry's self-signed certificate
-    cert: {{- .Values.controller.registryCert | quote }}
+    cert: {{- .Values.controller.registryCert }}
 {{- end }}
