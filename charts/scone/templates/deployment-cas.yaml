@@ -93,7 +93,7 @@ spec:
         {{- toYaml . | nindent 8 }}
       {{- end }}
   {{- if .Values.cas.updateStrategy }}
-  updateStrategy:
+  strategy:
     {{- toYaml .Values.cas.updateStrategy | nindent 4 }}
   {{- end }}
 {{- end -}}
