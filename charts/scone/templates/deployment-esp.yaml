@@ -79,11 +79,14 @@ spec:
             - name: http
               containerPort: 80
               protocol: TCP
+              {{- if .Values.esp.service.http.hostPort }}
+              hostPort: {{ .Values.esp.service.http.hostPort }}
+              {{- end }}
           resources:
             {{- toYaml .Values.esp.front.resources | nindent 12 }}
           env:
             - name: "API_URL"
-              value: "http://localhost:6533"
+              value: "http://127.0.0.1:6533"
       volumes:
         - name: certs-secret
           secret:
