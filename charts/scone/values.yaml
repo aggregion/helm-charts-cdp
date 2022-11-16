@@ -99,6 +99,8 @@ esp:
   pvc:
     storageClass: ""
     storageSize: "1Gi"
+  updateStrategy:
+    type: Recreate
   config:
     credsSecretKeyName: "esp-creds-secret"
     certsSecretKeyName: "esp-certs-secret"
