@@ -32,7 +32,8 @@ cas:
             pathType: ImplementationSpecific
     tls: []
   resources: {}
-  nodeSelector: {}
+  nodeSelector:
+    sgx.intel.com/capable: "true"
   tolerations: []
   affinity: {}
   serviceAccount:
@@ -48,6 +49,8 @@ cas:
     lasAddr: ""
     logLevel: 5
     proxy: ""
+    ias:
+      baseUri: https://api.trustedservices.intel.com/sgx/dev/attestation/v3
 
 las: {} # TODO
 
