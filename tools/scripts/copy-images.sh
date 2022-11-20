@@ -1,7 +1,7 @@
 #!/bin/bash
 
 AGG_REGISTRY="registry.aggregion.com"
-LOCAL_REGISTRY="localhost:5000"
+LOCAL_REGISTRY="registry.local.aggregion.com"
 IMAGES="gatekeeper:1.4.2 \
 dmp-frontend:release-22_sep-47de5668-1889 \
 dmp-backend:release-22_sep-906b7f90-1302 \
@@ -37,7 +37,8 @@ atlas:1.39.0 \
 session-provider:2.6.0 \
 perftest/jmeter:master \
 perftest/jmeter-perfmon-agent:master \
-perftest/jmeter-perfmon-collector:master"
+perftest/jmeter-perfmon-collector:master \
+influxdb:latest"
 
 read -ra TAGS <<< "$IMAGES"
 
