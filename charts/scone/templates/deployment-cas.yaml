@@ -31,20 +31,48 @@ spec:
             name: {{ include "scone.cas.fullname" . }}
           name: cas-conf
       containers:
+        - name: las
+          securityContext:
+            privileged: true
+          image: registry.aggregion.com/sconecuratedimages/aggregion:las-no-epid-scone-5.6.0
+          command:
+            - /bin/sh
+            - -c
+            - update-ca-certificates && echo "212.41.26.55 api.trustedservices.intel.com" >> /etc/hosts && dumb-init /las_entrypoint.sh /usr/local/bin/las
+          volumeMounts:
+            - mountPath: /etc/sgx_default_qcnl.conf
+              name: cas-conf
+              subPath: sgx_default_qcnl.conf
+            - mountPath: /usr/local/share/ca-certificates/aggregion.crt
+              name: cas-conf
+              subPath: aggregion.crt
+          ports:
+            - name: http
+              containerPort: 18766
+              protocol: TCP
+          env:
+            - name: SCONE_MODE
+              value: hw
+            - name: COLLATERAL_SERVICE
+              value: mydomain.com
         - name: {{ .Chart.Name }}
           securityContext:
             {{- toYaml .Values.cas.securityContext | nindent 12 }}
           image: "{{ .Values.cas.image.repository }}:{{ .Values.cas.image.tag | default .Chart.AppVersion }}"
+          command:
+            - /bin/sh
+            - -c
+            - update-ca-certificates && echo "212.41.26.55 api.trustedservices.intel.com" >> /etc/hosts && cas -c /etc/cas/cas.toml
           imagePullPolicy: {{ .Values.cas.image.pullPolicy }}
           ports:
             - name: http
-              containerPort: 8081
+              containerPort: {{ .Values.cas.config.apiPort }}
               protocol: TCP
               {{- if .Values.cas.service.http.hostPort }}
               hostPort: {{ .Values.cas.service.http.hostPort }}
               {{- end }}
             - name: grpc
-              containerPort: 18765
+              containerPort: {{ .Values.cas.config.enclavePort }}
               protocol: TCP
               {{- if .Values.cas.service.grpc.hostPort }}
               hostPort: {{ .Values.cas.service.grpc.hostPort }}
@@ -68,6 +96,9 @@ spec:
             - mountPath: /etc/cas/cas-default-owner-config.toml
               name: cas-conf
               subPath: cas-default-owner-config.toml
+            - mountPath: /usr/local/share/ca-certificates/aggregion.crt
+              name: cas-conf
+              subPath: aggregion.crt
           env:
             {{- if .Values.cas.config.lasAddr }}
             - name: "SCONE_LAS_ADDR"
