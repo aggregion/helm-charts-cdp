@@ -52,7 +52,7 @@ spec:
           resources:
             {{- toYaml .Values.perfmonAgent.resources | nindent 12 }}
         - name: perfmon-agent-nginx
-          image: nginx:1.23
+          image: {{ .Values.perfmonAgent.nginxImage }}
           imagePullPolicy: IfNotPresent
           command:
             - /bin/sh

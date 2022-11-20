@@ -44,6 +44,7 @@ perfmonCollector:
   affinity: {}
 
 perfmonAgent:
+  nginxImage: nginx:1.23
   image:
     repository: registry.aggregion.com/perftest/jmeter-perfmon-agent
     pullPolicy: Always
