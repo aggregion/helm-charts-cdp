@@ -1,0 +1,12 @@
+cas:
+  enabled: true
+  config:
+    lasAddr: 127.0.0.1:18766
+    apiPort: 18081
+    enclavePort: 28765
+    ias:
+      baseUri: https://api2.trustedservices.intel.com/sgx/dev/attestation/v3
+  imagePullSecrets:
+    - name: aggregionregistry
+  nodeSelector:
+    enclave: "sgx2"
