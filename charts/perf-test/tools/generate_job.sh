@@ -56,7 +56,7 @@ spec:
             - '-Jinflux_token=${INFLUX_TOKEN}'
             - '-Jinflux_org_id=${INFLUX_ORG_ID}'
             - '-Jinflux_bucket=${INFLUX_BUCKET}'
-            - '-Jagg_kc_access=\"${KC_ACCESS}\"'
+            - '-Jagg_kc_access=${KC_ACCESS}'
             - '-Jmetrics_host=${METRICS_HOST}'
             - '-Jmetrics_port=${METRICS_PORT}'
             - '-l /tmp/results.jtl'
