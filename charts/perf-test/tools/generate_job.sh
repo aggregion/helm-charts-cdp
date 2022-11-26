@@ -49,7 +49,7 @@ spec:
             - '-n'
             - '-t'
             - /scripts/runners/run-metrics-influx-export.jmx
-            - '-Jagg-csv=${CSV}'
+            - '-Jagg_csv=${CSV}'
             - '-Jagg_server_host=${HOST}'
             - '-Jinflux_host=${INFLUX_HOST}'
             - '-Jinflux_port=${INFLUX_PORT}'
