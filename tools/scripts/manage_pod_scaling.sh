@@ -40,7 +40,7 @@ case $ACTION in
 esac
 
 TEMP_FILE1="/var/tmp/pod_data";
-ns_array=("NAMESPACE" "kube-system" "kube-node-lease" "kube-public" "local-path-storage" "monitoring" "logs" "ingress-nginx" "default" )  
+ns_array=("NAMESPACE" "kube-system" "kube-node-lease" "kube-public" "local-path-storage" "monitoring" "logs" "ingress-nginx" "longhorn-system" "calico" "calico-system" "default" )  
 if [ $ACTION == "STOP" ]; then          
   if $DEBUG ; then echo -e "$ACTION executed on $TYPE\n"; echo -e "saving current running data"; fi
   kubectl get $TYPE -A |awk -F" " '{ print $1,$2,$3 }' > $TEMP_FILE1.$TYPE
