@@ -71,4 +71,4 @@ encoded_jwt = jwt.encode({
   "email": args.login
 }, key, algorithm="RS256")
 
-print(encoded_jwt)
+print(f"{encoded_jwt}")
