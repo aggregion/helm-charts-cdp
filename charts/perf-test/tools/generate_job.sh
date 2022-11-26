@@ -2,6 +2,8 @@
 
 set -e
 
+SCRIPT_DIR=$(dirname "$0")
+
 MAIN_NS=${MAIN_NS:=$1}
 NS=${NS:=perftest}
 NAME_POSTFIX=$(date +%s)
@@ -23,9 +25,9 @@ ISSUER=${ISSUER:=https://kc.$HOST/realms/$REALM}
 ORIGIN=${ORIGIN:=https://$HOST}
 LOGIN=${LOGIN:=user@login.com}
 
-KC_PK=${KC_PK:=$(./get_kc_private_key.sh $MAIN_NS $REALM)}
+KC_PK=${KC_PK:=$("$SCRIPT_DIR"/get_kc_private_key.sh $MAIN_NS $REALM)}
 
-KC_ACCESS=${KC_ACCESS:=$(./generate_kc_access.py -k "$KC_PK" -r "$REALM" -i "$ISSUER" -o "$ORIGIN" "$LOGIN")}
+KC_ACCESS=${KC_ACCESS:=$("$SCRIPT_DIR"/generate_kc_access.py -k "$KC_PK" -r "$REALM" -i "$ISSUER" -o "$ORIGIN" "$LOGIN")}
 
 echo "
 apiVersion: batch/v1
