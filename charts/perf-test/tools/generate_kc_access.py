@@ -14,7 +14,6 @@ parser = argparse.ArgumentParser(
 parser.add_argument('-k', '--key')
 parser.add_argument('-i', '--issuer')
 parser.add_argument('-o', '--origin')
-parser.add_argument('-r', '--realm')
 parser.add_argument('login')
 
 args = parser.parse_args()
