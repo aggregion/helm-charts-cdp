@@ -71,4 +71,11 @@ encoded_jwt = jwt.encode({
   "email": args.login
 }, key, algorithm="RS256")
 
-print(str(encoded_jwt))
+jwt_str = ""
+
+try:
+  jwt_str = encoded_jwt.decode("utf-8")
+except (UnicodeDecodeError, AttributeError):
+  jwt_str = encoded_jwt
+
+print(jwt_str)
