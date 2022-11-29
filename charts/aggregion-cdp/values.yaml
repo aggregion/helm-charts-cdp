@@ -236,6 +236,11 @@ backend:
     cacheTtlMarket: 3600
     cacheTtlMatching: 3600
 
+    # default language
+    defaultLanguage: "ru"
+    # default language for dictionaries
+    defaultDictLanguage: "ru"
+
     # defines concrete storage class for persistence volume claim
     dataStorageClass: ""
     dataStorageSize: "10G"
