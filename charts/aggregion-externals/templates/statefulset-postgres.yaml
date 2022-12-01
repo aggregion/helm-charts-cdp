@@ -55,7 +55,10 @@ spec:
           lifecycle:
             postStart:
               exec:
-                command: ["if [ -e /always-initdb.d/ ]; then for f in /always-initdb.d/*; do psql -f $f; done fi"]
+                command:
+                  - /bin/bash
+                  - -c
+                  - "if [ -e /always-initdb.d/ ]; then for f in /always-initdb.d/*; do psql -f $f; done fi"
           {{- end }}
       restartPolicy: {{ .Values.postgres.restartPolicy }}
       volumes:
