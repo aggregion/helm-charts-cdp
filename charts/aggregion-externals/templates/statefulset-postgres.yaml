@@ -41,14 +41,6 @@ spec:
             - name: service
               containerPort: {{ .Values.postgres.listenPort }}
               protocol: TCP
-          # livenessProbe:
-          #   httpGet:
-          #     path: /
-          #     port: http
-          # readinessProbe:
-          #   httpGet:
-          #     path: /
-          #     port: http
           volumeMounts:
             - name: data
               mountPath: /var/lib/postgresql/data
@@ -59,6 +51,12 @@ spec:
             {{- end }}
           resources:
             {{- toYaml .Values.postgres.resources | nindent 12 }}
+          {{- if .Values.postgres.initScripts.enabled }}
+          lifecycle:
+            postStart:
+              exec:
+                command: ["if [ -e /always-initdb.d/ ]; then for f in /always-initdb.d/*; do psql -f $f; done fi"]
+          {{- end }}
       restartPolicy: {{ .Values.postgres.restartPolicy }}
       volumes:
         - name: data
