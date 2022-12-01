@@ -4,7 +4,7 @@
 
 cd $(dirname $0)
 
-cat ../../charts/tekton/helm/aggregion/values.yaml | yq -y '{
+cat ../../charts/atlas/values.yaml | yq -y '{
   atlas: {
     enabled: .atlas.enabled,
     storageSize: .atlas.storageSize,
