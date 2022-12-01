@@ -96,6 +96,9 @@ postgres:
   nodeSelector: {}
   tolerations: []
   affinity: {}
+  initScripts:
+    enabled: false
+    files: {}
 
 rabbit:
   enabled: false

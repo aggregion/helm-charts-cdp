@@ -53,6 +53,10 @@ spec:
             - name: data
               mountPath: /var/lib/postgresql/data
               subPath: postgres-data
+            {{- if .Values.postgres.initScripts.enabled }}
+            - name: init
+              mountPath: /docker-entrypoint-initdb.d
+            {{- end }}
           resources:
             {{- toYaml .Values.postgres.resources | nindent 12 }}
       restartPolicy: {{ .Values.postgres.restartPolicy }}
@@ -60,6 +64,11 @@ spec:
         - name: data
           persistentVolumeClaim:
             claimName: "{{ $postgresName }}-claim"
+        {{- if .Values.postgres.initScripts.enabled }}
+        - name: init
+          configMap:
+            name: "{{ $postgresName }}-init-scripts"
+        {{- end }}
       {{- with .Values.postgres.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}

@@ -1,0 +1,15 @@
+{{- if and .Values.postgres.enabled .Values.postgres.initScripts.enabled }}
+{{- $postgresName := include "exts.postgres.fullname" . }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: "{{ $postgresName }}-init-scripts"
+  labels:
+    {{- include "exts.postgres.labels" . | nindent 4 }}
+{{- if .Values.postgres.initScripts.files }}
+data:
+  {{- .Values.postgres.initScripts.files | toYaml | nindent 2 }}
+{{- else }}
+data: {}
+{{- end }}
+{{- end }}
