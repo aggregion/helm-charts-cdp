@@ -55,7 +55,7 @@ spec:
               subPath: postgres-data
             {{- if .Values.postgres.initScripts.enabled }}
             - name: init
-              mountPath: /docker-entrypoint-initdb.d
+              mountPath: /always-initdb.d
             {{- end }}
           resources:
             {{- toYaml .Values.postgres.resources | nindent 12 }}
