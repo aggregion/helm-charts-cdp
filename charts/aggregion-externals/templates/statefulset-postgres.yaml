@@ -58,7 +58,7 @@ spec:
                 command:
                   - /bin/bash
                   - -c
-                  - "i=10; while ! nc -vz localhost 5432 && [ $i -ge 0 ]; do echo "not ready $i"; i=$((i-1)); sleep 1; done; if [ -e /always-initdb.d/ ]; then for f in /always-initdb.d/*; do psql -f $f; done fi"
+                  - "i=10; while ! nc -vz localhost 5432 && [ $i -ge 0 ]; do echo 'not ready'; i=$((i-1)); sleep 1; done; if [ -e /always-initdb.d/ ]; then for f in /always-initdb.d/*; do psql -f $f; done fi"
           {{- end }}
       restartPolicy: {{ .Values.postgres.restartPolicy }}
       volumes:
