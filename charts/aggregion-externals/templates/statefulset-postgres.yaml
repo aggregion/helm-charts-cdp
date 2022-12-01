@@ -67,7 +67,7 @@ spec:
         {{- if .Values.postgres.initScripts.enabled }}
         - name: init
           configMap:
-            name: "{{ $postgresName }}-init-scripts"
+            name: "{{ $postgresName }}-init"
         {{- end }}
       {{- with .Values.postgres.nodeSelector }}
       nodeSelector:

@@ -3,7 +3,7 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: "{{ $postgresName }}-init-scripts"
+  name: "{{ $postgresName }}-init"
   labels:
     {{- include "exts.postgres.labels" . | nindent 4 }}
 {{- if .Values.postgres.initScripts.files }}
