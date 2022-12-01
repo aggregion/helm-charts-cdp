@@ -98,7 +98,10 @@ postgres:
   affinity: {}
   initScripts:
     enabled: false
-    files: {}
+    services:
+      metadataservice:
+        enabled: false
+        database: metadata
 
 rabbit:
   enabled: false
