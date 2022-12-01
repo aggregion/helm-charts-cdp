@@ -58,7 +58,7 @@ spec:
                 command:
                   - /bin/bash
                   - -c
-                  - "if [ -e /always-initdb.d/ ]; then for f in /always-initdb.d/*; do psql -f $f; done fi"
+                  - "while ! nc -vz localhost 5432; do echo 'not ready'; sleep 1; done; if [ -e /always-initdb.d/ ]; then for f in /always-initdb.d/*; do psql -f $f; done fi"
           {{- end }}
       restartPolicy: {{ .Values.postgres.restartPolicy }}
       volumes:
