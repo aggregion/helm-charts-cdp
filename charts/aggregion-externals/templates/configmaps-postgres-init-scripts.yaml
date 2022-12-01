@@ -6,9 +6,9 @@ metadata:
   name: "{{ $postgresName }}-init"
   labels:
     {{- include "exts.postgres.labels" . | nindent 4 }}
-{{- if or .Values.postgres.initScripts.services.metadataservice.enabled -}}
+{{- if or .Values.postgres.initScripts.services.metadataservice.enabled }}
 data:
-  {{- if .Values.postgres.initScripts.services.metadataservice.enabled -}}
+  {{- if .Values.postgres.initScripts.services.metadataservice.enabled }}
   metadataservice.init.sql: |
     SELECT 'CREATE DATABASE {{ .Values.postgres.initScripts.services.metadataservice.database }}'
     WHERE NOT EXISTS (SELECT FROM pg_database WHERE datname = '{{ .Values.postgres.initScripts.services.metadataservice.database }}')\gexec
