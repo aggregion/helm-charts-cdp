@@ -58,7 +58,18 @@ spec:
                 command:
                   - /bin/bash
                   - -c
-                  - "i=10; while ! psql -U postgres -c 'SELECT 1' && [ $i -ge 0 ]; do echo 'not ready'; i=$((i-1)); sleep 1; done; if [ -e /always-initdb.d/ ]; then for f in /always-initdb.d/*; do psql -U postgres -f $f; done fi"
+                  - |
+                    i=20;
+                    while ! psql -U postgres -c 'SELECT 1' && [ $i -ge 0 ]; do
+                      echo 'not ready';
+                      i=$((i-1));
+                      sleep 1;
+                    done;
+                    if [ -e /always-initdb.d/ ]; then
+                      for f in /always-initdb.d/*; do
+                        psql -U postgres -f $f;
+                      done
+                    fi
           {{- end }}
       restartPolicy: {{ .Values.postgres.restartPolicy }}
       volumes:
