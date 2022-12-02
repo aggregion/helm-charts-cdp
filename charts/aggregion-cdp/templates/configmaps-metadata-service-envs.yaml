@@ -1,0 +1,36 @@
+{{- if .Values.metadataService.enabled }}
+{{- $metadataServiceName := include "cdp.metadataService.fullname" . }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ $metadataServiceName }}-envs
+  labels:
+    {{- include "cdp.metadataService.labels" . | nindent 4 }}
+data:
+  DMP_BACKEND_BASE_URL: {{ .Values.metadataService.config.dmpBackendBaseUrl | quote }}
+  # EXCEL_FILE_PATH: /tmp/atlas.xlsx
+  LOG_LEVEL: {{ .Values.metadataService.config.logLevel | quote }}
+  # LOG_PRETTY_PRINT: false
+  PORT: {{ .Values.metadataService.service.containerPort | quote }}
+  POSTGRES_DB: {{ .Values.metadataService.config.postgres.db | quote }}
+  POSTGRES_HOST: {{ .Values.metadataService.config.postgres.host | quote }}
+  {{- if .Values.metadataService.config.postgres.logging -}}
+  POSTGRES_LOGGING: "true"
+  {{- end }}
+  POSTGRES_PASSWORD: {{ .Values.metadataService.config.postgres.password | quote }}
+  POSTGRES_PORT: {{ .Values.metadataService.config.postgres.port | quote }}
+  POSTGRES_USER: {{ .Values.metadataService.config.postgres.user | quote }}
+  PROVIDER_INSTANCE_ID: {{ .Values.backend.configs.providerInstanceId | quote }}
+  REPORT_FILE_PATH: /tmp/report.xlsx
+  SEED_EXCEL_DATA_SLEEP_BETWEEN_SEEDS: 2000
+  JWT_SECRET: {{ .Values.metadataService.config.jwtSecret | quote }}
+  AMQP_URL: {{ .Values.metadataService.config.amqp.url | quote }}
+  AMQP_PREFETCH_COUNT: {{ .Values.metadataService.config.amqp.prefetchCount | quote }}
+  RABBITMQ_HEARTBEAT_INTERVAL: "30"
+  RABBITMQ_RETRY_POLICY_SEQUENCE_ATTEMPTS_NUMBER: "5"
+  RABBITMQ_RETRY_POLICY_MAX_ATTEMPTS: "5"
+  RABBITMQ_RETRY_POLICY_DELAY: "30"
+  DATASET_QUEUE_NAME: {{ .Values.metadataService.config.amqp.queues.dataset | quote }}
+  INSTANCE_QUEUE_NAME: {{ .Values.metadataService.config.amqp.queues.instance | quote }}
+  TERM_QUEUE_NAME: {{ .Values.metadataService.config.amqp.queues.term | quote }}
+{{- end }}

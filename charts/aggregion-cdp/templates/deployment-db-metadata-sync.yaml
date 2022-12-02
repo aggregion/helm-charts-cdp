@@ -1,0 +1,75 @@
+{{- if .Values.dbMetadataSync.enabled }}
+{{- $dbMetadataSyncName := include "cdp.dbMetadataSync.fullname" . -}}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: "{{ $dbMetadataSyncName | lower }}"
+  labels:
+    {{- include "cdp.dbMetadataSync.labels" . | nindent 4 }}
+    app.kubernetes.io/component: "db-metadata-sync"
+spec:
+  replicas: {{ .Values.dbMetadataSync.replicaCount }}
+  selector:
+    matchLabels:
+      {{- include "cdp.dbMetadataSync.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      {{- with .Values.dbMetadataSync.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      labels:
+        {{- include "cdp.dbMetadataSync.selectorLabels" . | nindent 8 }}
+        app.kubernetes.io/component: "db-metadata-sync"
+    spec:
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      restartPolicy: {{ .Values.dbMetadataSync.restartPolicy }}
+      serviceAccountName: {{ include "cdp.serviceAccountName" . }}
+      {{- if .Values.metadataService.enabled -}}
+      initContainers:
+        - name: "metadataservice-readiness"
+          securityContext:
+            {{- toYaml .Values.dataservice.securityContext | nindent 12 }}
+          image: "{{ .Values.common.curl.repository }}:{{ .Values.common.curl.tag }}"
+          imagePullPolicy: {{ .Values.common.curl.pullPolicy }}
+          envFrom:
+            - configMapRef:
+                name: "{{ $dbMetadataSyncName }}-envs"
+          command:
+            - /bin/sh
+          args:
+            - "-c"
+            - |
+              i=10;
+              status=000
+              while [ $i -gt 0 -a $status -ne 200 ]; do
+                status=$(curl -s -o /dev/null -w "%{http_code}" ${DATA_SERVICE_HEALTHCHECK_URL})
+                sleep 2;
+                i=$((i-1));
+              done
+              if [ $status -ne 200 ]; then
+                exit 1;
+              fi
+      {{- end }}
+      containers:
+        - name: "db-metadata-sync"
+          image: "{{ .Values.dbMetadataSync.image.repository }}:{{ .Values.dbMetadataSync.image.tag }}"
+          imagePullPolicy: {{ .Values.dbMetadataSync.image.pullPolicy }}
+          ports:
+            - name: httpapi
+              containerPort: {{ .Values.dbMetadataSync.service.containerPort }}
+          envFrom:
+            - configMapRef:
+                name: {{ $dbMetadataSyncName }}-envs
+          resources:
+            {{- toYaml .Values.backend.resources.dbMetadataSyncApi | nindent 12 }}
+          {{- if .Values.dbMetadataSync.probes.livenessEnabled }}
+          {{- include "cdp.livenessProbe" . | indent 10 }}
+          {{- end }}
+          {{- if .Values.dbMetadataSync.probes.readinessEnabled }}
+          {{- include "cdp.readinessProbe" . | indent 10 }}
+          {{- end }}
+{{- end }}

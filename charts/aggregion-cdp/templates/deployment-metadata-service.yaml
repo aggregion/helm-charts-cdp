@@ -1,0 +1,49 @@
+{{- if .Values.metadataService.enabled }}
+{{- $metadataServiceName := include "cdp.metadataService.fullname" . -}}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: "{{ $metadataServiceName | lower }}"
+  labels:
+    {{- include "cdp.metadataService.labels" . | nindent 4 }}
+    app.kubernetes.io/component: "metadata-service"
+spec:
+  replicas: {{ .Values.metadataService.replicaCount }}
+  selector:
+    matchLabels:
+      {{- include "cdp.metadataService.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      {{- with .Values.metadataService.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      labels:
+        {{- include "cdp.metadataService.selectorLabels" . | nindent 8 }}
+        app.kubernetes.io/component: "metadata-service"
+    spec:
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      restartPolicy: {{ .Values.metadataService.restartPolicy }}
+      serviceAccountName: {{ include "cdp.serviceAccountName" . }}
+      containers:
+        - name: "metadata-service"
+          image: "{{ .Values.metadataService.image.repository }}:{{ .Values.metadataService.image.tag }}"
+          imagePullPolicy: {{ .Values.metadataService.image.pullPolicy }}
+          ports:
+            - name: httpapi
+              containerPort: {{ .Values.metadataService.service.containerPort }}
+          envFrom:
+            - configMapRef:
+                name: {{ $metadataServiceName }}-envs
+          resources:
+            {{- toYaml .Values.backend.resources.metadataServiceApi | nindent 12 }}
+          {{- if .Values.metadataService.probes.livenessEnabled }}
+          {{- include "cdp.livenessProbe" . | indent 10 }}
+          {{- end }}
+          {{- if .Values.metadataService.probes.readinessEnabled }}
+          {{- include "cdp.readinessProbe" . | indent 10 }}
+          {{- end }}
+{{- end }}

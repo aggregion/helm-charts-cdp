@@ -50,6 +50,12 @@ metrics:
   serviceMonitor:
     enabled: false
 
+common:
+  curl:
+    repository: curlimages/curl
+    pullPolicy: IfNotPresent
+    tag: latest
+
 gatekeeper:
   enabled: false
   image:
@@ -658,6 +664,12 @@ backend:
     oidcprovider:
       requests:
         memory: "100Mi"
+    metadataServiceApi:
+      requests:
+        memory: "200Mi"
+    dbMetadataSyncApi:
+      requests:
+        memory: "200Mi"
   nodeSelector: {}
   tolerations: []
   affinity: {}
@@ -899,6 +911,8 @@ dataservice:
     clickhouseIsMocked: false # since 2021-12-13
     eosHealthcheckTimeoutMs: 1000
     eosHealthcheckIntervalMs: 10000
+    metadataServiceEndpoint: "http://aggregion-cdp-dataservice-mds/healthcheck"
+    metadataServiceToken: "metadata-service-token-as-db-metadata-sync"
   glossaryContainers:
     - name: glossary-syncer
       healthcheckPort: 9048
@@ -993,6 +1007,7 @@ authservice:
     jwtSecretKey: authservice_secret_key
     localAccessPolicyCanConfigure: owner
     localAccessPolicyEnabled: false
+
 oidcprovider:
   enabled: false
   replicaCount: 1
@@ -1140,3 +1155,86 @@ cleos:
   securityContext: {}
   tolerations: []
   affinity: {}
+
+metadataService:
+  enabled: false
+  replicaCount: 1
+  podAnnotations: {}
+  restartPolicy: Always
+  image:
+    repository: registry.aggregion.com/metadata-service
+    pullPolicy: IfNotPresent
+    tag: 5f655259
+  service:
+    containerPort: 80
+    port: 80
+    type: ClusterIP
+  probes:
+    livenessPath: /healthcheck/liveness
+    readinessPath: /healthcheck/readiness
+    healthcheckPort: 9047
+    healthcheckShutdownTimeoutMs: 5000
+    livenessEnabled: false
+    readinessEnabled: false
+  config:
+    logLevel: trace
+    dmpBackendBaseUrl: "http://dmpbackend"
+    jwtSecret: secret
+    postgres:
+      db: metadata
+      host: localhost
+      port: 5432
+      password: postgres
+      user: postgres
+      logging: false
+    amqp:
+      url: amqp://admin:12345678@localhost
+      prefetchCount: 1
+      queues:
+        dataset: datasets
+        instance: instances
+        term: terms
+
+dbMetadataSync:
+  enabled: false
+  replicaCount: 1
+  podAnnotations: {}
+  restartPolicy: Always
+  image:
+    repository: registry.aggregion.com/db-metadata-sync
+    pullPolicy: IfNotPresent
+    tag: eacd9a51
+  service:
+    containerPort: 80
+    port: 80
+    type: ClusterIP
+  probes:
+    livenessPath: /healthcheck/liveness
+    readinessPath: /healthcheck/readiness
+    healthcheckPort: 9047
+    healthcheckShutdownTimeoutMs: 5000
+    livenessEnabled: false
+    readinessEnabled: false
+  config:
+    logLevel: trace
+    metadataServiceToken: token
+    encryptionKey: |
+      -----BEGIN PRIVATE KEY-----
+      MIGEAgEAMBAGByqGSM49AgEGBSuBBAAKBG0wawIBAQQgAkIy7noMPV1IY09CPEa9
+      fU6aTvCK1+O1L8toHOyFEyihRANCAATMacBoCdh0UHeoPdPQ6CPjOO4bqw8Y/OZC
+      mVLgsXfn4qwdAKMLaMkKVsxs/ZaIN3pPmIz+FMeuShp8imoWcoGM
+      -----END PRIVATE KEY-----
+    instances:
+      - name: instance
+        rdbmsType: clickhouse
+        connectionOptions:
+          hostname: 10.0.2.50
+          port: 18001
+        databases:
+          - name: some-database
+            tables:
+              - table1
+              - table2
+            credentials:
+              username: root
+              password: admin

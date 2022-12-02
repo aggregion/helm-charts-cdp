@@ -32,8 +32,33 @@ spec:
       {{- end }}
       restartPolicy: {{ .Values.dataservice.restartPolicy }}
       serviceAccountName: {{ include "cdp.serviceAccountName" . }}
+      {{- if .Values.metadataService.enabled -}}
       initContainers:
-        - name: "init-dataservice-api"
+        - name: "metadataservice-readiness"
+          securityContext:
+            {{- toYaml .Values.dataservice.securityContext | nindent 12 }}
+          image: "{{ .Values.common.curl.repository }}:{{ .Values.common.curl.tag }}"
+          imagePullPolicy: {{ .Values.common.curl.pullPolicy }}
+          envFrom:
+            - configMapRef:
+                name: "{{ $dataServiceName }}-config"
+          command:
+            - /bin/sh
+          args:
+            - "-c"
+            - |
+              i=10;
+              status=000
+              while [ $i -gt 0 -a $status -ne 200 ]; do
+                status=$(curl -s -o /dev/null -w "%{http_code}" ${METADATA_SERVICE_HEALTHCHECK_URL})
+                sleep 2;
+                i=$((i-1));
+              done
+              if [ $status -ne 200 ]; then
+                exit 1;
+              fi
+
+        - name: "migration"
           securityContext:
             {{- toYaml .Values.dataservice.securityContext | nindent 12 }}
           image: "{{ .Values.dataservice.imageApi.repository }}:{{ .Values.dataservice.imageApi.tag }}"
@@ -50,6 +75,7 @@ spec:
                 name: "{{ $dataServiceName }}-config"
             - secretRef:
                 name: "{{ $dataServiceName }}-secrets"
+      {{- end }}
       containers:
         - name: "dataservice-api"
           securityContext:

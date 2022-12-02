@@ -1,0 +1,20 @@
+{{- if .Values.dbMetadataSync.enabled }}
+{{- $dbMetadataSyncName := include "cdp.dbMetadataSync.fullname" . }}
+{{- $metadataServiceName := include "cdp.metadataService.fullname" . -}}
+{{- $dataserviceName := include "cdp.dataservice.fullname" . -}}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ $dbMetadataSyncName }}-envs
+  labels:
+    {{- include "cdp.dbMetadataSync.labels" . | nindent 4 }}
+data:
+  LOG_LEVEL: {{ .Values.dbMetadataSync.config.logLevel | quote }}
+  # LOG_PRETTY_PRINT: false
+  PORT: {{ .Values.dbMetadataSync.service.containerPort | quote }}
+  METADATA_SERVICE_URL: "http://{{ $metadataServiceName | lower }}-svc:{{ .Values.metadataService.service.port }}/{{ .Values.metadataService.probes.readinessPath }}"
+  METADATA_SERVICE_TOKEN: {{ .Values.dbMetadataSync.config.metadataServiceToken | quote }}
+  INSTANCES_CONFIG: {{ .Values.dbMetadataSync.config.instances | toJson }}
+  CREDENTIALS_ENCRYPT_KEY: {{ .Values.dbMetadataSync.config.encryptionKey | quote }}
+  DATA_SERVICE_HEALTHCHECK_URL: "http://{{ $dataserviceName | lower }}:{{ .Values.dataservice.probes.common.healthcheckPort }}/{{ .Values.dataservice.probes.common.readinessPath }}"
+{{- end }}
