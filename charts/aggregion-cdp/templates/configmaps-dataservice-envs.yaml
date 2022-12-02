@@ -18,6 +18,7 @@ data:
   BLOCKCHAIN_WALLET_PUBLIC_KEY: {{ .Values.backend.configs.eosWalletOwnerPub | quote }}
   CLICKHOUSE_IS_MOCKED: {{ .Values.dataservice.config.clickhouseIsMocked | quote }}
   CLICKHOUSE_USE_DIRECT_CONNECTION: {{ .Values.dataservice.config.clickhouseUseDirectConnection | quote }}
+  CREDENTIALS_DECRYPT_KEY: {{ .Values.dataservice.config.credentialsDecryptKey | quote }}
   HEALTHCHECK_LIVENESS_PATH: {{ .Values.dataservice.probes.common.livenessPath | quote }}
   HEALTHCHECK_PORT: {{ .Values.dataservice.probes.common.healthcheckPort | quote }}
   HEALTHCHECK_READINESS_PATH: {{ .Values.dataservice.probes.common.readinessPath | quote }}
@@ -42,6 +43,7 @@ data:
   TRINO_PORT: {{ .Values.dataservice.config.trinoPort | quote }}
   METRICS_ENABLED: {{ and .Values.metrics.enabled .Values.dataservice.enabled | quote }}
   METRICS_PATH: {{ .Values.metrics.path | quote }}
+  METADATA_SERVICE_URL: "http://{{ $metadataServiceName | lower }}-svc:{{ .Values.metadataService.service.port }}"
   METADATA_SERVICE_HEALTHCHECK_URL: "http://{{ $metadataServiceName | lower }}-svc:{{ .Values.metadataService.probes.healthcheckPort }}/{{ .Values.metadataService.probes.readinessPath }}"
   METADATA_SERVICE_TOKEN: {{ .Values.dataservice.config.metadataServiceToken | quote }}
 {{- end }}

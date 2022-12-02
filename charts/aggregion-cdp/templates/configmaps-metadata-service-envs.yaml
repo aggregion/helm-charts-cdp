@@ -1,5 +1,6 @@
 {{- if .Values.metadataService.enabled }}
 {{- $metadataServiceName := include "cdp.metadataService.fullname" . }}
+{{- $backendServiceName := include "cdp.backend.fullname" . -}}
 apiVersion: v1
 kind: ConfigMap
 metadata:
@@ -7,22 +8,22 @@ metadata:
   labels:
     {{- include "cdp.metadataService.labels" . | nindent 4 }}
 data:
-  DMP_BACKEND_BASE_URL: {{ .Values.metadataService.config.dmpBackendBaseUrl | quote }}
-  # EXCEL_FILE_PATH: /tmp/atlas.xlsx
+  APP_NAME: {{ .Values.metadataService.config.appName | quote }}
+  NODE_ENV: {{ .Values.metadataService.config.nodeEnv | quote }}
   LOG_LEVEL: {{ .Values.metadataService.config.logLevel | quote }}
-  # LOG_PRETTY_PRINT: false
-  PORT: {{ .Values.metadataService.service.containerPort | quote }}
-  POSTGRES_DB: {{ .Values.metadataService.config.postgres.db | quote }}
   POSTGRES_HOST: {{ .Values.metadataService.config.postgres.host | quote }}
+  POSTGRES_PORT: {{ .Values.metadataService.config.postgres.port | quote }}
+  POSTGRES_USER: {{ .Values.metadataService.config.postgres.user | quote }}
+  POSTGRES_PASSWORD: {{ .Values.metadataService.config.postgres.password | quote }}
+  POSTGRES_DB: {{ .Values.metadataService.config.postgres.db | quote }}
   {{- if .Values.metadataService.config.postgres.logging -}}
   POSTGRES_LOGGING: "true"
   {{- end }}
-  POSTGRES_PASSWORD: {{ .Values.metadataService.config.postgres.password | quote }}
-  POSTGRES_PORT: {{ .Values.metadataService.config.postgres.port | quote }}
-  POSTGRES_USER: {{ .Values.metadataService.config.postgres.user | quote }}
+  PORT: {{ .Values.metadataService.service.containerPort | quote }}
   PROVIDER_INSTANCE_ID: {{ .Values.backend.configs.providerInstanceId | quote }}
-  REPORT_FILE_PATH: /tmp/report.xlsx
   SEED_EXCEL_DATA_SLEEP_BETWEEN_SEEDS: 2000
+  DMP_BACKEND_BASE_URL: "{{ $backendServiceName }}:{{.Values.backend.service.api.port}}"
+  REPORT_FILE_PATH: /tmp/report.xlsx
   JWT_SECRET: {{ .Values.metadataService.config.jwtSecret | quote }}
   AMQP_URL: {{ .Values.metadataService.config.amqp.url | quote }}
   AMQP_PREFETCH_COUNT: {{ .Values.metadataService.config.amqp.prefetchCount | quote }}

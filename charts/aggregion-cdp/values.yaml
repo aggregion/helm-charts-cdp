@@ -913,6 +913,7 @@ dataservice:
     eosHealthcheckIntervalMs: 10000
     metadataServiceEndpoint: "http://aggregion-cdp-dataservice-mds/healthcheck"
     metadataServiceToken: "metadata-service-token-as-db-metadata-sync"
+    credentialsDecryptKey: "rsa-public-key"
   glossaryContainers:
     - name: glossary-syncer
       healthcheckPort: 9048
@@ -1177,7 +1178,9 @@ metadataService:
     livenessEnabled: false
     readinessEnabled: false
   config:
+    appName: metadata-service-api
     logLevel: trace
+    nodeEnv: development
     dmpBackendBaseUrl: "http://dmpbackend"
     jwtSecret: secret
     postgres:
@@ -1193,7 +1196,7 @@ metadataService:
       queues:
         dataset: datasets
         instance: instances
-        term: terms
+        term: glossary_terms
 
 dbMetadataSync:
   enabled: false
@@ -1216,6 +1219,8 @@ dbMetadataSync:
     livenessEnabled: false
     readinessEnabled: false
   config:
+    appName: db-metadata-sync
+    nodeEnv: development
     logLevel: trace
     metadataServiceToken: token
     encryptionKey: |

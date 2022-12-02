@@ -9,10 +9,11 @@ metadata:
   labels:
     {{- include "cdp.dbMetadataSync.labels" . | nindent 4 }}
 data:
+  APP_NAME: {{ .Values.dbMetadataSync.config.appName | quote }}
   LOG_LEVEL: {{ .Values.dbMetadataSync.config.logLevel | quote }}
-  # LOG_PRETTY_PRINT: false
+  NODE_ENV: {{ .Values.dbMetadataSync.config.nodeEnv | quote }}
   PORT: {{ .Values.dbMetadataSync.service.containerPort | quote }}
-  METADATA_SERVICE_URL: "http://{{ $metadataServiceName | lower }}-svc:{{ .Values.metadataService.service.port }}/{{ .Values.metadataService.probes.readinessPath }}"
+  METADATA_SERVICE_URL: "http://{{ $metadataServiceName | lower }}-svc:{{ .Values.metadataService.service.port }}"
   METADATA_SERVICE_TOKEN: {{ .Values.dbMetadataSync.config.metadataServiceToken | quote }}
   INSTANCES_CONFIG: {{ .Values.dbMetadataSync.config.instances | toJson }}
   CREDENTIALS_ENCRYPT_KEY: {{ .Values.dbMetadataSync.config.encryptionKey | quote }}
