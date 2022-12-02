@@ -5,7 +5,7 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: {{ $dbMetadataSyncName }}-envs
+  name: {{ $dbMetadataSyncName | lower }}-envs
   labels:
     {{- include "cdp.dbMetadataSync.labels" . | nindent 4 }}
 data:

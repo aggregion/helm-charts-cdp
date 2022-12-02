@@ -37,7 +37,7 @@ spec:
           imagePullPolicy: {{ .Values.common.curl.pullPolicy }}
           envFrom:
             - configMapRef:
-                name: "{{ $dbMetadataSyncName }}-envs"
+                name: "{{ $dbMetadataSyncName | lower }}-envs"
           command:
             - /bin/sh
           args:
@@ -63,7 +63,7 @@ spec:
               containerPort: {{ .Values.dbMetadataSync.service.containerPort }}
           envFrom:
             - configMapRef:
-                name: {{ $dbMetadataSyncName }}-envs
+                name: {{ $dbMetadataSyncName | lower }}-envs
           resources:
             {{- toYaml .Values.backend.resources.dbMetadataSyncApi | nindent 12 }}
           {{- if .Values.dbMetadataSync.probes.livenessEnabled }}

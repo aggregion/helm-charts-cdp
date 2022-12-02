@@ -4,7 +4,7 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: {{ $metadataServiceName }}-envs
+  name: {{ $metadataServiceName | lower }}-envs
   labels:
     {{- include "cdp.metadataService.labels" . | nindent 4 }}
 data:

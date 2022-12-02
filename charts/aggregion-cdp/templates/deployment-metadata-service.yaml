@@ -37,7 +37,7 @@ spec:
               containerPort: {{ .Values.metadataService.service.containerPort }}
           envFrom:
             - configMapRef:
-                name: {{ $metadataServiceName }}-envs
+                name: {{ $metadataServiceName | lower }}-envs
           resources:
             {{- toYaml .Values.backend.resources.metadataServiceApi | nindent 12 }}
           {{- if .Values.metadataService.probes.livenessEnabled }}
