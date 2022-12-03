@@ -1167,7 +1167,7 @@ metadataService:
     pullPolicy: IfNotPresent
     tag: 5f655259
   service:
-    containerPort: 80
+    containerPort: 8080
     port: 80
     type: ClusterIP
   probes:
@@ -1208,7 +1208,7 @@ dbMetadataSync:
     pullPolicy: IfNotPresent
     tag: eacd9a51
   service:
-    containerPort: 80
+    containerPort: 8080
     port: 80
     type: ClusterIP
   probes:
