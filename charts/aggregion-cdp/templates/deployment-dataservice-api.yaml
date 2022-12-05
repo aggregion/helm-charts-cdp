@@ -32,7 +32,7 @@ spec:
       {{- end }}
       restartPolicy: {{ .Values.dataservice.restartPolicy }}
       serviceAccountName: {{ include "cdp.serviceAccountName" . }}
-      {{- if .Values.metadataService.enabled -}}
+      {{- if .Values.metadataService.enabled }}
       initContainers:
         - name: "metadataservice-readiness"
           securityContext:
