@@ -48,7 +48,7 @@ spec:
           imagePullPolicy: "{{#if datalabImagePullPolicy}}{{ datalabImagePullPolicy }}{{else}}Always{{/if}}"
           tty: true
           command: ["sh", "-ex", "-c"]
-          args:
+          args: # TODO: refactor extra operations
             - >
               [ -z "$(ls /dest/bin)" ] && cp -rp /bin /dest ;
               [ -z "$(ls /dest/sbin)" ] && cp -rp /sbin /dest ;
@@ -61,7 +61,7 @@ spec:
               [ -z "$(ls /dest/usr)" ] && cp -rp /usr /dest ;
               [ -z "$(ls /dest/var)" ] && cp -rp /var /dest ;
               true
-          volumeMounts:
+          volumeMounts: # TODO: refactor extra volumes
             - mountPath: /dest/bin
               subPath: bin
               name: datalabpv
