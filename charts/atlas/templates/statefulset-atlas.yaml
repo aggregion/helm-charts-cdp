@@ -121,6 +121,20 @@ spec:
               value: "{{ .Values.atlas.users.datascientist.login }}"
             - name: ATLAS_USER_DSCI_PASSWORD
               value: "{{ .Values.atlas.users.datascientist.password }}"
+            - name: FILE_ENABLE_AUTH
+              value: "{{ .Values.atlas.file.enableAuth }}"
+            - name: KEYCLOAK_ENABLE_AUTH
+              value: "{{ .Values.atlas.keycloak.enableAuth }}"
+            - name: KEYCLOAK_REALM
+              value: "{{ .Values.atlas.keycloak.realm }}"
+            - name: KEYCLOAK_AUTH_SERVER_URL
+              value: "{{ .Values.atlas.keycloak.authServerUrl }}"
+            - name: KEYCLOAK_SSL_REQUIRED
+              value: "{{ .Values.atlas.keycloak.sslRequired }}"
+            - name: KEYCLOAK_RESOURCE
+              value: "{{ .Values.atlas.keycloak.resource }}"
+            - name: KEYCLOAK_CREDENTIALS_SECRET
+              value: "{{ .Values.atlas.keycloak.credentials.secret }}"
           livenessProbe:
             initialDelaySeconds: 300
             exec:

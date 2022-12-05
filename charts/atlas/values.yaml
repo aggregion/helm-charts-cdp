@@ -34,6 +34,16 @@ atlas:
   nodeSelector: {}
   tolerations: []
   affinity: {}
+  file:
+    enableAuth: true
+  keycloak:
+    enableAuth: false
+    realm: aggregion
+    authServerUrl: http://keycloak-server/auth
+    sslRequired: external
+    resource: atlas
+    credentials:
+      secret: atlasclientsecret
   users:
     admin:
       login: admin
