@@ -6,6 +6,7 @@
   {{- $_ := set .Values.esp.ingress.annotations "kubernetes.io/ingress.class" .Values.ingress.className}}
   {{- end }}
 {{- end }}
+{{- $servicePort := .Values.esp.service.http.port -}}
 {{- if semverCompare ">=1.19-0" .Capabilities.KubeVersion.GitVersion -}}
 apiVersion: networking.k8s.io/v1
 {{- else if semverCompare ">=1.14-0" .Capabilities.KubeVersion.GitVersion -}}
@@ -51,10 +52,10 @@ spec:
               service:
                 name: {{ $fullName }}
                 port:
-                  number: {{ .Values.esp.service.http.port }}
+                  number: {{ $servicePort }}
               {{- else }}
               serviceName: {{ $fullName }}
-              servicePort: {{ .Values.esp.service.http.port }}
+              servicePort: {{ $servicePort }}
               {{- end }}
           {{- end }}
     {{- end }}
