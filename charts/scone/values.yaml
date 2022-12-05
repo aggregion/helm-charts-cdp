@@ -84,7 +84,7 @@ esp:
       port: 80
       nodePort: 31540 # if .Values.esp.service.http.type === 'NodePort'
       hostPort: null
-  ingress: # NOT SUPPORTED YET
+  ingress:
     enabled: false
     className: ""
     annotations: {}
