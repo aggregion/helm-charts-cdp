@@ -17,5 +17,5 @@ data:
   METADATA_SERVICE_TOKEN: {{ .Values.dbMetadataSync.config.metadataServiceToken | quote }}
   INSTANCES_CONFIG: {{ .Values.dbMetadataSync.config.instances | toJson }}
   CREDENTIALS_ENCRYPT_KEY: {{ .Values.dbMetadataSync.config.encryptionKey | quote }}
-  DATA_SERVICE_HEALTHCHECK_URL: "http://{{ $dataserviceName | lower }}:{{ .Values.dataservice.probes.common.healthcheckPort }}/{{ .Values.dataservice.probes.common.readinessPath }}"
+  DATA_SERVICE_HEALTHCHECK_URL: "http://{{ $dataserviceName | lower }}:{{ .Values.dataservice.probes.common.healthcheckPort }}{{ .Values.dataservice.probes.common.readinessPath }}"
 {{- end }}

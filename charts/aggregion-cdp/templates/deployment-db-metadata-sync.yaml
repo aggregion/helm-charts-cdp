@@ -28,7 +28,7 @@ spec:
       {{- end }}
       restartPolicy: {{ .Values.dbMetadataSync.restartPolicy }}
       serviceAccountName: {{ include "cdp.serviceAccountName" . }}
-      {{- if .Values.metadataService.enabled -}}
+      {{- if .Values.metadataService.enabled }}
       initContainers:
         - name: "metadataservice-readiness"
           securityContext:
