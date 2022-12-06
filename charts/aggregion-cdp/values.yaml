@@ -916,25 +916,29 @@ dataservice:
     metadataServiceToken: "metadata-service-token-as-db-metadata-sync"
     credentialsDecryptKey: "rsa-public-key"
   glossaryContainers:
-    - name: glossary-syncer
+    glossarySyncer:
+      enabled: true
       healthcheckPort: 9048
       healthcheckPortName: gls-sync
       resources:
         requests:
           memory: 100Mi
-    - name: glossary-updater
+    glossaryUpdater:
+      enabled: true
       healthcheckPort: 9049
       healthcheckPortName: gls-upd
       resources:
         requests:
           memory: 100Mi
-    - name: glossary-term-syncer
+    glossaryTermSyncer:
+      enabled: true
       healthcheckPort: 9050
       healthcheckPortName: gls-term-sync
       resources:
         requests:
           memory: 100Mi
-    - name: glossary-term-updater
+    glossaryTermUpdater:
+      enabled: true
       healthcheckPort: 9051
       healthcheckPortName: gls-term-upd
       resources:

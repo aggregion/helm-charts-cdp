@@ -1,4 +1,10 @@
 {{- if and (.Values.dataservice.enabled) (.Values.dataservice.glossarySyncers.enabled) }}
+{{- if or
+  (.Values.dataservice.glossaryContainers.glossarySyncer.enabled)
+  (.Values.dataservice.glossaryContainers.glossaryUpdater.enabled)
+  (.Values.dataservice.glossaryContainers.glossaryTermSyncer.enabled)
+  (.Values.dataservice.glossaryContainers.glossaryTermUpdater.enabled)
+-}}
 {{- $dataServiceName := include "cdp.dataservice.fullname" . }}
 apiVersion: apps/v1
 kind: Deployment
@@ -33,19 +39,16 @@ spec:
       restartPolicy: {{ .Values.dataservice.restartPolicy }}
       serviceAccountName: {{ include "cdp.serviceAccountName" . }}
       containers:
-        # TODO: refactor (separate contaiiners)
-        {{- range $index, $val := .Values.dataservice.glossaryContainers }}
-        {{- with $.Values.dataservice }}
-        {{- $hcport := $val.healthcheckPort }}
-        - name: {{ $val.name | quote }}
+        {{- if .Values.dataservice.glossaryContainers.glossarySyncer.enabled }}
+        - name: glossary-syncer
           securityContext:
-            {{- toYaml .securityContext | nindent 12 }}
-          image: "{{ .imageApi.repository }}:{{ .imageApi.tag }}"
-          imagePullPolicy: {{ .imageApi.pullPolicy }}
+            {{- toYaml .Values.dataservice.securityContext | nindent 12 }}
+          image: "{{ .Values.dataservice.imageApi.repository }}:{{ .Values.dataservice.imageApi.tag }}"
+          imagePullPolicy: {{ .Values.dataservice.imageApi.pullPolicy }}
           args:
             - npm
             - run
-            - start:worker:{{ $val.name }}:prod
+            - start:worker:glossary-syncer:prod
           envFrom:
             - configMapRef:
                 name: "{{ $dataServiceName }}-config"
@@ -53,28 +56,147 @@ spec:
                 name: "{{ $dataServiceName }}-secrets"
           env:
             - name: HEALTHCHECK_PORT
-              value: {{ $hcport | quote }}
+              value: {{ .Values.dataservice.glossaryContainers.glossarySyncer.healthcheckPort | quote }}
           resources:
-            {{- toYaml $val.resources | nindent 12 }}
-          {{- if .probes.glossary.livenessEnabled }}
+            {{- toYaml .Values.dataservice.glossaryContainers.glossarySyncer.resources | nindent 12 }}
+          {{- if .Values.dataservice.probes.glossary.livenessEnabled }}
           livenessProbe:
             httpGet:
-              path: {{ .probes.common.livenessPath }}
-              port: {{ $hcport }}
+              path: {{ .Values.dataservice.probes.common.livenessPath }}
+              port: {{ .Values.dataservice.glossaryContainers.glossarySyncer.healthcheckPort }}
             timeoutSeconds: 3
             initialDelaySeconds: 5
             periodSeconds: 15
           {{- end }}
-          {{- if .probes.glossary.readinessEnabled }}
+          {{- if .Values.dataservice.probes.glossary.readinessEnabled }}
           readinessProbe:
             httpGet:
-              path: {{ .probes.common.readinessPath }}
-              port: {{ $hcport }}
+              path: {{ .Values.dataservice.probes.common.readinessPath }}
+              port: {{ .Values.dataservice.glossaryContainers.glossarySyncer.healthcheckPort }}
             timeoutSeconds: 3
             initialDelaySeconds: 5
             periodSeconds: 15
           {{- end -}}
-        {{- end -}}
+        {{- end }}
+
+        {{- if .Values.dataservice.glossaryContainers.glossaryUpdater.enabled }}
+        - name: glossary-updater
+          securityContext:
+            {{- toYaml .Values.dataservice.securityContext | nindent 12 }}
+          image: "{{ .Values.dataservice.imageApi.repository }}:{{ .Values.dataservice.imageApi.tag }}"
+          imagePullPolicy: {{ .Values.dataservice.imageApi.pullPolicy }}
+          args:
+            - npm
+            - run
+            - start:worker:glossary-updater:prod
+          envFrom:
+            - configMapRef:
+                name: "{{ $dataServiceName }}-config"
+            - secretRef:
+                name: "{{ $dataServiceName }}-secrets"
+          env:
+            - name: HEALTHCHECK_PORT
+              value: {{ .Values.dataservice.glossaryContainers.glossaryUpdater.healthcheckPort | quote }}
+          resources:
+            {{- toYaml .Values.dataservice.glossaryContainers.glossaryUpdater.resources | nindent 12 }}
+          {{- if .Values.dataservice.probes.glossary.livenessEnabled }}
+          livenessProbe:
+            httpGet:
+              path: {{ .Values.dataservice.probes.common.livenessPath }}
+              port: {{ .Values.dataservice.glossaryContainers.glossaryUpdater.healthcheckPort }}
+            timeoutSeconds: 3
+            initialDelaySeconds: 5
+            periodSeconds: 15
+          {{- end }}
+          {{- if .Values.dataservice.probes.glossary.readinessEnabled }}
+          readinessProbe:
+            httpGet:
+              path: {{ .Values.dataservice.probes.common.readinessPath }}
+              port: {{ .Values.dataservice.glossaryContainers.glossaryUpdater.healthcheckPort }}
+            timeoutSeconds: 3
+            initialDelaySeconds: 5
+            periodSeconds: 15
+          {{- end -}}
+        {{- end }}
+
+        {{- if .Values.dataservice.glossaryContainers.glossaryTermSyncer.enabled }}
+        - name: glossary-term-syncer
+          securityContext:
+            {{- toYaml .Values.dataservice.securityContext | nindent 12 }}
+          image: "{{ .Values.dataservice.imageApi.repository }}:{{ .Values.dataservice.imageApi.tag }}"
+          imagePullPolicy: {{ .Values.dataservice.imageApi.pullPolicy }}
+          args:
+            - npm
+            - run
+            - start:worker:glossary-term-syncer:prod
+          envFrom:
+            - configMapRef:
+                name: "{{ $dataServiceName }}-config"
+            - secretRef:
+                name: "{{ $dataServiceName }}-secrets"
+          env:
+            - name: HEALTHCHECK_PORT
+              value: {{ .Values.dataservice.glossaryContainers.glossaryTermSyncer.healthcheckPort | quote }}
+          resources:
+            {{- toYaml .Values.dataservice.glossaryContainers.glossaryTermSyncer.resources | nindent 12 }}
+          {{- if .Values.dataservice.probes.glossary.livenessEnabled }}
+          livenessProbe:
+            httpGet:
+              path: {{ .Values.dataservice.probes.common.livenessPath }}
+              port: {{ .Values.dataservice.glossaryContainers.glossaryTermSyncer.healthcheckPort }}
+            timeoutSeconds: 3
+            initialDelaySeconds: 5
+            periodSeconds: 15
+          {{- end }}
+          {{- if .Values.dataservice.probes.glossary.readinessEnabled }}
+          readinessProbe:
+            httpGet:
+              path: {{ .Values.dataservice.probes.common.readinessPath }}
+              port: {{ .Values.dataservice.glossaryContainers.glossaryTermSyncer.healthcheckPort }}
+            timeoutSeconds: 3
+            initialDelaySeconds: 5
+            periodSeconds: 15
+          {{- end -}}
+        {{- end }}
+
+        {{- if .Values.dataservice.glossaryContainers.glossaryTermUpdater.enabled }}
+        - name: glossary-term-updater
+          securityContext:
+            {{- toYaml .Values.dataservice.securityContext | nindent 12 }}
+          image: "{{ .Values.dataservice.imageApi.repository }}:{{ .Values.dataservice.imageApi.tag }}"
+          imagePullPolicy: {{ .Values.dataservice.imageApi.pullPolicy }}
+          args:
+            - npm
+            - run
+            - start:worker:glossary-term-updater:prod
+          envFrom:
+            - configMapRef:
+                name: "{{ $dataServiceName }}-config"
+            - secretRef:
+                name: "{{ $dataServiceName }}-secrets"
+          env:
+            - name: HEALTHCHECK_PORT
+              value: {{ .Values.dataservice.glossaryContainers.glossaryTermUpdater.healthcheckPort | quote }}
+          resources:
+            {{- toYaml .Values.dataservice.glossaryContainers.glossaryTermUpdater.resources | nindent 12 }}
+          {{- if .Values.dataservice.probes.glossary.livenessEnabled }}
+          livenessProbe:
+            httpGet:
+              path: {{ .Values.dataservice.probes.common.livenessPath }}
+              port: {{ .Values.dataservice.glossaryContainers.glossaryTermUpdater.healthcheckPort }}
+            timeoutSeconds: 3
+            initialDelaySeconds: 5
+            periodSeconds: 15
+          {{- end }}
+          {{- if .Values.dataservice.probes.glossary.readinessEnabled }}
+          readinessProbe:
+            httpGet:
+              path: {{ .Values.dataservice.probes.common.readinessPath }}
+              port: {{ .Values.dataservice.glossaryContainers.glossaryTermUpdater.healthcheckPort }}
+            timeoutSeconds: 3
+            initialDelaySeconds: 5
+            periodSeconds: 15
+          {{- end -}}
         {{- end }}
       {{- with .Values.dataservice.affinity }}
       affinity:
@@ -88,4 +210,5 @@ spec:
   strategy:
     {{- toYaml .Values.dataservice.updateStrategy | nindent 4 }}
   {{- end }}
+{{- end -}}
 {{- end }}
