@@ -1223,6 +1223,8 @@ dbMetadataSync:
     healthcheckShutdownTimeoutMs: 5000
     livenessEnabled: false
     readinessEnabled: false
+  cronjob:
+    schedule: "0 * * * *"
   config:
     appName: db-metadata-sync
     nodeEnv: development
