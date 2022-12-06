@@ -6,7 +6,7 @@ Expand the name of the chart.
 {{- end }}
 
 {{- define "scone.esp.name" -}}
-{{- default .Chart.Name .Values.cas.nameOverride | trunc 63 | trimSuffix "-" }}
+{{- default .Chart.Name .Values.esp.nameOverride | trunc 63 | trimSuffix "-" }}
 {{- end }}
 
 {{/*
