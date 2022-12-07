@@ -16,7 +16,7 @@ data:
   POSTGRES_USER: {{ .Values.metadataService.config.postgres.user | quote }}
   POSTGRES_PASSWORD: {{ .Values.metadataService.config.postgres.password | quote }}
   POSTGRES_DB: {{ .Values.metadataService.config.postgres.db | quote }}
-  {{- if .Values.metadataService.config.postgres.logging -}}
+  {{- if .Values.metadataService.config.postgres.logging }}
   POSTGRES_LOGGING: "true"
   {{- end }}
   PORT: {{ .Values.metadataService.service.containerPort | quote }}
