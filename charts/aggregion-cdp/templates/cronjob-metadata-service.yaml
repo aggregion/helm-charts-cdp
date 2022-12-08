@@ -1,0 +1,33 @@
+{{- if and .Values.metadataService.enabled }}
+{{- $serviceName := include "cdp.metadataService.fullname" . }}
+{{- if semverCompare ">=1.21-0" .Capabilities.KubeVersion.GitVersion -}}
+apiVersion: batch/v1
+{{- else }}
+apiVersion: batch/v1beta1
+{{- end }}
+kind: CronJob
+metadata:
+  name: {{ $serviceName | lower | quote}}
+  labels:
+    {{- include "cdp.metadataService.labels" . | nindent 4 }}
+spec:
+  startingDeadlineSeconds: 200
+  schedule: {{ .Values.metadataService.cronjob.schedule | quote }}
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+            - name: "metadata-service"
+              image: "{{ .Values.common.curl.repository }}:{{ .Values.common.curl.tag }}"
+              imagePullPolicy: {{ .Values.common.curl.pullPolicy }}
+              command:
+                - /bin/sh
+                - -c
+                - "curl --silent http://{{ include "cdp.metadataService.fullname" . | lower }}-svc:{{ .Values.metadataService.service.port }}/api/sync"
+          restartPolicy: OnFailure
+          {{- with .Values.imagePullSecrets }}
+          imagePullSecrets:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+{{- end }}

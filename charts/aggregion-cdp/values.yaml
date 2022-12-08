@@ -1179,6 +1179,8 @@ metadataService:
     healthcheckShutdownTimeoutMs: 5000
     livenessEnabled: false
     readinessEnabled: false
+  cronjob:
+    schedule: "*/5 * * * *"
   config:
     appName: metadata-service-api
     logLevel: trace
