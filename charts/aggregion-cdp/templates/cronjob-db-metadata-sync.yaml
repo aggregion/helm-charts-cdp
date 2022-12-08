@@ -24,7 +24,7 @@ spec:
               command:
                 - /bin/sh
                 - -c
-                - "curl --silent http://{{ include "cdp.dbMetadataSync.fullname" . | lower }}-mds:{{ .Values.dbMetadataSync.service.containerPort }}"
+                - "curl --silent http://{{ include "cdp.dbMetadataSync.fullname" . | lower }}-mds:{{ .Values.dbMetadataSync.service.containerPort }}/api/sync"
           restartPolicy: OnFailure
           {{- with .Values.imagePullSecrets }}
           imagePullSecrets:
