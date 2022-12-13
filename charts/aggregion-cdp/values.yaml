@@ -750,6 +750,7 @@ enclave:
     nodeTlsRejectUnauthorized: true
     rabbitmqPrefetch: 1
     tmpHostPath: /tmp/enclave
+    tasksResultTtl: 7200 # in seconds
   restartPolicy: Always
   nameOverride: ""
   fullnameOverride: ""
