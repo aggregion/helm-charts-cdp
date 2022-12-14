@@ -93,6 +93,26 @@ gatekeeper:
       aggregion: "aggregion-oidc"
       activeDirectory: "oidc"
 
+# common config of Atlas used by atlas-entity-syncer and metadata-seed
+atlas:
+  baseUrl: "http://atlas.local"
+  # auth settings
+  auth:
+    # auth type, can be "basic" and "bearer"
+    type: basic
+    # config for basic auth type
+    basic:
+      username: admin
+      password: admin
+    # config for bearer auth type
+    bearer:
+      # id of the client created in Keycloak for Atlas
+      clientId: atlas
+      # client secret of the client created in Keycloak for Atlas
+      clientSecret: atlasclientsecret
+      # url to get access token from Keycloak by service account
+      tokenUrl: https://keycloak/realms/aggregion/protocol/openid-connect/token
+
 frontend:
   enabled: true
   replicaCount: 1
@@ -871,9 +891,6 @@ dataservice:
   configAtlasSyncer:
     enabled: false
     port: 8090 # internal
-    username: "admin"
-    password: "admin"
-    atlasBaseUrl: "http://atlas.local"
     cronjob:
       schedule: "*/15 * * * *"
   glossarySyncers:

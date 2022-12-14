@@ -14,9 +14,17 @@ metadata:
 data:
   PORT: "{{ .Values.dataservice.configAtlasSyncer.port }}"
   OWNER_ORG_ID: "{{ .Values.backend.configs.eosWalletOwnerOrgId }}"
-  ATLAS_BASE_URL: "{{ .Values.dataservice.configAtlasSyncer.atlasBaseUrl }}"
-  ATLAS_USERNAME: "{{ .Values.dataservice.configAtlasSyncer.username }}"
-  ATLAS_PASSWORD: "{{ .Values.dataservice.configAtlasSyncer.password }}"
+  ATLAS_BASE_URL: "{{ .Values.atlas.baseUrl }}"
+  ATLAS_AUTH_TYPE: "{{ .Values.atlas.auth.type }}"
+  {{- if eq .Values.atlas.auth.type "basic"}}
+  ATLAS_USERNAME: "{{ .Values.atlas.auth.basic.username }}"
+  ATLAS_PASSWORD: "{{ .Values.atlas.auth.basic.password }}"
+  {{- end }}
+  {{- if eq .Values.atlas.auth.type "bearer"}}
+  ATLAS_AUTH_CLIENT_ID: "{{ .Values.atlas.auth.bearer.clientId }}"
+  ATLAS_AUTH_CLIENT_SECRET: "{{ .Values.atlas.auth.bearer.clientSecret }}"
+  ATLAS_AUTH_TOKEN_URL: "{{ .Values.atlas.auth.bearer.tokenUrl }}"
+  {{- end }}
   DATASERVICE_BASE_URL: "{{ .Values.dataservice.config.endpoint }}"
   DATASERVICE_TOKEN: "{{ .Values.dataservice.config.accessToken }}"
   RABBITMQ_URL: "{{ .Values.dataservice.config.rabbitmqUri }}"

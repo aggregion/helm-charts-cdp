@@ -16,6 +16,10 @@ cat ../../charts/aggregion-cdp/values.yaml | yq -y '{
       verbose: .gatekeeper.config.verbose,
     }
   },
+  atlas: {
+    baseUrl: .atlas.baseUrl,
+    auth: .atlas.auth,
+  },
   frontend: {
     enabled: .frontend.enabled,
     image: {
@@ -179,9 +183,6 @@ cat ../../charts/aggregion-cdp/values.yaml | yq -y '{
     },
     configAtlasSyncer: {
       enabled: .dataservice.configAtlasSyncer.enabled,
-      username: .dataservice.configAtlasSyncer.username,
-      password: .dataservice.configAtlasSyncer.password,
-      atlasBaseUrl: .dataservice.configAtlasSyncer.atlasBaseUrl,
       cronjob: .dataservice.configAtlasSyncer.cronjob,
     },
     glossarySyncers: .dataservice.glossarySyncers,

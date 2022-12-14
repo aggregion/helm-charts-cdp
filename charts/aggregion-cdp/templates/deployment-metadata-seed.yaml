@@ -54,11 +54,23 @@ spec:
             - name: TRINO_PORT
               value: "{{ .Values.dataservice.config.trinoPort }}"
             - name: ATLAS_URL
-              value: "{{ .Values.dataservice.configAtlasSyncer.atlasBaseUrl }}"
+              value: "{{ .Values.atlas.baseUrl }}"
+            - name: ATLAS_AUTH_TYPE
+              value: "{{ .Values.atlas.auth.type }}"
+            {{- if eq .Values.atlas.auth.type "basic"}}
             - name: ATLAS_USERNAME
-              value: "{{ .Values.dataservice.configAtlasSyncer.username }}"
+              value: "{{ .Values.atlas.auth.basic.username }}"
             - name: ATLAS_PASSWORD
-              value: "{{ .Values.dataservice.configAtlasSyncer.password }}"
+              value: "{{ .Values.atlas.auth.basic.password }}"
+            {{- end }}
+            {{- if eq .Values.atlas.auth.type "bearer"}}
+            - name: ATLAS_AUTH_BEARER_CLIENT_ID
+              value: "{{ .Values.atlas.auth.bearer.clientId }}"
+            - name: ATLAS_AUTH_BEARER_CLIENT_SECRET
+              value: "{{ .Values.atlas.auth.bearer.clientSecret }}"
+            - name: ATLAS_AUTH_BEARER_TOKEN_URL
+              value: "{{ .Values.atlas.auth.bearer.tokenUrl }}"
+            {{- end }}
             - name: PORT
               value: "{{ .Values.metadataSeed.config.port }}"
             - name: DMP_BACKEND_BASE_URL
