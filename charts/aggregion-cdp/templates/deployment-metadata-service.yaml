@@ -52,6 +52,28 @@ spec:
           envFrom:
             - configMapRef:
                 name: {{ $metadataServiceName | lower }}-envs
+          {{- if .Values.metadataService.probes.livenessEnabled }}
+          livenessProbe:
+            httpGet:
+              path: {{ .Values.livenessProbe.livenessPath }}
+              port: {{ .Values.metadataService.service.port }}
+            initialDelaySeconds: {{ .Values.livenessProbe.initialDelaySeconds }}
+            periodSeconds: {{ .Values.livenessProbe.periodSeconds }}
+            timeoutSeconds: {{ .Values.livenessProbe.timeoutSeconds }}
+            successThreshold: {{ .Values.livenessProbe.successThreshold }}
+            failureThreshold: {{ .Values.livenessProbe.failureThreshold }}
+          {{- end }}
+          {{- if .Values.metadataService.probes.readinessEnabled }}
+          readinessProbe:
+            httpGet:
+              path: {{ .Values.readinessProbe.readinessPath }}
+              port: {{ .Values.metadataService.service.port }}
+            initialDelaySeconds: {{ .Values.readinessProbe.initialDelaySeconds }}
+            periodSeconds: {{ .Values.readinessProbe.periodSeconds }}
+            timeoutSeconds: {{ .Values.readinessProbe.timeoutSeconds }}
+            successThreshold: {{ .Values.readinessProbe.successThreshold }}
+            failureThreshold: {{ .Values.readinessProbe.failureThreshold }}
+          {{- end }}
           resources:
             {{- toYaml .Values.backend.resources.metadataServiceApi | nindent 12 }}
           {{- if .Values.metadataService.probes.livenessEnabled }}
