@@ -45,7 +45,7 @@ data:
   METRICS_ENABLED: {{ and .Values.metrics.enabled .Values.dataservice.enabled | quote }}
   METRICS_PATH: {{ .Values.metrics.path | quote }}
   METADATA_SERVICE_URL: "http://{{ $metadataServiceName | lower }}-svc:{{ .Values.metadataService.service.port }}"
-  METADATA_SERVICE_HEALTHCHECK_URL: "http://{{ $metadataServiceName | lower }}-svc:{{ .Values.metadataService.probes.healthcheckPort }}/{{ .Values.metadataService.probes.readinessPath }}"
+  METADATA_SERVICE_HEALTHCHECK_URL: "http://{{ $metadataServiceName | lower }}-svc:{{ .Values.metadataService.service.port }}{{ .Values.readinessProbe.readinessPath }}"
   METADATA_SERVICE_TOKEN: {{ .Values.dataservice.config.metadataServiceToken | quote }}
   QUEUES_DATASETS: {{ .Values.metadataService.config.amqp.queues.dataset | quote }}
   QUEUES_INSTANCES: {{ .Values.metadataService.config.amqp.queues.instance | quote }}
