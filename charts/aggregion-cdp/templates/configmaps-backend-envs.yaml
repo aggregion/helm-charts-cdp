@@ -4,6 +4,7 @@
 {{- $dataserviceName := include "cdp.dataservice.fullname" . }}
 {{- $authserviceName := include "cdp.authservice.fullname" . }}
 {{- $oidcProviderName := include "cdp.oidcprovider.fullname" . }}
+{{- $metadataServiceName := include "cdp.metadataService.fullname" . -}}
 apiVersion: v1
 kind: ConfigMap
 metadata:
@@ -96,4 +97,7 @@ data:
   {{- end }}
   FEATURES_USER_ROLES_MANAGMENT: {{ .Values.backend.configs.features.userRolesManagment | quote }}
   FEATURES_FRONTEND_DUMPS: {{ .Values.backend.configs.features.frontendDumps | quote }}
+
+  METADATA_SERVICE_URL: "http://{{ $metadataServiceName | lower }}-svc:{{ .Values.metadataService.service.port }}"
+  METADATA_SERVICE_TOKEN: {{ .Values.backend.configs.metadataServiceToken | quote }}
 {{- end }}
