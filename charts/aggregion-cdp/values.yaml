@@ -494,6 +494,24 @@ backend:
           get: ['TEAMLEAD', 'DATA_RESEARCHER']
           list: ['TEAMLEAD', 'DATA_RESEARCHER', 'ADMIN']
           checkDatasetsForMatching: ['TEAMLEAD', 'DATA_RESEARCHER']
+        MetadataField:
+          get: ['DATA_ANALYST', 'ADMIN']
+          list: ['DATA_ANALYST', 'ADMIN']
+        MetadataTable:
+          get: ['DATA_ANALYST', 'ADMIN']
+          list: ['DATA_ANALYST', 'ADMIN']
+        MetadataDatabase:
+          get: ['DATA_ANALYST', 'ADMIN']
+          list: ['DATA_ANALYST', 'ADMIN']
+        MetadataInstance:
+          get: ['DATA_ANALYST', 'ADMIN']
+          list: ['DATA_ANALYST', 'ADMIN']
+        MetadataDataset:
+          get: ['DATA_ANALYST', 'ADMIN']
+          list: ['DATA_ANALYST', 'ADMIN']
+        MetadataTerm:
+          get: ['DATA_ANALYST', 'ADMIN']
+          list: ['DATA_ANALYST', 'ADMIN']
       Mutation:
         Account:
           updateGlobalOrgInfo: ['ADMIN']
@@ -592,6 +610,20 @@ backend:
           debug: ['TEAMLEAD', 'DATA_RESEARCHER']
           run: ['TEAMLEAD']
           abort: ['TEAMLEAD', 'DATA_RESEARCHER', 'ADMIN']
+        MetadataField:
+          merge: ['DATA_ANALYST']
+        MetadataTable:
+          merge: ['DATA_ANALYST']
+        MetadataDatabase:
+          merge: ['DATA_ANALYST']
+        MetadataInstance:
+          merge: ['DATA_ANALYST']
+        MetadataDataset:
+          create: ['DATA_ANALYST']
+          merge: ['DATA_ANALYST']
+        MetadataTerm:
+          create: ['DATA_ANALYST']
+          merge: ['DATA_ANALYST']
   restartPolicy: Always
   nameOverride: ""
   fullnameOverride: ""
