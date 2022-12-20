@@ -3,19 +3,19 @@
 AGG_REGISTRY="registry.aggregion.com"
 LOCAL_REGISTRY="registry.local.aggregion.com"
 IMAGES="gatekeeper:1.4.2 \
-dmp-frontend:release-22_sep-47de5668-1889 \
-dmp-backend:release-22_sep-906b7f90-1302 \
+dmp-frontend:release-22_nov-9a6cce75-2040 \
+dmp-backend:release-22_nov-d373b771-1334 \
 cron-curl:0.0.1 \
 nginx:1.19-alpine \
 dmp-seed:latest \
 sconecuratedimages/aggregion:las-no-epid-scone-5.6.0 \
-enclave-server-signed:2.10.6 \
+enclave-server-signed:2.11.19 \
 enclave-external-services:develop \
-dataservice:dcp-master-21a9c484-41 \
-atlas-entity-syncer:dcp-master-1bbdc6e7-28 \
+dataservice:dcp-master-d6c5ee29-64 \
+atlas-entity-syncer:dcp-master-faa04a02-29 \
 curl:latest \
-metadata-seed:dcp-master-b93bfd22-33 \
-auth-service:dcp-master-4bb66bb3-51 \
+metadata-seed:dcp-master-a9a3c531-38 \
+auth-service:dcp-master-c8a41b5f-52 \
 oidc-provider:dcp-master-4c911744-86 \
 email-service:dcp-master-c9cb34e5-29 \
 datalab:latest \
