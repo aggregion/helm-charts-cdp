@@ -28,6 +28,20 @@ spec:
       {{- end }}
       restartPolicy: {{ .Values.metadataService.restartPolicy }}
       serviceAccountName: {{ include "cdp.serviceAccountName" . }}
+      {{- if .Values.metadataService.migrationEnabled }}
+      initContainers:
+        - name: "migrations"
+          image: "{{ .Values.metadataService.image.repository }}:{{ .Values.metadataService.image.tag }}"
+          imagePullPolicy: {{ .Values.metadataService.image.pullPolicy }}
+          args:
+            - npm
+            - run
+            - migrate:up
+          envFrom:
+            - configMapRef:
+                name: {{ $metadataServiceName | lower }}-envs
+      {{- end }}
+
       containers:
         - name: "metadata-service"
           image: "{{ .Values.metadataService.image.repository }}:{{ .Values.metadataService.image.tag }}"
