@@ -74,7 +74,7 @@ spec:
                     keytool -importcert -keystore /opt/atlas/data/truststore.jks -alias keycloak -storepass changeit -file $SERVER_TLS -noprompt
                   fi
                 fi;             
-              fi; 
+              fi;               
           volumeMounts:
             - name: data
               mountPath: /opt/atlas/data
