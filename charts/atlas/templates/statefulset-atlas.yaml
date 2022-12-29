@@ -62,9 +62,24 @@ spec:
           command:
             - '/bin/sh'
             - '-c'
-            - cd /opt/atlas/data; openssl s_client -servername $( echo "{{ .Values.atlas.keycloak.authServerUrl }}" | cut -d'/' -f3 | cut -d':' -f1 )  -connect $( echo "{{ .Values.atlas.keycloak.authServerUrl }}" | cut -d'/' -f3 | cut -d':' -f1 ):443 2> /dev/null </dev/null | sed -ne '/-BEGIN/,/-END/p' 2>&1 > $( echo "{{ .Values.atlas.keycloak.authServerUrl }}" | cut -d'/' -f3 | cut -d':' -f1 ).crt; keytool -importcert -keystore /opt/atlas/data/truststore.jks -alias keycloak -storepass changeit -file $(echo "{{ .Values.atlas.keycloak.authServerUrl }}" | cut -d'/' -f3 | cut -d':' -f1 ).crt -noprompt
+            - SERVER_TLS=/opt/atlas/data/server.crt; 
+              if [[ -z "{{ .Values.atlas.keycloak.enableAuth }}" ]]; then 
+                echo please set atlas.keycloak.enableAuth variable to true or false; 
+              else 
+                if "{{ .Values.atlas.keycloak.enableAuth }}"; then                   
+                  if ! [[ -f "$SERVER_TLS" ]]; then 
+                    echo certificate file at $SERVER_TLS missing;
+                    echo please check secret atlas-secret in namespace;
+                  else
+                    keytool -importcert -keystore /opt/atlas/data/truststore.jks -alias keycloak -storepass changeit -file $SERVER_TLS -noprompt
+                  fi
+                fi;             
+              fi; 
           volumeMounts:
             - name: data
+              mountPath: /opt/atlas/data
+            - name: atlas-secret
+              readonly: true
               mountPath: /opt/atlas/data
         - name: init-solr-collections
           image: solr:8.11
@@ -173,6 +188,13 @@ spec:
           emptyDir: {}
         - name: solr-configs
           emptyDir: {}
+        - name: atlas-secret
+          secret:
+            secretName: atlas-secret
+            items:
+              - key: tls.crt
+                path: server.crt
+                # need to create a secret with tls.crt file with name atlas-secret
       {{- with .Values.atlas.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
