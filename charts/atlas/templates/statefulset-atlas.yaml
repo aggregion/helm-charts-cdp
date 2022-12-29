@@ -57,6 +57,7 @@ spec:
           volumeMounts:
             - name: solr-configs
               mountPath: /tmp/solr-configs
+<<<<<<< HEAD
         - name: truststore generation for atlas
           image: busybox
           command:
@@ -81,6 +82,17 @@ spec:
             - name: atlas-secret
               readonly: true
               mountPath: /opt/atlas/data
+=======
+        # - name: truststore generation for atlas
+        #   image: busybox
+        #   command:
+        #     - '/bin/sh'
+        #     - '-c'
+        #     - cd /opt/atlas/data; openssl s_client -servername $( echo "{{ .Values.atlas.keycloak.authServerUrl }}" | cut -d'/' -f3 | cut -d':' -f1 )  -connect $( echo "{{ .Values.atlas.keycloak.authServerUrl }}" | cut -d'/' -f3 | cut -d':' -f1 ):443 2> /dev/null </dev/null | sed -ne '/-BEGIN/,/-END/p' 2>&1 > $( echo "{{ .Values.atlas.keycloak.authServerUrl }}" | cut -d'/' -f3 | cut -d':' -f1 ).crt; keytool -importcert -keystore /opt/atlas/data/truststore.jks -alias keycloak -storepass changeit -file $(echo "{{ .Values.atlas.keycloak.authServerUrl }}" | cut -d'/' -f3 | cut -d':' -f1 ).crt -noprompt
+        #   volumeMounts:
+        #     - name: data
+        #       mountPath: /opt/atlas/data
+>>>>>>> 240023dfdb5d8cd04d6f5fa31b9e69c84e9883d8
         - name: init-solr-collections
           image: solr:8.11
           command:
