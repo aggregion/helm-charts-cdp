@@ -62,19 +62,21 @@ spec:
           command:
             - '/bin/sh'
             - '-c'
-            - SERVER_TLS=/opt/atlas/data/server.crt; 
-              if [[ -z "{{ .Values.atlas.keycloak.enableAuth }}" ]]; then 
-                echo please set atlas.keycloak.enableAuth variable to true or false; 
-              else 
-                if "{{ .Values.atlas.keycloak.enableAuth }}"; then                   
-                  if ! [[ -f "$SERVER_TLS" ]]; then 
+            - if [[ -z "{{ .Values.atlas.keycloak.enableAuth }}" ]]; then
+                echo please set atlas.keycloak.enableAuth variable to true or false;
+              else
+                if "{{ .Values.atlas.keycloak.enableAuth }}"; then
+                  if ! [[ -f "$SERVER_TLS" ]]; then
                     echo certificate file at $SERVER_TLS missing;
                     echo please check secret atlas-secret in namespace;
                   else
                     keytool -importcert -keystore /opt/atlas/data/truststore.jks -alias keycloak -storepass changeit -file $SERVER_TLS -noprompt
                   fi
-                fi;             
-              fi;               
+                fi;
+              fi;
+          env:
+            - name: SERVER_TLS
+              value: /opt/atlas/data/server.crt
           volumeMounts:
             - name: data
               mountPath: /opt/atlas/data
