@@ -1,20 +1,13 @@
-Helm Charts for CDP
+Helm Charts for sgx-matrix monitoring via prometheus
 ===================
 
-Add Aggregion CDP Charts repository to Helm repos:
+make sure prometheus read from files:
 
 ```
-helm repo add aggregioncdp https://aggregion.github.io/helm-charts-cdp/charts
+--collector.textfile.directory=/host/root/var/tmp/sgx/
 ```
 
-[View on GitHub](https://github.com/aggregion/helm-charts-cdp)
+```
+helm upgrade --install sgx-matrix sgx-matrix/ --namespace monitoring --values sgx-matrix-values.yaml
+```
 
-
-Installation
-============
-
-1. Create a namespace.
-1. Create docker registry secret there.
-1. (Optional step) Install `aggregion-externals` chart. You may use bare metal databases and mq for that, don't forget to configure this in `aggregion-cdp` chart.
-1. Install `aggregion-cdp` chart.
-1. Install `aggregion-dc` chart.
