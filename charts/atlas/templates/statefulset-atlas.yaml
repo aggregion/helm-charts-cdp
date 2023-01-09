@@ -78,10 +78,10 @@ spec:
             - name: SERVER_TLS
               value: /opt/atlas/data/server.crt
           volumeMounts:
-            - name: data
-              mountPath: /opt/atlas/data
             - name: atlas-secret
               readonly: true
+              mountPath: /opt/atlas/data
+            - name: data
               mountPath: /opt/atlas/data
         - name: init-solr-collections
           image: solr:8.11
