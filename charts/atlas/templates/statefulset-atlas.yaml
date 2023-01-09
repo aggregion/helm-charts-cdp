@@ -76,12 +76,10 @@ spec:
               fi;
           env:
             - name: SERVER_TLS
-              value: /opt/atlas/data/server.crt
+              value: /opt/atlas/secret/tls.crt
           volumeMounts:
             - name: atlas-secret
-              mountPath: /opt/atlas/data
-            - name: data
-              mountPath: /opt/atlas/data
+              mountPath: /opt/atlas/secret
             - name: data
               mountPath: /opt/atlas/data
         - name: init-solr-collections
@@ -196,7 +194,7 @@ spec:
             secretName: atlas-secret
             items:
               - key: tls.crt
-                path: server.crt
+                # path: server.crt
                 # need to create a secret with tls.crt file with name atlas-secret
       {{- with .Values.atlas.nodeSelector }}
       nodeSelector:
