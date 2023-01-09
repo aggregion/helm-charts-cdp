@@ -57,7 +57,7 @@ spec:
           volumeMounts:
             - name: solr-configs
               mountPath: /tmp/solr-configs
-        - name: truststore generation for atlas
+        - name: truststore-generation-for-atlas
           image: busybox
           command:
             - '/bin/sh'
