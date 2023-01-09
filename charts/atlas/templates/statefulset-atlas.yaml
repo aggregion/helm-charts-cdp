@@ -79,7 +79,8 @@ spec:
               value: /opt/atlas/data/server.crt
           volumeMounts:
             - name: atlas-secret
-              readonly: true
+              mountPath: /opt/atlas/data
+            - name: data
               mountPath: /opt/atlas/data
             - name: data
               mountPath: /opt/atlas/data
