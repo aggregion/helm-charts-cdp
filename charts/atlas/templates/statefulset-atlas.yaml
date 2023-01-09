@@ -57,23 +57,13 @@ spec:
           volumeMounts:
             - name: solr-configs
               mountPath: /tmp/solr-configs
+        {{- if and .Values.atlas.keycloak.enableAuth .Values.atlas.truststore.enabled }}
         - name: truststore-generation-for-atlas
-          image: busybox
+          image: "{{ .Values.atlas.image.repository }}:{{ .Values.atlas.image.tag }}"
           command:
             - '/bin/sh'
             - '-c'
-            - if [[ -z "{{ .Values.atlas.keycloak.enableAuth }}" ]]; then
-                echo please set atlas.keycloak.enableAuth variable to true or false;
-              else
-                if "{{ .Values.atlas.keycloak.enableAuth }}"; then
-                  if ! [[ -f "$SERVER_TLS" ]]; then
-                    echo certificate file at $SERVER_TLS missing;
-                    echo please check secret atlas-secret in namespace;
-                  else
-                    keytool -importcert -keystore /opt/atlas/data/truststore.jks -alias keycloak -storepass changeit -file $SERVER_TLS -noprompt
-                  fi
-                fi;
-              fi;
+            - keytool -importcert -keystore {{ .Values.atlas.truststore.file }} -alias keycloak -storepass changeit -file $SERVER_TLS -noprompt
           env:
             - name: SERVER_TLS
               value: /opt/atlas/secret/tls.crt
@@ -82,6 +72,7 @@ spec:
               mountPath: /opt/atlas/secret
             - name: data
               mountPath: /opt/atlas/data
+        {{- end }}
         - name: init-solr-collections
           image: solr:8.11
           command:
@@ -112,7 +103,7 @@ spec:
         - name: "atlas"
           securityContext:
             {{- toYaml .Values.atlas.securityContext | nindent 12 }}
-          image: "{{ .Values.atlas.image.repository }}:{{ .Values.atlas.image.tag | default .Chart.AppVersion }}"
+          image: "{{ .Values.atlas.image.repository }}:{{ .Values.atlas.image.tag }}"
           imagePullPolicy: {{ .Values.atlas.image.pullPolicy }}
           ports:
             - name: client
@@ -160,8 +151,10 @@ spec:
               value: "{{ .Values.atlas.keycloak.resource }}"
             - name: KEYCLOAK_CREDENTIALS_SECRET
               value: "{{ .Values.atlas.keycloak.credentials.secret }}"
+            {{- if and .Values.atlas.truststore.enabled .Values.atlas.truststore.file }}
             - name: TRUSTSTORE_FILE_PATH
               value: "{{ .Values.atlas.truststore.file }}"
+            {{- end }}
           livenessProbe:
             initialDelaySeconds: 300
             exec:
@@ -195,8 +188,6 @@ spec:
             items:
               - key: tls.crt
                 path: tls.crt
-                # path: server.crt
-                # need to create a secret with tls.crt file with name atlas-secret
       {{- with .Values.atlas.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
