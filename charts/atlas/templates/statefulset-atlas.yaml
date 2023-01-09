@@ -194,6 +194,7 @@ spec:
             secretName: atlas-secret
             items:
               - key: tls.crt
+                path: tls.crt
                 # path: server.crt
                 # need to create a secret with tls.crt file with name atlas-secret
       {{- with .Values.atlas.nodeSelector }}
