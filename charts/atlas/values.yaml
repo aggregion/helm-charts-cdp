@@ -20,7 +20,7 @@ atlas:
   image:
     repository: "registry.aggregion.com/atlas"
     pullPolicy: IfNotPresent
-    tag: "1.41.0"
+    tag: "1.42.0"
   service:
     type: ClusterIP
     port: 21000
@@ -37,6 +37,8 @@ atlas:
   truststore:
     enabled: false
     file: /opt/atlas/data/truststore.jks
+    credsFile: /opt/atlas/data/creds.jceks
+    password: changeit
   file:
     enableAuth: true
   keycloak:
