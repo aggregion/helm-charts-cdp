@@ -65,7 +65,7 @@ spec:
             - '-c'
             - |
               /truststore-password.exp
-              keytool -importcert -keystore {{ .Values.atlas.truststore.file }} -alias keycloak -storepass $TRUSTSTORE_PASSWORD -file $SERVER_TLS -noprompt
+              keytool -importcert -trustcacerts -keystore {{ .Values.atlas.truststore.file }} -alias keycloak -keypass $TRUSTSTORE_PASSWORD -storepass $TRUSTSTORE_PASSWORD -file $SERVER_TLS -noprompt
           env:
             - name: SERVER_TLS
               value: /opt/atlas/secret/tls.crt
@@ -164,6 +164,8 @@ spec:
               value: "{{ .Values.atlas.truststore.credsFile }}"
             - name: TRUSTSTORE_PASSWORD
               value: "{{ .Values.atlas.truststore.password }}"
+            - name: ATLAS_OPTS
+              value: "-Djavax.net.ssl.trustStore={{ .Values.atlas.truststore.file }}"
             {{- end }}
           livenessProbe:
             initialDelaySeconds: 300
