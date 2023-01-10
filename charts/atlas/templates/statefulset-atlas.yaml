@@ -63,10 +63,16 @@ spec:
           command:
             - '/bin/sh'
             - '-c'
-            - keytool -importcert -keystore {{ .Values.atlas.truststore.file }} -alias keycloak -storepass changeit -file $SERVER_TLS -noprompt
+            - |
+              /truststore-password.exp
+              keytool -importcert -keystore {{ .Values.atlas.truststore.file }} -alias keycloak -storepass $TRUSTSTORE_PASSWORD -file $SERVER_TLS -noprompt
           env:
             - name: SERVER_TLS
               value: /opt/atlas/secret/tls.crt
+            - name: CREDENTIAL_PROVIDER_STORE_FILE
+              value: {{ .Values.atlas.truststore.credsFile }}
+            - name: TRUSTSTORE_PASSWORD
+              value: "{{ .Values.atlas.truststore.password }}"
           volumeMounts:
             - name: atlas-secret
               mountPath: /opt/atlas/secret
@@ -154,6 +160,10 @@ spec:
             {{- if and .Values.atlas.truststore.enabled .Values.atlas.truststore.file }}
             - name: TRUSTSTORE_FILE_PATH
               value: "{{ .Values.atlas.truststore.file }}"
+            - name: CREDENTIAL_PROVIDER_STORE_FILE
+              value: "{{ .Values.atlas.truststore.credsFile }}"
+            - name: TRUSTSTORE_PASSWORD
+              value: "{{ .Values.atlas.truststore.password }}"
             {{- end }}
           livenessProbe:
             initialDelaySeconds: 300
