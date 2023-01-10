@@ -78,6 +78,8 @@ gatekeeper:
     enableDefaultDeny: true
     # switch on json logging rather than text
     enableJsonLogging: true
+    # indicates we should redirect to the identity provider for logging out
+    enableLogoutRedirect: true
     # enable the prometheus metrics collector on /oauth/metrics
     enableMetrics: false
     # set `false` if  you wish to ignore using refresh tokens and re-auth on expiration of access token
