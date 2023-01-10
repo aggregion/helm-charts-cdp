@@ -57,37 +57,62 @@ common:
     tag: latest
 
 gatekeeper:
+  # must be always `true` for production, it can be `false` only for dev purposes
   enabled: false
   image:
+    # gatekeeper image repository
     repository: "registry.aggregion.com/gatekeeper"
+    # gatekeeper image tag
     tag: "1.4.2"
+    # gatekeeper image pull policy
     pullPolicy: IfNotPresent
-    podSecurityContext: {}
-    securityContext: {}
+  # gatekeeper config
   config:
+    # the client id for the 'client' application
     clientId: dcp
+    # the secret associated to the 'client' application (get it from Keycloak Administration Console)
     clientSecret: XXxxXXxxXXxxXXxxXXxxXXxxXXxxXXxx
+    # is the URL for retrieve the OpenID configuration (get it from Keycloak Administration Console -> Realm settings -> Endpoints -> OpenID Endpoint Configuration)
     discoveryUrl: http://keycloak/realms/ad1/.well-known/openid-configuration
+    # option blocks all requests without valid token on all basic HTTP methods (DELETE, GET, HEAD, OPTIONS, PATCH, POST, PUT, TRACE)
     enableDefaultDeny: true
+    # switch on json logging rather than text
     enableJsonLogging: true
+    # enable the prometheus metrics collector on /oauth/metrics
     enableMetrics: false
+    # set `false` if  you wish to ignore using refresh tokens and re-auth on expiration of access token
     enableRefreshTokens: true
+    # access and refresh tokens are session only i.e. removed on browser close
     enableSessionCookies: true
+    # encryption key used to encrypt the refresh token
     encryptionKey: xxXXxxXXxxXXxxXX
+    # skips the tls verification for openid provider communication
     skipOpenidProviderTlsVerify: true
+    # according RFC client id should not be checked on access token
     skipAccessTokenClientIdCheck: true
+    # port for main listener
     listen: 3000
+    # port for  admin-only endpoints (live-status, debug, prometheus...)
     listenAdmin: 4000
+    # enforces the cookie as secure
     secureCookie: false
+    # redirection url for the oauth callback url
     redirectionUrl: https://test.youdomaindom.com
+    # url for a store used to hold the refresh tokens, e.g redis://127.0.0.1:6379, file:///etc/tokens.file" or null (if you want to store refresh tokens in cookie)
     storeUrl: redis://127.0.0.1:6379
+    # the read timeout on the http server
     serverReadTimeout: 600s
+    # the write timeout on the http server
     serverWriteTimeout: 600s
+    # the idle timeout on the http server
     serverIdleTimeout: 600s
+    # path to custom template displayed for signin, to disable sign in page showing set empty value
     signInPage: /opt/gatekeeper/templates/sign_in.html.tmpl
+    # the timeout for upstream header response
     upstreamResponseHeaderTimeout: 600s
+    # switches on debug logging
     verbose: true
-    # tags is a map where key is identity provider id in the template and value is identity provider id in Keycloak
+    # tags (used in signInPage template) is a map where key is identity provider id in the template and value is identity provider id in Keycloak
     tags:
       title: "DCP | Вход"
       aggregion: "aggregion-oidc"
@@ -1024,24 +1049,41 @@ metadataSeed:
     dmpBackendBaseUrl: "http://dmpbackend"
 
 authservice:
+  # must be always `true` for production
   enabled: false
+  # number of replicated pods
   replicaCount: 1
+  # name to override default pod name
   nameOverride: ""
+  # authservice deployment annotations
   annotations:
     reloader.stakater.com/auto: "true"
+  # authservice pod annotations
   podAnnotations: {}
+  # restart policy
   restartPolicy: Always
+  # update strategy
   updateStrategy: null
+  # authservice security context
   securityContext: {}
   image:
+    # authservice image repository
     repository: registry.aggregion.com/auth-service
+    # authservice image pull policy
     pullPolicy: IfNotPresent
+    # authservice image tag
     tag: dcp-master-4bb66bb3-51
+  # tolerations for pod assignment
   tolerations: []
+  # affinity for pod assignment
   affinity: {}
+  # service configuration
   service:
+    # Kubernetes service type
     type: ClusterIP
+    # service HTTP port
     port: 80 # external
+  # cofiguration of liveness, readiness probes
   probes:
     livenessPath: /healthcheck/liveness
     readinessPath: /healthcheck/readiness
@@ -1050,40 +1092,69 @@ authservice:
     livenessEnabled: false
     readinessEnabled: false
   config:
+    # internal app name
     appName: authservice-api
+    # log level
     logLevel: trace
+    # set `true` to enable human-readable logging format
     logPrettyPrint: false
+    # NODE_ENV env variable value
     nodeEnv: development
+    # port
     port: 9045 # internal
+    # mongo db connection string URI
     mongoDbUri: mongodb://127.0.0.1:27017/auth-service
+    # enables mongodb debug logs
     mongoDebug: false
-    jwtTokenExpirationTimeInSeconds: 31104000
+    # invitation token expiration time
     jwtInviteExpirationTimeInSeconds: 31104000
+    # jwt token secret key
     jwtSecretKey: authservice_secret_key
+    # value of 'canConfigure' field of invitation token payload
     localAccessPolicyCanConfigure: owner
+    # adds 'canConfigure' field to invitation token payload if enabled
     localAccessPolicyEnabled: false
 
 oidcprovider:
+  # enable if you want to use Aggregion OIDC Provider
   enabled: false
+  # number of replicated pods
   replicaCount: 1
+  # name to override default pod name
   nameOverride: ""
+  # oidcprovider deployment annotations
   annotations:
     reloader.stakater.com/auto: "true"
+  # oidcprovider pod annotations
   podAnnotations: {}
+  # restart policy
   restartPolicy: Always
+  # update strategy
   updateStrategy: null
+  # oidcprovider security context
   securityContext: {}
   image:
+    # oidcprovider image repository
     repository: registry.aggregion.com/oidc-provider
+    # oidcprovider image pull policy
     pullPolicy: Always
+    # oidcprovider image tag
     tag: dcp-master-4c911744-86
+  # tolerations for pod assignment
   tolerations: []
+  # affinity for pod assignment
   affinity: {}
+  # service configuration
   service:
+    # Kubernetes service type
     type: ClusterIP
+    # service HTTP port
     port: 80
+  # ingress parameters
   ingress:
+    # enable ingress record generation
     enabled: false
+    # ingress annotations
     annotations:
       kubernetes.io/ingress.class: nginx
       nginx.ingress.kubernetes.io/proxy-body-size: 128000m
@@ -1091,9 +1162,12 @@ oidcprovider:
       nginx.ingress.kubernetes.io/proxy-send-timeout: "3600"
       nginx.ingress.kubernetes.io/limit-rps: "1000"
       nginx.ingress.kubernetes.io/limit-rpm: "60000"
+    # hosts for ingress rules
     hosts:
       - host: auth.local
+    # ingress tls
     tls: []
+  # cofiguration of liveness, readiness probes
   probes:
     livenessPath: /healthcheck/liveness
     readinessPath: /healthcheck/readiness
@@ -1102,33 +1176,49 @@ oidcprovider:
     livenessEnabled: false
     readinessEnabled: false
   config:
+    # port
     port: 9055
+    # client id of an external client
     clientId: keycloak
+    # client secret of an external client
     clientSecret: secret
+    # supported client scopes
     clientScopes: "openid profile"
+    # supported client redirect uris of an external client
     clientRedirectUris:
       - "http://localhost:8080/auth/realms/master/broker/oidc/endpoint"
+    # supported client post logout redirect uris of an external client
     clientPostLogoutRedirectUris:
       - "http://localhost:8080/auth/realms/master/broker/oidc/endpoint/logout_response"
+    # key list for keygrip (https://github.com/crypto-utils/keygrip)
     cookiesKeys:
       - 16a6d259dbf8887e76e0702f8af2059dd3092138340b63dbe67db5c866d530ad
       - 9be003e7425596421b5d4aa07621c93de3a5f3b4e984ae0ec8e4c1ae939555be
+    # oidc features
     features:
+      # enable RP-Initiated Logout features (https://openid.net/specs/openid-connect-rpinitiated-1_0-final.html)
       rpInitiatedLogout: true
+    # log level
     logLevel: trace
+    # set `true` to enable human-readable logging format
     logPrettyPrint: false
-    sessionKeys:
-      - NsfOo0Hb1XG9ZKrf68tnAqIpOFBPmAZ7
-      - yVLut2jqPn3FqlgkDne9tGigQp2ZkOkc
-      - Sn2IzRIRqemVbefu9zH4GdhNKKi2ZC58
+    # uri to which the user should be redirected after successful registration
     successSignupRedirectUri: http://localhost:9055/signup
+    # enable i18next lib logs
     i18nextDebug: false
+    # NODE_ENV env variable value
     nodeEnv: production
+    # ttl settings
     ttl:
+      # access token ttl
       accessToken: 3600
+      # id token ttl
       idToken: 3600
+      # interaction ttl
       interaction: 172800
+      # refresh token ttl
       refreshToken: 1209600
+  # JSON Web Key Set used by the provider for signing and decryption (https://github.com/panva/node-oidc-provider/tree/main/docs#jwks)
   jwks: |
     {
       "keys": [
@@ -1168,21 +1258,35 @@ oidcprovider:
     }
 
 emailservice:
+  # must be 'true' when oidcprovider enabled
   enabled: false
+  # number of replicated pods
   replicaCount: 1
+  # name to override default pod name
   nameOverride: ""
+  # emailservice deployment annotations
   annotations:
     reloader.stakater.com/auto: "true"
   image:
+    # emailservice image repository
     repository: registry.aggregion.com/email-service
+    # emailservice image pull policy
     pullPolicy: Always
+    # emailservice image tag
     tag: dcp-master-c9cb34e5-29
+  # emailservice pod annotations
   podAnnotations: {}
+  # restart policy
   restartPolicy: Always
+  # update strategy
   updateStrategy: null
+  # emailservice security context
   securityContext: {}
+  # tolerations for pod assignment
   tolerations: []
+  # affinity for pod assignment
   affinity: {}
+  # cofiguration of liveness, readiness probes
   probes:
     livenessPath: /healthcheck/liveness
     readinessPath: /healthcheck/readiness
@@ -1191,8 +1295,11 @@ emailservice:
     livenessEnabled: false
     readinessEnabled: false
   config:
+    # RabbitMQ queue name to consume email tasks
     queueName: emails
+    # log level
     logLevel: trace
+    # set `true` to enable human-readable logging format
     logPrettyPrint: false
 
 cleos:
