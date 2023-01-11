@@ -14,7 +14,6 @@ data:
   HEALTHCHECK_SHUTDOWN_TIMEOUT_MS: {{ .Values.authservice.probes.healthcheckShutdownTimeoutMs | quote }}
   JWT_INVITE_EXPIRATION_TIME: {{ .Values.authservice.config.jwtInviteExpirationTimeInSeconds | quote }}
   JWT_SECRET_KEY: {{ .Values.authservice.config.jwtSecretKey | quote }}
-  JWT_TOKEN_EXPIRATION_TIME: {{ .Values.authservice.config.jwtTokenExpirationTimeInSeconds | quote }}
   LOCAL_ACCESS_POLICY_CAN_CONFIGURE: {{ .Values.authservice.config.localAccessPolicyCanConfigure | quote }}
   LOCAL_ACCESS_POLICY_ENABLED: {{ .Values.authservice.config.localAccessPolicyEnabled | quote }}
   LOCAL_PROVIDER_NAME: {{ .Values.backend.configs.providerName | quote }}
