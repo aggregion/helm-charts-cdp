@@ -1,0 +1,59 @@
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: {{ .Chart.Name }}
+  namespace: {{ .Values.namespace }}
+  labels:
+    app: {{ .Chart.Name }}
+spec:
+  selector:
+    matchLabels:
+      app: {{ .Chart.Name }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Chart.Name }}
+    spec:
+      nodeSelector:
+        sgx.intel.com/capable: "true"
+      containers:
+        - name: {{ .Chart.Name }}-processor
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          volumeMounts:
+            - mountPath: /var/tmp
+              name: tmp-mount
+            - mountPath: /sys
+              name: sys-mount
+          args:
+           - /bin/sh
+           - -c
+           - >
+              while true; do
+                SGX_PARAMS='/var/tmp/sgx_params'
+                SGX_SRC_DIR='/sys/module/intel_sgx/parameters'
+                if [ -f "$SGX_PARAMS.tmp" ] ; then
+                    rm -rf "$SGX_PARAMS.tmp"
+                fi
+                if [ -d "$SGX_SRC_DIR" ] ; then
+                  for i in $SGX_SRC_DIR/*; do
+                    if [[ "$i" == "$SGX_SRC_DIR/commit" ]]; then
+                      continue;
+                    fi
+                    echo $(basename $i) $(cat $i) >> $SGX_PARAMS.tmp;
+                  done
+                  mv $SGX_PARAMS.tmp $SGX_PARAMS.prom;
+                fi
+                sleep 5;
+              done
+      volumes:
+      - name: tmp-mount
+        hostPath:
+          path: "/var/tmp/"
+      - name: sys-mount
+        hostPath:
+          path: "/sys/"
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
