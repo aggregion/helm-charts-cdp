@@ -5,7 +5,8 @@
 replicaCount: 1
 
 image:
-  repository: nginx
+  # repository: nginx
+  repository: wbitt/network-multitool
   pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart appVersion.
   tag: "latest"
