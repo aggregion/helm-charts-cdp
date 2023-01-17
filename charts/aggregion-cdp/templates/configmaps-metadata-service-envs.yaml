@@ -12,7 +12,7 @@ data:
   NODE_ENV: {{ .Values.metadataService.config.nodeEnv | quote }}
   NODE_TLS_REJECT_UNAUTHORIZED: {{ .Values.metadataService.config.nodeTlsRejectUnauthorized | quote }}
   {{- if not .Values.metadataService.configs.nodeTlsRejectUnauthorized }}
-  {{ $envPrefix }}NODE_TLS_REJECT_UNAUTHORIZED: "0"
+  NODE_TLS_REJECT_UNAUTHORIZED: "0"
   {{- end }}
   LOG_LEVEL: {{ .Values.metadataService.config.logLevel | quote }}
   POSTGRES_HOST: {{ .Values.metadataService.config.postgres.host | quote }}
