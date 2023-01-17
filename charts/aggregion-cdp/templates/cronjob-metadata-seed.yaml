@@ -56,7 +56,7 @@ spec:
                 - name: DMP_BACKEND_BASE_URL
                   value: "{{ .Values.metadataSeed.config.dmpBackendBaseUrl }}"
                 - name: NODE_TLS_REJECT_UNAUTHORIZED
-                  value: "0"
+                  value: "{{ .Values.metadataSeed.config.nodeTlsRejectUnauthorized }}"
           restartPolicy: Never
           {{- with .Values.imagePullSecrets }}
           imagePullSecrets:
