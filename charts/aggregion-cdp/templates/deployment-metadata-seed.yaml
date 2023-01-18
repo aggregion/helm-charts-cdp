@@ -83,11 +83,10 @@ spec:
               value: {{ .Values.metadataSeed.probes.common.readinessPath | quote }}
             - name: HEALTHCHECK_SHUTDOWN_TIMEOUT_MS
               value: {{ .Values.metadataSeed.probes.common.healthcheckShutdownTimeoutMs | quote }}
+            {{- if not .Values.metadataSeed.config.nodeTlsRejectUnauthorized }}
             - name: NODE_TLS_REJECT_UNAUTHORIZED
-              value: {{ .Values.metadataSeed.config.nodeTlsRejectUnauthorized  | quote }}
-              {{- if not .Values.enclave.configs.nodeTlsRejectUnauthorized }}
-              {{ $envPrefix }}NODE_TLS_REJECT_UNAUTHORIZED: "0"
-              {{- end }}
+              value: "0"
+            {{- end }}
           resources:
             {{- toYaml .Values.backend.resources.metadataSeedApi | nindent 12 }}
           {{- if .Values.metadataSeed.probes.metadataSeed.livenessEnabled }}
