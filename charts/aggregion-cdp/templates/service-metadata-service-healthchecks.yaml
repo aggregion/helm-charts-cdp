@@ -1,0 +1,28 @@
+{{- if .Values.metadataService.enabled }}
+{{- $serviceName := include "cdp.metadataService.fullname" . }}
+
+{{- if .Values.livenessProbe.enabled .Values.metadataService.probes.livenessEnabled }}
+{{- $component := "metadata-svc" }}
+apiVersion: v1
+kind: Service
+metadata:
+  name: "hc-{{ $serviceName | lower }}"
+  annotations:
+    prometheus.io/healthcheck: "true"
+    prometheus.io/probe: "true"
+  labels:
+    operated-prometheus: "true"
+spec:
+  ports:
+    - protocol: TCP
+      name: {{ $component | quote }}
+      port: {{ .Values.livenessProbe.healthcheckPort }}
+      targetPort: {{ .Values.livenessProbe.healthcheckPort }}
+  selector:
+    app.kubernetes.io/component: "{{ $component }}"
+    app.kubernetes.io/name: "{{ $serviceName }}"
+  type: ClusterIP
+---
+{{- end -}}
+
+{{- end }}

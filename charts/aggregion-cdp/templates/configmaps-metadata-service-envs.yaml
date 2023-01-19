@@ -34,4 +34,8 @@ data:
   DATASET_QUEUE_NAME: {{ .Values.metadataService.config.amqp.queues.dataset | quote }}
   INSTANCE_QUEUE_NAME: {{ .Values.metadataService.config.amqp.queues.instance | quote }}
   TERM_QUEUE_NAME: {{ .Values.metadataService.config.amqp.queues.term | quote }}
+  {{- if .Values.metrics.enabled }}
+  METRICS_ENABLED: {{ .Values.metadataService.config.metrics.enabled | quote }}
+  METRICS_PATH: {{ .Values.metrics.path | quote }}
+  {{- end }}
 {{- end }}

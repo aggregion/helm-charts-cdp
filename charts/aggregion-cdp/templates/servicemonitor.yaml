@@ -139,6 +139,11 @@ spec:
       port: "oidc-provider"
       path: {{ .Values.metrics.path }}
     {{- end }}
+    {{- if and .Values.metadataService.enabled .Values.metadataService.config.metrics.enabled }}
+    - interval: 30s
+      port: "metadata-svc"
+      path: {{ .Values.metrics.path | quote }}
+    {{- end }}
   namespaceSelector:
     matchNames:
       - {{ .Values.backend.configs.datalabDmpNamespace }}
