@@ -144,6 +144,11 @@ spec:
       port: "metadata-svc"
       path: {{ .Values.metrics.path | quote }}
     {{- end }}
+    {{- if and .Values.dbMetadataSync.enabled .Values.dbMetadataSync.config.metrics.enabled }}
+    - interval: 30s
+      port: "metadata-sync"
+      path: {{ .Values.metrics.path | quote }}
+    {{- end }}
   namespaceSelector:
     matchNames:
       - {{ .Values.backend.configs.datalabDmpNamespace }}
