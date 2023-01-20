@@ -41,4 +41,7 @@ data:
   HEALTHCHECK_SHUTDOWN_TIMEOUT_MS: {{ .Values.dataservice.probes.common.healthcheckShutdownTimeoutMs | quote }}
   METRICS_ENABLED: {{ and .Values.dataservice.configAtlasSyncer.enabled .Values.metrics.enabled | quote }}
   METRICS_PATH: {{ .Values.metrics.path }}
+  {{- if not .Values.dataservice.config.atlasEntitySyncer.nodeTlsRejectUnauthorized }}
+  NODE_TLS_REJECT_UNAUTHORIZED: "0"
+  {{- end }}
 {{- end}}

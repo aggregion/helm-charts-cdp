@@ -991,6 +991,8 @@ dataservice:
     metadataServiceToken: "metadata-service-token-as-db-metadata-sync"
     credentialsDecryptKey: "rsa-public-key"
     datasetLogsAvailableDays: 120
+    atlasEntitySyncer:
+      nodeTlsRejectUnauthorized: true
   glossaryContainers:
     glossarySyncer:
       enabled: true
