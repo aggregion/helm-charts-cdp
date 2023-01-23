@@ -25,7 +25,7 @@ data:
   {{- if and .Values.dbMetadataSync.probes.livenessEnabled .Values.livenessProbe.livenessPath }}
   HEALTHCHECK_LIVENESS_PATH: {{ .Values.livenessProbe.livenessPath | quote }}
   {{- end }}
-  {{- if .Values.dbMetadataSync.probes.readinessEnabled .Values.readinessProbe.readinessPath }}
+  {{- if and .Values.dbMetadataSync.probes.readinessEnabled .Values.readinessProbe.readinessPath }}
   HEALTHCHECK_READINESS_PATH: {{ .Values.readinessProbe.readinessPath | quote }}
   {{- end }}
 {{- end }}
