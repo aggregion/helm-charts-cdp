@@ -16,8 +16,8 @@ spec:
   ports:
     - protocol: TCP
       name: {{ $component | quote }}
-      port: {{ .Values.livenessProbe.healthcheckPort }}
-      targetPort: {{ .Values.livenessProbe.healthcheckPort }}
+      port: {{ .Values.metadataService.service.containerPort }}
+      targetPort: {{ .Values.metadataService.service.containerPort }}
   selector:
     app.kubernetes.io/component: "{{ $component }}"
     app.kubernetes.io/name: "{{ $serviceName }}"

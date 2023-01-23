@@ -22,4 +22,10 @@ data:
   METRICS_ENABLED: {{ .Values.dbMetadataSync.config.metrics.enabled | quote }}
   METRICS_PATH: {{ .Values.metrics.path | quote }}
   {{- end }}
+  {{- if and .Values.dbMetadataSync.probes.livenessEnabled .Values.livenessProbe.livenessPath }}
+  HEALTHCHECK_LIVENESS_PATH: {{ .Values.livenessProbe.livenessPath | quote }}
+  {{- end }}
+  {{- if .Values.dbMetadataSync.probes.readinessEnabled .Values.readinessProbe.readinessPath }}
+  HEALTHCHECK_READINESS_PATH: {{ .Values.readinessProbe.readinessPath | quote }}
+  {{- end }}
 {{- end }}
