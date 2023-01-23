@@ -26,6 +26,6 @@ data:
   HEALTHCHECK_LIVENESS_PATH: "{{ .Values.livenessProbe.livenessPath }}"
   {{- end }}
   {{- if and .Values.dbMetadataSync.probes.readinessEnabled .Values.readinessProbe.readinessPath }}
-  HEALTHCHECK_READINESS_PATH: "{{ .Values.livenessProbe.livenessPath }}"
+  HEALTHCHECK_READINESS_PATH: "{{ .Values.readinessProbe.readinessPath }}"
   {{- end }}
 {{- end }}
