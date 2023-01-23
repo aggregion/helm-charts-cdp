@@ -1,7 +1,7 @@
 {{- if .Values.dbMetadataSync.enabled }}
 {{- $serviceName := include "cdp.dbMetadataSync.fullname" . }}
 
-{{- if .Values.livenessProbe.enabled .Values.dbMetadataSync.probes.livenessEnabled }}
+{{- if and .Values.livenessProbe.enabled .Values.dbMetadataSync.probes.livenessEnabled }}
 {{- $component := "metadata-sync" }}
 apiVersion: v1
 kind: Service

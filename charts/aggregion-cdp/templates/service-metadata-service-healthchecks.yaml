@@ -1,7 +1,7 @@
 {{- if .Values.metadataService.enabled }}
 {{- $serviceName := include "cdp.metadataService.fullname" . }}
 
-{{- if .Values.livenessProbe.enabled .Values.metadataService.probes.livenessEnabled }}
+{{- if and .Values.livenessProbe.enabled .Values.metadataService.probes.livenessEnabled }}
 {{- $component := "metadata-svc" }}
 apiVersion: v1
 kind: Service
