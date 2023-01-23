@@ -23,9 +23,9 @@ data:
   METRICS_PATH: {{ .Values.metrics.path | quote }}
   {{- end }}
   {{- if and .Values.dbMetadataSync.probes.livenessEnabled .Values.livenessProbe.livenessPath }}
-  HEALTHCHECK_LIVENESS_PATH: "/api{{ .Values.livenessProbe.livenessPath }}"
+  HEALTHCHECK_LIVENESS_PATH: "{{ .Values.dbMetadataSync.probes.livenessPath }}"
   {{- end }}
   {{- if and .Values.dbMetadataSync.probes.readinessEnabled .Values.readinessProbe.readinessPath }}
-  HEALTHCHECK_READINESS_PATH: "/api{{ .Values.livenessProbe.livenessPath }}"
+  HEALTHCHECK_READINESS_PATH: "{{ .Values.dbMetadataSync.probes.readinessPath }}"
   {{- end }}
 {{- end }}

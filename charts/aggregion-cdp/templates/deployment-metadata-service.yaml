@@ -55,7 +55,7 @@ spec:
           {{- if .Values.metadataService.probes.livenessEnabled }}
           livenessProbe:
             httpGet:
-              path: {{ .Values.livenessProbe.livenessPath }}
+              path: {{ .Values.metadataService.probes.livenessPath }}
               port: {{ .Values.metadataService.service.containerPort }}
             initialDelaySeconds: {{ .Values.livenessProbe.initialDelaySeconds }}
             periodSeconds: {{ .Values.livenessProbe.periodSeconds }}
@@ -66,7 +66,7 @@ spec:
           {{- if .Values.metadataService.probes.readinessEnabled }}
           readinessProbe:
             httpGet:
-              path: {{ .Values.readinessProbe.readinessPath }}
+              path: {{ .Values.metadataService.probes.readinessPath }}
               port: {{ .Values.metadataService.service.containerPort }}
             initialDelaySeconds: {{ .Values.readinessProbe.initialDelaySeconds }}
             periodSeconds: {{ .Values.readinessProbe.periodSeconds }}
