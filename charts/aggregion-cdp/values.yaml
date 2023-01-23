@@ -1340,8 +1340,6 @@ metadataService:
   probes:
     livenessEnabled: false
     readinessEnabled: false
-    livenessPath: /api/healthcheck/liveness
-    readinessPath: /api/healthcheck/readiness
   cronjob:
     schedule: "*/5 * * * *"
   config:
@@ -1383,8 +1381,6 @@ dbMetadataSync:
   probes:
     livenessEnabled: false
     readinessEnabled: false
-    livenessPath: /api/healthcheck/liveness
-    readinessPath: /api/healthcheck/readiness
   cronjob:
     schedule: "0 * * * *"
   config:

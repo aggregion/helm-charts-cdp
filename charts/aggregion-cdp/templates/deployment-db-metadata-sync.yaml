@@ -67,7 +67,7 @@ spec:
           {{- if .Values.dbMetadataSync.probes.livenessEnabled }}
           livenessProbe:
             httpGet:
-              path: {{ .Values.dbMetadataSync.probes.livenessPath }}
+              path: /api{{ .Values.livenessProbe.livenessPath }}
               port: {{ .Values.dbMetadataSync.service.containerPort }}
             initialDelaySeconds: {{ .Values.livenessProbe.initialDelaySeconds }}
             periodSeconds: {{ .Values.livenessProbe.periodSeconds }}
@@ -78,7 +78,7 @@ spec:
           {{- if .Values.dbMetadataSync.probes.readinessEnabled }}
           readinessProbe:
             httpGet:
-              path: {{ .Values.dbMetadataSync.probes.readinessPath }}
+              path: /api{{ .Values.readinessProbe.readinessPath }}
               port: {{ .Values.dbMetadataSync.service.containerPort }}
             initialDelaySeconds: {{ .Values.readinessProbe.initialDelaySeconds }}
             periodSeconds: {{ .Values.readinessProbe.periodSeconds }}
