@@ -41,7 +41,7 @@ data:
   {{- if and .Values.metadataService.probes.livenessEnabled .Values.livenessProbe.livenessPath }}
   HEALTHCHECK_LIVENESS_PATH: {{ .Values.livenessProbe.livenessPath | quote }}
   {{- end }}
-  {{- if .Values.metadataService.probes.readinessEnabled .Values.readinessProbe.readinessPath }}
+  {{- if and .Values.metadataService.probes.readinessEnabled .Values.readinessProbe.readinessPath }}
   HEALTHCHECK_READINESS_PATH: {{ .Values.readinessProbe.readinessPath | quote }}
   {{- end }}
 {{- end }}
