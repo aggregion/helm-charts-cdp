@@ -24,7 +24,7 @@ data:
     [dcap]
     subscription_key = "aecd5ebb682346028d60c36131eb2d92"
 
-  {{- if .Values.cas.intelTustedServicesViaAggregionProxy }}
+  {{- if .Values.cas.intelTrustedServicesViaAggregionProxy }}
   aggregion.crt: |
     -----BEGIN CERTIFICATE-----
     MIIFqDCCA5ACCQDerg+JtM0emzANBgkqhkiG9w0BAQsFADCBlTELMAkGA1UEBhMC
