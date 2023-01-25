@@ -38,7 +38,7 @@ spec:
           command:
             - /bin/sh
             - -c
-            {{- if .Values.cas.denisHack }}
+            {{- if .Values.cas.viaAggregionProxy }}
             - update-ca-certificates && echo "212.41.26.55 api.trustedservices.intel.com" >> /etc/hosts && dumb-init /las_entrypoint.sh /usr/local/bin/las
             {{- else }}
             - dumb-init /las_entrypoint.sh /usr/local/bin/las
@@ -47,7 +47,7 @@ spec:
             - mountPath: /etc/sgx_default_qcnl.conf
               name: cas-conf
               subPath: sgx_default_qcnl.conf
-            {{- if .Values.cas.denisHack }}
+            {{- if .Values.cas.viaAggregionProxy }}
             - mountPath: /usr/local/share/ca-certificates/aggregion.crt
               name: cas-conf
               subPath: aggregion.crt
@@ -68,7 +68,7 @@ spec:
           command:
             - /bin/sh
             - -c
-            {{- if .Values.cas.denisHack }}
+            {{- if .Values.cas.viaAggregionProxy }}
             - update-ca-certificates && echo "212.41.26.55 api.trustedservices.intel.com" >> /etc/hosts && cas -c /etc/cas/cas.toml
             {{- else }}
             - cas -c /etc/cas/cas.toml
@@ -106,7 +106,7 @@ spec:
             - mountPath: /etc/cas/cas-default-owner-config.toml
               name: cas-conf
               subPath: cas-default-owner-config.toml
-            {{- if .Values.cas.denisHack }}
+            {{- if .Values.cas.viaAggregionProxy }}
             - mountPath: /usr/local/share/ca-certificates/aggregion.crt
               name: cas-conf
               subPath: aggregion.crt
