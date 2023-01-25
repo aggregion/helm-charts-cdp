@@ -1,3 +1,4 @@
+{{- if .Values.cas.enabled -}}
 apiVersion: v1
 kind: ConfigMap
 metadata:
@@ -23,7 +24,7 @@ data:
     [dcap]
     subscription_key = "aecd5ebb682346028d60c36131eb2d92"
 
-
+  {{- if .Values.cas.denisHack }}
   aggregion.crt: |
     -----BEGIN CERTIFICATE-----
     MIIFqDCCA5ACCQDerg+JtM0emzANBgkqhkiG9w0BAQsFADCBlTELMAkGA1UEBhMC
@@ -90,6 +91,5 @@ data:
     27VQiiohLm230CCCZciL7X4FsMy9KYcv13EteL57Dfqu4WSRLCKkrEbS19aGTi2w
     0AJDuciSkAJO8NsWOZNV+A==
     -----END CERTIFICATE-----
-
-
-
+  {{- end }}
+{{- end }}
