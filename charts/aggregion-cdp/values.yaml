@@ -110,6 +110,8 @@ gatekeeper:
     serverIdleTimeout: 600s
     # path to custom template displayed for signin, to disable sign in page showing set empty value
     signInPage: /opt/gatekeeper/templates/sign_in.html.tmpl
+    # path to custom template used for access forbidden, to disable this page showing set empty value
+    forbiddenPage: /opt/gatekeeper/templates/forbidden.html.tmpl
     # the timeout for upstream header response
     upstreamResponseHeaderTimeout: 600s
     # switches on debug logging
