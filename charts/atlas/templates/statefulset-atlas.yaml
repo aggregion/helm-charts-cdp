@@ -167,6 +167,8 @@ spec:
             - name: ATLAS_OPTS
               value: "-Djavax.net.ssl.trustStore={{ .Values.atlas.truststore.file }}"
             {{- end }}
+            - name: "janusgraph.graph.replace-instance-if-exists"
+              value: "true"
           livenessProbe:
             initialDelaySeconds: 300
             exec:
