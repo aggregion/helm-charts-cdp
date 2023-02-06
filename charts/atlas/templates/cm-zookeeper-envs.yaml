@@ -1,0 +1,30 @@
+{{- if .Values.zookeeper.enabled }}
+{{- $zookeeperName := include "exts.zookeeper.fullname" . }}
+{{- $replicaCount := .Values.zookeeper.replicas | int -}}
+{{ $servers := "" }}
+{{ range $i, $e := until $replicaCount }}
+  {{ $server := print
+    "server."
+    ($i | add1 )
+    "=" $zookeeperName
+    "-" $i "."
+    $zookeeperName
+    ":" $.Values.zookeeper.serverListenPort
+    ":" $.Values.zookeeper.leaderElectionListenPort
+    ";" $.Values.zookeeper.clientListenPort
+  }}
+  {{ if $servers }}
+    {{ $servers = ( print $servers " " $server ) }}
+  {{ else }}
+    {{ $servers = ( print $server ) }}
+  {{ end }}
+{{ end }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ $zookeeperName }}-envs
+  labels:
+    {{- include "exts.zookeeper.labels" . | nindent 4 }}
+data:
+  ZOO_SERVERS: {{ $servers }}
+{{- end }}
