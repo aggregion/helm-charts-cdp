@@ -89,7 +89,7 @@ cassandra:
   image:
     repository: "cassandra"
     pullPolicy: IfNotPresent
-    tag: "3.11.11"
+    tag: "3.11.14"
   service:
     type: ClusterIP
     port: 9160
@@ -196,9 +196,9 @@ zookeeper:
     type: RollingUpdate
   podManagementPolicy: OrderedReady
   image:
-    repository: "aggregion/kubernetes-zookeeper"
+    repository: "zookeeper"
     pullPolicy: IfNotPresent
-    tag: "1.0-3.4.10"
+    tag: "3.8.0-temurin"
   service:
     type: ClusterIP
     serverPort: 2888
