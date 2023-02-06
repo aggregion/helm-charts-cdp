@@ -47,7 +47,7 @@ mongo:
   image:
     repository: "mongo"
     pullPolicy: IfNotPresent
-    tag: "4.4.5"
+    tag: "4.4.18"
   service:
     type: ClusterIP
     port: 27017
@@ -113,7 +113,7 @@ rabbit:
   image:
     repository: "rabbitmq"
     pullPolicy: IfNotPresent
-    tag: "3.8.14-management-alpine"
+    tag: "3.11.7-management-alpine"
   service:
     type: ClusterIP
     port: 5672
@@ -144,7 +144,7 @@ redis:
   image:
     repository: "redis"
     pullPolicy: IfNotPresent
-    tag: "6.2.1-alpine3.13"
+    tag: "6.2.10-alpine"
   service:
     type: ClusterIP
     port: 6379
