@@ -54,7 +54,7 @@ common:
   curl:
     repository: curlimages/curl
     pullPolicy: IfNotPresent
-    tag: latest
+    tag: "7.87.0"
 
 gatekeeper:
   # must be always `true` for production, it can be `false` only for dev purposes
@@ -218,7 +218,7 @@ backend:
     listenPort: 8080
     image:
       repository: nginx
-      tag: 1.19-alpine
+      tag: 1.23.3-alpine
       pullPolicy: IfNotPresent
     resources:
       requests:
@@ -914,7 +914,7 @@ dataservice:
   imageJobRunner:
     repository: curlimages/curl
     pullPolicy: IfNotPresent
-    tag: latest
+    tag: "7.87.0"
   tolerations: []
   affinity: {}
   probes:
