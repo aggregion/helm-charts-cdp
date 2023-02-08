@@ -74,6 +74,10 @@ spec:
                 - "zookeeper-ready {{ .Values.zookeeper.clientListenPort }}"
             initialDelaySeconds: 10
             timeoutSeconds: 5
+          lifecycle:
+            postStart:
+              exec:
+                command: ["/bin/sh", "-c", "export ZOO_MY_ID=${HOSTNAME##*-}"]
           envFrom:
             - configMapRef:
                 name: "{{ $zookeeperName }}-envs"
