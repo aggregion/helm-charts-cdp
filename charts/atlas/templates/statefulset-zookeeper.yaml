@@ -61,13 +61,15 @@ spec:
           command:
             - sh
             - "-c"
-            - "export ZOO_MY_ID=$((${HOSTNAME##*-} + 1)) && /docker-entrypoint.sh zkServer.sh start-foreground"
+            - >-
+              export ZOO_MY_ID=$((${HOSTNAME##*-} + 1))
+              /docker-entrypoint.sh zkServer.sh start-foreground
           readinessProbe:
             exec:
               command:
                 - sh
                 - -c
-                - "nc 127.0.0.1 {{ .Values.zookeeper.clientListenPort }}"
+                - "nc -z 127.0.0.1 {{ .Values.zookeeper.clientListenPort }}"
                 # - "zookeeper-ready {{ .Values.zookeeper.clientListenPort }}"
             initialDelaySeconds: 10
             timeoutSeconds: 5
@@ -79,7 +81,7 @@ spec:
               command:
                 - sh
                 - -c
-                - "nc 127.0.0.1 {{ .Values.zookeeper.clientListenPort }}"
+                - "nc -z 127.0.0.1 {{ .Values.zookeeper.clientListenPort }}"
                 # - "zookeeper-ready {{ .Values.zookeeper.clientListenPort }}"
             initialDelaySeconds: 10
             timeoutSeconds: 5
