@@ -26,5 +26,13 @@ metadata:
   labels:
     {{- include "exts.zookeeper.labels" . | nindent 4 }}
 data:
-  ZOO_SERVERS: {{ $servers }}
+  ZOO_SERVERS: {{ $servers | quote }}
+  ZOO_TICK_TIME: "2000"
+  ZOO_INIT_LIMIT: "10"
+  ZOO_SYNC_LIMIT: "5"
+  ZOO_AUTOPURGE_PURGEINTERVAL: "12"
+  ZOO_AUTOPURGE_SNAPRETAINCOUNT: "3"
+  ZOO_MAX_CLIENT_CNXNS: "60"
+  ZOO_STANDALONE_ENABLED: "true"
+  ZOO_ADMINSERVER_ENABLED: "true"
 {{- end }}
