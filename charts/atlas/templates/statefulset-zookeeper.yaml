@@ -67,7 +67,8 @@ spec:
               command:
                 - sh
                 - -c
-                - "zookeeper-ready {{ .Values.zookeeper.clientListenPort }}"
+                - "nc 127.0.0.1 {{ .Values.zookeeper.clientListenPort }}"
+                # - "zookeeper-ready {{ .Values.zookeeper.clientListenPort }}"
             initialDelaySeconds: 10
             timeoutSeconds: 5
             periodSeconds: 10
@@ -78,7 +79,8 @@ spec:
               command:
                 - sh
                 - -c
-                - "zookeeper-ready {{ .Values.zookeeper.clientListenPort }}"
+                - "nc 127.0.0.1 {{ .Values.zookeeper.clientListenPort }}"
+                # - "zookeeper-ready {{ .Values.zookeeper.clientListenPort }}"
             initialDelaySeconds: 10
             timeoutSeconds: 5
             periodSeconds: 10
