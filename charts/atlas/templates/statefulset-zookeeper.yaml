@@ -77,7 +77,7 @@ spec:
           lifecycle:
             postStart:
               exec:
-                command: ["/bin/sh", "-c", "export ZOO_MY_ID=${HOSTNAME##*-}"]
+                command: ["export ZOO_MY_ID=${HOSTNAME##*-}"]
           envFrom:
             - configMapRef:
                 name: "{{ $zookeeperName }}-envs"
