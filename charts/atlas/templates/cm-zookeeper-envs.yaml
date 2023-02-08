@@ -35,4 +35,5 @@ data:
   ZOO_MAX_CLIENT_CNXNS: "60"
   ZOO_STANDALONE_ENABLED: "true"
   ZOO_ADMINSERVER_ENABLED: "true"
+  ZOO_CFG_EXTRA: "quorumListenOnAllIPs=true"
 {{- end }}
