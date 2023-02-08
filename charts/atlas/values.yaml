@@ -196,10 +196,10 @@ zookeeper:
     type: RollingUpdate
   podManagementPolicy: OrderedReady
   image:
-    repository: "zookeeper"
-    tag: "3.8.0-temurin"
-    # repository: "aggregion/kubernetes-zookeeper"
-    # tag: "1.0-3.4.10"
+    # repository: "zookeeper"
+    # tag: "3.8.0-temurin"
+    repository: "aggregion/kubernetes-zookeeper"
+    tag: "1.0-3.4.10"
     pullPolicy: IfNotPresent
   service:
     type: ClusterIP
