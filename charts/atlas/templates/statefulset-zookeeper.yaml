@@ -58,6 +58,9 @@ spec:
           # --max_session_timeout=40000 \
           # --min_session_timeout=4000 \
           # --log_level=INFO"
+          command: |-
+            export ZOO_MY_ID=${HOSTNAME##*-}
+            /docker-entrypoint.sh zkServer.sh start-foreground
           readinessProbe:
             exec:
               command:
@@ -74,10 +77,6 @@ spec:
                 - "zookeeper-ready {{ .Values.zookeeper.clientListenPort }}"
             initialDelaySeconds: 10
             timeoutSeconds: 5
-          lifecycle:
-            postStart:
-              exec:
-                command: ["export ZOO_MY_ID=${HOSTNAME##*-}"]
           envFrom:
             - configMapRef:
                 name: "{{ $zookeeperName }}-envs"
