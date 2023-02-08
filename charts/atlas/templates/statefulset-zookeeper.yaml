@@ -61,8 +61,7 @@ spec:
           command:
             - sh
             - "-c"
-            - export ZOO_MY_ID=$((${HOSTNAME##*-} + 1))
-            - /docker-entrypoint.sh zkServer.sh start-foreground
+            - "export ZOO_MY_ID=$((${HOSTNAME##*-} + 1)) && /docker-entrypoint.sh zkServer.sh start-foreground"
           readinessProbe:
             exec:
               command:
