@@ -62,22 +62,22 @@ spec:
             - sh
             - "-c"
             - "export ZOO_MY_ID=$((${HOSTNAME##*-} + 1)) && /docker-entrypoint.sh zkServer.sh start-foreground"
-          readinessProbe:
-            exec:
-              command:
-                - sh
-                - -c
-                - "zookeeper-ready {{ .Values.zookeeper.clientListenPort }}"
-            initialDelaySeconds: 10
-            timeoutSeconds: 5
-          livenessProbe:
-            exec:
-              command:
-                - sh
-                - -c
-                - "zookeeper-ready {{ .Values.zookeeper.clientListenPort }}"
-            initialDelaySeconds: 10
-            timeoutSeconds: 5
+          # readinessProbe:
+          #   exec:
+          #     command:
+          #       - sh
+          #       - -c
+          #       - "zookeeper-ready {{ .Values.zookeeper.clientListenPort }}"
+          #   initialDelaySeconds: 10
+          #   timeoutSeconds: 5
+          # livenessProbe:
+          #   exec:
+          #     command:
+          #       - sh
+          #       - -c
+          #       - "zookeeper-ready {{ .Values.zookeeper.clientListenPort }}"
+          #   initialDelaySeconds: 10
+          #   timeoutSeconds: 5
           envFrom:
             - configMapRef:
                 name: "{{ $zookeeperName }}-envs"
