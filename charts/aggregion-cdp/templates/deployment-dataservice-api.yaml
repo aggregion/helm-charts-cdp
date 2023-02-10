@@ -63,9 +63,6 @@ spec:
             {{- toYaml .Values.dataservice.securityContext | nindent 12 }}
           image: "{{ .Values.dataservice.imageApi.repository }}:{{ .Values.dataservice.imageApi.tag }}"
           imagePullPolicy: {{ .Values.dataservice.imageApi.pullPolicy }}
-          ports:
-            - name: httpapi
-              containerPort: {{ .Values.dataservice.config.port }}
           args:
             - npm
             - run
