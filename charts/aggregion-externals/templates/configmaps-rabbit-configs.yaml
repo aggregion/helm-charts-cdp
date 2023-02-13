@@ -1,0 +1,11 @@
+{{- if and .Values.rabbit.enabled .Values.rabbit.initScripts.enabled }}
+{{- $rabbitName := include "exts.rabbit.fullname" . }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: "{{ $rabbitName }}-configs"
+  labels:
+    {{- include "exts.rabbit.labels" . | nindent 4 }}
+data:
+  20-custom.conf: |
+    consumer_timeout = 864000000

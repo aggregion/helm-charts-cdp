@@ -73,6 +73,9 @@ spec:
             - name: data
               mountPath: /var/lib/rabbitmq
               subPath: rabbit-data
+            - name: configs
+              mountPath: /etc/rabbitmq/conf.d/20-custom.conf
+              subPath: 20-custom.conf
           resources:
             {{- toYaml .Values.rabbit.resources | nindent 12 }}
       restartPolicy: {{ .Values.rabbit.restartPolicy }}
@@ -80,6 +83,9 @@ spec:
         - name: data
           persistentVolumeClaim:
             claimName: "{{ $rabbitName }}-claim"
+        - name: configs
+          configMap:
+            name: "{{ $rabbitName }}-configs"
       {{- with .Values.rabbit.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
