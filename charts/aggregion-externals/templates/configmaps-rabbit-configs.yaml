@@ -1,4 +1,4 @@
-{{- if and .Values.rabbit.enabled .Values.rabbit.initScripts.enabled }}
+{{- if .Values.rabbit.enabled }}
 {{- $rabbitName := include "exts.rabbit.fullname" . }}
 apiVersion: v1
 kind: ConfigMap
