@@ -22,7 +22,7 @@ data:
   PORT: {{ .Values.metadataService.service.containerPort | quote }}
   PROVIDER_INSTANCE_ID: {{ .Values.backend.configs.providerInstanceId | quote }}
   SEED_EXCEL_DATA_SLEEP_BETWEEN_SEEDS: "2000"
-  DMP_BACKEND_BASE_URL: "{{ $backendServiceName }}:{{.Values.backend.service.api.port}}"
+  DMP_BACKEND_BASE_URL: "http://{{ $backendServiceName }}:{{.Values.backend.service.api.port}}"
   REPORT_FILE_PATH: /tmp/report.xlsx
   JWT_SECRET: {{ .Values.metadataService.config.jwtSecret | quote }}
   AMQP_URL: {{ .Values.metadataService.config.amqp.url | quote }}
