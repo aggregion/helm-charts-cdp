@@ -15,6 +15,10 @@ providerLinks:
     # this config url is used for accessing to another enclaves
   - name: demo
     url: http://demo
+metadataParams:
+  credentials:
+    encryptionKey: "it should be key as string with 32b size..."
+    iv: "it should be initialize vector as string with 16b size..."
 
 nameOverride: ""
 
@@ -1390,12 +1394,6 @@ dbMetadataSync:
     nodeEnv: development
     logLevel: trace
     metadataServiceToken: token
-    encryptionKey: |
-      -----BEGIN PRIVATE KEY-----
-      MIGEAgEAMBAGByqGSM49AgEGBSuBBAAKBG0wawIBAQQgAkIy7noMPV1IY09CPEa9
-      fU6aTvCK1+O1L8toHOyFEyihRANCAATMacBoCdh0UHeoPdPQ6CPjOO4bqw8Y/OZC
-      mVLgsXfn4qwdAKMLaMkKVsxs/ZaIN3pPmIz+FMeuShp8imoWcoGM
-      -----END PRIVATE KEY-----
     instances:
       - name: instance
         rdbmsType: clickhouse

@@ -64,6 +64,8 @@ spec:
           envFrom:
             - configMapRef:
                 name: {{ $dbMetadataSyncName | lower }}-envs
+            - secretRef:
+                name: "{{ $dbMetadataSyncName | lower }}-secrets"
           {{- if .Values.dbMetadataSync.probes.livenessEnabled }}
           livenessProbe:
             httpGet:
