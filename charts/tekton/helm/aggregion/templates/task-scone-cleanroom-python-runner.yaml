@@ -51,6 +51,7 @@ spec:
     - name: python-runner
       image: "{{ .Values.sconeCleanroom.pythonRunner.image }}:{{ .Values.sconeCleanroom.pythonRunner.imageTag }}"
       imagePullPolicy: "{{ .Values.sconeCleanroom.pythonRunner.imagePullPolicy }}"
+      timeout: "{{ .Values.sconeCleanroom.pythonRunner.timeout }}"
       securityContext:
         privileged: true
       volumeMounts:

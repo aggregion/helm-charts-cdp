@@ -60,6 +60,7 @@ sconeCleanroom:
     imagePullPolicy: IfNotPresent
     debug: false
     sconeHeap: 2G
+    timeout: 24h
     resources:
       requests:
         memory: 3Gi
@@ -71,6 +72,7 @@ sconeCleanroom:
     imagePullPolicy: IfNotPresent
     debug: false
     sconeHeap: 16G
+    timeout: 24h
     resources:
       requests:
         memory: 20Gi
@@ -82,6 +84,7 @@ sconeCleanroom:
     imagePullPolicy: IfNotPresent
     debug: false
     sconeHeap: 2G
+    timeout: 24h
     resources:
       requests:
         memory: 3Gi
@@ -96,6 +99,7 @@ sconeCleanroom:
     imagePullPolicy: IfNotPresent
     debug: false
     sconeHeap: 2G
+    timeout: 24h
     resources:
       requests:
         memory: 3Gi

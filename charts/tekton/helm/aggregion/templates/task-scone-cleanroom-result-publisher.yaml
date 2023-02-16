@@ -51,6 +51,7 @@ spec:
     - name: result-publisher
       image: "{{ .Values.sconeCleanroom.resultPublisher.image }}:{{ .Values.sconeCleanroom.resultPublisher.imageTag }}"
       imagePullPolicy: "{{ .Values.sconeCleanroom.resultPublisher.imagePullPolicy }}"
+      timeout: "{{ .Values.sconeCleanroom.resultPublisher.timeout }}"
       securityContext:
         privileged: true
       volumeMounts:

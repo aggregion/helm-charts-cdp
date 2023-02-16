@@ -37,6 +37,7 @@ spec:
     - name: dataset-downloader
       image: "{{ .Values.sconeCleanroom.datasetDownloader.image }}:{{ .Values.sconeCleanroom.datasetDownloader.imageTag }}"
       imagePullPolicy: "{{ .Values.sconeCleanroom.datasetDownloader.imagePullPolicy }}"
+      timeout: "{{ .Values.sconeCleanroom.datasetDownloader.timeout }}"
       securityContext:
         privileged: true
       volumeMounts:

@@ -34,6 +34,7 @@ spec:
     - name: script-downloader
       image: "{{ .Values.sconeCleanroom.scriptDownloader.image }}:{{ .Values.sconeCleanroom.scriptDownloader.imageTag }}"
       imagePullPolicy: "{{ .Values.sconeCleanroom.scriptDownloader.imagePullPolicy }}"
+      timeout: "{{ .Values.sconeCleanroom.scriptDownloader.timeout }}"
       securityContext:
         privileged: true
       volumeMounts:
