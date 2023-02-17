@@ -9,4 +9,5 @@ data:
   {{- if .Values.sconeCleanroom.datasetDownloader.debug }}
   SCONE_LOG: "7"
   {{- end }}
+  SLEEP_AFTER_LOAD: "{{ .Values.sconeCleanroom.datasetDownloader.config.sleepAfterDownload }}"
 {{- end -}}
