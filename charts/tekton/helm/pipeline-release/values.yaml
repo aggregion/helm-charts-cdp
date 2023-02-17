@@ -23,6 +23,10 @@ cloudevent:
   # webhook URL for CloudEvents from tekton (watcher)
   webhookUrl: http://webhook
 
+common:
+  config:
+    defaultTimeoutMinutes: 14400 # 10 days
+
 namespace:
   create: false
 
