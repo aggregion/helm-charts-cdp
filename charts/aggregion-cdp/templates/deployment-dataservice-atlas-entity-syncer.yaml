@@ -1,4 +1,4 @@
-{{- if and (.Values.dataservice.enabled) (.Values.dataservice.configAtlasSyncer.enabled) }}
+{{- if and (.Values.dataservice.enabled) (.Values.dataservice.configAtlasSyncer.enabled) (not .Values.metadataService.enabled) }}
 {{- $dataServiceName := include "cdp.dataservice.fullname" . }}
 apiVersion: apps/v1
 kind: Deployment
