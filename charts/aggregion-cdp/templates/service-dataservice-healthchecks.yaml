@@ -140,11 +140,13 @@ metadata:
 spec:
   ports:
     {{- range $index, $val := .Values.dataservice.glossaryContainers }}
+    {{- if $val.enabled }}
     {{- with $.Values.dataservice }}
     - protocol: TCP
       name: {{ $val.healthcheckPortName }}
       port: {{ $val.healthcheckPort }}
       targetPort: {{ $val.healthcheckPort }}
+    {{- end -}}
     {{- end -}}
     {{- end }}
   selector:
