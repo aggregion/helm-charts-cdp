@@ -13,7 +13,6 @@ spec:
     metadata:
       creationTimestamp: null
     spec:
-      backoffLimit: {{ .Values.pruner.backoffLimit }}
       template:
         metadata:
           creationTimestamp: null
@@ -33,7 +32,7 @@ spec:
                   $resources; done;
               args:
                 - '-s'
-                - ' default;--keep=3;taskrun,pipelinerun infra;--keep=3;taskrun,pipelinerun pipelines;--keep=3;taskrun,pipelinerun tekton-operator;--keep=3;taskrun,pipelinerun tekton-pipelines;--keep=3;taskrun,pipelinerun'
+                - ' default;--keep={{ .Values.pruner.backoffLimit }};taskrun,pipelinerun infra;--keep={{ .Values.pruner.backoffLimit }};taskrun,pipelinerun pipelines;--keep={{ .Values.pruner.backoffLimit }};taskrun,pipelinerun tekton-operator;--keep=3;taskrun,pipelinerun tekton-pipelines;--keep={{ .Values.pruner.backoffLimit }};taskrun,pipelinerun'
               resources: {}
               terminationMessagePath: /dev/termination-log
               terminationMessagePolicy: FallbackToLogsOnError
