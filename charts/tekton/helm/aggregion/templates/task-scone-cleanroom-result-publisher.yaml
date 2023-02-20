@@ -89,6 +89,9 @@ spec:
           value: "{{ .Values.sconeCleanroom.dataserviceToken }}"
         - name: "DATASERVICE_URL"
           value: "{{ .Values.sconeCleanroom.dataserviceUrl }}"
+        # For SCONE
+        - name: "SESSION_NAME_FILE_PATH"
+          value: "$(params.shared-vol-path)/result_publisher_session_name"
       envFrom:
         - configMapRef:
             name: "scone-cleanroom-common-config-{{ $name }}"

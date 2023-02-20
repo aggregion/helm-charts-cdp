@@ -65,6 +65,9 @@ spec:
           value: "$(params.shared-vol-path)/$(params.out-log-file-path)"
         - name: "MAIN_PROCESS_EXIT_CODE_PATH"
           value: "$(params.shared-vol-path)/$(params.out-exitcode-file-path)"
+        # For SCONE
+        - name: "SESSION_NAME_FILE_PATH"
+          value: "$(params.shared-vol-path)/dataset_downloader_session_name"
       envFrom:
         - configMapRef:
             name: "scone-cleanroom-common-config-{{ $name }}"
