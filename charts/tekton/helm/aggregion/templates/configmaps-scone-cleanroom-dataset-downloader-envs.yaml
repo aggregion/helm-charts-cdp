@@ -6,8 +6,6 @@ metadata:
   name: "scone-cleanroom-dataset-downloader-config-{{ $name }}"
 data:
   SCONE_HEAP: "{{ .Values.sconeCleanroom.datasetDownloader.sconeHeap }}"
-  {{- if .Values.sconeCleanroom.datasetDownloader.debug }}
-  SCONE_LOG: "7"
-  {{- end }}
+  SCONE_LOG: "{{ .Values.sconeCleanroom.datasetDownloader.logLevel }}"
   SLEEP_AFTER_LOAD: "{{ .Values.sconeCleanroom.datasetDownloader.config.sleepAfterDownload }}"
 {{- end -}}

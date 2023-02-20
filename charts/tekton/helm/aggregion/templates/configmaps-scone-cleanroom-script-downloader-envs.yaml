@@ -6,7 +6,5 @@ metadata:
   name: "scone-cleanroom-script-downloader-config-{{ $name }}"
 data:
   SCONE_HEAP: "{{ .Values.sconeCleanroom.scriptDownloader.sconeHeap }}"
-  {{- if .Values.sconeCleanroom.scriptDownloader.debug }}
-  SCONE_LOG: "7"
-  {{- end }}
+  SCONE_LOG: "{{ .Values.sconeCleanroom.scriptDownloader.logLevel }}"
 {{- end -}}
