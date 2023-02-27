@@ -25,13 +25,13 @@ spec:
     - name: result-filename
       description: "Filename of result file"
       default: {{ .Values.sconeCleanroom.commonParams.resultFilename | quote }}
-    # # For scripts
-    # - name: scripts-dir
-    #   description: "Dirname of scripts"
-    #   default: "/cache/scripts"
-    # - name: entrypoint
-    #   description: "Executable file for running in python runner"
-    #   default: main.py
+    # For scripts
+    - name: scripts-dir
+      description: "Dirname of scripts"
+      default: "/cache/scripts"
+    - name: entrypoint
+      description: "Executable file for running in python runner"
+      default: main.py
     # Logs publishing
     - name: log-publish-path
       description: "Path of DCP for log publishing"
