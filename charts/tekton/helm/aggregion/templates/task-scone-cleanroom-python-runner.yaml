@@ -28,7 +28,7 @@ spec:
     # For results
     - name: result-dir
       description: "Dirname for results"
-      default: {{ .Values.sconeCleanroom.commonParams.scriptsDir | quote }}
+      default: {{ .Values.sconeCleanroom.commonParams.resultDir | quote }}
     - name: result-filename
       description: "Filename of result file"
       default: {{ .Values.sconeCleanroom.commonParams.resultFilename | quote }}
