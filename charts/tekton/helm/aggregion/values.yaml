@@ -54,6 +54,12 @@ sconeCleanroom:
   dataserviceUrl: http://dataservice
   dataserviceToken: sometoken
   nodeTlsRejectUnauthorized: true
+  commonParams:
+    datasetDir: data
+    datasetFilename: dataset.tsv
+    scriptsDir: scripts
+    resultDir: result
+    resultFilename: result.tsv
   datasetDownloader:
     image: registry.aggregion.com/cleanroom/dataset-downloader-production
     imageTag: 0.5.5

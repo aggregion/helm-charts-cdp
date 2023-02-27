@@ -14,10 +14,10 @@ spec:
     # For dataset
     - name: dataset-dir
       description: "Dirname of dataset"
-      default: "data"
+      default: {{ .Values.sconeCleanroom.commonParams.datasetDir | quote }}
     - name: dataset-filename
       description: "Filename of dataset"
-      default: "dataset.tsv"
+      default: {{ .Values.sconeCleanroom.commonParams.datasetFilename | quote }}
     # Logs publishing
     - name: log-publish-path
       description: "Path of DCP for log publishing"

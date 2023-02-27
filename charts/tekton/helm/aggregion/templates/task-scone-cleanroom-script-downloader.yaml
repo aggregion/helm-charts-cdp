@@ -14,7 +14,7 @@ spec:
     # For scripts
     - name: scripts-dir
       description: "Dirname of scripts"
-      default: "scripts"
+      default: {{ .Values.sconeCleanroom.commonParams.scriptsDir | quote }}
     # Logs publishing
     - name: log-publish-path
       description: "Path of DCP for log publishing"

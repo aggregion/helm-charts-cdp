@@ -14,24 +14,24 @@ spec:
     # For dataset
     - name: dataset-dir
       description: "Dirname of dataset"
-      default: "data"
+      default: {{ .Values.sconeCleanroom.commonParams.datasetDir | quote }}
     - name: dataset-filename
       description: "Filename of dataset"
-      default: "dataset.tsv"
+      default: {{ .Values.sconeCleanroom.commonParams.datasetFilename | quote }}
     # For scripts
     - name: scripts-dir
       description: "Dirname of scripts"
-      default: "scripts"
+      default: {{ .Values.sconeCleanroom.commonParams.scriptsDir | quote }}
     - name: entrypoint
       description: "Executable file for running in python runner"
       default: main.py
     # For results
     - name: result-dir
       description: "Dirname for results"
-      default: "result"
+      default: {{ .Values.sconeCleanroom.commonParams.scriptsDir | quote }}
     - name: result-filename
       description: "Filename of result file"
-      default: "result.tsv"
+      default: {{ .Values.sconeCleanroom.commonParams.resultFilename | quote }}
     # Logs publishing
     - name: log-publish-path
       description: "Path of DCP for log publishing"
