@@ -993,7 +993,7 @@ dataservice:
     clickhouseIsMocked: false # since 2021-12-13
     eosHealthcheckTimeoutMs: 1000
     eosHealthcheckIntervalMs: 10000
-    metadataServiceEndpoint: "http://aggregion-cdp-dataservice-mds/healthcheck"
+    # metadataServiceEndpoint: "http://aggregion-cdp-dataservice-mds/healthcheck" # DEPRECATED
     metadataServiceToken: "metadata-service-token-as-db-metadata-sync"
     credentialsDecryptKey: "rsa-public-key"
     datasetLogsAvailableDays: 120
