@@ -1,4 +1,4 @@
-{{- if and .Values.dbMetadataSync.enabled }}
+{{- if and .Values.dbMetadataSync.enabled .Values.dbMetadataSync.cronjob.enabled }}
 {{- $serviceName := include "cdp.dbMetadataSync.fullname" . }}
 {{- if semverCompare ">=1.21-0" .Capabilities.KubeVersion.GitVersion -}}
 apiVersion: batch/v1

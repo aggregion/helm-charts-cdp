@@ -1347,6 +1347,7 @@ metadataService:
     livenessEnabled: false
     readinessEnabled: false
   cronjob:
+    enabled: false
     schedule: "*/5 * * * *"
   config:
     appName: metadata-service-api
@@ -1388,6 +1389,7 @@ dbMetadataSync:
     livenessEnabled: false
     readinessEnabled: false
   cronjob:
+    enabled: false
     schedule: "0 * * * *"
   config:
     appName: db-metadata-sync
