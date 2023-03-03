@@ -32,10 +32,10 @@ echo "SECRET: $SECRET"
 echo "PAYLOAD: $PAYLOAD"
 
 # Convert secret to hex (not base64)
-hexsecret=$(echo -n "$SECRET" | xxd -p)
+hexsecret="$(echo -n "$SECRET" | xxd -p | tr -d '\n')"
 
 # Calculate hmac signature -- note option to pass in the key as hex bytes
-hmac_signature=$(echo -n "${jwt_header}.${payload}" |  openssl dgst -sha256 -mac HMAC -macopt hexkey:$hexsecret -binary | base64  | sed s/\+/-/g | sed 's/\//_/g' | sed -E s/=+$//)
+hmac_signature=$(echo -n "${jwt_header}.${payload}" | openssl dgst -sha256 -mac HMAC -macopt hexkey:${hexsecret} -binary | base64 | sed s/\+/-/g | sed 's/\//_/g' | sed -E s/=+$//)
 
 # Create the full token
 jwt="${jwt_header}.${payload}.${hmac_signature}"
