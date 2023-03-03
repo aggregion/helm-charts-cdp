@@ -7,8 +7,8 @@ NOW=$(date +%s)
 
 echo '----------------'
 
-# MetadataService
-echo "MetadataService"
+# MetadataService for DBMetadataSyncer
+echo "MetadataService for DBMetadataSyncer"
 METADATA_SERVICE_SECRET="$(cat $VALUES_PATH | yq '.metadataService.config.jwtSecret' -r)"
 METADATA_SERVICE_ISSUER=${METADATA_SERVICE_ISSUER:-aggregion}
 METADATA_SERVICE_PAYLOAD=$(cat << EOF
@@ -18,8 +18,23 @@ iat: $NOW
 iss: $METADATA_SERVICE_ISSUER
 EOF
 )
-METADATA_SERVICE_PAYLOAD_JSON=$(echo "$METADATA_SERVICE_PAYLOAD" | yq -c | base64)
-bash ./token-generator.sh -s "$METADATA_SERVICE_SECRET" -p "$METADATA_SERVICE_PAYLOAD_JSON"
+bash ./token-generator.sh -s "$METADATA_SERVICE_SECRET" -p "$(echo "$METADATA_SERVICE_PAYLOAD" | yq -c | base64)"
+
+echo '----------------'
+echo ''
+
+# MetadataService for BackendAPI
+echo "MetadataService for BackendAPI"
+METADATA_SERVICE_SECRET="$(cat $VALUES_PATH | yq '.metadataService.config.jwtSecret' -r)"
+METADATA_SERVICE_ISSUER=${METADATA_SERVICE_ISSUER:-aggregion}
+METADATA_SERVICE_PAYLOAD=$(cat << EOF
+type: ""
+service: backend-api
+iat: $NOW
+iss: $METADATA_SERVICE_ISSUER
+EOF
+)
+bash ./token-generator.sh -s "$METADATA_SERVICE_SECRET" -p "$(echo "$METADATA_SERVICE_PAYLOAD" | yq -c | base64)"
 
 echo '----------------'
 echo ''
