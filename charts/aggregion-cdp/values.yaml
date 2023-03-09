@@ -973,7 +973,7 @@ dataservice:
     # accessToken: dataservice-api$ node src/cli token gen -i ${backend.configs.providerName}
     accessToken: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0eXBlIjoiRGF0YSBBY2Nlc3MgVG9rZW4gZm9yIHRoZSBhdXRob3JpemF0aW9uIGluIHRoZSBsb2NhbCBwcm92aWRlciBlbnZpcm9ubWVudCIsImlhdCI6MTYzMjY2MDY1OCwiaXNzIjoic3RhZ2VfcHJvdmlkZXIifQ.DLh9HQHXXTZuGSRrXf9uk6QBiikOHztcZ2aNC7x6wKg" # < fake
     appName: dataservice-api
-    logLevel: trace
+    logLevel: info
     logPrettyPrint: false
     nodeEnv: development
     port: 9045 # internal
@@ -1054,7 +1054,7 @@ metadataSeed:
       readinessEnabled: false
   config:
     port: 8100
-    logLevel: trace
+    logLevel: info
     logPrettyPrint: false
     dmpBackendBaseUrl: "http://dmpbackend"
     nodeTlsRejectUnauthorized: true
@@ -1106,7 +1106,7 @@ authservice:
     # internal app name
     appName: authservice-api
     # log level
-    logLevel: trace
+    logLevel: info
     # set `true` to enable human-readable logging format
     logPrettyPrint: false
     # NODE_ENV env variable value
@@ -1210,7 +1210,7 @@ oidcprovider:
       # enable RP-Initiated Logout features (https://openid.net/specs/openid-connect-rpinitiated-1_0-final.html)
       rpInitiatedLogout: true
     # log level
-    logLevel: trace
+    logLevel: info
     # set `true` to enable human-readable logging format
     logPrettyPrint: false
     # uri to which the user should be redirected after successful registration
@@ -1309,7 +1309,7 @@ emailservice:
     # RabbitMQ queue name to consume email tasks
     queueName: emails
     # log level
-    logLevel: trace
+    logLevel: info
     # set `true` to enable human-readable logging format
     logPrettyPrint: false
 
@@ -1351,7 +1351,7 @@ metadataService:
     schedule: "*/5 * * * *"
   config:
     appName: metadata-service-api
-    logLevel: trace
+    logLevel: info
     nodeEnv: development
     dmpBackendBaseUrl: "http://dmpbackend"
     jwtSecret: secret
@@ -1394,7 +1394,7 @@ dbMetadataSync:
   config:
     appName: db-metadata-sync
     nodeEnv: development
-    logLevel: trace
+    logLevel: info
     metadataServiceToken: token
     instances:
       - name: instance
