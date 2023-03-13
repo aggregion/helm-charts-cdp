@@ -470,7 +470,8 @@ data:
     }
 
     .kc-custom-lang-switcher a.active-lang {
-      color: rgb(55 165 153)
+      color: rgb(55 165 153);
+      font-weight: 600;
     }
 
     .lang-divider {
@@ -613,10 +614,15 @@ data:
       $("#root").removeClass('visible_ru visible_en');
       $("#root").addClass(`visible_${lang}`);
     }
+
+    $(document).ready(() => {
+      const userLanguage = (navigator.language || 'en').split('-')[0];
+      setLang(userLanguage === 'ru' ? 'ru' : 'en');
+    })
     </script>
       </head>
       <body>
-        <div id="root" class="visible_ru">
+        <div id="root">
           <div class="login-pf-page">
             <div id="kc-header" class="login-pf-page-header">
               <div id="kc-header-wrapper" class=""></div>
@@ -663,5 +669,4 @@ data:
         </div>
       </body>
     </html>
-
 {{- end }}
