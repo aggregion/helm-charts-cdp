@@ -98,6 +98,8 @@ sconeCleanroom:
         memory: 3Gi
       limits:
         memory: 3Gi
+    config:
+      nodeOptions: "" # --max-old-space-size=8192
     envs: []
       # - name: CLICKHOUSE_CLUSTER_NAME
       #   value: "replicated"

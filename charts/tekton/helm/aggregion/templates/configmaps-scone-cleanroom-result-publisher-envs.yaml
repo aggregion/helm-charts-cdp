@@ -10,4 +10,7 @@ data:
   {{- range .Values.sconeCleanroom.resultPublisher.envs }}
   {{ .name }}: {{ .value | quote }}
   {{- end }}
+  {{- if .Values.sconeCleanroom.resultPublisher.config.nodeOptions }}
+  NODE_OPTIONS: "{{ .Values.sconeCleanroom.resultPublisher.config.nodeOptions }}"
+  {{- end }}
 {{- end -}}
