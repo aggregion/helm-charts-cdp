@@ -105,38 +105,568 @@ data:
   forbidden.html.tmpl: |
     <!DOCTYPE html>
     <html>
-    <head>
-      <meta charset="UTF-8">
-      <title>403 - Access Forbidden</title>
-      <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
-      <script src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
-      <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
-      <style>
-        .oops {
-          font-size: 9em;
-          letter-spacing: 2px;
-        }
-        .message {
-          font-size: 3em;
-        }
-      </style>
-    </head>
-    <body>
-      <div class="container text-center">
-        <div class="row vcenter" style="margin-top: 20%;">
-          <div class="col-md-12">
-            <div class="error-template">
-              <h1 class="oops">Oops!</h1>
-              <h2 class="message">403 Permission Denied</h2>
-              <div class="error-details">
-                Sorry, you do not have access to this page, please contact your administrator
+      <head>
+        <meta charset="UTF-8" />
+        <title>403 - Access Forbidden</title>
+        <script src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
+        <style>*,
+    ::before,
+    ::after {
+      box-sizing: border-box;
+      border-width: 0;
+      border-style: solid;
+      border-color: #e5e7eb;
+    }
+
+    html {
+      line-height: 1.5;
+      -webkit-text-size-adjust: 100%;
+      tab-size: 4;
+      font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+    }
+
+    body {
+      margin: 0;
+      line-height: inherit;
+    }
+
+    hr {
+      height: 0;
+      color: inherit;
+      border-top-width: 1px;
+    }
+
+    abbr:where([title]) {
+      -webkit-text-decoration: underline dotted;
+              text-decoration: underline dotted;
+    }
+
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
+      font-size: inherit;
+      font-weight: inherit;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: inherit;
+    }
+
+    b, strong {
+      font-weight: bolder;
+    }
+
+    code,
+    kbd,
+    samp,
+    pre {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace; /* 1 */
+      font-size: 1em; /* 2 */
+    }
+
+    small {
+      font-size: 80%;
+    }
+
+    sub,
+    sup {
+      font-size: 75%;
+      line-height: 0;
+      position: relative;
+      vertical-align: baseline;
+    }
+
+    sub {
+      bottom: -0.25em;
+    }
+
+    sup {
+      top: -0.5em;
+    }
+
+    table {
+      text-indent: 0;
+      border-color: inherit;
+      border-collapse: collapse;
+    }
+
+    button,
+    input,
+    optgroup,
+    select,
+    textarea {
+      font-family: inherit; /* 1 */
+      font-size: 100%; /* 1 */
+      font-weight: inherit; /* 1 */
+      line-height: inherit; /* 1 */
+      color: inherit; /* 1 */
+      margin: 0; /* 2 */
+      padding: 0; /* 3 */
+    }
+
+    button, select {
+      text-transform: none;
+    }
+
+    button,
+    [type='button'],
+    [type='reset'],
+    [type='submit'] {
+      -webkit-appearance: button;
+      background-color: transparent;
+      background-image: none;
+    }
+
+    :-moz-focusring {
+      outline: auto;
+    }
+
+    :-moz-ui-invalid {
+      box-shadow: none;
+    }
+
+    progress {
+      vertical-align: baseline;
+    }
+
+    ::-webkit-inner-spin-button,
+    ::-webkit-outer-spin-button {
+      height: auto;
+    }
+
+    [type='search'] {
+      -webkit-appearance: textfield;
+      outline-offset: -2px;
+    }
+
+    ::-webkit-search-decoration {
+      -webkit-appearance: none;
+    }
+
+    ::-webkit-file-upload-button {
+      -webkit-appearance: button;
+      font: inherit;
+    }
+
+    summary {
+      display: list-item;
+    }
+
+    blockquote,
+    dl,
+    dd,
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6,
+    hr,
+    figure,
+    p,
+    pre {
+      margin: 0;
+    }
+
+    fieldset {
+      margin: 0;
+      padding: 0;
+    }
+
+    legend {
+      padding: 0;
+    }
+
+    ol,
+    ul,
+    menu {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+    }
+
+    textarea {
+      resize: vertical;
+    }
+
+    input::placeholder,
+    textarea::placeholder {
+      opacity: 1;
+      color: #9ca3af;
+    }
+
+    button, [role="button"] {
+      cursor: pointer;
+    }
+
+    :disabled {
+      cursor: default;
+    }
+
+    img,
+    svg,
+    video,
+    canvas,
+    audio,
+    iframe,
+    embed,
+    object {
+      display: block;
+      vertical-align: middle;
+    }
+
+    img,
+    video {
+      max-width: 100%;
+      height: auto;
+    }
+
+    [hidden] {
+      display: none;
+    }
+    </style>
+        <style>html {
+      height: 100%;
+      min-height: 100vh;
+      background-color: rgb(249 250 251)
+    }
+
+    body {
+      margin: 0;
+      height: 100%;
+      font-family: ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans",sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji"
+    }
+
+    h1 {
+      color: #171725;
+    }
+
+    #root {
+      display: flex;
+      min-height: 100%;
+      flex-direction: column;
+      justify-content: center;
+      background-repeat: no-repeat;
+      padding-top: 0;
+      padding-bottom: 0
+    }
+
+    @media (min-width:640px) {
+      #root {
+        padding-left: 24px;
+        padding-right: 24px
+      }
+    }
+
+    @media (min-width:1024px) {
+      #root {
+        padding-left: 32px;
+        padding-right: 32px;
+      }
+    }
+
+    #root {
+      background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAABaAAAAI0CAYAAADr8I4TAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAABd5SURBVHgB7d2LdRvHGYbhAU8KYCoQXAHjCmJVkKiCWBXEriBWB3YFkTuQKwhSQegKwlQQdsDMmkC8pgAQl/32+jzn/JxZYNnAyznD1VNVAAAAAACgYzcFAAAAAAACBGgAAAAAACIEaAAAAAAAIgRoAAAAAAAiBGgAAAAAACIEaAAAAAAAIgRoAAAAAAAiBGgAAAAAACIEaAAAAAAAIgRoAAAAAAAiBGgAAAAAACIEaAAAAAAAIgRoAAAAAAAiBGgAAAAAACIEaAAAAAAAIgRoAAAAAAAiBGgAAAAAACIEaAAAAAAAIgRoAAAAAAAiBGgAAAAAACIEaAAAAAAAIgRoAAAAAAAiBGgAAAAAACIEaAAAAAAAIgRoAAAAAAAiBGgAAAAAACIEaAAAAAAAIgRoAAAAAAAiBGgAAAAAACIEaAAAAAAAIgRoAAAAAAAiBGgAAAAAACIEaAAAAAAAIgRoAAAAAAAiBGgAAAAAACIEaAAAAAAAIgRoAAAAAAAiBGgAAAAAACIEaAAAAAAAIgRoAAAAAAAiBGgAAAAAACIEaAAAAAAAIgRoAAAAAAAiBGgAAAAAACIEaAAAAAAAIgRoAAAAAAAiBGgAAAAAACIEaAAAAAAAIgRoAAAAAAAiBGgAAAAAACIEaAAAAAAAIgRoAAAAAAAiBGgAAAAAACIEaAAAAAAAIgRoAAAAAAAiBGgAAAAAACIEaAAAAAAAIgRoAAAAAAAiBGgAAAAAACIEaAAAAAAAIgRoAAAAAAAiBGgAAAAAACIEaAAAAAAAIgRoAAAAAAAiBGgAAAAAACIEaAAAAAAAIgRoAAAAAAAiBGgAAAAAACIEaAAAAAAAIgRoAAAAAAAiBGgAAAAAACIEaAAAAAAAIgRoAAAAAAAiBGgAAAAAACIEaAAAAAAAIgRoAAAAAAAiBGgAAAAAACIEaAAAAAAAIgRoAAAAAAAiBGgAAAAAACIEaAAAAAAAIgRoAAAAAAAiBGgAAAAAACIEaAAAAAAAIgRoAAAAAAAiBGgAAAAAACIEaAAAAAAAIgRoAAAAAAAiBGgAAAAAACIEaAAAAAAAIgRoAAAAAAAiBGgAAAAAACIEaAAAAAAAIgRoAAAAAAAiBGgAAAAAACIEaAAAAAAAIgRoAAAAAAAiBGgAAAAAACIEaAAAAAAAIgRoAAAAAAAiBGgAAAAAACIEaAAAAAAAIgRoAAAAAAAiBGgAAAAAACIEaAAAAAAAIgRoAAAAAAAiBGgAAAAAACIEaAAAAAAAIgRoAAAAAAAiBGgAAAAAACIEaAAAAAAAIgRoAAAAAAAiBGgAAAAAACIEaAAAAAAAIgRoAAAAAAAiBGgAAAAAACIEaAAAAAAAIgRoAAAAAAAiBGgAAAAAACIEaAAAAAAAIgRoAAAAAAAiBGgAAAAAACIEaAAAAAAAIgRoAAAAAAAiBGgAAAAAACIEaAAAAAAAIgRoAAAAAAAiBGgAAAAAACIEaAAAAAAAIgRoAAAAAAAiBGgAAAAAACIEaAAAAAAAIgRoAAAAAAAiBGgAAAAAACIEaAAAAAAAIgRoAAAAAAAiBGgAAAAAACIEaAAAAAAAIgRoAAAAAAAiBGgAAAAAACIEaAAAAAAAIgRoAAAAAAAiBGgAAAAAACIEaAAAAAAAIgRoAAAAAAAiBGgAAAAAACIEaAAAAAAAIgRoAAAAAAAiBGgAAAAAACIEaAAAAAAAIgRoAAAAAAAiBGgAAAAAACIEaAAAAAAAIgRoAAAAAAAiBGgAAAAAACIEaAAAAAAAIgRoAAAAAAAiBGgAAAAAACIEaAAAAAAAIgRoAAAAAAAiBGgAAAAAACIEaAAAAAAAIgRoAAAAAAAiBGgAAAAAACIEaAAAAAAAIgRoAAAAAAAiBGgAAAAAACIEaAAAAAAAIgRoAAAAAAAiBGgAAAAAACIEaAAAAAAAIgRoAAAAAAAiBGgAAAAAACIEaAAAAAAAIgRoAAAAAAAiBGgAAAAAACIEaAAAAAAAIgRoAAAAAAAiBGgAAAAAACIEaAAAAAAAIgRoAAAAAAAiBGgAAAAAACIEaAAAAAAAIgRoAAAAAAAiBGgAAAAAACIEaAAAAAAAIgRoAAAAAAAiBGgAAAAAACIEaAAAAAAAIgRoAAAAAAAiBGgAAAAAACIEaAAAAAAAIgRoAAAAAAAiBGgAAAAAACIEaAAAAAAAIgRoAAAAAAAiBGgAAAAAACIEaAAAAAAAIgRoAAAAAAAiBGgAAAAAACIEaAAAAAAAIgRoAAAAAAAiBGgAAAAAACIEaAAAAAAAIgRoAAAAAAAiBGgAAAAAACIEaAAAAAAAIgRoAAAAAAAiBGgAAAAAACIEaAAAAAAAIgRoAAAAAAAiBGgAAAAAACIEaAAAAAAAIgRoAAAAAAAiBGgAAAAAACIEaAAAAAAAIgRoAAAAAAAiBGgAAAAAACIEaAAAAAAAIgRoAAAAAAAiBGgAAAAAACIEaAAAAAAAIgRoAAAAAAAiBGgAAAAAACIEaAAAAAAAIgRoAAAAAAAiBGgAAAAAACIEaAAAAAAAIgRoAAAAAAAiBGgAAAAAACIEaAAAAAAAIgRoAAAAAAAiBGgAAAAAACIEaAAAAAAAIgRoAAAAAAAiBGgAAAAAACIEaAAAAAAAIgRoAAAAAAAiBGgAAAAAACIEaAAAAAAAIgRoAAAAAAAiBGgAAAAAACIEaAAAAAAAIgRoAAAAAAAiBGgAAAAAACIEaAAAAAAAIgRoAAAAAAAiBGgAAAAAACIEaAAAAAAAIgRoAAAAAAAiBGgAAAAAACIEaAAAAAAAIgRoAAAAAAAiBGgAAAAAACIEaAAAAAAAIgRoAAAAAAAiBGgAAAAAACIEaAAAAAAAIgRoAAAAAAAiBGgAAAAAACIEaAAAAAAAIgRoAAAAAAAiBGgAAAAAACIEaAAAAAAAIgRoAAAAAAAiBGgAAAAAACIEaAAAAAAAIgRoAAAAAAAiBGgAAAAAACIEaAAAAAAAIgRoAAAAAAAiBGgAAAAAACIEaAAAAAAAIgRoAAAAAAAiBGgAAAAAACIEaAAAAAAAIgRoAAAAAAAiBGgAAAAAACIEaAAAAAAAIgRoAAAAAAAiBGgAAAAAACIEaAAAAAAAIgRoAAAAAAAiBGgAAAAAACIEaAAAAAAAIgRoAAAAAAAiBGgAAAAAACIEaAAAAAAAIgRoAAAAAAAiBGgAAAAAACIEaAAAAAAAIgRoAAAAAAAiBGgAAAAAACIEaAAAAAAAIgRoAAAAAAAiBGgAAAAAACIEaAAAAAAAIgRoAAAAAAAiBGgAAAAAACIEaAAAAAAAIgRoAAAAAAAiBGgAAAAAACIEaAAAAAAAIgRoAAAAAAAiBGgAAAAAACIEaAAAAAAAIgRoAAAAAAAiBGgAAAAAACIEaAAAAAAAIgRoAAAAAAAiBGgAAAAAACIEaAAAAAAAIgRoAAAAAAAiBGgAAAAAACIEaAAAAAAAIgRoAAAAAAAi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)
+    }
+
+    .my-font {
+      font-family: 'Work Sans'
+    }
+
+    .login-pf-page {
+      margin-top: 0
+    }
+
+    @media (min-width: 640px) {
+      .login-pf-page {
+        margin-left: auto;
+        margin-right: auto;
+        width: 100%;
+        max-width: 400px;
+      }
+
+      .login-pf-page-header {
+        margin-left: auto;
+        margin-right: auto;
+        width: 100%;
+        max-width: 400px;
+      }
+    }
+
+    .login-pf-page-header span {
+      text-align: center;
+      font-size: 28px;
+      line-height: 36px;
+      font-weight: 800;
+      color: #171725;
+    }
+
+    .login-pf-page-header span:only-child {
+      margin-top: 24px;
+    }
+
+    .login-pf-header {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+    }
+
+    .card-pf {
+      margin-left: auto;
+      margin-right: auto;
+      margin-top: 32px;
+      width: 100%;
+      max-width: 368px;
+      border-radius: 8px;
+      background-color: rgb(255 255 255);
+      padding: 24px;
+      box-shadow: 0 4px 12px rgba(0,0,0,.1)
+    }
+
+    #kc-page-title {
+      margin: 0;
+      display: flex;
+
+      font-size: 18px;
+      line-height: 28px;
+      font-weight: 600;
+      color: #171725;
+    }
+
+    #kc-locale-wrapper {
+      margin-left: auto;
+      display: flex;
+      width: 100%;
+      flex-direction: row;
+      align-items: center;
+      justify-content: flex-end;
+      padding-left: 16px;
+    }
+
+    @media (min-width:640px) {
+      #kc-locale-wrapper {
+        padding-left: 24px
+      }
+    }
+
+    .kc-custom-lang-switcher {
+      display: flex;
+      width: 64px;
+      flex-direction: row;
+      align-items: center;
+      justify-content: space-between
+    }
+
+    .kc-custom-lang-switcher a {
+      font-size: 12px;
+      line-height: 16px;
+      font-weight: 400;
+      text-decoration-line: none;
+      color: rgb(158 158 158)
+    }
+
+    .kc-custom-lang-switcher a.active-lang {
+      color: rgb(55 165 153);
+      font-weight: 600;
+    }
+
+    .lang-divider {
+      height: 16px;
+      width: 1px;
+      background-color: rgb(229 231 235);
+    }
+
+    @media (min-width:640px) {
+      .lang-divider {
+        display: block
+      }
+    }
+
+    .kc-support-link {
+      font-size: 14px;
+      line-height: 20px;
+      font-weight: 400;
+      color: rgb(206 206 206);
+    }
+
+    .kc-support-link a {
+      text-decoration-line: underline;
+      color: rgb(206 206 206);
+    }
+
+    #kc-social-providers {
+      margin-top: 24px;
+      margin-bottom: 24px;
+    }
+
+    .login-pf-social-link a {
+      box-sizing: border-box;
+      display: flex;
+      height: 40px;
+      width: 320px;
+      flex: none;
+      flex-grow: 1;
+      flex-direction: row;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    .login-pf-social-link a > :not([hidden]) ~ :not([hidden]) {
+      margin-right: 4px;
+      margin-left: 4px;
+    }
+
+    .login-pf-social-link a {
+      border-radius: 4px;
+      border-width: 1px;
+      border-color: rgb(55 165 153);
+      padding-top: 8px;
+      padding-bottom: 8px;
+      padding-left: 12px;
+      padding-right: 12px;
+    }
+
+    .alert {
+      margin-top: 8px;
+    }
+
+    .alert-success {
+      color: rgb(22 163 74);
+    }
+
+    .alert-warn {
+      color: rgb(202 138 4);
+    }
+
+    .alert-info {
+      color: rgb(37 99 235);
+    }
+
+    .alert-error {
+      color: rgb(220 38 38);
+    }
+
+    .text_ru, .text_en {
+      display: none;
+    }
+
+    .visible_ru p.text_ru,
+    .visible_ru span.text_ru {
+      display: inline;
+    }
+
+    .visible_ru div.text_ru {
+      display: block;
+    }
+
+    .visible_en p.text_en,
+    .visible_en span.text_en {
+      display: inline;
+    }
+
+    .visible_en div.text_en {
+      display: block;
+    }
+
+    .divider {
+      border-top: 1px solid #F1F1F5;
+      margin: 24px 0;
+    }
+
+    .w-full {
+      width: 100%;
+    }
+
+    .button {
+      background-color: #37A599;
+      border-radius: 4px;
+      font-size: 14px;
+      padding: 10px 24px;
+      color: white;
+      text-align: center;
+      display: block;
+      cursor: pointer;
+    }
+
+    .write-to-customer-support {
+      margin-top: 24px;
+      font-size: 13px;
+      color: #7E7E83;
+    }
+
+    .write-to-customer-support a {
+      text-decoration: underline;
+    }
+    </style>
+        <style>.text_container {
+      margin-top: 16px;
+      margin-bottom: 16px;
+    }
+    </style>
+        <script>function setLang(lang) {
+      $('.kc-custom-lang-switcher [data-lang]').removeClass('active-lang');
+      $(`.kc-custom-lang-switcher [data-lang="${lang}"]`).addClass('active-lang');
+      $("#root").removeClass('visible_ru visible_en');
+      $("#root").addClass(`visible_${lang}`);
+    }
+
+    $(document).ready(() => {
+      const userLanguage = (navigator.language || 'en').split('-')[0];
+      setLang(userLanguage === 'ru' ? 'ru' : 'en');
+    })
+    </script>
+      </head>
+      <body>
+        <div id="root">
+          <div class="login-pf-page">
+            <div id="kc-header" class="login-pf-page-header">
+              <div id="kc-header-wrapper" class=""></div>
+            </div>
+            <div class="card-pf">
+              <header class="login-pf-header">
+                <h1 id="kc-page-title">
+                  <span class="text_ru">Доступ запрещен</span>
+                  <span class="text_en">Access is denied</span>
+                </h1>
+                <div class="kc-custom-lang-switcher">
+                  <a href="#" class="" data-lang="ru" onclick="setLang('ru')">RU</a>
+                  <span class="lang-divider"></span>
+                  <a href="#" class="active-lang" data-lang="en" onclick="setLang('en')">EN</a>
+                </div>
+              </header>
+              <div id="kc-content">
+                <div id="kc-content-wrapper">
+                  <div id="kc-info-message">
+                    <div class="text_container">
+                      <p class="instruction text_ru">Закройте все открытые вкладки с системой. Далее перейдите на страницу авторизации, чтобы продолжить работу в системе.</p>
+                      <p class="instruction text_en">Close all open tabs with the system. Next, go to the authorization page to continue working in the system.</p>
+                    </div>
+                    <div class="divider"></div>
+
+                    <a class="button w-full" href="/">
+                      <span class="text_ru">Перейти на главную</span>
+                      <span class="text_en">Go to main page</span>
+                    </a>
+
+                    <div class="write-to-customer-support">
+                      <span class="text_ru">Написать в</span>
+                      <span class="text_en">Contact</span>
+                      <a class="" href="mailto:support@aggregion.com">
+                        <span class="text_ru">службу поддержки</span>
+                        <span class="text_en">support team</span>
+                      </a>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
         </div>
-    </div>
-
-    </body>
+      </body>
     </html>
-
 {{- end }}
