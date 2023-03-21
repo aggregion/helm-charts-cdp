@@ -1148,7 +1148,7 @@ oidcprovider:
     # oidcprovider image repository
     repository: registry.aggregion.com/oidc-provider
     # oidcprovider image pull policy
-    pullPolicy: Always
+    pullPolicy: IfNotPresent
     # oidcprovider image tag
     tag: dcp-master-4c911744-86
   # tolerations for pod assignment
@@ -1282,7 +1282,7 @@ emailservice:
     # emailservice image repository
     repository: registry.aggregion.com/email-service
     # emailservice image pull policy
-    pullPolicy: Always
+    pullPolicy: IfNotPresent
     # emailservice image tag
     tag: dcp-master-c9cb34e5-29
   # emailservice pod annotations
