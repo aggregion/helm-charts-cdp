@@ -30,8 +30,6 @@ helm upgrade --install --create-namespace --namespace $KUBE_NAMESPACE \
   --set "extraEnvVars[0].value=\"true\"" \
   --set "extraEnvVars[1].name=KEYCLOAK_LOG_OUTPUT" \
   --set "extraEnvVars[1].value=json" \
-  --set "extraEnvVars[2].name=KEYCLOAK_LOG_LEVEL" \
-  --set "extraEnvVars[2].value=DEBUG" \
-  --set "extraEnvVars[3].name=KEYCLOAK_EXTRA_ARGS" \
-  --set "extraEnvVars[3].value=\"--spi-login-protocol-openid-connect-legacy-logout-redirect-uri=true\"" \
+  --set "extraEnvVars[2].name=KEYCLOAK_EXTRA_ARGS" \
+  --set "extraEnvVars[2].value=\"--spi-login-protocol-openid-connect-legacy-logout-redirect-uri=true --log-level=INFO,org.keycloak.events:debug,freemarker.runtime:fatal,org.keycloak.events.jpa.JpaEventStoreProvider:info\"" \
   keycloak ./keycloak19
