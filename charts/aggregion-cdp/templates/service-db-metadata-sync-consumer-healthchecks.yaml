@@ -1,4 +1,4 @@
-{{- if .Values.dbMetadataSyncConsumer.enabled }}
+{{- if and .Values.dbMetadataSync.enabled .Values.metadataService.enabled .Values.dbMetadataSyncConsumer.enabled }}
 {{- $serviceName := include "cdp.dbMetadataSyncConsumer.fullname" . }}
 
 {{- if and .Values.livenessProbe.enabled .Values.dbMetadataSyncConsumer.probes.livenessEnabled }}
