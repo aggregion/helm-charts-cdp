@@ -101,4 +101,5 @@ data:
 
   METADATA_SERVICE_URL: "http://{{ $metadataServiceName | lower }}-svc:{{ .Values.metadataService.service.port }}"
   METADATA_SERVICE_TOKEN: {{ .Values.backend.configs.metadataServiceToken | quote }}
+  RABBITMQ_QUEUES_TABLE4SYNC_NAME: {{ .Values.dbMetadataSyncConsumer.config.consumer.queueName | quote }}
 {{- end }}
