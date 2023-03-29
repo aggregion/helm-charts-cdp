@@ -32,6 +32,9 @@ spec:
         - name: "db-metadata-sync-consumer"
           image: "{{ .Values.dbMetadataSyncConsumer.image.repository }}:{{ .Values.dbMetadataSyncConsumer.image.tag }}"
           imagePullPolicy: {{ .Values.dbMetadataSyncConsumer.image.pullPolicy }}
+          ports:
+            - name: httpapi
+              containerPort: {{ .Values.dbMetadataSyncConsumer.service.containerPort }}
           envFrom:
             - configMapRef:
                 name: {{ $serviceName | lower }}-envs #!!!!
