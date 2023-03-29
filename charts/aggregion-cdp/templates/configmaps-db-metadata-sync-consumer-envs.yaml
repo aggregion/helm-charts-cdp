@@ -1,0 +1,33 @@
+{{- if .Values.dbMetadataSyncConsumer.enabled }}
+{{- $serviceName := include "cdp.dbMetadataSyncConsumer.fullname" . }}
+{{- $dbMetadataSync := include "cdp.dbMetadataSync.fullname" . -}}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ $serviceName | lower }}-envs
+  labels:
+    {{- include "cdp.dbMetadataSyncConsumer.labels" . | nindent 4 }}
+data:
+  APP_NAME: {{ .Values.dbMetadataSyncConsumer.config.appName | quote }}
+  DB_METADATA_SYNC_URL: "http://{{ $dbMetadataSync | lower }}-svc:{{ .Values.dbMetadataSync.service.port }}"
+  {{- if and .Values.dbMetadataSyncConsumer.probes.livenessEnabled .Values.livenessProbe.livenessPath }}
+  HEALTHCHECK_LIVENESS_PATH: {{ .Values.livenessProbe.livenessPath | quote }}
+  {{- end }}
+  HEALTHCHECK_PORT: {{ .Values.livenessProbe.healthcheckPort | quote }}
+  {{- if and .Values.dbMetadataSyncConsumer.probes.readinessEnabled .Values.readinessProbe.readinessPath }}
+  HEALTHCHECK_READINESS_PATH: {{ .Values.readinessProbe.readinessPath | quote }}
+  {{- end }}
+  HEALTHCHECK_SHUTDOWN_TIMEOUT_MS: {{ .Values.livenessProbe.shutdownTimeoutMs | quote }}
+  LOG_LEVEL: {{ .Values.dbMetadataSyncConsumer.config.logLevel | quote }}
+  METRICS_ENABLED: {{ .Values.dbMetadataSyncConsumer.config.metrics.enabled | quote }}
+  {{- if .Values.metrics.enabled }}
+  METRICS_PATH: {{ .Values.metrics.path | quote }}
+  {{- end }}
+  RABBITMQ_HEARTBEAT_INTERVAL: "30"
+  RABBITMQ_RETRY_POLICY_DELAY: "60"
+  RABBITMQ_RETRY_POLICY_MAX_ATTEMPTS: "150"
+  RABBITMQ_RETRY_POLICY_SEQUENCE_ATTEMPTS_NUMBER: "5"
+  PREFETCH_COUNT: {{ .Values.dbMetadataSyncConsumer.config.consumer.prefetchCount | quote }}
+  RABBITMQ_URI: {{ .Values.backend.configs.rabbitmqUrl | quote }}
+  QUEUE_NAME: {{ .Values.dbMetadataSyncConsumer.config.consumer.queueName | quote }}
+{{- end }}

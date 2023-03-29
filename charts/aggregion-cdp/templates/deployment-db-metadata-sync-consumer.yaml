@@ -1,0 +1,62 @@
+{{- if and .Values.dbMetadataSync.enabled .Values.metadataService.enabled .Values.dbMetadataSyncConsumer.enabled }}
+{{- $serviceName := include "cdp.dbMetadataSyncConsumer.fullname" . -}}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: "{{ $serviceName | lower }}"
+  labels:
+    {{- include "cdp.dbMetadataSyncConsumer.labels" . | nindent 4 }}
+    app.kubernetes.io/component: "db-metadata-sync-consumer"
+spec:
+  replicas: {{ .Values.dbMetadataSyncConsumer.replicaCount }}
+  selector:
+    matchLabels:
+      {{- include "cdp.dbMetadataSyncConsumer.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      {{- with .Values.dbMetadataSyncConsumer.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      labels:
+        {{- include "cdp.dbMetadataSyncConsumer.selectorLabels" . | nindent 8 }}
+        app.kubernetes.io/component: "db-metadata-sync-consumer"
+    spec:
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      restartPolicy: {{ .Values.dbMetadataSyncConsumer.restartPolicy }}
+      serviceAccountName: {{ include "cdp.serviceAccountName" . }}
+      containers:
+        - name: "db-metadata-sync-consumer"
+          image: "{{ .Values.dbMetadataSyncConsumer.image.repository }}:{{ .Values.dbMetadataSyncConsumer.image.tag }}"
+          imagePullPolicy: {{ .Values.dbMetadataSyncConsumer.image.pullPolicy }}
+          envFrom:
+            - configMapRef:
+                name: {{ $serviceName | lower }}-envs #!!!!
+          {{- if .Values.dbMetadataSyncConsumer.probes.livenessEnabled }}
+          livenessProbe:
+            httpGet:
+              path: {{ .Values.livenessProbe.livenessPath }}
+              port: {{ .Values.dbMetadataSyncConsumer.service.containerPort }}
+            initialDelaySeconds: {{ .Values.livenessProbe.initialDelaySeconds }}
+            periodSeconds: {{ .Values.livenessProbe.periodSeconds }}
+            timeoutSeconds: {{ .Values.livenessProbe.timeoutSeconds }}
+            successThreshold: {{ .Values.livenessProbe.successThreshold }}
+            failureThreshold: {{ .Values.livenessProbe.failureThreshold }}
+          {{- end }}
+          {{- if .Values.dbMetadataSyncConsumer.probes.readinessEnabled }}
+          readinessProbe:
+            httpGet:
+              path: {{ .Values.readinessProbe.readinessPath }}
+              port: {{ .Values.dbMetadataSyncConsumer.service.containerPort }}
+            initialDelaySeconds: {{ .Values.readinessProbe.initialDelaySeconds }}
+            periodSeconds: {{ .Values.readinessProbe.periodSeconds }}
+            timeoutSeconds: {{ .Values.readinessProbe.timeoutSeconds }}
+            successThreshold: {{ .Values.readinessProbe.successThreshold }}
+            failureThreshold: {{ .Values.readinessProbe.failureThreshold }}
+          {{- end }}
+          resources:
+            {{- toYaml .Values.backend.resources.dbMetadataSyncConsumer | nindent 12 }}
+{{- end }}

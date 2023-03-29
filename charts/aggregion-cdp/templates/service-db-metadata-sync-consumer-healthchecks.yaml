@@ -1,0 +1,28 @@
+{{- if .Values.dbMetadataSyncConsumer.enabled }}
+{{- $serviceName := include "cdp.dbMetadataSyncConsumer.fullname" . }}
+
+{{- if and .Values.livenessProbe.enabled .Values.dbMetadataSyncConsumer.probes.livenessEnabled }}
+{{- $component := "metadata-sync-consumer" }}
+apiVersion: v1
+kind: Service
+metadata:
+  name: "hc-{{ $serviceName | lower }}"
+  annotations:
+    prometheus.io/healthcheck: "true"
+    prometheus.io/probe: "true"
+  labels:
+    operated-prometheus: "true"
+spec:
+  ports:
+    - protocol: TCP
+      name: {{ $component | quote }}
+      port: {{ .Values.dbMetadataSyncConsumer.service.containerPort }}
+      targetPort: {{ .Values.dbMetadataSyncConsumer.service.containerPort }}
+  selector:
+    app.kubernetes.io/component: "{{ $component }}"
+    app.kubernetes.io/name: "{{ $serviceName }}"
+  type: {{ .Values.dbMetadataSyncConsumer.service.type }}
+---
+{{- end -}}
+
+{{- end }}

@@ -37,6 +37,7 @@ livenessProbe:
   timeoutSeconds: 5
   successThreshold: 1
   failureThreshold: 5
+  shutdownTimeoutMs: 5000
 
 readinessProbe:
   enabled: true
@@ -47,6 +48,7 @@ readinessProbe:
   timeoutSeconds: 5
   successThreshold: 1
   failureThreshold: 5
+  shutdownTimeoutMs: 5000
 
 metrics:
   enabled: false
@@ -753,6 +755,9 @@ backend:
     dbMetadataSyncApi:
       requests:
         memory: "200Mi"
+    dbMetadataSyncConsumer:
+      requests:
+        memory: "100Mi"
   nodeSelector: {}
   tolerations: []
   affinity: {}
@@ -1412,3 +1417,28 @@ dbMetadataSync:
               password: admin
     metrics:
       enabled: false
+
+dbMetadataSyncConsumer:
+  enabled: false
+  replicaCount: 1
+  podAnnotations: {}
+  restartPolicy: Always
+  image:
+    repository: registry.aggregion.com/db-metadata-sync-consumer
+    pullPolicy: IfNotPresent
+    tag: b582590f
+  service:
+    containerPort: 8080
+    port: 80
+    type: ClusterIP
+  probes:
+    livenessEnabled: false
+    readinessEnabled: false
+  config:
+    appName: db-metadata-sync-consumer
+    logLevel: info
+    metrics:
+      enabled: false
+    consumer:
+      prefetchCount: 1
+      queueName: "tables-for-sync"

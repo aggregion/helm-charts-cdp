@@ -65,6 +65,10 @@ If release name contains chart name it will be used as a full name.
 {{- printf "%s" (include "cdp.fullname" (list . "dbMetadataSync")) }}
 {{- end }}
 
+{{- define "cdp.dbMetadataSyncConsumer.fullname" -}}
+{{- printf "%s" (include "cdp.fullname" (list . "dbMetadataSyncConsumer")) }}
+{{- end }}
+
 {{- define "cdp.oidcprovider.fullname" -}}
 {{- printf "%s" (include "cdp.fullname" (list . "oidcprovider")) }}
 {{- end }}
@@ -129,6 +133,10 @@ app.kubernetes.io/managed-by: {{ .Release.Service }}
 {{- include "cdp.component.labels" (list . "dbMetadataSync") }}
 {{- end }}
 
+{{- define "cdp.dbMetadataSyncConsumer.labels" -}}
+{{- include "cdp.component.labels" (list . "dbMetadataSyncConsumer") }}
+{{- end }}
+
 {{- define "cdp.oidcprovider.labels" -}}
 {{- include "cdp.component.labels" (list . "oidcprovider") }}
 {{- end }}
@@ -184,6 +192,10 @@ app.kubernetes.io/instance: "{{ .Release.Name }}"
 
 {{- define "cdp.dbMetadataSync.selectorLabels" -}}
 {{- include "cdp.selectorLabels" (list . "dbMetadataSync") }}
+{{- end }}
+
+{{- define "cdp.dbMetadataSyncConsumer.selectorLabels" -}}
+{{- include "cdp.selectorLabels" (list . "dbMetadataSyncConsumer") }}
 {{- end }}
 
 {{- define "cdp.oidcprovider.selectorLabels" -}}
