@@ -17,7 +17,7 @@ spec:
     - protocol: TCP
       name: {{ $component | quote }}
       port: {{ .Values.dbMetadataSyncConsumer.service.containerPort }}
-      targetPort: {{ .Values.dbMetadataSyncConsumer.service.containerPort }}
+      targetPort: {{ .Values.livenessProbe.healthcheckPort }}
   selector:
     app.kubernetes.io/component: "{{ $component }}"
     app.kubernetes.io/name: "{{ $serviceName }}"

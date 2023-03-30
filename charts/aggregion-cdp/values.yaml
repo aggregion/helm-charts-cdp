@@ -1427,10 +1427,6 @@ dbMetadataSyncConsumer:
     repository: registry.aggregion.com/db-metadata-sync-consumer
     pullPolicy: IfNotPresent
     tag: b582590f
-  service:
-    containerPort: 8080
-    port: 80
-    type: ClusterIP
   probes:
     livenessEnabled: false
     readinessEnabled: false

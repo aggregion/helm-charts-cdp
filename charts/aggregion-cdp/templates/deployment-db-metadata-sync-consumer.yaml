@@ -32,9 +32,6 @@ spec:
         - name: "db-metadata-sync-consumer"
           image: "{{ .Values.dbMetadataSyncConsumer.image.repository }}:{{ .Values.dbMetadataSyncConsumer.image.tag }}"
           imagePullPolicy: {{ .Values.dbMetadataSyncConsumer.image.pullPolicy }}
-          ports:
-            - name: httpapi
-              containerPort: {{ .Values.dbMetadataSyncConsumer.service.containerPort }}
           envFrom:
             - configMapRef:
                 name: {{ $serviceName | lower }}-envs #!!!!
@@ -42,7 +39,7 @@ spec:
           livenessProbe:
             httpGet:
               path: {{ .Values.livenessProbe.livenessPath }}
-              port: {{ .Values.dbMetadataSyncConsumer.service.containerPort }}
+              port: {{ .Values.livenessProbe.healthcheckPort }}
             initialDelaySeconds: {{ .Values.livenessProbe.initialDelaySeconds }}
             periodSeconds: {{ .Values.livenessProbe.periodSeconds }}
             timeoutSeconds: {{ .Values.livenessProbe.timeoutSeconds }}
@@ -53,7 +50,7 @@ spec:
           readinessProbe:
             httpGet:
               path: {{ .Values.readinessProbe.readinessPath }}
-              port: {{ .Values.dbMetadataSyncConsumer.service.containerPort }}
+              port: {{ .Values.livenessProbe.healthcheckPort }}
             initialDelaySeconds: {{ .Values.readinessProbe.initialDelaySeconds }}
             periodSeconds: {{ .Values.readinessProbe.periodSeconds }}
             timeoutSeconds: {{ .Values.readinessProbe.timeoutSeconds }}
