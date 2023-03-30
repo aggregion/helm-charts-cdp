@@ -2,7 +2,7 @@
 {{- $serviceName := include "cdp.dbMetadataSync.fullname" . }}
 
 {{- if and .Values.livenessProbe.enabled .Values.dbMetadataSync.probes.livenessEnabled }}
-{{- $component := "metadata-sync" }}
+{{- $component := "db-metadata-sync" }}
 apiVersion: v1
 kind: Service
 metadata:
@@ -21,8 +21,7 @@ spec:
   selector:
     app.kubernetes.io/component: "{{ $component }}"
     app.kubernetes.io/name: "{{ $serviceName }}"
-  type: ClusterIP
----
+  type: {{ .Values.dbMetadataSync.service.type }}
 {{- end -}}
 
 {{- end }}

@@ -2,7 +2,7 @@
 {{- $serviceName := include "cdp.dbMetadataSyncConsumer.fullname" . }}
 
 {{- if and .Values.livenessProbe.enabled .Values.dbMetadataSyncConsumer.probes.livenessEnabled }}
-{{- $component := "metadata-sync-consumer" }}
+{{- $component := "db-metadata-sync-consumer" }}
 apiVersion: v1
 kind: Service
 metadata:
@@ -22,7 +22,6 @@ spec:
     app.kubernetes.io/component: "{{ $component }}"
     app.kubernetes.io/name: "{{ $serviceName }}"
   type: {{ .Values.dbMetadataSyncConsumer.service.type }}
----
 {{- end -}}
 
 {{- end }}
