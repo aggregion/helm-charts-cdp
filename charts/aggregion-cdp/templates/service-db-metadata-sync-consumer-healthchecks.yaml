@@ -16,12 +16,12 @@ spec:
   ports:
     - protocol: TCP
       name: {{ $component | quote }}
-      port: {{ .Values.dbMetadataSyncConsumer.service.containerPort }}
+      port: {{ .Values.livenessProbe.healthcheckPort }}
       targetPort: {{ .Values.livenessProbe.healthcheckPort }}
   selector:
     app.kubernetes.io/component: "{{ $component }}"
     app.kubernetes.io/name: "{{ $serviceName }}"
-  type: {{ .Values.dbMetadataSyncConsumer.service.type }}
+  type: ClusterIP
 {{- end -}}
 
 {{- end }}
