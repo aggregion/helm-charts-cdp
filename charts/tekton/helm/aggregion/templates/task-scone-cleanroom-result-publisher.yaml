@@ -97,6 +97,10 @@ spec:
             name: "scone-cleanroom-common-config-{{ $name }}"
         - configMapRef:
             name: "scone-cleanroom-result-publisher-config-{{ $name }}"
+        {{- if and .Values.metadataService.credentialsIV .Values.metadataService.credentialsKey -}}
+        - secretRef:
+            name: "cleanroom-result-publisher-secret-{{ $name }}"
+        {{- end -}}
       resources:
         {{ .Values.sconeCleanroom.resultPublisher.resources | toJson }}
     - name: log-publisher
@@ -121,6 +125,4 @@ spec:
       envFrom:
         - configMapRef:
             name: "scone-cleanroom-common-config-{{ $name }}"
-        - secretRef:
-            name: "cleanroom-result-publisher-secret-{{ $name }}"
 {{- end -}}

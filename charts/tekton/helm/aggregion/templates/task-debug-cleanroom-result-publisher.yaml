@@ -73,6 +73,11 @@ spec:
           value: "{{ .Values.debugCleanroom.dataserviceToken }}"
         - name: "DATASERVICE_URL"
           value: "{{ .Values.debugCleanroom.dataserviceUrl }}"
+      envFrom:
+        {{- if and .Values.metadataService.credentialsIV .Values.metadataService.credentialsKey -}}
+        - secretRef:
+            name: "cleanroom-result-publisher-secret-{{ $name }}"
+        {{- end -}}
     - name: log-publisher
       image: registry.aggregion.com/curl:latest
       imagePullPolicy: IfNotPresent
@@ -95,6 +100,4 @@ spec:
       envFrom:
         - configMapRef:
             name: "debug-cleanroom-common-config-{{ $name }}"
-        - secretRef:
-            name: "cleanroom-result-publisher-secret-{{ $name }}"
 {{- end -}}
