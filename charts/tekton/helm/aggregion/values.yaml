@@ -42,6 +42,10 @@ debugCleanroom:
 sgx:
   device: "/dev/sgx"
 
+metadataService:
+  credentialsKey: ""
+  credentialsIV: ""
+
 sconeCleanroom:
   enabled: false
   enclaveServiceBaseUrl: http://...

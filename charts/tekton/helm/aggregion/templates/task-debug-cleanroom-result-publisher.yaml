@@ -95,4 +95,6 @@ spec:
       envFrom:
         - configMapRef:
             name: "debug-cleanroom-common-config-{{ $name }}"
+        - secretRef:
+            name: "cleanroom-result-publisher-secret-{{ $name }}"
 {{- end -}}

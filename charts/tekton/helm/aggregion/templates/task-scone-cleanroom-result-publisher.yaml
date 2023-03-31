@@ -121,4 +121,6 @@ spec:
       envFrom:
         - configMapRef:
             name: "scone-cleanroom-common-config-{{ $name }}"
+        - secretRef:
+            name: "cleanroom-result-publisher-secret-{{ $name }}"
 {{- end -}}
