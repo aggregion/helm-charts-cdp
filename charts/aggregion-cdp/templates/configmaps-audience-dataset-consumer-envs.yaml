@@ -28,7 +28,7 @@ data:
   METRICS_PATH: {{ .Values.metrics.path | quote }}
   {{- end }}
   PREFETCH_COUNT: {{ .Values.audienceDatasetConsumer.config.consumer.prefetchCount | quote }}
-  QUEUE_NAME: {{ .Values.dbMetadataSyncConsumer.config.consumer.queueName | quote }}
+  QUEUE_NAME: {{ .Values.audienceDatasetConsumer.config.consumer.queueName | quote }}
   RABBITMQ_HEARTBEAT_INTERVAL: "30"
   RABBITMQ_RETRY_POLICY_DELAY: "60"
   RABBITMQ_RETRY_POLICY_MAX_ATTEMPTS: "150"

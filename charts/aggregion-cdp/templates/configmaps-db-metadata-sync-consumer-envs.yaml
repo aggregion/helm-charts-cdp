@@ -9,6 +9,7 @@ metadata:
     {{- include "cdp.dbMetadataSyncConsumer.labels" . | nindent 4 }}
 data:
   APP_NAME: {{ .Values.dbMetadataSyncConsumer.config.appName | quote }}
+  AUDIENCE_DATASET_QUEUE_NAME: {{ .Values.audienceDatasetConsumer.config.consumer.queueName | quote }}
   DB_METADATA_SYNC_URL: "http://{{ $dbMetadataSync | lower }}-mds:{{ .Values.dbMetadataSync.service.port }}"
   {{- if and .Values.dbMetadataSyncConsumer.probes.livenessEnabled .Values.livenessProbe.livenessPath }}
   HEALTHCHECK_LIVENESS_PATH: {{ .Values.livenessProbe.livenessPath | quote }}
