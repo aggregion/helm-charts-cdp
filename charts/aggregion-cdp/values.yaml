@@ -758,6 +758,9 @@ backend:
     dbMetadataSyncConsumer:
       requests:
         memory: "100Mi"
+    audienceDatasetConsumer:
+      requests:
+        memory: "100Mi"
   nodeSelector: {}
   tolerations: []
   affinity: {}
@@ -1438,3 +1441,24 @@ dbMetadataSyncConsumer:
     consumer:
       prefetchCount: 1
       queueName: "tables-for-sync"
+
+audienceDatasetConsumer:
+  enabled: false
+  replicaCount: 1
+  podAnnotations: {}
+  restartPolicy: Always
+  image:
+    repository: registry.aggregion.com/audience-dataset-consumer
+    pullPolicy: IfNotPresent
+    tag: b582590f
+  probes:
+    livenessEnabled: false
+    readinessEnabled: false
+  config:
+    appName: audience-dataset-consumer
+    logLevel: info
+    metrics:
+      enabled: false
+    consumer:
+      prefetchCount: 1
+      queueName: "tables-for-audience-dataset"

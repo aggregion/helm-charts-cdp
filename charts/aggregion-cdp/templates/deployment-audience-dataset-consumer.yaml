@@ -1,0 +1,62 @@
+{{- if and .Values.audienceDatasetConsumer.enabled .Values.metadataService.enabled .Values.backend.enabled }}
+{{- $serviceName := include "cdp.audienceDatasetConsumer.fullname" . -}}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: "{{ $serviceName | lower }}"
+  labels:
+    {{- include "cdp.audienceDatasetConsumer.labels" . | nindent 4 }}
+    app.kubernetes.io/component: "audience-dataset-consumer"
+spec:
+  replicas: {{ .Values.audienceDatasetConsumer.replicaCount }}
+  selector:
+    matchLabels:
+      {{- include "cdp.audienceDatasetConsumer.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      {{- with .Values.audienceDatasetConsumer.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      labels:
+        {{- include "cdp.audienceDatasetConsumer.selectorLabels" . | nindent 8 }}
+        app.kubernetes.io/component: "audience-dataset-consumer"
+    spec:
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      restartPolicy: {{ .Values.audienceDatasetConsumer.restartPolicy }}
+      serviceAccountName: {{ include "cdp.serviceAccountName" . }}
+      containers:
+        - name: "audience-dataset-consumer"
+          image: "{{ .Values.audienceDatasetConsumer.image.repository }}:{{ .Values.audienceDatasetConsumer.image.tag }}"
+          imagePullPolicy: {{ .Values.audienceDatasetConsumer.image.pullPolicy }}
+          envFrom:
+            - configMapRef:
+                name: {{ $serviceName | lower }}-envs
+          {{- if .Values.audienceDatasetConsumer.probes.livenessEnabled }}
+          livenessProbe:
+            httpGet:
+              path: {{ .Values.livenessProbe.livenessPath }}
+              port: {{ .Values.livenessProbe.healthcheckPort }}
+            initialDelaySeconds: {{ .Values.livenessProbe.initialDelaySeconds }}
+            periodSeconds: {{ .Values.livenessProbe.periodSeconds }}
+            timeoutSeconds: {{ .Values.livenessProbe.timeoutSeconds }}
+            successThreshold: {{ .Values.livenessProbe.successThreshold }}
+            failureThreshold: {{ .Values.livenessProbe.failureThreshold }}
+          {{- end }}
+          {{- if .Values.audienceDatasetConsumer.probes.readinessEnabled }}
+          readinessProbe:
+            httpGet:
+              path: {{ .Values.readinessProbe.readinessPath }}
+              port: {{ .Values.livenessProbe.healthcheckPort }}
+            initialDelaySeconds: {{ .Values.readinessProbe.initialDelaySeconds }}
+            periodSeconds: {{ .Values.readinessProbe.periodSeconds }}
+            timeoutSeconds: {{ .Values.readinessProbe.timeoutSeconds }}
+            successThreshold: {{ .Values.readinessProbe.successThreshold }}
+            failureThreshold: {{ .Values.readinessProbe.failureThreshold }}
+          {{- end }}
+          resources:
+            {{- toYaml .Values.backend.resources.audienceDatasetConsumer | nindent 12 }}
+{{- end }}
