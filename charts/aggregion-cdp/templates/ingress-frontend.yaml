@@ -96,6 +96,13 @@ spec:
                 port:
                   name: "httpapi"
           {{- end }}
+          - path: "/system-settings"
+            pathType: "Prefix"
+            backend:
+              service:
+                name: "{{ $backendName }}"
+                port:
+                  name: "httpapi"
           - path: "/webhooks"
             pathType: "Prefix"
             backend:
@@ -188,6 +195,10 @@ spec:
               serviceName: "{{ $backendName }}"
               servicePort: "httpapi"
           {{- end }}
+          - path: "/system-settings"
+            backend:
+              serviceName: "{{ $backendName }}"
+              servicePort: "httpapi"
           - path: "/webhooks"
             backend:
               serviceName: "{{ $backendName }}"

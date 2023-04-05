@@ -425,6 +425,28 @@ backend:
       userRolesManagment: true
       # enable/disalbe api to create frontend dumps (need only for dev stands)
       frontendDumps: false
+    # settings to show/hide modules in the web interface
+    systemSettings:
+      audiences:
+        enabled: true
+      campaigns:
+        enabled: true
+      coupones:
+        enabled: true
+      surveys:
+        enabled: true
+      analytics:
+        enabled: true
+      marketplace:
+        enabled: true
+      dataMarts:
+        enabled: true
+      datalab:
+        enabled: true
+      glossary:
+        enabled: true
+      dataCatalogue:
+        enabled: true
 
     # credentials to access deploy controller
     datalabUsername: admin

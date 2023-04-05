@@ -102,4 +102,18 @@ data:
   METADATA_SERVICE_URL: "http://{{ $metadataServiceName | lower }}-svc:{{ .Values.metadataService.service.port }}"
   METADATA_SERVICE_TOKEN: {{ .Values.backend.configs.metadataServiceToken | quote }}
   RABBITMQ_QUEUES_TABLE4SYNC_NAME: {{ .Values.dbMetadataSyncConsumer.config.consumer.queueName | quote }}
+
+  SYSTEM_SETTINGS_AUDIENCES_ENABLED: {{ .Values.backend.configs.systemSettings.audiences.enabled | quote }}
+  SYSTEM_SETTINGS_CAMPAIGNS_ENABLED: {{ .Values.backend.configs.systemSettings.campaigns.enabled | quote }}
+  SYSTEM_SETTINGS_COUPONES_ENABLED: {{ .Values.backend.configs.systemSettings.coupones.enabled | quote }}
+  SYSTEM_SETTINGS_SURVEYS_ENABLED: {{ .Values.backend.configs.systemSettings.surveys.enabled | quote }}
+  SYSTEM_SETTINGS_ANALYTICS_ENABLED: {{ .Values.backend.configs.systemSettings.analytics.enabled | quote }}
+  SYSTEM_SETTINGS_MARKETPLACE_ENABLED: {{ .Values.backend.configs.systemSettings.marketplace.enabled | quote }}
+  SYSTEM_SETTINGS_DATA_MARTS_ENABLED: {{ .Values.backend.configs.systemSettings.dataMarts.enabled | quote }}
+  SYSTEM_SETTINGS_DATALAB_ENABLED: {{ .Values.backend.configs.systemSettings.datalab.enabled | quote }}
+  SYSTEM_SETTINGS_DATALAB_FEATURES_AUDIENCE_DATASETS: {{ and .Values.backend.configs.systemSettings.audiences.enabled .Values.dbMetadataSyncConsumer.enabled .Values.audienceDatasetConsumer.enabled .Values.backend.configs.systemSettings.datalab.enabled | quote }}
+  SYSTEM_SETTINGS_GLOSSARY_ENABLED: {{ .Values.backend.configs.systemSettings.glossary.enabled | quote }}
+  SYSTEM_SETTINGS_DATA_CATALOGUE_ENABLED: {{ .Values.backend.configs.systemSettings.dataCatalogue.enabled | quote }}
+  SYSTEM_SETTINGS_MANAGE_ORGANIZATIONS_FEATURES_USER_INVITATION: {{ .Values.oidcprovider.enabled | quote }}
+  SYSTEM_SETTINGS_MANAGE_ORGANIZATIONS_FEATURES_USER_ROLES_MANAGEMENT: {{ .Values.backend.configs.features.userRolesManagment | quote }}
 {{- end }}
