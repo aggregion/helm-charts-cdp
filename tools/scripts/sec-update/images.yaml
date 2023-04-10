@@ -1,0 +1,269 @@
+- name: bitnami/postgres-exporter
+  before:
+    image: docker.io/bitnami/postgres-exporter:0.8.0-debian-10-r99
+  after:
+    image: docker.io/bitnami/postgres-exporter:0.12.0-debian-11-r75
+
+- name: bitnami/postgresql
+  before:
+    image: docker.io/bitnami/postgresql:12.7.0
+  after:
+    image: docker.io/bitnami/postgresql:12.14.0-debian-11-r18
+
+- name: bitnami/redis
+  before:
+    image: bitnami/redis:6.0.9-debian-10-r0
+  after:
+    image: bitnami/redis:6.2.11-debian-11-r11
+
+- name: bitnami/redis-exporter
+  before:
+    image: bitnami/redis-exporter:1.12.1-debian-10-r11
+  after:
+    image: bitnami/redis-exporter:1.50.0-debian-11-r0
+
+- name: elastic/elasticsearch
+  before:
+    image: elastic/elasticsearch:7.16.3
+  after:
+    image: elastic/elasticsearch:7.17.9
+
+- name: elastic/filebeat
+  before:
+    image: elastic/filebeat:7.17.1
+  after:
+    image: elastic/filebeat:7.17.9
+
+# - name: gcr.io/k8s-staging-nfd/node-feature-discovery
+#   before:
+#     image: gcr.io/k8s-staging-nfd/node-feature-discovery:master
+#   after:
+#     image: gcr.io/k8s-staging-nfd/node-feature-discovery:master
+
+- name: grafana/grafana
+  before:
+    image: grafana/grafana:9.2.4
+  after:
+    image: grafana/grafana:9.2.15
+
+### LONGHORN BEGIN
+#### MAYBE LONGHORN SERVICE UPDATE WILL BE BETTER THAN UPDATE EACH OF IMAGE
+
+# - name: longhornio/csi-attacher # HAS NO UPDATE
+#   before:
+#     image: longhornio/csi-attacher:v3.4.0
+#   after:
+#     image: longhornio/csi-attacher:v3.4.0
+
+# - name: longhornio/csi-node-driver-registrar # HAS NO IMAGES IN DOCKER HUB
+#   before:
+#     image: longhornio/csi-node-driver-registrar:v2.5.0
+#   after:
+#     image: longhornio/csi-node-driver-registrar:v2.5.0
+
+# - name: longhornio/csi-provisioner # HAS NO UPDATE
+#   before:
+#     image: longhornio/csi-provisioner:v2.1.2
+#   after:
+#     image: longhornio/csi-provisioner:v2.1.2
+
+- name: longhornio/csi-resizer
+  before:
+    image: longhornio/csi-resizer:v1.2.0
+  after:
+    image: longhornio/csi-resizer:v1.3.0
+
+# - name: longhornio/csi-snapshotter # HAS NO UPDATE
+#   before:
+#     image: longhornio/csi-snapshotter:v3.0.3
+#   after:
+#     image: longhornio/csi-snapshotter:v3.0.3
+
+- name: longhornio/longhorn-engine
+  before:
+    image: longhornio/longhorn-engine:v1.3.1
+  after:
+    image: longhornio/longhorn-engine:v1.3.2
+
+# - name: longhornio/longhorn-instance-manager # HAS NO IMAGES IN DOCKER HUB
+#   before:
+#     image: longhornio/longhorn-instance-manager:v1_20220808
+#   after:
+#     image: longhornio/longhorn-instance-manager:v1_20220808
+
+- name: longhornio/longhorn-manager
+  before:
+    image: longhornio/longhorn-manager:v1.3.1
+  after:
+    image: longhornio/longhorn-manager:v1.3.2
+
+- name: longhornio/longhorn-ui
+  before:
+    image: longhornio/longhorn-ui:v1.3.1
+  after:
+    image: longhornio/longhorn-ui:v1.3.2
+
+### LONGHORN END
+
+- name: minio/minio
+  before:
+    image: minio/minio:RELEASE.2017-12-28T01-21-00Z
+  after:
+    image: minio/minio:RELEASE.2023-04-07T05-28-58Z # DANGEROUS
+
+# - name: mongo # HAS NO PROBLEM
+#   before:
+#     image: mongo:4.4.18
+#   after:
+#     image: mongo:4.4.18
+
+- name: nginx
+  before:
+    image: nginx:1.16.0
+  after:
+    image: nginx:1.23.4-alpine
+
+- name: postgres
+  before:
+    image: postgres:13
+  after:
+    imager: postgres:13.10-alpine
+
+- name: quay.io/kiwigrid/k8s-sidecar
+  before:
+    image: quay.io/kiwigrid/k8s-sidecar:1.19.2
+  after:
+    image: quay.io/kiwigrid/k8s-sidecar:1.19.6
+
+- name: rabbitmq
+  before:
+    image: rabbitmq:3.11.7-management-alpine
+  after:
+    image: rabbitmq:3.11.13-management-alpine
+
+- name: redis
+  before:
+    image: redis:6.2.1-alpine3.13
+  after:
+    image: redis:6.2.11-alpine3.17
+
+### GITLAB BEGIN
+# - name: registry.gitlab.com/gitlab-org/build/cng/gitaly # STRANGE
+#   before:
+#     image: registry.gitlab.com/gitlab-org/build/cng/gitaly:v15.5.4
+#   after:
+#     image: registry.gitlab.com/gitlab-org/build/cng/gitaly:v15.5.4
+
+# - name: registry.gitlab.com/gitlab-org/build/cng/gitlab-container-registry # STRANGE
+#   before:
+#     image: registry.gitlab.com/gitlab-org/build/cng/gitlab-container-registry:v3.60.1-gitlab
+#   after:
+#     image: registry.gitlab.com/gitlab-org/build/cng/gitlab-container-registry:v3.60.1-gitlab
+
+# - name: registry.gitlab.com/gitlab-org/build/cng/gitlab-exporter # STRANGE
+#   before:
+#     image: registry.gitlab.com/gitlab-org/build/cng/gitlab-exporter:11.18.2
+#   after:
+#     image: registry.gitlab.com/gitlab-org/build/cng/gitlab-exporter:11.18.2
+
+# - name: registry.gitlab.com/gitlab-org/build/cng/gitlab-shell # STRANGE
+#   before:
+#     image: registry.gitlab.com/gitlab-org/build/cng/gitlab-shell:v14.12.0
+#   after:
+#     image: registry.gitlab.com/gitlab-org/build/cng/gitlab-shell:v14.12.0
+
+# - name: registry.gitlab.com/gitlab-org/build/cng/gitlab-sidekiq-ce # STRANGE
+#   before:
+#     image: registry.gitlab.com/gitlab-org/build/cng/gitlab-sidekiq-ce:v15.5.4
+#   after:
+#     image: registry.gitlab.com/gitlab-org/build/cng/gitlab-sidekiq-ce:v15.5.4
+
+# - name: registry.gitlab.com/gitlab-org/build/cng/gitlab-toolbox-ce # STRANGE
+#   before:
+#     image: registry.gitlab.com/gitlab-org/build/cng/gitlab-toolbox-ce:v15.5.4
+#   after:
+#     image: registry.gitlab.com/gitlab-org/build/cng/gitlab-toolbox-ce:v15.5.4
+
+# - name: registry.gitlab.com/gitlab-org/build/cng/gitlab-webservice-ce # STRANGE
+#   before:
+#     image: registry.gitlab.com/gitlab-org/build/cng/gitlab-webservice-ce:v15.5.4
+#   after:
+#     image: registry.gitlab.com/gitlab-org/build/cng/gitlab-webservice-ce:v15.5.4
+
+# - name: registry.gitlab.com/gitlab-org/build/cng/gitlab-workhorse-ce # STRANGE
+#   before:
+#     image: registry.gitlab.com/gitlab-org/build/cng/gitlab-workhorse-ce:v15.5.4
+#   after:
+#     image: registry.gitlab.com/gitlab-org/build/cng/gitlab-workhorse-ce:v15.5.4
+
+### GITLAB END
+
+# - name: registry.k8s.io/kube-state-metrics/kube-state-metrics # STRANGE
+#   before:
+#     image: registry.k8s.io/kube-state-metrics/kube-state-metrics:v2.6.0
+#   after:
+#     image: registry.k8s.io/kube-state-metrics/kube-state-metrics:v2.6.0
+
+- name: velero/velero
+  before:
+    image: velero/velero:v1.9.0
+  after:
+    image: velero/velero:v1.10.2
+
+### RANCHER BEGIN
+
+- name: rancher/mirrored-calico-node
+  before:
+    image: rancher/mirrored-calico-node:v3.23.1
+  after:
+    image: rancher/mirrored-calico-node:v3.25.0
+
+- name: rancher/hardened-etcd
+  before:
+    image: index.docker.io/rancher/hardened-etcd:v3.5.4-k3s1-build20220504
+  after:
+    image: index.docker.io/rancher/hardened-etcd:v3.5.7-k3s1-build20230406
+
+- name: rancher/hardened-kubernetes
+  before:
+    image: index.docker.io/rancher/hardened-kubernetes:v1.23.10-rke2r1-build20220817
+  after:
+    image: index.docker.io/rancher/hardened-kubernetes:v1.23.17-rke2r1-build20230228
+
+# - name: index.docker.io/rancher/rke2-cloud-provider # STRANGE
+#   before:
+#     image: index.docker.io/rancher/rke2-cloud-provider:v0.0.3-build20211118
+#   after:
+#     image: index.docker.io/rancher/rke2-cloud-provider:v0.0.3-build20211118
+
+# - name: rancher/hardened-cluster-autoscaler # HAS NO IMAGES IN DOCKER HUB
+#   before:
+#     image: rancher/hardened-cluster-autoscaler:v1.8.5-build20211119
+#   after:
+#     image: rancher/hardened-cluster-autoscaler:v1.8.5-build20211119
+
+# - name: rancher/hardened-coredns # HAS NO UPDATE
+#   before:
+#     image: rancher/hardened-coredns:v1.9.3-build20220613
+#   after:
+#     image: rancher/hardened-coredns:v1.9.3-build20220613
+
+# - name: rancher/hardened-k8s-metrics-server # HAS NO IMAGES IN DOCKER HUB
+#   before:
+#     image: rancher/hardened-k8s-metrics-server:v0.5.0-build20211119
+#   after:
+#     image: rancher/hardened-k8s-metrics-server:v0.5.0-build20211119
+
+# - name: rancher/local-path-provisioner
+#   before:
+#     image: rancher/local-path-provisioner:master-head
+#   after:
+#     image: rancher/local-path-provisioner:v0.0.24
+
+# - name: rancher/nginx-ingress-controller # HAS NO IMAGES IN DOCKER HUB
+#   before:
+#     image: rancher/nginx-ingress-controller:nginx-1.2.1-hardened7
+#   after:
+#     image: rancher/nginx-ingress-controller:nginx-1.2.1-hardened7
+
+### RANCHER END
