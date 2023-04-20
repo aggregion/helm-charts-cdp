@@ -23,33 +23,27 @@ for i in $IMAGES; do
 
   BEFORE_VUL_CRITICAL=$(echo "$REPORT_BEFORE" | jq '[ .matches[].vulnerability | select(.severity == "Critical") ]')
   echo "      critical:"
-  echo -n "        count: "
-  echo "$BEFORE_VUL_CRITICAL" | jq '. | length'
+  echo "        count: $(echo "$BEFORE_VUL_CRITICAL" | jq '. | length')"
 
   BEFORE_VUL_HIGH=$(echo "$REPORT_BEFORE" | jq '[ .matches[].vulnerability | select(.severity == "High") ]')
   echo "      high:"
-  echo -n "        count: "
-  echo "$BEFORE_VUL_HIGH" | jq '. | length'
+  echo "        count: $(echo "$BEFORE_VUL_HIGH" | jq '. | length')"
 
   BEFORE_VUL_MEDIUM=$(echo "$REPORT_BEFORE" | jq '[ .matches[].vulnerability | select(.severity == "Medium") ]')
   echo "      medium:"
-  echo -n "        count: "
-  echo "$BEFORE_VUL_MEDIUM" | jq '. | length'
+  echo "        count: $(echo "$BEFORE_VUL_MEDIUM" | jq '. | length')"
 
   BEFORE_VUL_LOW=$(echo "$REPORT_BEFORE" | jq '[ .matches[].vulnerability | select(.severity == "Low") ]')
   echo "      low:"
-  echo -n "        count: "
-  echo "$BEFORE_VUL_LOW" | jq '. | length'
+  echo "        count: $(echo "$BEFORE_VUL_LOW" | jq '. | length')"
 
   BEFORE_VUL_NEGLIGIBLE=$(echo "$REPORT_BEFORE" | jq '[ .matches[].vulnerability | select(.severity == "Negligible") ]')
   echo "      negligible:"
-  echo -n "        count: "
-  echo "$BEFORE_VUL_NEGLIGIBLE" | jq '. | length'
+  echo "        count: $(echo "$BEFORE_VUL_NEGLIGIBLE" | jq '. | length')"
 
   BEFORE_VUL_UNKNOWN=$(echo "$REPORT_BEFORE" | jq '[ .matches[].vulnerability | select(.severity == "Unknown") ]')
   echo "      unknown:"
-  echo -n "        count: "
-  echo "$BEFORE_VUL_UNKNOWN" | jq '. | length'
+  echo "        count: $(echo "$BEFORE_VUL_UNKNOWN" | jq '. | length')"
 
   # AFTER
   echo "  after:"
@@ -60,31 +54,25 @@ for i in $IMAGES; do
 
   AFTER_VUL_CRITICAL=$(echo "$REPORT_AFTER" | jq '[ .matches[].vulnerability | select(.severity == "Critical") ]')
   echo "      critical:"
-  echo -n "        count: "
-  echo "$AFTER_VUL_CRITICAL" | jq '. | length'
+  echo "        count: $(echo "$AFTER_VUL_CRITICAL" | jq '. | length')"
 
   AFTER_VUL_HIGH=$(echo "$REPORT_AFTER" | jq '[ .matches[].vulnerability | select(.severity == "High") ]')
   echo "      high:"
-  echo -n "        count: "
-  echo "$AFTER_VUL_HIGH" | jq '. | length'
+  echo "        count: $(echo "$AFTER_VUL_HIGH" | jq '. | length')"
 
   AFTER_VUL_MEDIUM=$(echo "$REPORT_AFTER" | jq '[ .matches[].vulnerability | select(.severity == "Medium") ]')
   echo "      medium:"
-  echo -n "        count: "
-  echo "$AFTER_VUL_MEDIUM" | jq '. | length'
+  echo "        count: $(echo "$AFTER_VUL_MEDIUM" | jq '. | length')"
 
   AFTER_VUL_LOW=$(echo "$REPORT_AFTER" | jq '[ .matches[].vulnerability | select(.severity == "Low") ]')
   echo "      low:"
-  echo -n "        count: "
-  echo "$AFTER_VUL_LOW" | jq '. | length'
+  echo "        count: $(echo "$AFTER_VUL_LOW" | jq '. | length')"
 
   AFTER_VUL_NEGLIGIBLE=$(echo "$REPORT_AFTER" | jq '[ .matches[].vulnerability | select(.severity == "Negligible") ]')
   echo "      negligible:"
-  echo -n "        count: "
-  echo "$AFTER_VUL_NEGLIGIBLE" | jq '. | length'
+  echo "        count: $(echo "$AFTER_VUL_NEGLIGIBLE" | jq '. | length')"
 
   AFTER_VUL_UNKNOWN=$(echo "$REPORT_AFTER" | jq '[ .matches[].vulnerability | select(.severity == "Unknown") ]')
   echo "      unknown:"
-  echo -n "        count: "
-  echo "$AFTER_VUL_UNKNOWN" | jq '. | length'
+  echo "        count: $(echo "$AFTER_VUL_UNKNOWN" | jq '. | length')"
 done
