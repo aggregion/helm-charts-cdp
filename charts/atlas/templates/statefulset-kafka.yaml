@@ -63,7 +63,8 @@ spec:
               value: "yes"
       initContainers:
         - name: wait-for-zookeeper
-          image: busybox
+          image: "{{ .Values.busybox.image.repository }}:{{ .Values.busybox.image.tag }}"
+          imagePullPolicy: IfNotPresent
           command:
             - '/bin/sh'
             - '-c'

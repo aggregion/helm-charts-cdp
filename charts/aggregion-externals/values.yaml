@@ -189,3 +189,8 @@ nats:
   nodeSelector: {}
   tolerations: []
   affinity: {}
+
+busybox:
+  image:
+    repository: busybox
+    tag: latest
