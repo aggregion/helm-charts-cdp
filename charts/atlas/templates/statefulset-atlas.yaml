@@ -41,13 +41,13 @@ spec:
           command:
             - '/bin/sh'
             - '-c'
-            - nc -vz "{{ $zookeeperName }}-2.{{ $zookeeperName }}.{{ .Release.Namespace }}.svc.cluster.local" 2181
+            - nc -vz "{{ $zookeeperName }}-2.{{ $zookeeperName }}.{{ .Release.Namespace }}.svc.{{ .Values.clusterDomain }}" 2181
         - name: wait-for-solr
           image: "{{ .Values.busybox.image.repository }}:{{ .Values.busybox.image.tag }}"
           command:
             - '/bin/sh'
             - '-c'
-            - nc -vz "{{ $solrName }}-0.{{ $solrName }}.{{ .Release.Namespace }}.svc.cluster.local" 8983
+            - nc -vz "{{ $solrName }}-0.{{ $solrName }}.{{ .Release.Namespace }}.svc.{{ .Values.clusterDomain }}" 8983
         - name: copy-solr-collections
           image: "{{ .Values.atlas.image.repository }}:{{ .Values.atlas.image.tag | default .Chart.AppVersion }}"
           command:
@@ -98,9 +98,9 @@ spec:
             - name: SOLR_PORT
               value: '8983'
             - name: SOLR_HOST
-              value: "{{ $solrName }}-0.{{ $solrName }}.{{ .Release.Namespace }}.svc.cluster.local"
+              value: "{{ $solrName }}-0.{{ $solrName }}.{{ .Release.Namespace }}.svc.{{ .Values.clusterDomain }}"
             - name: ZK_HOST
-              value: "{{ $zookeeperName }}-0.{{ $zookeeperName }}.{{ .Release.Namespace }}.svc.cluster.local,{{ $zookeeperName }}-1.{{ $zookeeperName }}.{{ .Release.Namespace }}.svc.cluster.local,{{ $zookeeperName }}-2.{{ $zookeeperName }}.{{ .Release.Namespace }}.svc.cluster.local/solr"
+              value: "{{ $zookeeperName }}-0.{{ $zookeeperName }}.{{ .Release.Namespace }}.svc.{{ .Values.clusterDomain }},{{ $zookeeperName }}-1.{{ $zookeeperName }}.{{ .Release.Namespace }}.svc.{{ .Values.clusterDomain }},{{ $zookeeperName }}-2.{{ $zookeeperName }}.{{ .Release.Namespace }}.svc.{{ .Values.clusterDomain }}/solr"
           resources: { }
           terminationMessagePath: /dev/termination-log
           terminationMessagePolicy: File
@@ -122,15 +122,15 @@ spec:
             {{- toYaml .Values.atlas.resources | nindent 12 }}
           env: # need refactoring
             - name: ZOOKEEPER_HOST
-              value: "{{ $zookeeperName }}-0.{{ $zookeeperName }}.{{ .Release.Namespace }}.svc.cluster.local,{{ $zookeeperName }}-1.{{ $zookeeperName }}.{{ .Release.Namespace }}.svc.cluster.local,{{ $zookeeperName }}-2.{{ $zookeeperName }}.{{ .Release.Namespace }}.svc.cluster.local"
+              value: "{{ $zookeeperName }}-0.{{ $zookeeperName }}.{{ .Release.Namespace }}.svc.{{ .Values.clusterDomain }},{{ $zookeeperName }}-1.{{ $zookeeperName }}.{{ .Release.Namespace }}.svc.{{ .Values.clusterDomain }},{{ $zookeeperName }}-2.{{ $zookeeperName }}.{{ .Release.Namespace }}.svc.{{ .Values.clusterDomain }}"
             - name: SOLR_ZOOKEEPER_HOST
-              value: "{{ $zookeeperName }}-0.{{ $zookeeperName }}.{{ .Release.Namespace }}.svc.cluster.local,{{ $zookeeperName }}-1.{{ $zookeeperName }}.{{ .Release.Namespace }}.svc.cluster.local,{{ $zookeeperName }}-2.{{ $zookeeperName }}.{{ .Release.Namespace }}.svc.cluster.local/solr"
+              value: "{{ $zookeeperName }}-0.{{ $zookeeperName }}.{{ .Release.Namespace }}.svc.{{ .Values.clusterDomain }},{{ $zookeeperName }}-1.{{ $zookeeperName }}.{{ .Release.Namespace }}.svc.{{ .Values.clusterDomain }},{{ $zookeeperName }}-2.{{ $zookeeperName }}.{{ .Release.Namespace }}.svc.{{ .Values.clusterDomain }}/solr"
             - name: CASSANDRA_HOST
-              value: "{{ $cassandraName }}-0.{{ $cassandraName }}.{{ .Release.Namespace }}.svc.cluster.local"
+              value: "{{ $cassandraName }}-0.{{ $cassandraName }}.{{ .Release.Namespace }}.svc.{{ .Values.clusterDomain }}"
             - name: SOLR_HOST
-              value: "{{ $solrName }}-0.{{ $solrName }}.{{ .Release.Namespace }}.svc.cluster.local"
+              value: "{{ $solrName }}-0.{{ $solrName }}.{{ .Release.Namespace }}.svc.{{ .Values.clusterDomain }}"
             - name: KAFKA_HOST
-              value: "{{ $kafkaName }}-0.{{ $kafkaName }}.{{ .Release.Namespace }}.svc.cluster.local"
+              value: "{{ $kafkaName }}-0.{{ $kafkaName }}.{{ .Release.Namespace }}.svc.{{ .Values.clusterDomain }}"
             - name: ATLAS_USER_ADMIN_LOGIN
               value: "{{ .Values.atlas.users.admin.login }}"
             - name: ATLAS_USER_ADMIN_PASSWORD
@@ -175,7 +175,7 @@ spec:
               command:
                 - /bin/sh
                 - -c
-                - nc -vz "{{ $atlasName }}-0.{{ $atlasName }}.{{ .Release.Namespace }}.svc.cluster.local" 21000
+                - nc -vz "{{ $atlasName }}-0.{{ $atlasName }}.{{ .Release.Namespace }}.svc.{{ .Values.clusterDomain }}" 21000
           # Atlas established connection to cassandra via IP. If cassandra pod restart, IP of POD will changes,
           # but Atlas will continue try to reach cassandr via old IP.
           # Check for open tcp port cassandra:9160 via curl, get error 'curl: (52) Empty reply from server'
@@ -186,7 +186,7 @@ spec:
           #     - /bin/sh
           #     - -c
           #     - >-
-          #         curl -s -m2 {{ $cassandraName }}-0.{{ $cassandraName }}.{{ .Release.Namespace }}.svc.cluster.local:9160;
+          #         curl -s -m2 {{ $cassandraName }}-0.{{ $cassandraName }}.{{ .Release.Namespace }}.svc.{{ .Values.clusterDomain }}:9160;
           #         if [ $? -ne 52 ]; then echo 'cassandra livecheck fail'; exit 1; fi
           #   initialDelaySeconds: 300
           #   periodSeconds: 5

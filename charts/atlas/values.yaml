@@ -4,6 +4,8 @@
 imagePullSecrets:
   - name: aggregionregistry
 
+clusterDomain: cluster.local
+
 serviceAccount:
   create: false
   annotations: {}
