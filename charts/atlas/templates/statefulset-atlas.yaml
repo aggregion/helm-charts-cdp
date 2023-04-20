@@ -80,7 +80,7 @@ spec:
               mountPath: /opt/atlas/data
         {{- end }}
         - name: init-solr-collections
-          image: solr:8.11
+          image: "{{ .Values.solr.image.repository }}:{{ .Values.solr.image.tag | default .Chart.AppVersion }}"
           command:
             - /bin/sh
             - '-c'
