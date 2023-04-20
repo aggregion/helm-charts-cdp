@@ -70,7 +70,7 @@ sconeCleanroom:
     imagePullPolicy: IfNotPresent
     logLevel: WARNING
     sconeHeap: 2G
-    timeout: 24h
+    timeout: 24h0m0s
     resources:
       requests:
         memory: 3Gi
@@ -84,7 +84,7 @@ sconeCleanroom:
     imagePullPolicy: IfNotPresent
     logLevel: WARNING
     sconeHeap: 16G
-    timeout: 24h
+    timeout: 24h0m0s
     resources:
       requests:
         memory: 20Gi
@@ -96,7 +96,7 @@ sconeCleanroom:
     imagePullPolicy: IfNotPresent
     logLevel: WARNING
     sconeHeap: 2G
-    timeout: 24h
+    timeout: 24h0m0s
     resources:
       requests:
         memory: 3Gi
@@ -113,7 +113,7 @@ sconeCleanroom:
     imagePullPolicy: IfNotPresent
     logLevel: WARNING
     sconeHeap: 2G
-    timeout: 24h
+    timeout: 24h0m0s
     resources:
       requests:
         memory: 3Gi
