@@ -15,7 +15,7 @@ spec:
   replicas: 1
   selector:
     matchLabels:
-      {{- include "cdp.backend.selectorLabels" . | nindent 6 }}
+      {{- include "cdp.backendJobScheduler.selectorLabels" . | nindent 6 }}
   template:
     metadata:
       {{- with .Values.backend.podAnnotations }}
