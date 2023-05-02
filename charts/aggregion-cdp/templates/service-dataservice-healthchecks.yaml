@@ -19,8 +19,7 @@ spec:
       port: {{ .Values.dataservice.probes.common.healthcheckPort }}
       targetPort: {{ .Values.dataservice.probes.common.healthcheckPort }}
   selector:
-    app.kubernetes.io/component: "{{ $component }}"
-    app.kubernetes.io/name: "{{ $dataServiceName }}"
+    {{- include "cdp.metadataService.selectorLabels" . | nindent 4 }}
   type: ClusterIP
 ---
 {{- end -}}
@@ -44,8 +43,7 @@ spec:
       port: {{ .Values.dataservice.probes.common.healthcheckPort }}
       targetPort: {{ .Values.dataservice.probes.common.healthcheckPort }}
   selector:
-    app.kubernetes.io/component: "{{ $component }}"
-    app.kubernetes.io/name: "{{ $dataServiceName }}"
+    {{- include "cdp.dataserviceDatasetLogs.selectorLabels" . | nindent 4 }}
   type: ClusterIP
 ---
 {{- end -}}
@@ -69,8 +67,7 @@ spec:
       port: {{ .Values.dataservice.probes.common.healthcheckPort }}
       targetPort: {{ .Values.dataservice.probes.common.healthcheckPort }}
   selector:
-    app.kubernetes.io/component: "{{ $component }}"
-    app.kubernetes.io/name: "{{ $dataServiceName }}"
+    {{- include "cdp.dataserviceDatasetSyncer.selectorLabels" . | nindent 4 }}
   type: ClusterIP
 ---
 {{- end -}}
@@ -94,8 +91,7 @@ spec:
       port: {{ .Values.dataservice.probes.common.healthcheckPort }}
       targetPort: {{ .Values.dataservice.probes.common.healthcheckPort }}
   selector:
-    app.kubernetes.io/component: "{{ $component }}"
-    app.kubernetes.io/name: "{{ $dataServiceName }}"
+    {{- include "cdp.dataserviceDatasetUpdater.selectorLabels" . | nindent 4 }}
   type: ClusterIP
 ---
 {{- end -}}
@@ -119,8 +115,7 @@ spec:
       port: {{ .Values.dataservice.probes.common.healthcheckPort }}
       targetPort: {{ .Values.dataservice.probes.common.healthcheckPort }}
   selector:
-    app.kubernetes.io/component: "{{ $component }}"
-    app.kubernetes.io/name: "{{ $dataServiceName }}"
+    {{- include "cdp.dataserviceInstanceSyncer.selectorLabels" . | nindent 4 }}
   type: ClusterIP
 ---
 {{- end -}}
@@ -150,8 +145,7 @@ spec:
     {{- end -}}
     {{- end }}
   selector:
-    app.kubernetes.io/component: "{{ $component }}"
-    app.kubernetes.io/name: "{{ $dataServiceName }}"
+    {{- include "cdp.dataserviceGlossary.selectorLabels" . | nindent 4 }}
   type: ClusterIP
 ---
 {{- end -}}
@@ -174,8 +168,7 @@ spec:
       port: {{ .Values.dataservice.probes.common.healthcheckPort }}
       targetPort: {{ .Values.dataservice.probes.common.healthcheckPort }}
   selector:
-    app.kubernetes.io/component: "{{ $component }}"
-    app.kubernetes.io/name: "{{ $dataServiceName }}"
+    {{- include "cdp.dataserviceAtlasEntitySyncer.selectorLabels" . | nindent 4 }}
   type: ClusterIP
 ---
 {{- end -}}

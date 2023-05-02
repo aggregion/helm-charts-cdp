@@ -172,10 +172,12 @@ app.kubernetes.io/instance: "{{ .Release.Name }}"
 
 {{- define "cdp.backend.selectorLabels" -}}
 {{- include "cdp.selectorLabels" (list . "backend") }}
+app.kubernetes.io/component: "backend-api"
 {{- end }}
 
 {{- define "cdp.enclave.selectorLabels" -}}
 {{- include "cdp.selectorLabels" (list . "enclave") }}
+app.kubernetes.io/component: enclave
 {{- end }}
 
 {{- define "cdp.frontend.selectorLabels" -}}
@@ -184,42 +186,101 @@ app.kubernetes.io/instance: "{{ .Release.Name }}"
 
 {{- define "cdp.dataservice.selectorLabels" -}}
 {{- include "cdp.selectorLabels" (list . "dataservice") }}
+app.kubernetes.io/component: "dataservice"
+{{- end }}
+
+{{- define "cdp.dataserviceDatasetLogs.selectorLabels" -}}
+{{- include "cdp.selectorLabels" (list . "dataservice") }}
+app.kubernetes.io/component: "dataset-logs"
+{{- end }}
+
+{{- define "cdp.dataserviceDatasetSyncer.selectorLabels" -}}
+{{- include "cdp.selectorLabels" (list . "dataservice") }}
+app.kubernetes.io/component: "dataset-syncer"
+{{- end }}
+
+{{- define "cdp.dataserviceDatasetUpdater.selectorLabels" -}}
+{{- include "cdp.selectorLabels" (list . "dataservice") }}
+app.kubernetes.io/component: "dataset-updater"
+{{- end }}
+
+{{- define "cdp.dataserviceInstanceSyncer.selectorLabels" -}}
+{{- include "cdp.selectorLabels" (list . "dataservice") }}
+app.kubernetes.io/component: "instance-syncer"
+{{- end }}
+
+{{- define "cdp.dataserviceGlossary.selectorLabels" -}}
+{{- include "cdp.selectorLabels" (list . "dataservice") }}
+app.kubernetes.io/component: "glossary"
+{{- end }}
+
+{{- define "cdp.dataserviceAtlasEntitySyncer.selectorLabels" -}}
+{{- include "cdp.selectorLabels" (list . "dataservice") }}
+app.kubernetes.io/component: "atlas-entity-syncer"
 {{- end }}
 
 {{- define "cdp.authservice.selectorLabels" -}}
 {{- include "cdp.selectorLabels" (list . "authservice") }}
+app.kubernetes.io/component: "auth-service"
 {{- end }}
 
 {{- define "cdp.metadataSeed.selectorLabels" -}}
 {{- include "cdp.selectorLabels" (list . "metadataSeed") }}
+app.kubernetes.io/component: "metadata-seed"
 {{- end }}
 
 {{- define "cdp.metadataService.selectorLabels" -}}
 {{- include "cdp.selectorLabels" (list . "metadataService") }}
+app.kubernetes.io/component: "metadata-service"
 {{- end }}
 
 {{- define "cdp.dbMetadataSync.selectorLabels" -}}
 {{- include "cdp.selectorLabels" (list . "dbMetadataSync") }}
+app.kubernetes.io/component: "db-metadata-sync"
 {{- end }}
 
 {{- define "cdp.dbMetadataSyncConsumer.selectorLabels" -}}
 {{- include "cdp.selectorLabels" (list . "dbMetadataSyncConsumer") }}
+app.kubernetes.io/component: "db-metadata-sync-consumer"
 {{- end }}
 
 {{- define "cdp.audienceDatasetConsumer.selectorLabels" -}}
 {{- include "cdp.selectorLabels" (list . "audienceDatasetConsumer") }}
+app.kubernetes.io/component: "audience-dataset-consumer"
 {{- end }}
 
 {{- define "cdp.oidcprovider.selectorLabels" -}}
 {{- include "cdp.selectorLabels" (list . "oidcprovider") }}
+app.kubernetes.io/component: "oidc-provider"
 {{- end }}
 
 {{- define "cdp.emailservice.selectorLabels" -}}
 {{- include "cdp.selectorLabels" (list . "emailservice") }}
+app.kubernetes.io/component: "email-service"
 {{- end }}
 
 {{- define "cdp.cleos.selectorLabels" -}}
 {{- include "cdp.selectorLabels" (list . "cleos") }}
+{{- end }}
+
+{{- define "cdp.backendBcUpdater.selectorLabels" -}}
+{{- include "cdp.selectorLabels" (list . "backend") }}
+app.kubernetes.io/component: "bc-updater"
+{{- end }}
+
+{{- define "cdp.backendDatasetUploader.selectorLabels" -}}
+{{- include "cdp.selectorLabels" (list . "backend") }}
+app.kubernetes.io/component: "dataset-uploader"
+{{- end }}
+
+{{- define "cdp.backendJobScheduler.selectorLabels" -}}
+{{- include "cdp.selectorLabels" (list . "backend") }}
+app.kubernetes.io/component: "job-scheduler"
+{{- end }}
+
+{{- define "cdp.backendStatusWatcher.selectorLabels" -}}
+{{- include "cdp.selectorLabels" (list . "backend") }}
+app.kubernetes.io/component: "status-watcher"
 {{- end }}
 
 {{- define "cdp.selectorLabels.explicitly" -}}

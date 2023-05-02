@@ -19,8 +19,7 @@ spec:
       port: {{ .Values.dbMetadataSync.service.containerPort }}
       targetPort: {{ .Values.dbMetadataSync.service.containerPort }}
   selector:
-    app.kubernetes.io/component: "{{ $component }}"
-    app.kubernetes.io/name: "{{ $serviceName }}"
+    {{- include "cdp.dbMetadataSync.selectorLabels" . | nindent 4 }}
   type: {{ .Values.dbMetadataSync.service.type }}
 {{- end -}}
 

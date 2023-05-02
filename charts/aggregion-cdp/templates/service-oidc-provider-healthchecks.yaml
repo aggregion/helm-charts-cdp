@@ -19,8 +19,7 @@ spec:
       port: {{ .Values.oidcprovider.probes.healthcheckPort }}
       targetPort: {{ .Values.oidcprovider.probes.healthcheckPort }}
   selector:
-    app.kubernetes.io/component: "{{ $component }}"
-    app.kubernetes.io/name: "{{ $serviceName }}"
+    {{- include "cdp.oidcprovider.selectorLabels" . | nindent 4 }}
   type: ClusterIP
 ---
 {{- end -}}

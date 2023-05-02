@@ -19,8 +19,7 @@ spec:
       port: {{ .Values.backend.probes.common.healthcheckPort }}
       targetPort: {{ .Values.backend.probes.common.healthcheckPort }}
   selector:
-    app.kubernetes.io/component: "{{ $component }}"
-    app.kubernetes.io/name: "{{ $backendName }}"
+    {{- include "cdp.backend.selectorLabels" . | nindent 4 }}
   type: ClusterIP
 ---
 {{- end -}}
@@ -63,8 +62,7 @@ spec:
       targetPort: 9050
     {{- end }}
   selector:
-    app.kubernetes.io/component: "{{ $component }}"
-    app.kubernetes.io/name: "{{ $backendName }}"
+    {{- include "cdp.backendBcUpdater.selectorLabels" . | nindent 4 }}
   type: ClusterIP
 ---
 {{- end -}}
@@ -87,8 +85,7 @@ spec:
       port: {{ .Values.backend.probes.common.healthcheckPort }}
       targetPort: {{ .Values.backend.probes.common.healthcheckPort }}
   selector:
-    app.kubernetes.io/component: "{{ $component }}"
-    app.kubernetes.io/name: "{{ $backendName }}"
+    {{- include "cdp.backendDatasetUploader.selectorLabels" . | nindent 4 }}
   type: ClusterIP
 ---
 {{- end -}}
@@ -111,8 +108,7 @@ spec:
       port: {{ .Values.backend.probes.common.healthcheckPort }}
       targetPort: {{ .Values.backend.probes.common.healthcheckPort }}
   selector:
-    app.kubernetes.io/component: "{{ $component }}"
-    app.kubernetes.io/name: "{{ $backendName }}"
+    {{- include "cdp.backendJobScheduler.selectorLabels" . | nindent 4 }}
   type: ClusterIP
 ---
 {{- end -}}
@@ -143,8 +139,7 @@ spec:
       targetPort: 9048
     {{- end }}
   selector:
-    app.kubernetes.io/component: "{{ $component }}"
-    app.kubernetes.io/name: "{{ $backendName }}"
+    {{- include "cdp.backendStatusWatcher.selectorLabels" . | nindent 4 }}
   type: ClusterIP
 ---
 {{- end -}}

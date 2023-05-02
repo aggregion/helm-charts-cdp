@@ -19,8 +19,7 @@ spec:
       port: {{ .Values.livenessProbe.healthcheckPort }}
       targetPort: {{ .Values.livenessProbe.healthcheckPort }}
   selector:
-    app.kubernetes.io/component: "{{ $component }}"
-    app.kubernetes.io/name: "{{ $serviceName }}"
+    {{- include "cdp.audienceDatasetConsumer.selectorLabels" . | nindent 4 }}
   type: ClusterIP
 {{- end -}}
 
