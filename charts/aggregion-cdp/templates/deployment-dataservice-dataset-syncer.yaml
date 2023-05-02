@@ -15,7 +15,7 @@ spec:
   replicas: {{ .Values.dataservice.replicaCount }}
   selector:
     matchLabels:
-      {{- include "cdp.dataservice.selectorLabels" . | nindent 6 }}
+      {{- include "cdp.dataserviceDatasetSyncer.selectorLabels" . | nindent 6 }}
   template:
     metadata:
       {{- with .Values.dataservice.podAnnotations }}
