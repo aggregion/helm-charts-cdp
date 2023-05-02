@@ -15,7 +15,7 @@ spec:
   replicas: {{ .Values.backend.replicaCount }}
   selector:
     matchLabels:
-      {{- include "cdp.backend.labels" . | nindent 6 }}
+      {{- include "cdp.backend.selectorLabels" . | nindent 6 }}
   template:
     metadata:
       {{- with .Values.backend.podAnnotations }}
