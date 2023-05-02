@@ -24,7 +24,6 @@ spec:
       {{- end }}
       labels:
         {{- include "cdp.authservice.selectorLabels" . | nindent 8 }}
-        app.kubernetes.io/component: "auth-service"
     spec:
       {{- with .Values.imagePullSecrets }}
       imagePullSecrets:

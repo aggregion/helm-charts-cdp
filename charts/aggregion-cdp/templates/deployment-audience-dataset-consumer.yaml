@@ -20,7 +20,6 @@ spec:
       {{- end }}
       labels:
         {{- include "cdp.audienceDatasetConsumer.selectorLabels" . | nindent 8 }}
-        app.kubernetes.io/component: "audience-dataset-consumer"
     spec:
       {{- with .Values.imagePullSecrets }}
       imagePullSecrets:

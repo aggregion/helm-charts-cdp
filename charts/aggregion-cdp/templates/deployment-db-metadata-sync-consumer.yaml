@@ -20,7 +20,6 @@ spec:
       {{- end }}
       labels:
         {{- include "cdp.dbMetadataSyncConsumer.selectorLabels" . | nindent 8 }}
-        app.kubernetes.io/component: "db-metadata-sync-consumer"
     spec:
       {{- with .Values.imagePullSecrets }}
       imagePullSecrets:

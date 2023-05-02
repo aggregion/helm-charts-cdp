@@ -20,7 +20,6 @@ spec:
       {{- end }}
       labels:
         {{- include "cdp.metadataService.selectorLabels" . | nindent 8 }}
-        app.kubernetes.io/component: "metadata-service"
     spec:
       {{- with .Values.imagePullSecrets }}
       imagePullSecrets:

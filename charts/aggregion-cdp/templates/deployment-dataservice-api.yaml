@@ -24,7 +24,6 @@ spec:
       {{- end }}
       labels:
         {{- include "cdp.dataservice.selectorLabels" . | nindent 8 }}
-        app.kubernetes.io/component: "dataservice"
     spec:
       {{- with .Values.imagePullSecrets }}
       imagePullSecrets:

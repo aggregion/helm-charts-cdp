@@ -26,7 +26,6 @@ spec:
       {{- end }}
       labels:
         {{- include "cdp.backend.selectorLabels" . | nindent 8 }}
-        app.kubernetes.io/component: "backend-api"
     spec:
       {{- with .Values.imagePullSecrets }}
       imagePullSecrets:

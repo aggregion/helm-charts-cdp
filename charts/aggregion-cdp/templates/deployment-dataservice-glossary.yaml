@@ -29,8 +29,7 @@ spec:
         {{- toYaml . | nindent 8 }}
       {{- end }}
       labels:
-        {{- include "cdp.dataservice.selectorLabels" . | nindent 8 }}
-        app.kubernetes.io/component: "glossary"
+        {{- include "cdp.dataserviceGlossary.selectorLabels" . | nindent 8 }}
     spec:
       {{- with .Values.imagePullSecrets }}
       imagePullSecrets:

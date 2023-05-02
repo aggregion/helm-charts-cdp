@@ -23,8 +23,7 @@ spec:
         {{- toYaml . | nindent 8 }}
       {{- end }}
       labels:
-        {{- include "cdp.backend.selectorLabels" . | nindent 8 }}
-        app.kubernetes.io/component: "job-scheduler"
+        {{- include "cdp.backendJobScheduler.selectorLabels" . | nindent 8 }}
     spec:
       {{- with .Values.imagePullSecrets }}
       imagePullSecrets:

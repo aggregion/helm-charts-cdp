@@ -24,7 +24,6 @@ spec:
       {{- end }}
       labels:
         {{- include "cdp.emailservice.selectorLabels" . | nindent 8 }}
-        app.kubernetes.io/component: "email-service"
     spec:
       {{- with .Values.imagePullSecrets }}
       imagePullSecrets:

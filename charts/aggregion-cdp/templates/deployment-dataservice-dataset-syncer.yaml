@@ -23,8 +23,7 @@ spec:
         {{- toYaml . | nindent 8 }}
       {{- end }}
       labels:
-        {{- include "cdp.dataservice.selectorLabels" . | nindent 8 }}
-        app.kubernetes.io/component: "dataset-syncer"
+        {{- include "cdp.dataserviceDatasetSyncer.selectorLabels" . | nindent 8 }}
     spec:
       {{- with .Values.imagePullSecrets }}
       imagePullSecrets:
