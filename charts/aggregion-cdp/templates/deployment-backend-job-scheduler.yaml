@@ -9,7 +9,7 @@ metadata:
     {{- toYaml . | nindent 6 }}
   {{- end }}
   labels:
-    {{- include "cdp.authservice.labels" . | nindent 4 }}
+    {{- include "cdp.backend.labels" . | nindent 4 }}
     app.kubernetes.io/component: "job-scheduler"
 spec:
   replicas: 1
