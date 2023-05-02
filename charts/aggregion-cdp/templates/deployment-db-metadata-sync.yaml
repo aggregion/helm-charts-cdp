@@ -6,7 +6,6 @@ metadata:
   name: "{{ $dbMetadataSyncName | lower }}"
   labels:
     {{- include "cdp.dbMetadataSync.labels" . | nindent 4 }}
-    app.kubernetes.io/component: "db-metadata-sync"
 spec:
   replicas: {{ .Values.dbMetadataSync.replicaCount }}
   selector:

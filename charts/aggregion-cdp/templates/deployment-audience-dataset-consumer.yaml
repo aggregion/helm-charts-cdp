@@ -6,7 +6,6 @@ metadata:
   name: "{{ $serviceName | lower }}"
   labels:
     {{- include "cdp.audienceDatasetConsumer.labels" . | nindent 4 }}
-    app.kubernetes.io/component: "audience-dataset-consumer"
 spec:
   replicas: {{ .Values.audienceDatasetConsumer.replicaCount }}
   selector:

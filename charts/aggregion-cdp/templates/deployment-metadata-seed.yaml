@@ -6,7 +6,6 @@ metadata:
   name: "{{ $metadataSeedName | lower }}"
   labels:
     {{- include "cdp.metadataSeed.labels" . | nindent 4 }}
-    app.kubernetes.io/component: "metadata-seed"
 spec:
   replicas: {{ .Values.metadataSeed.replicaCount }}
   selector:

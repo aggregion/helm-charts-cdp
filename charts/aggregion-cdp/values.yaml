@@ -229,6 +229,11 @@ backend:
     resources:
       requests:
         memory: "50Mi"
+    podSecurityContext: {}
+    securityContext: {}
+    nodeSelector: {}
+    affinity: {}
+    tolerations: {}
 
   dbseed:
     enabled: false

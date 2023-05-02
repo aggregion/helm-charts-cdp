@@ -1,5 +1,4 @@
 {{- if .Values.backend.enabled }}
-{{- $name := "backend" }}
 {{- $backendName := include "cdp.backend.fullname" . }}
 {{- $eosWalletPath := printf "%s/%s" (substr 0 3 .Values.backend.configs.eosOrgId) .Values.backend.configs.eosOrgId }}
 apiVersion: apps/v1
@@ -8,16 +7,15 @@ metadata:
   name: "{{ $backendName }}"
   {{- with .Values.backend.annotations }}
   annotations:
-      {{- toYaml . | nindent 6 }}
+    {{- toYaml . | nindent 4 }}
   {{- end }}
   labels:
     {{- include "cdp.backend.labels" . | nindent 4 }}
-    app.kubernetes.io/component: "backend-api"
 spec:
   replicas: {{ .Values.backend.replicaCount }}
   selector:
     matchLabels:
-      {{- include "cdp.backend.selectorLabels" . | nindent 6 }}
+      {{- include "cdp.backend.labels" . | nindent 6 }}
   template:
     metadata:
       {{- with .Values.backend.podAnnotations }}

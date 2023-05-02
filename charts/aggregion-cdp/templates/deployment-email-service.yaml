@@ -6,11 +6,10 @@ metadata:
   name: "{{ $emailServiceName }}"
   {{- with .Values.emailservice.annotations }}
   annotations:
-      {{- toYaml . | nindent 6 }}
+    {{- toYaml . | nindent 4 }}
   {{- end }}
   labels:
     {{- include "cdp.emailservice.labels" . | nindent 4 }}
-    app.kubernetes.io/component: "email-service"
 spec:
   replicas: {{ .Values.emailservice.replicaCount }}
   selector:

@@ -6,11 +6,10 @@ metadata:
   name: "{{ $dataServiceName }}-instance-syncer"
   {{- with .Values.dataservice.annotations }}
   annotations:
-      {{- toYaml . | nindent 6 }}
+    {{- toYaml . | nindent 4 }}
   {{- end }}
   labels:
-    {{- include "cdp.dataservice.labels" . | nindent 4 }}
-    app.kubernetes.io/component: "instance-syncer"
+    {{- include "cdp.dataserviceInstanceSyncer.labels" . | nindent 4 }}
 spec:
   replicas: {{ .Values.dataservice.replicaCount }}
   selector:

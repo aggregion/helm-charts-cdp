@@ -6,11 +6,10 @@ metadata:
   name: "{{ $dataServiceName }}-dataset-updater"
   {{- with .Values.dataservice.annotations }}
   annotations:
-      {{- toYaml . | nindent 6 }}
+    {{- toYaml . | nindent 4 }}
   {{- end }}
   labels:
-    {{- include "cdp.dataservice.labels" . | nindent 4 }}
-    app.kubernetes.io/component: "dataset-updater"
+    {{- include "cdp.dataserviceDatasetUpdater.labels" . | nindent 4 }}
 spec:
   replicas: {{ .Values.dataservice.replicaCount }}
   selector:

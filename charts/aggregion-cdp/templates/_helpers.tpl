@@ -107,6 +107,42 @@ app.kubernetes.io/managed-by: {{ .Release.Service }}
 
 {{- define "cdp.backend.labels" -}}
 {{- include "cdp.component.labels" (list . "backend") }}
+app.kubernetes.io/component: "backend-api"
+{{- end }}
+
+{{- define "cdp.backendBcUpdater.labels" -}}
+{{- include "cdp.component.labels" (list . "backend") }}
+app.kubernetes.io/component: "bc-updater"
+{{- end }}
+
+{{- define "cdp.backendDatasetUploader.labels" -}}
+{{- include "cdp.component.labels" (list . "backend") }}
+app.kubernetes.io/component: "dataset-uploader"
+{{- end }}
+
+{{- define "cdp.backendJobScheduler.labels" -}}
+{{- include "cdp.component.labels" (list . "backend") }}
+app.kubernetes.io/component: "job-scheduler"
+{{- end }}
+
+{{- define "cdp.backendMatchingStatusWatcher.labels" -}}
+{{- include "cdp.component.labels" (list . "backend") }}
+app.kubernetes.io/component: "matching-status"
+{{- end }}
+
+{{- define "cdp.backendPanelSegmentUploader.labels" -}}
+{{- include "cdp.component.labels" (list . "backend") }}
+app.kubernetes.io/component: "panel-segment-uploader"
+{{- end }}
+
+{{- define "cdp.backendSegments.labels" -}}
+{{- include "cdp.component.labels" (list . "backend") }}
+app.kubernetes.io/component: "segments"
+{{- end }}
+
+{{- define "cdp.backendStatusWatcher.labels" -}}
+{{- include "cdp.component.labels" (list . "backend") }}
+app.kubernetes.io/component: "status-watcher"
 {{- end }}
 
 {{- define "cdp.frontend.labels" -}}
@@ -115,42 +151,82 @@ app.kubernetes.io/managed-by: {{ .Release.Service }}
 
 {{- define "cdp.enclave.labels" -}}
 {{- include "cdp.component.labels" (list . "enclave") }}
+app.kubernetes.io/component: "enclave"
 {{- end }}
 
 {{- define "cdp.dataservice.labels" -}}
 {{- include "cdp.component.labels" (list . "dataservice") }}
+app.kubernetes.io/component: "dataservice"
+{{- end }}
+
+{{- define "cdp.dataserviceAtlasEntitySyncer.labels" -}}
+{{- include "cdp.component.labels" (list . "dataservice") }}
+app.kubernetes.io/component: "atlas-entity-syncer"
+{{- end }}
+
+{{- define "cdp.dataserviceDatasetLogs.labels" -}}
+{{- include "cdp.component.labels" (list . "dataservice") }}
+app.kubernetes.io/component: "dataset-logs"
+{{- end }}
+
+{{- define "cdp.dataserviceDatasetSyncer.labels" -}}
+{{- include "cdp.component.labels" (list . "dataservice") }}
+app.kubernetes.io/component: "dataset-syncer"
+{{- end }}
+
+{{- define "cdp.dataserviceDatasetUpdater.labels" -}}
+{{- include "cdp.component.labels" (list . "dataservice") }}
+app.kubernetes.io/component: "dataset-updater"
+{{- end }}
+
+{{- define "cdp.dataserviceGlossary.labels" -}}
+{{- include "cdp.component.labels" (list . "dataservice") }}
+app.kubernetes.io/component: "glossary"
+{{- end }}
+
+{{- define "cdp.dataserviceInstanceSyncer.labels" -}}
+{{- include "cdp.component.labels" (list . "dataservice") }}
+app.kubernetes.io/component: "glosinstance-syncersary"
 {{- end }}
 
 {{- define "cdp.authservice.labels" -}}
 {{- include "cdp.component.labels" (list . "authservice") }}
+app.kubernetes.io/component: "auth-service"
 {{- end }}
 
 {{- define "cdp.metadataSeed.labels" -}}
 {{- include "cdp.component.labels" (list . "metadataSeed") }}
+app.kubernetes.io/component: "metadata-seed"
 {{- end }}
 
 {{- define "cdp.metadataService.labels" -}}
 {{- include "cdp.component.labels" (list . "metadataService") }}
+app.kubernetes.io/component: "metadata-service"
 {{- end }}
 
 {{- define "cdp.dbMetadataSync.labels" -}}
 {{- include "cdp.component.labels" (list . "dbMetadataSync") }}
+app.kubernetes.io/component: "db-metadata-sync"
 {{- end }}
 
 {{- define "cdp.dbMetadataSyncConsumer.labels" -}}
 {{- include "cdp.component.labels" (list . "dbMetadataSyncConsumer") }}
+app.kubernetes.io/component: "db-metadata-sync-consumer"
 {{- end }}
 
 {{- define "cdp.audienceDatasetConsumer.labels" -}}
 {{- include "cdp.component.labels" (list . "audienceDatasetConsumer") }}
+app.kubernetes.io/component: "audience-dataset-consumer"
 {{- end }}
 
 {{- define "cdp.oidcprovider.labels" -}}
 {{- include "cdp.component.labels" (list . "oidcprovider") }}
+app.kubernetes.io/component: "oidc-provider"
 {{- end }}
 
 {{- define "cdp.emailservice.labels" -}}
 {{- include "cdp.component.labels" (list . "emailservice") }}
+app.kubernetes.io/component: "email-service"
 {{- end }}
 
 {{- define "cdp.cleos.labels" -}}
@@ -177,7 +253,7 @@ app.kubernetes.io/component: "backend-api"
 
 {{- define "cdp.enclave.selectorLabels" -}}
 {{- include "cdp.selectorLabels" (list . "enclave") }}
-app.kubernetes.io/component: enclave
+app.kubernetes.io/component: "enclave"
 {{- end }}
 
 {{- define "cdp.frontend.selectorLabels" -}}
@@ -281,6 +357,21 @@ app.kubernetes.io/component: "job-scheduler"
 {{- define "cdp.backendStatusWatcher.selectorLabels" -}}
 {{- include "cdp.selectorLabels" (list . "backend") }}
 app.kubernetes.io/component: "status-watcher"
+{{- end }}
+
+{{- define "cdp.backendMatchingStatusWatcher.selectorLabels" -}}
+{{- include "cdp.selectorLabels" (list . "backend") }}
+app.kubernetes.io/component: "matching-status"
+{{- end }}
+
+{{- define "cdp.backendPanelSegmentUploader.selectorLabels" -}}
+{{- include "cdp.selectorLabels" (list . "backend") }}
+app.kubernetes.io/component: "panel-segment-uploader"
+{{- end }}
+
+{{- define "cdp.backendSegments.selectorLabels" -}}
+{{- include "cdp.selectorLabels" (list . "backend") }}
+app.kubernetes.io/component: "segments"
 {{- end }}
 
 {{- define "cdp.selectorLabels.explicitly" -}}

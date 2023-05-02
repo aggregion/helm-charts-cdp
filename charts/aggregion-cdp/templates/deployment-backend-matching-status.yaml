@@ -1,6 +1,5 @@
 {{- if .Values.backend.enabled }}
 {{- if or (.Values.backend.configs.serviceMatchingStatusWatcherEnabled) (.Values.backend.configs.serviceMatchingStatusResponseWatcherEnabled) }}
-{{- $name := "backend" }}
 {{- $backendName := include "cdp.backend.fullname" . }}
 apiVersion: apps/v1
 kind: Deployment
@@ -8,15 +7,15 @@ metadata:
   name: "{{ $backendName }}-matching-status"
   {{- with .Values.backend.annotations }}
   annotations:
-      {{- toYaml . | nindent 6 }}
+    {{- toYaml . | nindent 4 }}
   {{- end }}
   labels:
-    {{- include "cdp.backend.labels" . | nindent 4 }}
+    {{- include "cdp.backendMatchingStatusWatcher.labels" . | nindent 4 }}
 spec:
   replicas: {{ .Values.backend.replicaCount }}
   selector:
     matchLabels:
-      {{- include "cdp.backend.selectorLabels" . | nindent 6 }}
+      {{- include "cdp.backendMatchingStatusWatcher.selectorLabels" . | nindent 6 }}
   template:
     metadata:
       {{- with .Values.backend.podAnnotations }}
@@ -24,7 +23,7 @@ spec:
         {{- toYaml . | nindent 8 }}
       {{- end }}
       labels:
-        {{- include "cdp.backend.selectorLabels" . | nindent 8 }}
+        {{- include "cdp.backendMatchingStatusWatcher.selectorLabels" . | nindent 8 }}
     spec:
       {{- with .Values.imagePullSecrets }}
       imagePullSecrets:

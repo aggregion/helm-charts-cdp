@@ -6,11 +6,10 @@ metadata:
   name: "{{ $authServiceName }}"
   {{- with .Values.authservice.annotations }}
   annotations:
-      {{- toYaml . | nindent 6 }}
+    {{- toYaml . | nindent 4 }}
   {{- end }}
   labels:
     {{- include "cdp.authservice.labels" . | nindent 4 }}
-    app.kubernetes.io/component: "auth-service"
 spec:
   replicas: {{ .Values.authservice.replicaCount }}
   selector:

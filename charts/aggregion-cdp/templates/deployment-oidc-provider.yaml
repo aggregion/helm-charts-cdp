@@ -6,11 +6,10 @@ metadata:
   name: "{{ $oidcProviderName }}"
   {{- with .Values.oidcprovider.annotations }}
   annotations:
-      {{- toYaml . | nindent 6 }}
+    {{- toYaml . | nindent 4 }}
   {{- end }}
   labels:
     {{- include "cdp.oidcprovider.labels" . | nindent 4 }}
-    app.kubernetes.io/component: "oidc-provider"
 spec:
   replicas: {{ .Values.oidcprovider.replicaCount }}
   selector:

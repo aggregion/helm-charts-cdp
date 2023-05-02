@@ -6,11 +6,10 @@ metadata:
   name: "{{ $backendName }}-job-scheduler"
   {{- with .Values.backend.annotations }}
   annotations:
-    {{- toYaml . | nindent 6 }}
+  {{- toYaml . | nindent 4 }}
   {{- end }}
   labels:
-    {{- include "cdp.backend.labels" . | nindent 4 }}
-    app.kubernetes.io/component: "job-scheduler"
+    {{- include "cdp.backendJobScheduler.labels" . | nindent 4 }}
 spec:
   replicas: 1
   selector:

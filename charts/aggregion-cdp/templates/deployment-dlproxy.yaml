@@ -1,6 +1,4 @@
-{{- $name := "backend" }}
 {{- $backendName := include "cdp.backend.fullname" . }}
-
 {{- $datalabProxyName := printf "%s-dlproxy" $backendName }}
 apiVersion: apps/v1
 kind: Deployment
@@ -8,10 +6,10 @@ metadata:
   name: "{{ $datalabProxyName }}"
   {{- with .Values.backend.annotations }}
   annotations:
-      {{- toYaml . | nindent 6 }}
+    {{- toYaml . | nindent 4 }}
   {{- end }}
   labels:
-    {{- include "cdp.backend.labels" . | nindent 4 }}
+    {{- include "cdp.selectorLabels.explicitly" . | nindent 4 }}
 spec:
   replicas: {{ .Values.backend.datalabProxy.replicaCount }}
   selector:

@@ -1,5 +1,4 @@
 {{- if and (.Values.backend.enabled) (.Values.backend.configs.servicePanelSegmentUploaderEnabled) }}
-{{- $name := "backend" }}
 {{- $backendName := include "cdp.backend.fullname" . }}
 apiVersion: apps/v1
 kind: Deployment
@@ -7,15 +6,15 @@ metadata:
   name: "{{ $backendName }}-panel-segment-uploader"
   {{- with .Values.backend.annotations }}
   annotations:
-      {{- toYaml . | nindent 6 }}
+    {{- toYaml . | nindent 4 }}
   {{- end }}
   labels:
-    {{- include "cdp.backend.labels" . | nindent 4 }}
+    {{- include "cdp.backendPanelSegmentUploader.labels" . | nindent 4 }}
 spec:
   replicas: {{ .Values.backend.replicaCount }}
   selector:
     matchLabels:
-      {{- include "cdp.backend.selectorLabels" . | nindent 6 }}
+      {{- include "cdp.backendPanelSegmentUploader.selectorLabels" . | nindent 6 }}
   template:
     metadata:
       {{- with .Values.backend.podAnnotations }}
@@ -23,7 +22,7 @@ spec:
         {{- toYaml . | nindent 8 }}
       {{- end }}
       labels:
-        {{- include "cdp.backend.selectorLabels" . | nindent 8 }}
+        {{- include "cdp.backendPanelSegmentUploader.selectorLabels" . | nindent 8 }}
     spec:
       {{- with .Values.imagePullSecrets }}
       imagePullSecrets:

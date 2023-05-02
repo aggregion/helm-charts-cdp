@@ -7,11 +7,10 @@ metadata:
   name: "{{ $backendName }}-status-watchers"
   {{- with .Values.backend.annotations }}
   annotations:
-      {{- toYaml . | nindent 6 }}
+    {{- toYaml . | nindent 4 }}
   {{- end }}
   labels:
-    {{- include "cdp.backend.labels" . | nindent 4 }}
-    app.kubernetes.io/component: "status-watcher"
+    {{- include "cdp.backendStatusWatcher.labels" . | nindent 4 }}
 spec:
   replicas: {{ .Values.backend.replicaCount }}
   selector:

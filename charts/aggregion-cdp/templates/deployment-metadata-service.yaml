@@ -6,7 +6,6 @@ metadata:
   name: "{{ $metadataServiceName | lower }}"
   labels:
     {{- include "cdp.metadataService.labels" . | nindent 4 }}
-    app.kubernetes.io/component: "metadata-service"
 spec:
   replicas: {{ .Values.metadataService.replicaCount }}
   selector:

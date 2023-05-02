@@ -1,5 +1,4 @@
 {{- if and (.Values.enclave.enabled) (not (.Values.enclave.scone.enabled)) }}
-{{- $name := "enclave" }}
 {{- $enclaveName := include "cdp.enclave.fullname" . }}
 apiVersion: apps/v1
 kind: Deployment
@@ -7,11 +6,10 @@ metadata:
   name: "{{ $enclaveName }}"
   {{- with .Values.enclave.annotations }}
   annotations:
-      {{- toYaml . | nindent 6 }}
+    {{- toYaml . | nindent 4 }}
   {{- end }}
   labels:
     {{- include "cdp.enclave.labels" . | nindent 4 }}
-    app.kubernetes.io/component: enclave
 spec:
   replicas: {{ .Values.enclave.replicaCount }}
   selector:
@@ -53,7 +51,7 @@ spec:
                 name: "{{ $enclaveName }}-config"
             - secretRef:
                 name: "{{ $enclaveName }}-secrets"
-          
+
           {{- if and (.Values.livenessProbe.enabled) (.Values.enclave.probes.livenessEnabled) }}
           livenessProbe:
             httpGet:

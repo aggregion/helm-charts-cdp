@@ -1,6 +1,5 @@
 {{- if .Values.cleos.enabled }}
 {{- $cleosName := include "cdp.cleos.fullname" . }}
-{{- $dataServiceName := include "cdp.dataservice.fullname" . }}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
