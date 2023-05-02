@@ -9,7 +9,7 @@ metadata:
     {{- toYaml . | nindent 4 }}
   {{- end }}
   labels:
-    {{- include "cdp.backend.labels" . | nindent 4 }}
+    {{- include "cdp.selectorLabels.explicitly" (list . $datalabProxyName) | nindent 4 }}
 spec:
   replicas: {{ .Values.backend.datalabProxy.replicaCount }}
   selector:
