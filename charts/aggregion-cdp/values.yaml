@@ -231,6 +231,7 @@ backend:
     resources:
       requests:
         memory: "50Mi"
+    resolverServiceDomain: rke2-coredns-rke2-coredns.kube-system.svc
     podSecurityContext: {}
     securityContext: {}
     nodeSelector: {}
