@@ -19,7 +19,7 @@ spec:
       port: {{ .Values.dataservice.probes.common.healthcheckPort }}
       targetPort: {{ .Values.dataservice.probes.common.healthcheckPort }}
   selector:
-    {{- include "cdp.metadataService.selectorLabels" . | nindent 4 }}
+    {{- include "cdp.dataservice.selectorLabels" . | nindent 4 }}
   type: ClusterIP
 ---
 {{- end -}}
