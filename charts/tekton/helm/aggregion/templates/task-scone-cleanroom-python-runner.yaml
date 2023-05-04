@@ -98,7 +98,7 @@ spec:
       resources:
         {{ .Values.sconeCleanroom.pythonRunner.resources | toJson }}
     - name: log-publisher
-      image: registry.aggregion.com/curl:latest
+      image: {{ .Values.curl.image }}
       imagePullPolicy: IfNotPresent
       volumeMounts:
         - name: vol

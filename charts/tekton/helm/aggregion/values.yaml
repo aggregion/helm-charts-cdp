@@ -15,6 +15,9 @@ serviceAccount:
 debugHasher:
   enabled: true
 
+curl:
+  image: registry.aggregion.com/curl:latest
+
 debugCleanroom:
   enabled: true
   enclaveServiceBaseUrl: http://...
