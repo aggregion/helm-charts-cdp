@@ -24,7 +24,7 @@ spec:
             command:
             - /bin/sh
             - -c
-            - "curl --silent http://{{ include "cdp.dataservice.fullname" . }}:{{ .Values.dataservice.serviceAtlasSyncer.port }}"
+            - "curl --silent http://{{ include "cdp.dataservice.fullname" . }}-aesyncer-svc:{{ .Values.dataservice.serviceAtlasSyncer.port }}"
           restartPolicy: OnFailure
           {{- with .Values.imagePullSecrets }}
           imagePullSecrets:

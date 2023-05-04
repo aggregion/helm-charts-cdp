@@ -12,14 +12,6 @@ spec:
       targetPort: httpapi
       protocol: TCP
       name: httpapi
-
-    {{- if .Values.dataservice.configAtlasSyncer.enabled}}
-    - port: {{ .Values.dataservice.serviceAtlasSyncer.port }}
-      targetPort: atlassyncport
-      protocol: TCP
-      name: atlassyncport
-    {{- end }}
-  
   selector:
     {{- include "cdp.dataservice.selectorLabels" . | nindent 4 }}
 {{- end }}

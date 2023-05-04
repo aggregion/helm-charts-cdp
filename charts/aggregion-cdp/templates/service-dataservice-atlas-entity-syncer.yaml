@@ -1,0 +1,17 @@
+{{- if .Values.dataservice.configAtlasSyncer.enabled }}
+apiVersion: v1
+kind: Service
+metadata:
+  name: "{{ include "cdp.dataservice.fullname" . }}-aesyncer-svc"
+  labels:
+    {{- include "cdp.dataserviceAtlasEntitySyncer.labels" . | nindent 4 }}
+spec:
+  type: {{ .Values.dataservice.service.type }}
+  ports:
+    - port: {{ .Values.dataservice.serviceAtlasSyncer.port }}
+      targetPort: atlassyncport
+      protocol: TCP
+      name: atlassyncport
+  selector:
+    {{- include "cdp.dataserviceAtlasEntitySyncer.selectorLabels" . | nindent 4 }}
+{{- end }}
