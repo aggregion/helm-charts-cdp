@@ -86,16 +86,6 @@ runner:
     cloudEventsListener: "http://watcher:9101"
 
     pipelines:
-      debugHasher:
-        namespace: "pipelines"
-        pvcSize: "10Mi"
-        storageClassName: "default"
-        annotations:
-          aggregion.dev/instance: "common"
-        podTemplate:
-          nodeSelector:
-            enclave: nodejs
-        pipelineName: "debug-hasher"
       debugCleanroom:
         namespace: "pipelines"
         pvcSize: "1000Mi"
