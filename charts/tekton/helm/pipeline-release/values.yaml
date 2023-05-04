@@ -105,3 +105,25 @@ pruner:
   schedule: "*/5 * * * *"
   backoffLimit: 24
   image: gcr.io/tekton-releases/dogfooding/tkn@sha256:025de221fb059ca24a3b2d988889ea34bce48dc76c0cf0d6b4499edb8c21325f
+
+others:
+  kubeconfigWriterImage: gcr.io/tekton-releases/github.com/tektoncd/pipeline/cmd/kubeconfigwriter:v0.36.0@sha256:b28878bf7f6e3770cdc2d2d72e022fa474c61d471fa2792ecf485486c9d2ca1f
+  # kubeconfigWriterImage: registry.aggregion.com/tekton/kubeconfigwriter:v0.36.0
+  gitImage: gcr.io/tekton-releases/github.com/tektoncd/pipeline/cmd/git-init:v0.36.0@sha256:46c3f46f68410666b3ca3f13c4fd398a05413239f257fe9842fc3f7c622f74db
+  # gitImage: registry.aggregion.com/tekton/git-init:v0.36.0
+  entrypointImage: gcr.io/tekton-releases/github.com/tektoncd/pipeline/cmd/entrypoint:v0.36.0@sha256:71df923547c2b89515db4089f2d5c3da495dc7b89bc43408853f89a4d7475fc8
+  # entrypointImage: registry.aggregion.com/tekton/entrypoint:v0.36.0
+  nopImage: gcr.io/tekton-releases/github.com/tektoncd/pipeline/cmd/nop:v0.36.0@sha256:44b51ab8b360af58716ebfa34adbd8916050e0fc49ff6a1ddf44c07a6e9b63e9
+  # nopImage: registry.aggregion.com/tekton/nop:v0.36.0
+  imagedigestExporterImage: gcr.io/tekton-releases/github.com/tektoncd/pipeline/cmd/imagedigestexporter:v0.36.0@sha256:b92c59376be46126ec6954ccba40bc882b96e6f2078a7bcdb927f50d8dca4a14
+  # imagedigestExporterImage: registry.aggregion.com/tekton/imagedigestexporter:v0.36.0
+  prImage: gcr.io/tekton-releases/github.com/tektoncd/pipeline/cmd/pullrequest-init:v0.36.0@sha256:69e5d88431b074e611a1ea51a8a4c388b4ecf48f2569695f65898ecdaad59e13
+  # prImage: registry.aggregion.com/tekton/pullrequest-init:v0.36.0
+  workingdirinitImage: gcr.io/tekton-releases/github.com/tektoncd/pipeline/cmd/workingdirinit:v0.36.0@sha256:1f028b78a04e08a23bf8dd9d1f625b997e59a9b4a8f921c8bcadf781abb9049e
+  # workingdirinitImage: registry.aggregion.com/tekton/workingdirinit:v0.36.0
+  gsutilImage: gcr.io/google.com/cloudsdktool/cloud-sdk@sha256:27b2c22bf259d9bc1a291e99c63791ba0c27a04d2db0a43241ba0f1f20f4067f
+  # gsutilImage: registry.aggregion.com/tekton/cloud-sdk:v0.36.0
+  shellImage: ghcr.io/distroless/busybox@sha256:19f02276bf8dbdd62f069b922f10c65262cc34b710eea26ff928129a736be791
+  # shellImage: registry.aggregion.com/tekton/busybox:19f02276
+  shellImageWin: mcr.microsoft.com/powershell:nanoserver@sha256:b6d5ff841b78bdf2dfed7550000fd4f3437385b8fa686ec0f010be24777654d6
+  # shellImageWin: NO_IMAGE
