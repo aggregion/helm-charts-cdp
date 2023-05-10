@@ -114,6 +114,8 @@ rabbit:
     repository: "rabbitmq"
     pullPolicy: IfNotPresent
     tag: "3.11.7-management-alpine"
+  defaultUser: "guest"
+  defaultPass: "guest"
   service:
     type: ClusterIP
     port: 5672

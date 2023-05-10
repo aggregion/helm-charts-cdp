@@ -9,4 +9,6 @@ metadata:
 data:
   20-custom.conf: |
     consumer_timeout = 864000000
+    default_user = {{ .Values.rabbit.defaultUser }}
+    default_pass = {{ .Values.rabbit.defaultPass }}
 {{- end }}
