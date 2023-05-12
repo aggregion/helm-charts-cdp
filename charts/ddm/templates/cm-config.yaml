@@ -1,0 +1,60 @@
+{{- $name := include "ddm.fullname" . -}}
+
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ $name }}-configs
+  labels:
+    {{- include "ddm.labels" . | nindent 4 }}
+data:
+  config.yaml: |
+    server:
+      bind_addr: "{{ .Values.config.server.bindAddr }}:{{ .Values.config.server.bindPort }}"
+      count_traffic: {{ .Values.config.server.countTraffic }}
+
+    data_cache_factory:
+      type: disk
+      params:
+        base_dir: {{ .Values.config.dataCacheFactory.params.baseDir }}
+
+    ecosystem:
+      type: file
+      params:
+        config_file: {{ .Values.config.configsPath }}/ecosystem.yaml
+
+    session_manager:
+      type: event_emitting
+      params:
+        inner:
+          type: memory
+          params: {}
+
+    wallet:
+      type: file
+      params:
+        file_path: {{ .Values.config.configsPath }}/wallet.yaml
+
+    task_executors:
+      acquire_data:
+        type: parquet
+        params:
+          base_path: "testdata/in/provider_1"
+      make_bloom:
+        type: default
+      join:
+        type: default
+      join_by_tuples:
+        type: default
+      filter_bloom:
+        type: default
+      transform:
+        type: default
+      exec_remote:
+        type: default
+      acquire_data_remote:
+        type: default
+      concat:
+        type: default
+
+  ecosystem.yaml: |
+    {{- .Values.ecosystem | toYaml | nindent 4 }}

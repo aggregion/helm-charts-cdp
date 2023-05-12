@@ -1,0 +1,125 @@
+# Default values for ddm.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+replicaCount: 1
+
+image:
+  repository: registry.aggregion.com/ddm
+  pullPolicy: IfNotPresent
+  # Overrides the image tag whose default is the chart appVersion.
+  tag: v0.1.0
+
+imagePullSecrets: []
+nameOverride: ""
+fullnameOverride: ""
+
+serviceAccount:
+  # Specifies whether a service account should be created
+  create: false
+  # Annotations to add to the service account
+  annotations: {}
+  # The name of the service account to use.
+  # If not set and create is true, a name is generated using the fullname template
+  name: ""
+
+podAnnotations: {}
+
+podSecurityContext: {}
+  # fsGroup: 2000
+
+securityContext: {}
+  # capabilities:
+  #   drop:
+  #   - ALL
+  # readOnlyRootFilesystem: true
+  # runAsNonRoot: true
+  # runAsUser: 1000
+
+service:
+  type: ClusterIP
+  port: 80
+
+ingress:
+  enabled: false
+  className: ""
+  annotations: {}
+    # kubernetes.io/ingress.class: nginx
+    # kubernetes.io/tls-acme: "true"
+  hosts:
+    - host: chart-example.local
+      paths:
+        - path: /
+          pathType: ImplementationSpecific
+  tls: []
+  #  - secretName: chart-example-tls
+  #    hosts:
+  #      - chart-example.local
+
+resources: {}
+  # We usually recommend not to specify default resources and to leave this as a conscious
+  # choice for the user. This also increases chances charts run on environments with little
+  # resources, such as Minikube. If you do want to specify resources, uncomment the following
+  # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
+  # limits:
+  #   cpu: 100m
+  #   memory: 128Mi
+  # requests:
+  #   cpu: 100m
+  #   memory: 128Mi
+
+autoscaling:
+  enabled: false
+  minReplicas: 1
+  maxReplicas: 100
+  targetCPUUtilizationPercentage: 80
+  # targetMemoryUtilizationPercentage: 80
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}
+
+config:
+  server:
+    bindAddr: 127.0.0.1
+    bindPort: 50001
+    countTraffic: true
+  dataCacheFactory:
+    params:
+      baseDir: test/out/provider_1
+  configsPath: testdata/instances/provider_1/configs
+  secretsPath: testdata/instances/provider_1/secrets
+
+ecosystem:
+  name: "Test Ecosystem"
+  local_id: provider_1
+  participants:
+    provider_1:
+      name: "Provider 1"
+      authorized_keys:
+        - |
+          -----BEGIN PUBLIC KEY-----
+          MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEViak1mkHr4WPvE968qsw0eOpXHt4
+          9CdCK6zBek7ACgVx7+5nzY9200mhyvmKj5pFwVouSM5AeWMx8AKPaYsVNQ==
+          -----END PUBLIC KEY-----
+      grpc_url: "http://localhost:50001"
+    provider_2:
+      name: "Provider 2"
+      authorized_keys:
+        - |
+          -----BEGIN PUBLIC KEY-----
+          MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEzJXukX4RIXJl1TtTaSIFyY8dDIx+
+          BZY/0nlYTPSYQQwqv/bOl8XUqaQje1GElA5Vl6JMIA60viDHPIplxEkXtg==
+          -----END PUBLIC KEY-----
+      grpc_url: "http://localhost:50002"
+
+wallet:
+  keys:
+    provider_1: |
+      -----BEGIN PRIVATE KEY-----
+      MIGHAgEAMBMGByqGSM49AgEGCCqGSM49AwEHBG0wawIBAQQg5jYg/ijPfDUdV2XT
+      8Tb4UYxOkAZCyJirt4QRnkNgrOGhRANCAARWJqTWaQevhY+8T3ryqzDR46lce3j0
+      J0IrrMF6TsAKBXHv7mfNj3bTSaHK+YqPmkXBWi5IzkB5YzHwAo9pixU1
+      -----END PRIVATE KEY-----
