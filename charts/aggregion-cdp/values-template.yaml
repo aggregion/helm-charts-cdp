@@ -92,13 +92,13 @@ dataservice:
     tokenSecretKey: CHANGEIT # CHANGEIT
     metadataServiceToken: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.ewogICJ0eXBlIjogIiIsCiAgInNlcnZpY2UiOiAiZGItbWV0YWRhdGEtc3luYyIsCiAgImlhdCI6IDE2NzkzMTk4MTUsCiAgImlzcyI6ICJhZ2dyZWdpb24iCn0.azuGQRZ9Kls_mfkvML_QDDkgnDn3rWJ44YV6fA4A1GU # CHANGEIT2
   configAtlasSyncer:
-    enabled: false
+    enabled: true
   enabled: true
   glossaryContainers:
     glossarySyncer:
-      enabled: false
+      enabled: true
     glossaryUpdater:
-      enabled: false
+      enabled: true
   glossarySyncers:
     enabled: true
   imageJobRunner:
@@ -182,7 +182,10 @@ gatekeeper:
 imagePullSecrets:
   - name: aggregionregistry
 metadataSeed:
-  enabled: false
+  enabled: true
+  config:
+    dmpBackendBaseUrl: "http://dmpbackend" # CHANGEIT
+    nodeTlsRejectUnauthorized: true
 oidcprovider:
   config:
     clientPostLogoutRedirectUris:
@@ -221,11 +224,11 @@ metadataParams:
     encryptionKey: "$MD_PARAMS_CREDS_ENCRYPTION_KEY" # GENERATED
     iv: "$MD_PARAMS_CREDS_IV" # GENERATED
 metadataService:
-  enabled: true
-  migrationEnabled: true
+  enabled: false
+  migrationEnabled: false
   probes:
-    livenessEnabled: true
-    readinessEnabled: true
+    livenessEnabled: false
+    readinessEnabled: false
   config:
     logLevel: "trace"
     dmpBackendBaseUrl: "http://cdp-backend.namespace.svc.cluster.local:8080/" # CHANGEIT
@@ -240,10 +243,10 @@ metadataService:
   cronjob:
     enabled: true
 dbMetadataSync:
-  enabled: true
+  enabled: false
   probes:
-    livenessEnabled: true
-    readinessEnabled: true
+    livenessEnabled: false
+    readinessEnabled: false
   config:
     logLevel: "trace"
     metadataServiceToken: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.ewogICJ0eXBlIjogIiIsCiAgInNlcnZpY2UiOiAiZGItbWV0YWRhdGEtc3luYyIsCiAgImlhdCI6IDE2NzkzMTk4MTUsCiAgImlzcyI6ICJhZ2dyZWdpb24iCn0.azuGQRZ9Kls_mfkvML_QDDkgnDn3rWJ44YV6fA4A1GU # CHANGEIT2
