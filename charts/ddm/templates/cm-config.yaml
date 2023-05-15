@@ -32,13 +32,13 @@ data:
     wallet:
       type: file
       params:
-        file_path: {{ .Values.config.configsPath }}/wallet.yaml
+        file_path: {{ .Values.config.secretsPath }}/wallet.yaml
 
     task_executors:
       acquire_data:
         type: parquet
         params:
-          base_path: "testdata/in/provider_1"
+          base_path: "/tmp"
       make_bloom:
         type: default
       join:
