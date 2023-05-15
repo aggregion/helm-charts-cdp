@@ -88,9 +88,9 @@ config:
     countTraffic: true
   dataCacheFactory:
     params:
-      baseDir: test/out/provider_1
-  configsPath: testdata/instances/provider_1/configs
-  secretsPath: testdata/instances/provider_1/secrets
+      baseDir: /tmp
+  configsPath: /opt/ddm
+  secretsPath: /opt/ddm-secrets
 
 ecosystem:
   name: "Test Ecosystem"
