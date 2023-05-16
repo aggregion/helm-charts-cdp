@@ -1,6 +1,7 @@
 #!/bin/bash
 
 # requirements: https://mikefarah.gitbook.io/yq/
+# if you use another version of base64 then you need to set arg `base64 -w 1000000` else just `base64`
 
 cd $(dirname $0)
 
@@ -26,7 +27,7 @@ iss: $METADATA_SERVICE_ISSUER
 EOF
 )
 METADATA_SERVICE_PAYLOAD_JSON=$(echo "$METADATA_SERVICE_PAYLOAD" | yq -o j -I 0)
-METADATA_SERVICE_TOKEN=$(bash ./token-generator.sh -s "$METADATA_SERVICE_SECRET" -p "$(echo "$METADATA_SERVICE_PAYLOAD_JSON" | base64 -w 100000)")
+METADATA_SERVICE_TOKEN=$(bash ./token-generator.sh -s "$METADATA_SERVICE_SECRET" -p "$(echo "$METADATA_SERVICE_PAYLOAD_JSON" | base64)")
 echo "dataservice.config.metadataServiceToken: $METADATA_SERVICE_TOKEN"
 echo "dbMetadataSync.config.metadataServiceToken: $METADATA_SERVICE_TOKEN"
 
@@ -44,7 +45,7 @@ iat: $NOW
 iss: $METADATA_SERVICE_ISSUER
 EOF
 )
-METADATA_SERVICE_TOKEN=$(bash ./token-generator.sh -s "$METADATA_SERVICE_SECRET" -p "$(echo "$METADATA_SERVICE_PAYLOAD" | yq -o j -I 0 | base64 -w 100000)")
+METADATA_SERVICE_TOKEN=$(bash ./token-generator.sh -s "$METADATA_SERVICE_SECRET" -p "$(echo "$METADATA_SERVICE_PAYLOAD" | yq -o j -I 0 | base64)")
 echo "backend.configs.metadataServiceToken: $METADATA_SERVICE_TOKEN"
 
 # echo '----------------'
@@ -60,7 +61,7 @@ iat: $NOW
 iss: $DATASERVICE_SERVICE_ISSUER
 EOF
 )
-DATASERVICE_SERVICE_PAYLOAD_JSON=$(echo "$DATASERVICE_SERVICE_PAYLOAD" | yq -o j -I 0 | base64 -w 100000)
+DATASERVICE_SERVICE_PAYLOAD_JSON=$(echo "$DATASERVICE_SERVICE_PAYLOAD" | yq -o j -I 0 | base64)
 DATASERVICE_SERVICE_TOKEN=$(bash ./token-generator.sh -s "$DATASERVICE_SERVICE_SECRET" -p "$DATASERVICE_SERVICE_PAYLOAD_JSON")
 echo "dataservice.config.accessToken: $DATASERVICE_SERVICE_TOKEN"
 
@@ -77,7 +78,7 @@ iat: $NOW
 iss: $DATASERVICE_SERVICE_ISSUER
 EOF
 )
-DATASERVICE_SERVICE_PAYLOAD_JSON=$(echo "$DATASERVICE_SERVICE_PAYLOAD" | yq -o j -I 0 | base64 -w 100000)
+DATASERVICE_SERVICE_PAYLOAD_JSON=$(echo "$DATASERVICE_SERVICE_PAYLOAD" | yq -o j -I 0 | base64)
 DATASERVICE_SERVICE_TOKEN=$(bash ./token-generator.sh -s "$DATASERVICE_SERVICE_SECRET" -p "$DATASERVICE_SERVICE_PAYLOAD_JSON")
 echo "enclave.configs.dataserviceToken: $DATASERVICE_SERVICE_TOKEN";
 
