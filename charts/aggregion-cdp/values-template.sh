@@ -2,6 +2,8 @@
 
 cd $(dirname $0)
 
+export LC_ALL=C
+
 if [[ ! -e ./private.pem ]];
 then
   echo "Generate key pair"
