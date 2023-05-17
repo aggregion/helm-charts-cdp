@@ -28,8 +28,8 @@ EOF
 )
 METADATA_SERVICE_PAYLOAD_JSON=$(echo "$METADATA_SERVICE_PAYLOAD" | yq -o j -I 0)
 METADATA_SERVICE_TOKEN=$(bash ./token-generator.sh -s "$METADATA_SERVICE_SECRET" -p "$(echo "$METADATA_SERVICE_PAYLOAD_JSON" | base64)")
-echo "dataservice.config.metadataServiceToken: $METADATA_SERVICE_TOKEN"
-echo "dbMetadataSync.config.metadataServiceToken: $METADATA_SERVICE_TOKEN"
+echo "{ \"name\": \".dataservice.config.metadataServiceToken\", \"value\": \"$METADATA_SERVICE_TOKEN\" }"
+echo "{ \"name\": \".dbMetadataSync.config.metadataServiceToken\", \"value\": \"$METADATA_SERVICE_TOKEN\" }"
 
 # echo '----------------'
 # echo ''
@@ -46,7 +46,7 @@ iss: $METADATA_SERVICE_ISSUER
 EOF
 )
 METADATA_SERVICE_TOKEN=$(bash ./token-generator.sh -s "$METADATA_SERVICE_SECRET" -p "$(echo "$METADATA_SERVICE_PAYLOAD" | yq -o j -I 0 | base64)")
-echo "backend.configs.metadataServiceToken: $METADATA_SERVICE_TOKEN"
+echo "{ \"name\": \".backend.configs.metadataServiceToken\", \"value\": \"$METADATA_SERVICE_TOKEN\" }"
 
 # echo '----------------'
 # echo ''
@@ -63,7 +63,7 @@ EOF
 )
 DATASERVICE_SERVICE_PAYLOAD_JSON=$(echo "$DATASERVICE_SERVICE_PAYLOAD" | yq -o j -I 0 | base64)
 DATASERVICE_SERVICE_TOKEN=$(bash ./token-generator.sh -s "$DATASERVICE_SERVICE_SECRET" -p "$DATASERVICE_SERVICE_PAYLOAD_JSON")
-echo "dataservice.config.accessToken: $DATASERVICE_SERVICE_TOKEN"
+echo "{ \"name\": \".dataservice.config.accessToken\", \"value\": \"$DATASERVICE_SERVICE_TOKEN\" }"
 
 # echo '----------------'
 # echo ''
@@ -80,7 +80,7 @@ EOF
 )
 DATASERVICE_SERVICE_PAYLOAD_JSON=$(echo "$DATASERVICE_SERVICE_PAYLOAD" | yq -o j -I 0 | base64)
 DATASERVICE_SERVICE_TOKEN=$(bash ./token-generator.sh -s "$DATASERVICE_SERVICE_SECRET" -p "$DATASERVICE_SERVICE_PAYLOAD_JSON")
-echo "enclave.configs.dataserviceToken: $DATASERVICE_SERVICE_TOKEN";
+echo "{ \"name\": \".enclave.configs.dataserviceToken\", \"value\": \"$DATASERVICE_SERVICE_TOKEN\" }"
 
 # echo '----------------'
 # echo ''
