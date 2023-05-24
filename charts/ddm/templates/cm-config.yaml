@@ -34,6 +34,8 @@ data:
       params:
         file_path: {{ .Values.config.secretsPath }}/wallet.yaml
 
+    event_exporters: []
+
     task_executors:
       acquire_data:
         type: parquet
