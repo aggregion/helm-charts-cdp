@@ -1,0 +1,62 @@
+{{- if and .Values.ddmEventConsumer.enabled .Values.backend.enabled }}
+{{- $serviceName := include "cdp.ddmEventConsumer.fullname" . -}}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: "{{ $serviceName | lower }}"
+  labels:
+    {{- include "cdp.ddmEventConsumer.labels" . | nindent 4 }}
+    app.kubernetes.io/component: "ddm-event-consumer"
+spec:
+  replicas: {{ .Values.ddmEventConsumer.replicaCount }}
+  selector:
+    matchLabels:
+      {{- include "cdp.ddmEventConsumer.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      {{- with .Values.ddmEventConsumer.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      labels:
+        {{- include "cdp.ddmEventConsumer.selectorLabels" . | nindent 8 }}
+        app.kubernetes.io/component: "ddm-event-consumer"
+    spec:
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      restartPolicy: {{ .Values.ddmEventConsumer.restartPolicy }}
+      serviceAccountName: {{ include "cdp.serviceAccountName" . }}
+      containers:
+        - name: "ddm-event-consumer"
+          image: "{{ .Values.ddmEventConsumer.image.repository }}:{{ .Values.ddmEventConsumer.image.tag }}"
+          imagePullPolicy: {{ .Values.ddmEventConsumer.image.pullPolicy }}
+          envFrom:
+            - configMapRef:
+                name: {{ $serviceName | lower }}-envs
+          {{- if .Values.ddmEventConsumer.probes.livenessEnabled }}
+          livenessProbe:
+            httpGet:
+              path: {{ .Values.livenessProbe.livenessPath }}
+              port: {{ .Values.livenessProbe.healthcheckPort }}
+            initialDelaySeconds: {{ .Values.livenessProbe.initialDelaySeconds }}
+            periodSeconds: {{ .Values.livenessProbe.periodSeconds }}
+            timeoutSeconds: {{ .Values.livenessProbe.timeoutSeconds }}
+            successThreshold: {{ .Values.livenessProbe.successThreshold }}
+            failureThreshold: {{ .Values.livenessProbe.failureThreshold }}
+          {{- end }}
+          {{- if .Values.ddmEventConsumer.probes.readinessEnabled }}
+          readinessProbe:
+            httpGet:
+              path: {{ .Values.readinessProbe.readinessPath }}
+              port: {{ .Values.livenessProbe.healthcheckPort }}
+            initialDelaySeconds: {{ .Values.readinessProbe.initialDelaySeconds }}
+            periodSeconds: {{ .Values.readinessProbe.periodSeconds }}
+            timeoutSeconds: {{ .Values.readinessProbe.timeoutSeconds }}
+            successThreshold: {{ .Values.readinessProbe.successThreshold }}
+            failureThreshold: {{ .Values.readinessProbe.failureThreshold }}
+          {{- end }}
+          resources:
+            {{- toYaml .Values.backend.resources.ddmEventConsumer | nindent 12 }}
+{{- end }}

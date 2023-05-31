@@ -1,0 +1,34 @@
+{{- if .Values.ddmEventConsumer.enabled }}
+{{- $serviceName := include "cdp.ddmEventConsumer.fullname" . }}
+{{- $dmpBackendServiceName := include "cdp.backend.fullname" . -}}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ $serviceName | lower }}-envs
+  labels:
+    {{- include "cdp.ddmEventConsumer.labels" . | nindent 4 }}
+data:
+  APP_NAME: {{ .Values.ddmEventConsumer.config.appName | quote }}
+  DMP_BACKEND_URL: "http://{{ $dmpBackendServiceName | lower }}:{{ .Values.backend.service.api.port }}"
+  DMP_BACKEND_TOKEN: {{ .Values.backend.configs.dmpSecret | quote }}
+  {{- if and .Values.ddmEventConsumer.probes.livenessEnabled .Values.livenessProbe.livenessPath }}
+  HEALTHCHECK_LIVENESS_PATH: {{ .Values.livenessProbe.livenessPath | quote }}
+  {{- end }}
+  HEALTHCHECK_PORT: {{ .Values.livenessProbe.healthcheckPort | quote }}
+  {{- if and .Values.ddmEventConsumer.probes.readinessEnabled .Values.readinessProbe.readinessPath }}
+  HEALTHCHECK_READINESS_PATH: {{ .Values.readinessProbe.readinessPath | quote }}
+  {{- end }}
+  HEALTHCHECK_SHUTDOWN_TIMEOUT_MS: {{ .Values.livenessProbe.shutdownTimeoutMs | quote }}
+  LOG_LEVEL: {{ .Values.ddmEventConsumer.config.logLevel | quote }}
+  METRICS_ENABLED: {{ .Values.ddmEventConsumer.config.metrics.enabled | quote }}
+  {{- if .Values.metrics.enabled }}
+  METRICS_PATH: {{ .Values.metrics.path | quote }}
+  {{- end }}
+  PREFETCH_COUNT: {{ .Values.ddmEventConsumer.config.consumer.prefetchCount | quote }}
+  QUEUE_NAME: {{ .Values.ddmEventConsumer.config.consumer.queueName | quote }}
+  RABBITMQ_HEARTBEAT_INTERVAL: "30"
+  RABBITMQ_RETRY_POLICY_DELAY: "60"
+  RABBITMQ_RETRY_POLICY_MAX_ATTEMPTS: "150"
+  RABBITMQ_RETRY_POLICY_SEQUENCE_ATTEMPTS_NUMBER: "5"
+  RABBITMQ_URI: {{ .Values.backend.configs.rabbitmqUrl | quote }}
+{{- end }}

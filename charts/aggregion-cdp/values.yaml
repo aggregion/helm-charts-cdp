@@ -791,6 +791,9 @@ backend:
     audienceDatasetConsumer:
       requests:
         memory: "100Mi"
+    ddmEventConsumer:
+      requests:
+        memory: "100Mi"
   nodeSelector: {}
   tolerations: []
   affinity: {}
@@ -1492,3 +1495,24 @@ audienceDatasetConsumer:
     consumer:
       prefetchCount: 1
       queueName: "tables-for-audience-dataset"
+
+ddmEventConsumer:
+  enabled: false
+  replicaCount: 1
+  podAnnotations: {}
+  restartPolicy: Always
+  image:
+    repository: registry.aggregion.com/ddm-event-consumer
+    pullPolicy: IfNotPresent
+    tag: b582590f
+  probes:
+    livenessEnabled: false
+    readinessEnabled: false
+  config:
+    appName: ddm-event-consumer
+    logLevel: info
+    metrics:
+      enabled: false
+    consumer:
+      prefetchCount: 1
+      queueName: "ddm-events"

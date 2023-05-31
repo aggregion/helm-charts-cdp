@@ -73,6 +73,10 @@ If release name contains chart name it will be used as a full name.
 {{- printf "%s" (include "cdp.fullname" (list . "audienceDatasetConsumer")) }}
 {{- end }}
 
+{{- define "cdp.ddmEventConsumer.fullname" -}}
+{{- printf "%s" (include "cdp.fullname" (list . "ddmEventConsumer")) }}
+{{- end }}
+
 {{- define "cdp.oidcprovider.fullname" -}}
 {{- printf "%s" (include "cdp.fullname" (list . "oidcprovider")) }}
 {{- end }}
@@ -219,6 +223,10 @@ app.kubernetes.io/component: "db-metadata-sync-consumer"
 app.kubernetes.io/component: "audience-dataset-consumer"
 {{- end }}
 
+{{- define "cdp.ddmEventConsumer.labels" -}}
+{{- include "cdp.component.labels" (list . "ddmEventConsumer") }}
+{{- end }}
+
 {{- define "cdp.oidcprovider.labels" -}}
 {{- include "cdp.component.labels" (list . "oidcprovider") }}
 app.kubernetes.io/component: "oidc-provider"
@@ -323,6 +331,10 @@ app.kubernetes.io/component: "db-metadata-sync-consumer"
 {{- define "cdp.audienceDatasetConsumer.selectorLabels" -}}
 {{- include "cdp.selectorLabels" (list . "audienceDatasetConsumer") }}
 app.kubernetes.io/component: "audience-dataset-consumer"
+{{- end }}
+
+{{- define "cdp.ddmEventConsumer.selectorLabels" -}}
+{{- include "cdp.selectorLabels" (list . "ddmEventConsumer") }}
 {{- end }}
 
 {{- define "cdp.oidcprovider.selectorLabels" -}}
