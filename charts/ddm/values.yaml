@@ -122,6 +122,7 @@ ecosystem:
     provider_1:
       name: "Provider 1"
       authorized_keys:
+        # openssl ec -in private.pem -pubout -out public.pem
         - |
           -----BEGIN PUBLIC KEY-----
           MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEViak1mkHr4WPvE968qsw0eOpXHt4
@@ -140,6 +141,7 @@ ecosystem:
 
 wallet:
   keys:
+    # openssl ecparam -genkey -noout -name prime256v1 | openssl pkcs8 -topk8 -nocrypt -out private.pem
     provider_1: |
       -----BEGIN PRIVATE KEY-----
       MIGHAgEAMBMGByqGSM49AgEGCCqGSM49AwEHBG0wawIBAQQg5jYg/ijPfDUdV2XT
