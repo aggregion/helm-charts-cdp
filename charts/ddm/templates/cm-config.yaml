@@ -34,7 +34,8 @@ data:
       params:
         file_path: {{ .Values.config.secretsPath }}/wallet.yaml
 
-    event_exporters: []
+    event_exporters:
+      {{- .Values.config.eventExporters | toYaml | nindent 6 }}
 
     task_executors:
       {{- .Values.config.taskExecutors | toYaml | nindent 6 }}
