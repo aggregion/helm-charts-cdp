@@ -67,7 +67,7 @@ spec:
 ---
 {{- end -}}
 
-{{- if .Values.backend.probes.datasetUploader.livenessEnabled }}
+{{- if and .Values.backend.configs.serviceDatasetUploaderEnabled .Values.backend.probes.datasetUploader.livenessEnabled }}
 {{- $component := "dataset-uploader" }}
 apiVersion: v1
 kind: Service
