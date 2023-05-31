@@ -37,26 +37,7 @@ data:
     event_exporters: []
 
     task_executors:
-      acquire_data:
-        type: parquet
-        params:
-          base_path: "/tmp"
-      make_bloom:
-        type: default
-      join:
-        type: default
-      join_by_tuples:
-        type: default
-      filter_bloom:
-        type: default
-      transform:
-        type: default
-      exec_remote:
-        type: default
-      acquire_data_remote:
-        type: default
-      concat:
-        type: default
+      {{- .Values.config.taskExecutors | toYaml | nindent 6 }}
 
   ecosystem.yaml: |
     {{- .Values.ecosystem | toYaml | nindent 4 }}

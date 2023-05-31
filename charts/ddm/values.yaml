@@ -91,6 +91,28 @@ config:
       baseDir: /tmp
   configsPath: /opt/ddm
   secretsPath: /opt/ddm-secrets
+  taskExecutors:
+    acquire_data:
+      type: dataservice
+      params:
+        base_url: "http://dataservice"
+        access_token: "eyJh...rBzE"
+    make_bloom:
+      type: default
+    join:
+      type: default
+    join_by_tuples:
+      type: default
+    filter_bloom:
+      type: default
+    transform:
+      type: default
+    exec_remote:
+      type: default
+    acquire_data_remote:
+      type: default
+    concat:
+      type: default
 
 ecosystem:
   name: "Test Ecosystem"
