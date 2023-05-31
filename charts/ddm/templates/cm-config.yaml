@@ -12,6 +12,9 @@ data:
       bind_addr: "{{ .Values.config.server.bindAddr }}:{{ .Values.config.server.bindPort }}"
       count_traffic: {{ .Values.config.server.countTraffic }}
 
+    tmp_storage:
+      base_dir: /tmp/
+
     data_cache_factory:
       type: disk
       params:
