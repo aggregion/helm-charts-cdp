@@ -1,7 +1,11 @@
-{{- if and .Values.ddmEventConsumer.enabled .Values.backend.enabled }}
+{{- if and
+  .Values.ddmEventConsumer.enabled
+  .Values.backend.enabled
+  .Values.livenessProbe.enabled
+  .Values.ddmEventConsumer.probes.livenessEnabled
+}}
 {{- $serviceName := include "cdp.ddmEventConsumer.fullname" . }}
 
-{{- if and .Values.livenessProbe.enabled .Values.ddmEventConsumer.probes.livenessEnabled }}
 {{- $component := "ddm-event-consumer" }}
 apiVersion: v1
 kind: Service
@@ -22,6 +26,4 @@ spec:
     app.kubernetes.io/component: "{{ $component }}"
     app.kubernetes.io/name: "{{ $serviceName }}"
   type: ClusterIP
-{{- end -}}
-
 {{- end }}
