@@ -55,9 +55,11 @@ spec:
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
           env:
-            FOO: BAR
+            - name: FOO
+              value: BAR
             {{- if .Values.config.debugUseParquetCache }}
-            DEBUG_USE_PARQUET_CACHE: "1"
+            - name: DEBUG_USE_PARQUET_CACHE
+              value: "1"
             {{ end }}
       volumes:
         - name: configs
