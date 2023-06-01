@@ -82,6 +82,7 @@ tolerations: []
 affinity: {}
 
 config:
+  debugUseParquetCache: false
   server:
     bindAddr: "0.0.0.0"
     bindPort: 50001
