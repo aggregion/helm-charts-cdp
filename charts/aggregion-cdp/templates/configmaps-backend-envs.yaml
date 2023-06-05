@@ -19,6 +19,7 @@ data:
   {{- end }}
   ATLAS_URL: "{{ .Values.backend.configs.atlasUrl }}"
   FILES_ENDPOINT: "http://{{ $backendName }}:{{ .Values.backend.service.api.port }}/"
+  SELF_BASE_URL: "http://{{ $backendName }}.{{ .Release.Namespace }}.svc.{{ .Values.clusterDomain }}:{{ .Values.backend.service.api.port }}"
   SERVER_PORT: "{{ .Values.backend.configs.listenPort }}"
   LOG_LEVEL: "{{ .Values.backend.configs.logLevel }}"
   ALARM_NOTIFICATION_EMAIL: "{{ .Values.backend.configs.alarmEmail }}"
@@ -117,4 +118,6 @@ data:
   SYSTEM_SETTINGS_DATA_CATALOGUE_ENABLED: {{ .Values.backend.configs.systemSettings.dataCatalogue.enabled | quote }}
   SYSTEM_SETTINGS_MANAGE_ORGANIZATIONS_FEATURES_USER_INVITATION: {{ .Values.oidcprovider.enabled | quote }}
   SYSTEM_SETTINGS_MANAGE_ORGANIZATIONS_FEATURES_USER_ROLES_MANAGEMENT: {{ .Values.backend.configs.features.userRolesManagment | quote }}
+
+  DDM_AGREEMENTS_CONFIG: {{ .Values.backend.configs.ddm | toJson | quote }}
 {{- end }}

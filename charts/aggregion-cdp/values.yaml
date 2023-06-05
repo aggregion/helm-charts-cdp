@@ -523,6 +523,36 @@ backend:
       isEnabled: false
       path: "/metrics"
     metadataServiceToken: token
+    ddm:
+      participants:
+        - provider: provider1
+          datasetName: datasetId
+          fields:
+            - name: passport_field
+              matchingAttribute: passport
+            - name: phone_field
+              matchingAttribute: phone
+          agreementField:
+            name: agreement_field_name
+            matchingAttribute: agreement
+        - provider: provider2
+          datasetName: datasetId
+          fields:
+            - name: passport_field
+              matchingAttribute: passport
+            - name: phone_field
+              matchingAttribute: phone
+          agreementField:
+            name: agreement_field_name
+            matchingAttribute: agreement
+      rules:
+        - participants:
+            - provider1
+            - provider2
+          columnTuples:
+            - phone
+            - passport
+
     userRolesMap:
       Query:
         Project:
