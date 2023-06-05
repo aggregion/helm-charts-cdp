@@ -119,5 +119,9 @@ data:
   SYSTEM_SETTINGS_MANAGE_ORGANIZATIONS_FEATURES_USER_INVITATION: {{ .Values.oidcprovider.enabled | quote }}
   SYSTEM_SETTINGS_MANAGE_ORGANIZATIONS_FEATURES_USER_ROLES_MANAGEMENT: {{ .Values.backend.configs.features.userRolesManagment | quote }}
 
-  DDM_AGREEMENTS_CONFIG: {{ .Values.backend.configs.ddm | toJson | quote }}
+  DDM_AGREEMENTS_CONFIG: {{ .Values.backend.configs.ddm.extendedAgreementsConfig | toJson | quote }}
+  DDM_ADDRESS: {{ .Values.backend.configs.ddm.address | quote }}
+  DDM_PROVIDER_ID: {{ .Values.backend.configs.providerInstanceId | quote }}
+  DDM_PRIVATE_KEY: {{ .Values.backend.configs.ddm.privateKey | quote }}
+  DDM_TOKEN_TTL: 60
 {{- end }}
