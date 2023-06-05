@@ -123,5 +123,5 @@ data:
   DDM_ADDRESS: {{ .Values.backend.configs.ddm.address | quote }}
   DDM_PROVIDER_ID: {{ .Values.backend.configs.providerInstanceId | quote }}
   DDM_PRIVATE_KEY: {{ .Values.backend.configs.ddm.privateKey | quote }}
-  DDM_TOKEN_TTL: 60
+  DDM_TOKEN_TTL: "60"
 {{- end }}
