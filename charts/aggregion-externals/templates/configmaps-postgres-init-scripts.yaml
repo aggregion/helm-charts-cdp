@@ -6,12 +6,26 @@ metadata:
   name: "{{ $postgresName }}-init"
   labels:
     {{- include "exts.postgres.labels" . | nindent 4 }}
-{{- if or .Values.postgres.initScripts.services.metadataservice.enabled }}
+{{- if or .Values.postgres.initScripts.services.metadataservice.enabled .Values.postgres.initScripts.services.dc.enabled }}
 data:
   {{- if .Values.postgres.initScripts.services.metadataservice.enabled }}
   metadataservice.init.sql: |
     SELECT 'CREATE DATABASE {{ .Values.postgres.initScripts.services.metadataservice.database }}'
     WHERE NOT EXISTS (SELECT FROM pg_database WHERE datname = '{{ .Values.postgres.initScripts.services.metadataservice.database }}')\gexec
+  {{- end }}
+  {{- if .Values.postgres.initScripts.services.dc.enabled }}
+  dc.init.sql: |
+    SELECT 'CREATE DATABASE {{ .Values.postgres.initScripts.services.dc.database }}'
+    WHERE NOT EXISTS (SELECT FROM pg_database WHERE datname = '{{ .Values.postgres.initScripts.services.dc.database }}')\gexec
+    \c {{ .Values.postgres.initScripts.services.dc.database }};
+    CREATE SCHEMA IF NOT EXISTS auth;
+    CREATE SCHEMA IF NOT EXISTS deployer_app;
+    CREATE SCHEMA IF NOT EXISTS deployer_datalab;
+    CREATE SCHEMA IF NOT EXISTS notification;
+    CREATE SCHEMA IF NOT EXISTS platform;
+    CREATE SCHEMA IF NOT EXISTS provision;
+    CREATE SCHEMA IF NOT EXISTS trigger;
+    CREATE SCHEMA IF NOT EXISTS vcsint;
   {{- end }}
 {{- else }}
 data: {}

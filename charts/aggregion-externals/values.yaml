@@ -102,6 +102,9 @@ postgres:
       metadataservice:
         enabled: true
         database: metadata
+      dc:
+        enabled: true
+        database: dc
 
 rabbit:
   enabled: false
