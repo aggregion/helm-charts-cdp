@@ -13,6 +13,7 @@ data:
   BCMQ_HEALTHCHECK_TIMEOUT_MS: {{ .Values.dataservice.config.eosHealthcheckTimeoutMs | quote }}
   BCMQ_LIMIT: {{ .Values.dataservice.config.bcmqLimit | quote }}
   BCMQ_POLLING_INTERVAL: {{ .Values.dataservice.config.bcmqPollingInterval | quote }}
+  BCMQ_MAX_ALLOWED_ERROR_COUNT: {{ .Values.dataservice.config.bcmqMaxAllowedErrorCount | quote }}
   BLOCKCHAIN_NODE_URL: {{ .Values.backend.configs.eosNodeUrl | quote }}
   BLOCKCHAIN_WALLET_ORG_ID: {{ .Values.backend.configs.eosWalletOwnerOrgId | quote }}
   BLOCKCHAIN_WALLET_PUBLIC_KEY: {{ .Values.backend.configs.eosWalletOwnerPub | quote }}
