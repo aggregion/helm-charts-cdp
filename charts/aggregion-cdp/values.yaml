@@ -299,6 +299,7 @@ backend:
     clickhouseDb: "dmp"
     clickhouseUser: "default"
     clickhousePassword: ""
+    bcmqPollingInterval: 500
 
     # could be disabled
     cache: "redis"
@@ -1062,7 +1063,7 @@ dataservice:
     tokenExpirationTimeInSec: 31104000
     tokenSecretKey: data_access_token_secret_key
     tokenIssuer: local_provider_name
-    bcmqPollingInterval: 200
+    bcmqPollingInterval: 500
     bcmqLimit: 1
     trinoHost: localhost
     trinoPort: 8080

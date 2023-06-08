@@ -29,6 +29,7 @@ data:
   CLICKHOUSE_USER: "{{ .Values.backend.configs.clickhouseUser }}"
   CLICKHOUSE_PASSWORD: "{{ .Values.backend.configs.clickhousePassword }}"
   CLICKHOUSE_INSTANCE_NAME: {{ (index .Values.dbMetadataSync.config.instances 0).name }}
+  BCMQ_POLLING_INTERVAL: {{ .Values.backend.configs.bcmqPollingInterval | quote }}
   EOS_NODE_URL: "{{ .Values.backend.configs.eosNodeUrl }}"
   EOS_WALLET_ORG_ID: "{{ .Values.backend.configs.eosWalletOwnerOrgId }}"
   EOS_WALLET_PUBLIC_KEY: "{{ .Values.backend.configs.eosWalletOwnerPub }}"
