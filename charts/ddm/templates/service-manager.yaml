@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "ddm.fullname" . }}-manager
+  labels:
+    {{- include "ddm.labels" . | nindent 4 }}
+spec:
+  type: {{ .Values.service.type }}
+  ports:
+    - port: {{ .Values.service.port }}
+      targetPort: manager
+      protocol: TCP
+      name: manager
+  selector:
+    {{- include "ddm.selectorLabels" . | nindent 4 }}
