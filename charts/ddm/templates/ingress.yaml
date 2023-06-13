@@ -1,4 +1,4 @@
-{{- if .Values.ingress.enabled -}}
+{{- if and false .Values.ingress.enabled -}}
 {{- $fullName := include "ddm.fullname" . -}}
 {{- $svcPort := .Values.service.port -}}
 {{- if and .Values.ingress.className (not (semverCompare ">=1.18-0" .Capabilities.KubeVersion.GitVersion)) }}

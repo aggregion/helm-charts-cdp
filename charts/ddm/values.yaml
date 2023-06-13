@@ -83,7 +83,11 @@ affinity: {}
 
 config:
   debugUseParquetCache: false
-  server:
+  server: # EXTERNAL
+    bindAddr: "0.0.0.0"
+    bindPort: 40001
+    countTraffic: true
+  manager: # INTERNAL
     bindAddr: "0.0.0.0"
     bindPort: 50001
     countTraffic: true
