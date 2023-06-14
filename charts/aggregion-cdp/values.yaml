@@ -533,6 +533,12 @@ backend:
         8Tb4UYxOkAZCyJirt4QRnkNgrOGhRANCAARWJqTWaQevhY+8T3ryqzDR46lce3j0
         J0IrrMF6TsAKBXHv7mfNj3bTSaHK+YqPmkXBWi5IzkB5YzHwAo9pixU1
         -----END PRIVATE KEY-----
+      s3:
+        endpoint: "http://minio"
+        accessKey: "some access key"
+        secretKey: "some secret key"
+        bucket: "some bucket"
+        region: "us-east-1"
       extendedAgreementsConfig:
         participants:
           - provider: provider1
