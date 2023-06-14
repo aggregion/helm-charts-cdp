@@ -1,0 +1,9 @@
+{{- if .Values.sconeCleanroom.enabled -}}
+{{- $name := .Release.Name -}}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: "debug-cleanroom-dataset-downloader-config-{{ $name }}"
+data:
+  DDM_ADDR: "{{ .Values.debugCleanroom.datasetDownloader.config.ddmAddr }}"
+{{- end -}}

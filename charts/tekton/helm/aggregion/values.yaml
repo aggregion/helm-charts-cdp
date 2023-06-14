@@ -29,6 +29,8 @@ debugCleanroom:
     image: registry.aggregion.com/cleanroom/dataset-downloader-debug
     imageTag: latest
     imagePullPolicy: IfNotPresent
+    config:
+      ddmAddr: http://ddm-manager
   pythonRunner:
     image: registry.aggregion.com/cleanroom/python-runner-debug
     imageTag: latest
@@ -81,6 +83,7 @@ sconeCleanroom:
         memory: 3Gi
     config:
       sleepAfterDownload: 5000
+      ddmAddr: http://ddm-manager
   pythonRunner:
     image: registry.aggregion.com/cleanroom/python-runner-production
     imageTag: 0.5.6
