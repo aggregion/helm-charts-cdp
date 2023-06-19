@@ -3,12 +3,24 @@
 cd $(dirname $0)
 
 export LC_ALL=C
+export TEMPLATE_FILENAME=${TEMPLATE_FILENAME:-values-template.yaml}
+export KEYS_ABS_DIR="${KEYS_ABS_DIR:-.}"
+export PRIVATE_KEY_ABS_PATH="$KEYS_ABS_DIR/private.pem"
+export PUBLIC_KEY_ABS_PATH="$KEYS_ABS_DIR/public.pem"
+export CLUSTER_DOMAIN="${CLUSTER_DOMAIN:-cluster.local}"
+export URL_SUFFIX="${URL_SUFFIX:--prod}"
+export BASE_FRONT_DOMAIN="${BASE_FRONT_DOMAIN:-app.aggregion.com}"
+export BASE_FRONT_URL_SCHEMA="${BASE_FRONT_URL_SCHEMA:-http}"
+export CDP_NS="${CDP_NS:-agg-prod}"
+export DC_NS="${DC_NS:-agg-prod-dc}"
+export EOS_WALLET_PUBLIC_KEY="${EOS_WALLET_PUBLIC_KEY:-CHANGEIT}"
+export EOS_WALLET_PRIVATE_KEY="${EOS_WALLET_PUBLIC_KEY:-CHANGEIT}"
 
-if [[ ! -e ./private.pem ]];
+if [[ ! -e $PRIVATE_KEY_ABS_PATH ]];
 then
   echo "Generate key pair"
-  openssl genrsa -out private.pem 4096
-  openssl rsa -in private.pem -outform PEM -pubout -out public.pem
+  openssl genrsa -out $PRIVATE_KEY_ABS_PATH 4096
+  openssl rsa -in $PRIVATE_KEY_ABS_PATH -outform PEM -pubout -out $PUBLIC_KEY_ABS_PATH
 fi
 
 OLD_VALUES=$(cat -)
@@ -49,7 +61,11 @@ OLD_VALUES_MD_PARAMS_CREDS_IV=$(echo "$OLD_VALUES" | yq .metadataParams.credenti
 [[ $OLD_VALUES_MD_PARAMS_CREDS_IV == 'null' ]] && OLD_VALUES_MD_PARAMS_CREDS_IV=
 export MD_PARAMS_CREDS_IV=${OLD_VALUES_MD_PARAMS_CREDS_IV:-$(tr -dc A-Za-z0-9 </dev/urandom | head -c 16)}
 
+OLD_VALUES_DATASERVICE_CONFIG_CREDENTIALSDECRYPTKEY=$(echo "$OLD_VALUES" | yq .dataservice.config.credentialsDecryptKey)
+[[ $OLD_VALUES_DATASERVICE_CONFIG_CREDENTIALSDECRYPTKEY == 'null' ]] && OLD_VALUES_DATASERVICE_CONFIG_CREDENTIALSDECRYPTKEY=
+export DATASERVICE_CONFIG_CREDENTIALSDECRYPTKEY=${OLD_VALUES_DATASERVICE_CONFIG_CREDENTIALSDECRYPTKEY:-$(tr -dc A-Za-z0-9 </dev/urandom | head -c 32)}
+
 export PRIVATE_KEY_6S=$(cat ./private.pem | sed 's/^/      /')
 export PRIVATE_KEY_6S=${PRIVATE_KEY_6S:6}
 
-cat ./values-template.yaml | envsubst
+cat ./$TEMPLATE_FILENAME | envsubst
