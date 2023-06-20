@@ -1,0 +1,35 @@
+initContainers:
+  - name: import-custom-cert
+    image: registry.aggregion.com/keycloak:dcp-master-4598da76-14
+    securityContext:
+        runAsNonRoot: false
+        runAsUser: 0
+    command:
+      - /bin/bash
+      - -ec
+      - |-
+        cat <<EOF > /tmp/auth.crt
+        -----BEGIN CERTIFICATE-----
+        ...
+        -----END CERTIFICATE-----
+        EOF
+        keytool -importcert -keystore /opt/custom-certs/internal.jks -alias starttlsip -storepass somepass -file /tmp/auth.crt -noprompt
+    volumeMounts:
+      - name: custom-certs
+        mountPath: /opt/custom-certs
+extraVolumes:
+  - name: custom-certs
+    emptyDir: {}
+extraVolumeMounts:
+  - name: custom-certs
+    mountPath: /opt/custom-certs
+extraEnvVars:
+  - name: KEYCLOAK_EXTRA_ARGS
+    value: >-
+      --spi-login-protocol-openid-connect-legacy-logout-redirect-uri=true
+      --spi-truststore-file-file=/opt/custom-certs/internal.jks
+      --spi-truststore-file-password=somepass
+      --spi-truststore-file-hostname-verification-policy=ANY
+      --log-level=INFO,org.keycloak.events:debug
+  - name: KEYCLOAK_LOG_LEVEL
+    value: DEBUG
