@@ -81,6 +81,25 @@ tolerations: []
 
 affinity: {}
 
+server: # EXTERNAL
+  grpcui:
+    enabled: false
+    port: 40002
+    resources: {}
+    image:
+      repository: registry.aggregion.com/ddm-grpcui
+      pullPolicy: Always
+      tag: latest
+manager: # INTERNAL
+  grpcui:
+    enabled: false
+    port: 50002
+    resources: {}
+    image:
+      repository: registry.aggregion.com/ddm-grpcui
+      pullPolicy: Always
+      tag: latest
+
 config:
   debugUseParquetCache: false
   server: # EXTERNAL
