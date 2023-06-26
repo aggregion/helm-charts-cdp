@@ -64,6 +64,38 @@ spec:
             - name: DEBUG_USE_PARQUET_CACHE
               value: "1"
             {{ end }}
+        {{- if .Values.server.grpcui.enabled }}
+        - name: {{ .Chart.Name }}-server-grpcui
+          image: "{{ .Values.server.grpcui.image.repository }}:{{ .Values.server.grpcui.image.tag }}"
+          imagePullPolicy: {{ .Values.server.grpcui.image.pullPolicy }}
+          ports:
+            - name: server-ui
+              containerPort: {{ .Values.server.grpcui.port }}
+              protocol: TCP
+          resources:
+            {{- toYaml .Values.server.grpcui.resources | nindent 12 }}
+          env:
+            - name: ADDR
+              value: "127.0.0.1:{{ .Values.config.server.bindPort }}"
+            - name: PORT
+              value: {{ .Values.server.grpcui.port | quote }}
+        {{ end }}
+        {{- if .Values.manager.grpcui.enabled }}
+        - name: {{ .Chart.Name }}-manager-grpcui
+          image: "{{ .Values.manager.grpcui.image.repository }}:{{ .Values.manager.grpcui.image.tag }}"
+          imagePullPolicy: {{ .Values.manager.grpcui.image.pullPolicy }}
+          ports:
+            - name: manager-ui
+              containerPort: {{ .Values.manager.grpcui.port }}
+              protocol: TCP
+          resources:
+            {{- toYaml .Values.manager.grpcui.resources | nindent 12 }}
+          env:
+            - name: ADDR
+              value: "127.0.0.1:{{ .Values.config.manager.bindPort }}"
+            - name: PORT
+              value: {{ .Values.manager.grpcui.port | quote }}
+        {{ end }}
       volumes:
         - name: configs
           configMap:
