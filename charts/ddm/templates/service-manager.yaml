@@ -7,7 +7,7 @@ metadata:
 spec:
   type: {{ .Values.manager.service.type }}
   ports:
-    - port: {{ .Values.manager.service.port }}
+    - port: 80
       targetPort: manager
       protocol: TCP
       name: manager
