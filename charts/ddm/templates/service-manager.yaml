@@ -5,9 +5,9 @@ metadata:
   labels:
     {{- include "ddm.labels" . | nindent 4 }}
 spec:
-  type: {{ .Values.service.type }}
+  type: {{ .Values.manager.service.type }}
   ports:
-    - port: {{ .Values.service.port }}
+    - port: {{ .Values.manager.service.port }}
       targetPort: manager
       protocol: TCP
       name: manager

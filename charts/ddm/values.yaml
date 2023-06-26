@@ -78,6 +78,9 @@ tolerations: []
 affinity: {}
 
 server: # EXTERNAL
+  service:
+    type: ClusterIP
+    port: 40001
   grpcui:
     enabled: false
     port: 40002
@@ -87,6 +90,9 @@ server: # EXTERNAL
       pullPolicy: Always
       tag: latest
 manager: # INTERNAL
+  service:
+    type: ClusterIP
+    port: 50001
   grpcui:
     enabled: false
     port: 50002
@@ -100,11 +106,9 @@ config:
   debugUseParquetCache: false
   server: # EXTERNAL
     bindAddr: "0.0.0.0"
-    bindPort: 40001
     countTraffic: true
   manager: # INTERNAL
     bindAddr: "0.0.0.0"
-    bindPort: 50001
     countTraffic: true
   dataCacheFactory:
     params:

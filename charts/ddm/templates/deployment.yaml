@@ -37,10 +37,10 @@ spec:
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           ports:
             - name: server
-              containerPort: {{ .Values.config.server.bindPort }}
+              containerPort: {{ .Values.server.service.port }}
               protocol: TCP
             - name: manager
-              containerPort: {{ .Values.config.manager.bindPort }}
+              containerPort: {{ .Values.manager.service.port }}
               protocol: TCP
           volumeMounts:
             - mountPath: {{ .Values.config.configsPath }}
@@ -76,7 +76,7 @@ spec:
             {{- toYaml .Values.server.grpcui.resources | nindent 12 }}
           env:
             - name: ADDR
-              value: "127.0.0.1:{{ .Values.config.server.bindPort }}"
+              value: "127.0.0.1:{{ .Values.server.service.port }}"
             - name: PORT
               value: {{ .Values.server.grpcui.port | quote }}
         {{ end }}
@@ -92,7 +92,7 @@ spec:
             {{- toYaml .Values.manager.grpcui.resources | nindent 12 }}
           env:
             - name: ADDR
-              value: "127.0.0.1:{{ .Values.config.manager.bindPort }}"
+              value: "127.0.0.1:{{ .Values.manager.service.port }}"
             - name: PORT
               value: {{ .Values.manager.grpcui.port | quote }}
         {{ end }}
