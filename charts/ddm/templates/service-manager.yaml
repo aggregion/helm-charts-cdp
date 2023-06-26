@@ -8,7 +8,7 @@ spec:
   type: {{ .Values.manager.service.type }}
   ports:
     - port: {{ .Values.manager.service.port }}
-      targetPort: {{ .Values.manager.service.port }}
+      targetPort: manager
       protocol: TCP
       name: manager
   selector:
