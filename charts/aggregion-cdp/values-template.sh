@@ -57,7 +57,7 @@ OLD_VALUES_MD_PARAMS_CREDS_ENCRYPTION_KEY=$(echo "$OLD_VALUES" | yq .metadataPar
 [[ $OLD_VALUES_MD_PARAMS_CREDS_ENCRYPTION_KEY == 'null' ]] && OLD_VALUES_MD_PARAMS_CREDS_ENCRYPTION_KEY=
 export MD_PARAMS_CREDS_ENCRYPTION_KEY=${OLD_VALUES_MD_PARAMS_CREDS_ENCRYPTION_KEY:-$(tr -dc A-Za-z0-9 </dev/urandom | head -c 32)}
 
-OLD_VALUES_MD_PARAMS_CREDS_IV=$(echo "$OLD_VALUES" | yq .metadataParams.credentials.encryptionKey)
+OLD_VALUES_MD_PARAMS_CREDS_IV=$(echo "$OLD_VALUES" | yq .metadataParams.credentials.iv)
 [[ $OLD_VALUES_MD_PARAMS_CREDS_IV == 'null' ]] && OLD_VALUES_MD_PARAMS_CREDS_IV=
 export MD_PARAMS_CREDS_IV=${OLD_VALUES_MD_PARAMS_CREDS_IV:-$(tr -dc A-Za-z0-9 </dev/urandom | head -c 16)}
 
