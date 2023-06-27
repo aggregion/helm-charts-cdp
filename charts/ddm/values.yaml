@@ -102,6 +102,9 @@ manager: # INTERNAL
       pullPolicy: Always
       tag: latest
 
+podTemplateSpec:
+  dnsPolicy: ClusterFirst
+
 config:
   debugUseParquetCache: false
   debugKeepArtifacts: false
