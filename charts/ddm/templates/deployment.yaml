@@ -23,6 +23,10 @@ spec:
         {{- include "ddm.selectorLabels" . | nindent 8 }}
     spec:
       dnsPolicy: {{ .Values.podTemplateSpec.dnsPolicy }}
+      {{- if .Values.podTemplateSpec.dnsConfig }}
+      dnsConfig:
+        {{- .Values.podTemplateSpec.dnsConfig | toYaml | nindent 8 }}
+      {{- end }}
       {{- with .Values.imagePullSecrets }}
       imagePullSecrets:
         {{- toYaml . | nindent 8 }}

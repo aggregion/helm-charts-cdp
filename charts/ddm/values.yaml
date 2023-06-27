@@ -104,6 +104,13 @@ manager: # INTERNAL
 
 podTemplateSpec:
   dnsPolicy: ClusterFirst
+  dnsConfig: {}
+  # nameservers: ["1.2.3.4"]
+  # searches: ["ns1.svc.cluster-domain.example"]
+  # options:
+  #   - name: ndots
+  #     value: "2"
+  #   - name: edns0
 
 config:
   debugUseParquetCache: false
