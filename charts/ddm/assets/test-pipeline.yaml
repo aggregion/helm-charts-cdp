@@ -1,0 +1,33 @@
+id: connection_test
+tasks:
+- id: alfa-bank
+  participant: alfa-bank
+  type: sleep
+  params:
+    data_keys: []
+    result_keys: []
+    duration_millis: 1000
+
+- id: beeline
+  participant: beeline
+  type: sleep
+  params:
+    data_keys: []
+    result_keys: []
+    duration_millis: 1000
+
+- id: alfastrah
+  participant: alfastrah
+  type: sleep
+  params:
+    data_keys: []
+    result_keys: []
+    duration_millis: 1000
+
+- id: x5
+  participant: x5
+  type: sleep
+  params:
+    data_keys: []
+    result_keys: []
+    duration_millis: 1000
