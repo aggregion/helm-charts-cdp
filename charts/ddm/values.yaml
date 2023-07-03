@@ -132,7 +132,8 @@ config:
     countTraffic: true
   dataCacheFactory:
     params:
-      baseDir: /tmp
+      baseDir: /opt/ddm-cache
+      hostPath: /opt/ddm-cache
   configsPath: /opt/ddm
   secretsPath: /opt/ddm-secrets
   taskExecutors:

@@ -52,6 +52,8 @@ spec:
               name: configs
             - mountPath: {{ .Values.config.secretsPath }}
               name: secrets
+            - mountPath: {{ .Values.config.dataCacheFactory.params.baseDir }}
+              name: data-cache
           # livenessProbe:
           #   httpGet:
           #     path: /
@@ -112,6 +114,9 @@ spec:
         - name: secrets
           secret:
             secretName: {{ $name }}-secrets
+        - name: data-cache
+          hostPath:
+            path: "{{ .Values.config.dataCacheFactory.params.hostPath }}"
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
