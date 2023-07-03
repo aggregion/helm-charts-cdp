@@ -117,6 +117,7 @@ spec:
         - name: data-cache
           hostPath:
             path: "{{ .Values.config.dataCacheFactory.params.hostPath }}"
+            type: DirectoryOrCreate
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
