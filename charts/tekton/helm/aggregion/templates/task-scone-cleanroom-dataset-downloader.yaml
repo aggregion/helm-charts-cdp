@@ -84,14 +84,17 @@ spec:
       # onError: continue
       script: |
         #!/bin/sh
+        echo "dataset-downloader done" >> $COMMON_LOG_PATH
         curl -vvv -X POST -H "Content-Type: plain/text" -H "token: $(params.log-publish-token)" \
-          --data-binary "@$LOG_PATH" \
+          --data-binary "@$COMMON_LOG_PATH" \
           $DCP_BASE_URL$(params.log-publish-path)
         exit `cat $MAIN_PROCESS_EXIT_CODE_PATH`
       env:
         # Logs
         - name: "LOG_PATH"
           value: "$(params.shared-vol-path)/$(params.out-log-file-path)"
+        - name: "COMMON_LOG_PATH"
+          value: "$(params.shared-vol-path)/common-$(params.out-log-file-path)"
         - name: "MAIN_PROCESS_EXIT_CODE_PATH"
           value: "$(params.shared-vol-path)/$(params.out-exitcode-file-path)"
       envFrom:
