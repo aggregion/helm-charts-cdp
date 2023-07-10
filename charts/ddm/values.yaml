@@ -24,6 +24,8 @@ serviceAccount:
   name: ""
 
 podAnnotations: {}
+updateStrategy:
+  type: Recreate
 
 podSecurityContext: {}
   # fsGroup: 2000
