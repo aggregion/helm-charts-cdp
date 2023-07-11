@@ -70,10 +70,9 @@ autoscaling:
   # targetMemoryUtilizationPercentage: 80
 
 nodeSelector: {}
-
 tolerations: []
-
 affinity: {}
+terminationGracePeriodSeconds: 120
 
 server: # EXTERNAL
   service:
