@@ -539,6 +539,8 @@ backend:
         secretKey: "some secret key"
         bucket: "some bucket"
         region: "us-east-1"
+      extractAgreementsEnabled: false
+      extractAgreementsFilePath: /tmp/extended-agreements.tsv
       extendedAgreementsConfig:
         participants:
           - provider: provider1

@@ -131,4 +131,6 @@ data:
   DDM_S3_SECRET_KEY: {{ .Values.backend.configs.ddm.s3.secretKey | quote }}
   DDM_S3_BUCKET: {{ .Values.backend.configs.ddm.s3.bucket | quote }}
   DDM_S3_REGION: {{ .Values.backend.configs.ddm.s3.region | quote }}
+  DDM_EXTRACT_AGREEMENTS_ENABLED: {{ .Values.backend.configs.ddm.extractAgreementsEnabled | quote }}
+  DDM_EXTRACT_AGREEMENTS_FILE_PATH: {{ .Values.backend.configs.ddm.extractAgreementsFilePath | quote }}
 {{- end }}
