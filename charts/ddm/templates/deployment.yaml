@@ -69,7 +69,7 @@ spec:
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
           env:
-            - name: RUST_LOG
+            - name: LOG_LEVEL
               value: {{ .Values.config.logLevel }}
             {{- if .Values.config.debugUseParquetCache }}
             - name: DEBUG_USE_PARQUET_CACHE
