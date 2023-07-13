@@ -1,0 +1,22 @@
+metadataService:
+  backup:
+    enabled: true
+  postgres:
+    db: metadata
+    host: aggregion-externals-postgres-ext-dev3
+    port: 5432
+    password: postgres
+    user: postgres
+
+cronjob:
+  suspend: false
+
+image:
+  repository: postgres
+  pullPolicy: IfNotPresent
+  tag: "13.5"
+
+imagePullSecrets: []
+nameOverride: ""
+fullnameOverride: ""
+namespaceOverride: ""
