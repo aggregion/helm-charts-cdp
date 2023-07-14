@@ -1,0 +1,44 @@
+{{- if .Values.mongobackup.enabled }}
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: mongo-backup-{{ .Values.mongobackup.db }}-job
+  namespace: {{ .Release.Namespace | quote }}
+spec:
+  concurrencyPolicy: Forbid
+  successfulJobsHistoryLimit: 2
+  failedJobsHistoryLimit: 1
+  suspend: {{ .Values.cronjob.suspend  }}
+  schedule: "0 2 * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          {{- if .Values.nodeSelector }}
+          nodeSelector:
+{{ toYaml .Values.nodeSelector | indent 12 }}
+          {{- end }}
+          {{- if .Values.securityContext }}
+          securityContext:
+{{ toYaml .Values.securityContext | indent 12 }}
+          {{- end }}
+          containers:
+          - name: mongo-backup-job
+            image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+            command: ["/bin/sh"]
+            args: ["-c", 'mongodump --uri=$MONGO_URI --db=$MONGO_DB --gzip --archive=/var/backups/mongo-backup-dmp-$(date +"%Y-%m-%d-%H-%M").gzip']
+            env:
+            - name:  MONGO_URI
+              value: mongodb://{{ .Values.mongobackup.endpoint }}.{{ .Values.mongobackup.namespace }}.svc:{{ .Values.mongobackup.port }}
+            - name: MONGO_DB
+              value: {{ .Values.mongobackup.db | quote }}
+            volumeMounts:
+            - name: backup-storage
+              mountPath: /var/backups
+          restartPolicy: Never
+          volumes:
+          - name: backup-storage
+            hostPath:
+              path: {{ .Values.hostpath | quote }}
+              type: DirectoryOrCreate
+{{- end }}

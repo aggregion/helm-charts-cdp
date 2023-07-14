@@ -1,0 +1,63 @@
+{{- if .Values.metadataService.backup.enabled }}
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: postgres-backup-job
+  namespace: {{ .Release.Namespace | quote }}
+spec:
+  concurrencyPolicy: Forbid
+  successfulJobsHistoryLimit: 2
+  failedJobsHistoryLimit: 1
+  suspend: {{ .Values.cronjob.suspend  }}
+  schedule: "0 2 * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          {{- if .Values.nodeSelector }}
+          nodeSelector:
+{{ toYaml .Values.nodeSelector | indent 12 }}
+          {{- end }}
+          {{- if .Values.securityContext }}
+          securityContext:
+{{ toYaml .Values.securityContext | indent 12 }}
+          {{- end }}
+          # initContainers:
+          #   - name: volume-mount-hack
+          #     image: busybox
+          #     command: ["sh", "-c", "chmod -R 755 /var/backups"]
+          #     volumeMounts:
+          #     - name: backup-storage
+          #       mountPath: /var/backups
+          containers:
+          - name: postgres-backup-job
+            image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+            command: ["/bin/sh"]
+            args: ["-c", 'echo "$PG_HOST:$PG_PORT:$PG_DB:$PG_ADMIN:$PG_PASS" > /root/.pgpass && chmod 600 /root/.pgpass && pg_dump -U $PG_ADMIN -h $PG_HOST $PG_DB > /var/backups/backup-$PG_DB-$(date +"%Y-%m-%d-%H-%M").sql; cd /var/backups; tar -zcvf backup-$PG_DB-$(date +"%Y-%m-%d-%H-%M").tar.gz backup-$PG_DB-$(date +"%Y-%m-%d-%H-%M").sql; rm -rf backup-$PG_DB-$(date +"%Y-%m-%d-%H-%M").sql;']
+            env:
+            - name: PG_HOST
+              value: {{ .Values.metadataService.postgres.host | quote }}
+            - name: PG_DB
+              value: {{ .Values.metadataService.postgres.db | quote }}
+            - name: PG_ADMIN
+              value: {{ .Values.metadataService.postgres.user | quote }}
+            - name: PG_PORT
+              value: {{ .Values.metadataService.postgres.port | quote }}
+            - name: PG_PASS
+              valueFrom:
+                secretKeyRef:
+                  name: pg-dump-cronjob-secrets
+                  key: pgpass
+            volumeMounts:
+            - name: backup-storage
+              mountPath: /var/backups
+          restartPolicy: Never
+          volumes:
+          - name: backup-storage
+            # persistentVolumeClaim:
+            #   claimName: log-exporter-pvc
+            hostPath:
+              # path: /var/backups/pgbackups
+              path: {{ .Values.hostpath | quote }}
+              type: DirectoryOrCreate
+{{- end }}
