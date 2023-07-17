@@ -75,15 +75,15 @@ spec:
             {{- with .Values.config.threadPools }}
             {{- if .tokio }}
             - name: TOKIO_WORKER_THREADS
-              value: {{ .tokio }}
+              value: "{{ .tokio }}"
             {{- end }}
             {{- if .rayon }}
             - name: RAYON_NUM_THREADS
-              value: {{ .rayon }}
+              value: "{{ .rayon }}"
             {{- end }}
             {{- if .polars }}
             - name: POLARS_MAX_THREADS
-              value: {{ .polars }}
+              value: "{{ .polars }}"
             {{- end }}
             {{ end }}
             {{- if .Values.config.debugUseParquetCache }}
