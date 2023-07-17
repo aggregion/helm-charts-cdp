@@ -72,6 +72,20 @@ spec:
           env:
             - name: LOG_LEVEL
               value: {{ .Values.config.logLevel }}
+            {{- with .Values.config.threadPools }}
+            {{- if .tokio }}
+            - name: TOKIO_WORKER_THREADS
+              value: {{ .tokio }}
+            {{- end }}
+            {{- if .rayon }}
+            - name: RAYON_NUM_THREADS
+              value: {{ .rayon }}
+            {{- end }}
+            {{- if .polars }}
+            - name: POLARS_MAX_THREADS
+              value: {{ .polars }}
+            {{- end }}
+            {{ end }}
             {{- if .Values.config.debugUseParquetCache }}
             - name: DEBUG_USE_PARQUET_CACHE
               value: "1"
