@@ -20,6 +20,7 @@ data:
   CLICKHOUSE_IS_MOCKED: {{ .Values.dataservice.config.clickhouseIsMocked | quote }}
   CLICKHOUSE_USE_DIRECT_CONNECTION: {{ .Values.dataservice.config.clickhouseUseDirectConnection | quote }}
   CLICKHOUSE_DISABLE_ARROW_COMPRESSION: {{ .Values.dataservice.config.clickhouseDisableArrowCompression | quote }}
+  CLICKHOUSE_ENABLE_ARROW_STRING_AS_STRING: {{ .Values.dataservice.config.clickhouseEnableArrowStringAsString | quote }}
   DATASET_LOGS_AVAILABLE_DAYS: {{ .Values.dataservice.config.datasetLogsAvailableDays | quote }}
   {{- if not .Values.dbMetadataSync.enabled }} # conflict with the same env in "secrets-dataservice-envs.yaml"
   CREDENTIALS_DECRYPT_KEY: {{ .Values.dataservice.config.credentialsDecryptKey | quote }}

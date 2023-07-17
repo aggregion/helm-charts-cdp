@@ -1082,6 +1082,7 @@ dataservice:
     clickhouseUseDirectConnection: true # since 2021-12-13
     clickhouseIsMocked: false # since 2021-12-13
     clickhouseDisableArrowCompression: false # valid values: true, 1, false, 0
+    clickhouseEnableArrowStringAsString: false # valid values: true, 1, false, 0
     eosHealthcheckTimeoutMs: 1000
     eosHealthcheckIntervalMs: 10000
     # metadataServiceEndpoint: "http://aggregion-cdp-dataservice-mds/healthcheck" # DEPRECATED
