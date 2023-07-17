@@ -126,9 +126,9 @@ config:
   debugUseParquetCache: false
   debugKeepArtifacts: false
 #  threadPools:
-#    tokio: 8
-#    rayon: 8
-#    polars: 8
+#    tokio: "8"
+#    rayon: "8"
+#    polars: "8"
   server: # EXTERNAL
     bindAddr: "0.0.0.0"
     countTraffic: true
