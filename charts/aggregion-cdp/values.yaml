@@ -286,6 +286,8 @@ backend:
     blockchainUpdater:
       livenessEnabled: false
       readinessEnabled: false
+  blockchainUpdater:
+    nodeSelector: {}
   configs:
     # infrastructure dependencies
     mongoUrl: "mongodb://mongo:27017/dmp"
@@ -1050,14 +1052,19 @@ dataservice:
       schedule: "*/15 * * * *"
   glossarySyncers:
     enabled: false
+    nodeSelector: {}
   datasetLogsSyncers:
     enabled: true
+    nodeSelector: {}
   datasetDatasetSyncer:
     enabled: true
+    nodeSelector: {}
   datasetDatasetUpdater:
     enabled: true
+    nodeSelector: {}
   datasetInstanceSyncer:
     enabled: true
+    nodeSelector: {}
   config:
     # accessToken: dataservice-api$ node src/cli token gen -i ${backend.configs.providerName}
     accessToken: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0eXBlIjoiRGF0YSBBY2Nlc3MgVG9rZW4gZm9yIHRoZSBhdXRob3JpemF0aW9uIGluIHRoZSBsb2NhbCBwcm92aWRlciBlbnZpcm9ubWVudCIsImlhdCI6MTYzMjY2MDY1OCwiaXNzIjoic3RhZ2VfcHJvdmlkZXIifQ.DLh9HQHXXTZuGSRrXf9uk6QBiikOHztcZ2aNC7x6wKg" # < fake

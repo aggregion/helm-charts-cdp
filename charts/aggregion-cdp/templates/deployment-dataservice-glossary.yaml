@@ -196,6 +196,10 @@ spec:
             periodSeconds: 15
           {{- end -}}
         {{- end }}
+      {{- with .Values.dataservice.glossarySyncers.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
       {{- with .Values.dataservice.affinity }}
       affinity:
         {{- toYaml . | nindent 8 }}

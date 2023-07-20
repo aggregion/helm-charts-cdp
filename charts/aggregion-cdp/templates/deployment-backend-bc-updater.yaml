@@ -199,7 +199,7 @@ spec:
               - key: local.json
                 path: local.json
 
-      {{- with .Values.backend.nodeSelector }}
+      {{- with .Values.backend.blockchainUpdater.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
       {{- end }}
