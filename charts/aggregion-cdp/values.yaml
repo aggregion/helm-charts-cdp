@@ -543,6 +543,8 @@ backend:
         region: "us-east-1"
       extractAgreementsEnabled: false
       extractAgreementsFilePath: /tmp/extended-agreements.tsv
+      clickhouse: test # clickhouse instance name
+      extendedAgreementsTable: extended_agreements
       extendedAgreementsConfig:
         participants:
           - provider: provider1
