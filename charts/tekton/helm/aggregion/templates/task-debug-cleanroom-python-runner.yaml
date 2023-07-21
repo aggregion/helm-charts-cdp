@@ -85,6 +85,9 @@ spec:
       # onError: continue
       script: |
         #!/bin/sh
+        echo "python-runner begin" >> $COMMON_LOG_PATH
+        cat $LOG_PATH | grep -v '^\[SCONE' | tail -c 4000 >> $COMMON_LOG_PATH
+        echo "python-runner end" >> $COMMON_LOG_PATH
         curl -vvv -X POST -H "Content-Type: plain/text" -H "token: $(params.log-publish-token)" \
           --data-binary "@$LOG_PATH" \
           $DCP_BASE_URL$(params.log-publish-path)
@@ -93,6 +96,8 @@ spec:
         # Logs
         - name: "LOG_PATH"
           value: "$(params.shared-vol-path)/$(params.out-log-file-path)"
+        - name: "COMMON_LOG_PATH"
+          value: "$(params.shared-vol-path)/common-$(params.out-log-file-path)"
         - name: "MAIN_PROCESS_EXIT_CODE_PATH"
           value: "$(params.shared-vol-path)/$(params.out-exitcode-file-path)"
       envFrom:
