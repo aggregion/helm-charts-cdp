@@ -129,6 +129,10 @@ config:
 #    tokio: 8
 #    rayon: 8
 #    polars: 4
+  clickhouseInstances: {}
+    # test:
+    #   url: http://localhost:8123
+    #   database: default
   server: # EXTERNAL
     bindAddr: "0.0.0.0"
     countTraffic: true

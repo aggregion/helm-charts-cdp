@@ -36,6 +36,9 @@ data:
           type: memory
           params: {}
 
+    clickhouse_instances:
+      {{- .Values.config.clickhouseInstances | toYaml | nindent 6 }}
+
     wallet:
       type: file
       params:
