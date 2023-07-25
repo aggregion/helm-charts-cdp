@@ -121,6 +121,18 @@ data:
   SYSTEM_SETTINGS_MANAGE_ORGANIZATIONS_FEATURES_USER_INVITATION: {{ .Values.oidcprovider.enabled | quote }}
   SYSTEM_SETTINGS_MANAGE_ORGANIZATIONS_FEATURES_USER_ROLES_MANAGEMENT: {{ .Values.backend.configs.features.userRolesManagment | quote }}
 
+  {{- if .Values.backend.useCommonProxy }}
+  {{- if .Values.common.proxy.httpProxy }}
+  HTTP_PROXY: {{ .Values.common.proxy.httpProxy | quote }}
+  {{- end }}
+  {{- if .Values.common.proxy.httpsProxy }}
+  HTTPS_PROXY: {{ .Values.common.proxy.httpsProxy | quote }}
+  {{- end }}
+  {{- if .Values.common.proxy.noProxy }}
+  NO_PROXY: {{ .Values.common.proxy.noProxy | quote }}
+  {{- end }}
+  {{- end }}
+
   DDM_AGREEMENTS_CONFIG: {{ .Values.backend.configs.ddm.extendedAgreementsConfig | toJson | quote }}
   DDM_ADDRESS: {{ .Values.backend.configs.ddm.address | quote }}
   DDM_PROVIDER_ID: {{ .Values.backend.configs.providerInstanceId | quote }}

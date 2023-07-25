@@ -55,4 +55,16 @@ data:
   QUEUES_DATASETS: {{ .Values.metadataService.config.amqp.queues.dataset | quote }}
   QUEUES_INSTANCES: {{ .Values.metadataService.config.amqp.queues.instance | quote }}
   QUEUES_TERMS: {{ .Values.metadataService.config.amqp.queues.term | quote }}
+
+  {{- if .Values.dataservice.useCommonProxy }}
+  {{- if .Values.common.proxy.httpProxy }}
+  HTTP_PROXY: {{ .Values.common.proxy.httpProxy | quote }}
+  {{- end }}
+  {{- if .Values.common.proxy.httpsProxy }}
+  HTTPS_PROXY: {{ .Values.common.proxy.httpsProxy | quote }}
+  {{- end }}
+  {{- if .Values.common.proxy.noProxy }}
+  NO_PROXY: {{ .Values.common.proxy.noProxy | quote }}
+  {{- end }}
+  {{- end }}
 {{- end }}

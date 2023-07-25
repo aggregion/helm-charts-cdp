@@ -29,7 +29,6 @@ serviceAccount:
   annotations: {}
   name: "default"
 
-
 livenessProbe:
   enabled: true
   livenessPath: /healthcheck/liveness
@@ -63,6 +62,10 @@ common:
     repository: curlimages/curl
     pullPolicy: IfNotPresent
     tag: "7.87.0"
+  proxy:
+    httpProxy: ""
+    httpsProxy: ""
+    noProxy: "localhost,127.0.0.1,10.0.0.0/8"
 
 gatekeeper:
   # must be always `true` for production, it can be `false` only for dev purposes
@@ -208,7 +211,7 @@ backend:
   replicaCount: 1
   annotations:
     reloader.stakater.com/auto: "true"
-
+  useCommonProxy: false
   image:
     repository: registry.aggregion.com/dmp-backend
     pullPolicy: IfNotPresent
@@ -996,6 +999,7 @@ dataservice:
   nameOverride: ""
   annotations:
     reloader.stakater.com/auto: "true"
+  useCommonProxy: false
   podAnnotations: {}
   restartPolicy: Always
   updateStrategy: null
