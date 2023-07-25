@@ -59,12 +59,15 @@ data:
   {{- if .Values.dataservice.useCommonProxy }}
   {{- if .Values.common.proxy.httpProxy }}
   HTTP_PROXY: {{ .Values.common.proxy.httpProxy | quote }}
+  http_proxy: {{ .Values.common.proxy.httpProxy | quote }}
   {{- end }}
   {{- if .Values.common.proxy.httpsProxy }}
   HTTPS_PROXY: {{ .Values.common.proxy.httpsProxy | quote }}
+  https_proxy: {{ .Values.common.proxy.httpsProxy | quote }}
   {{- end }}
   {{- if .Values.common.proxy.noProxy }}
   NO_PROXY: {{ .Values.common.proxy.noProxy | quote }}
+  no_proxy: {{ .Values.common.proxy.noProxy | quote }}
   {{- end }}
   {{- end }}
 {{- end }}
