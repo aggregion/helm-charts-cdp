@@ -1,0 +1,33 @@
+{{- if and .Values.backend.enabled .Values.publishExtendedAgreements.cronjob.enabled }}
+{{- $serviceName := include "cdp.publishExtendedAgreements.fullname" . }}
+{{- if semverCompare ">=1.21-0" .Capabilities.KubeVersion.GitVersion -}}
+apiVersion: batch/v1
+{{- else }}
+apiVersion: batch/v1beta1
+{{- end }}
+kind: CronJob
+metadata:
+  name: {{ $serviceName | lower | quote}}
+  labels:
+    {{- include "cdp.publishExtendedAgreements.labels" . | nindent 4 }}
+spec:
+  startingDeadlineSeconds: 200
+  schedule: {{ .Values.publishExtendedAgreements.cronjob.schedule | quote }}
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+            - name: "publish-extended-agreements-cronjob"
+              image: "{{ .Values.common.curl.repository }}:{{ .Values.common.curl.tag }}"
+              imagePullPolicy: {{ .Values.common.curl.pullPolicy }}
+              command:
+                - /bin/sh
+                - -c
+                - "curl --silent http://{{ include "cdp.backend.fullname" . | lower }}-svc:{{ .Values.backend.service.api.port }}/enclave/ddm/extended-agreements/publish --header 'Token: {{ .Values.backend.configs.dmpSecret }}'"
+          restartPolicy: OnFailure
+          {{- with .Values.imagePullSecrets }}
+          imagePullSecrets:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+{{- end }}

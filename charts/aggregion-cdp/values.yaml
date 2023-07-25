@@ -1580,3 +1580,7 @@ ddmEventConsumer:
     consumer:
       prefetchCount: 1
       queueName: "ddm-events"
+publishExtendedAgreements:
+  cronjob:
+    enabled: false
+    schedule: "0 */2 * * *"

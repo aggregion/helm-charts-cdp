@@ -57,6 +57,10 @@ If release name contains chart name it will be used as a full name.
 {{- printf "%s" (include "cdp.fullname" (list . "metadataSeed")) }}
 {{- end }}
 
+{{- define "cdp.publishExtendedAgreements.fullname" -}}
+{{- printf "%s" (include "cdp.fullname" (list . "publishExtendedAgreements")) }}
+{{- end }}
+
 {{- define "cdp.metadataService.fullname" -}}
 {{- printf "%s" (include "cdp.fullname" (list . "metadataService")) }}
 {{- end }}
@@ -206,6 +210,11 @@ app.kubernetes.io/component: "metadata-seed"
 {{- define "cdp.metadataService.labels" -}}
 {{- include "cdp.component.labels" (list . "metadataService") }}
 app.kubernetes.io/component: "metadata-service"
+{{- end }}
+
+{{- define "cdp.publishExtendedAgreements.labels" -}}
+{{- include "cdp.component.labels" (list . "publishExtendedAgreements") }}
+app.kubernetes.io/component: "publish-extended-agreements-cronjob"
 {{- end }}
 
 {{- define "cdp.dbMetadataSync.labels" -}}
