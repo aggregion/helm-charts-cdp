@@ -28,7 +28,7 @@ spec:
       serviceAccountName: {{ include "cdp.serviceAccountName" . }}
       {{- if .Values.metadataService.enabled }}
       initContainers:
-        - name: "metadataservice-readiness"
+        - name: "dataservice-readiness"
           securityContext:
             {{- toYaml .Values.dataservice.securityContext | nindent 12 }}
           image: "{{ .Values.common.curl.repository }}:{{ .Values.common.curl.tag }}"
