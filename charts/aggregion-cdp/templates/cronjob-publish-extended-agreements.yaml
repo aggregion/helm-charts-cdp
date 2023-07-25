@@ -24,7 +24,7 @@ spec:
               command:
                 - /bin/sh
                 - -c
-                - "curl --silent http://{{ include "cdp.backend.fullname" . | lower }}-svc:{{ .Values.backend.service.api.port }}/enclave/ddm/extended-agreements/publish --header 'Token: {{ .Values.backend.configs.dmpSecret }}'"
+                - "curl --silent http://{{ include "cdp.backend.fullname" . | lower }}:{{ .Values.backend.service.api.port }}/enclave/ddm/extended-agreements/publish --header 'Token: {{ .Values.backend.configs.dmpSecret }}'"
           restartPolicy: OnFailure
           {{- with .Values.imagePullSecrets }}
           imagePullSecrets:
