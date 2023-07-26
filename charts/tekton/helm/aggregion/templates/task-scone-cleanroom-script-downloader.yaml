@@ -82,7 +82,7 @@ spec:
         runAsGroup: 0
       script: |
         #!/bin/sh
-        echo "script-downloader done" >> $COMMON_LOG_PATH
+        echo "script-downloader finished" >> $COMMON_LOG_PATH
         curl -vvv -X POST -H "Content-Type: plain/text" -H "token: $(params.log-publish-token)" \
           --data-binary "@$COMMON_LOG_PATH" \
           $DCP_BASE_URL$(params.log-publish-path)
