@@ -83,10 +83,10 @@ spec:
       script: |
         #!/bin/sh
         echo "<--- script-downloader" >> $TEMP_LOG_PATH
-        echo "script-downloader begins with timed lines:" >> $TEMP_LOG_PATH
+        echo "begins with timed lines:" >> $TEMP_LOG_PATH
         cat $LOG_PATH | grep '^\[[[:digit:]]\{4\}-[[:digit:]]\{2\}-[[:digit:]]\{2\}.*\]' | head -n 2 >> $TEMP_LOG_PATH
         echo "..." >> $TEMP_LOG_PATH
-        echo "script-downloader ends with timed lines:" >> $TEMP_LOG_PATH
+        echo "ends with timed lines:" >> $TEMP_LOG_PATH
         cat $LOG_PATH | grep '^\[[[:digit:]]\{4\}-[[:digit:]]\{2\}-[[:digit:]]\{2\}.*\]' | tail -n 2 >> $TEMP_LOG_PATH
         echo "last 20 lines started with space:"
         tail -n 20 $TEMP_LOG_PATH | grep '^[[:space:]]' >> $TEMP_LOG_PATH
