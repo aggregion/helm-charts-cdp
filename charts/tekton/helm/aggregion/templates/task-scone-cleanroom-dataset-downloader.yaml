@@ -88,11 +88,13 @@ spec:
       script: |
         #!/bin/sh
         echo "<--- dataset-downloader" >> $TEMP_LOG_PATH
-        echo "dataset-downloader begins with timed line:" >> $TEMP_LOG_PATH
-        cat $LOG_PATH | grep '^\[[[:digit:]]\{4\}-[[:digit:]]\{2\}-[[:digit:]]\{2\}.*\]' | head -n 1 >> $TEMP_LOG_PATH
+        echo "dataset-downloader begins with timed lines:" >> $TEMP_LOG_PATH
+        cat $LOG_PATH | grep '^\[[[:digit:]]\{4\}-[[:digit:]]\{2\}-[[:digit:]]\{2\}.*\]' | head -n 2 >> $TEMP_LOG_PATH
         echo "..." >> $TEMP_LOG_PATH
-        echo "dataset-downloader ends with timed line:" >> $TEMP_LOG_PATH
-        cat $LOG_PATH | grep '^\[[[:digit:]]\{4\}-[[:digit:]]\{2\}-[[:digit:]]\{2\}.*\]' | tail -n 1 >> $TEMP_LOG_PATH
+        echo "dataset-downloader ends with timed lines:" >> $TEMP_LOG_PATH
+        cat $LOG_PATH | grep '^\[[[:digit:]]\{4\}-[[:digit:]]\{2\}-[[:digit:]]\{2\}.*\]' | tail -n 2 >> $TEMP_LOG_PATH
+        echo "last 20 lines started with space:"
+        tail -n 20 $TEMP_LOG_PATH | grep '^[[:space:]]' >> $TEMP_LOG_PATH
         echo "---> dataset-downloader" >> $TEMP_LOG_PATH
         curl -vvv -X POST -H "Content-Type: plain/text" -H "token: $(params.log-publish-token)" \
           --data-binary "@$TEMP_LOG_PATH" \
