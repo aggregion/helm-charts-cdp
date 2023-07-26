@@ -78,9 +78,9 @@ spec:
           mountPath: $(params.shared-vol-path)
       # onError: continue
       securityContext:
-        fsGroup: 100
-        runAsUser: 100
-        runAsGroup: 100
+        fsGroup: 0
+        runAsUser: 0
+        runAsGroup: 0
       script: |
         #!/bin/sh
         echo "script-downloader done" >> $COMMON_LOG_PATH
