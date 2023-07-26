@@ -110,6 +110,10 @@ spec:
         - name: vol
           mountPath: $(params.shared-vol-path)
       # onError: continue
+      securityContext:
+        fsGroup: 100
+        runAsUser: 100
+        runAsGroup: 100
       script: |
         #!/bin/sh
         echo "result-publisher done" >> $COMMON_LOG_PATH

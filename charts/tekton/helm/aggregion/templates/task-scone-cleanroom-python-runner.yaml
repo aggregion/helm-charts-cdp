@@ -104,8 +104,13 @@ spec:
         - name: vol
           mountPath: $(params.shared-vol-path)
       # onError: continue
+      securityContext:
+        fsGroup: 100
+        runAsUser: 100
+        runAsGroup: 100
       script: |
         #!/bin/sh
+        touch $COMMON_LOG_PATH
         echo "python-runner begin" >> $COMMON_LOG_PATH
         cat $LOG_PATH | grep -v '^\[SCONE' | tail -c 4000 >> $COMMON_LOG_PATH
         echo "python-runner end" >> $COMMON_LOG_PATH
