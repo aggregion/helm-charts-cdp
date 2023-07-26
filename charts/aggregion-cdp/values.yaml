@@ -577,6 +577,8 @@ backend:
             columnTuples:
               - - phone
               - - passport
+      ttl:
+        extendedAgreementsPipeline: 7200
 
     userRolesMap:
       Query:
