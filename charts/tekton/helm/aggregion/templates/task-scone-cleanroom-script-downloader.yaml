@@ -57,7 +57,7 @@ spec:
           value: "$(params.shared-vol-path)/$(params.scripts-dir)"
         # Logs
         - name: "LOG_PATH"
-          value: "$(params.shared-vol-path)/$(params.out-log-file-path)"
+          value: "$(params.shared-vol-path)/script-downloader-$(params.out-log-file-path)"
         - name: "MAIN_PROCESS_EXIT_CODE_PATH"
           value: "$(params.shared-vol-path)/$(params.out-exitcode-file-path)"
         # For SCONE
@@ -82,16 +82,22 @@ spec:
         runAsGroup: 0
       script: |
         #!/bin/sh
-        echo "script-downloader finished" >> $COMMON_LOG_PATH
+        echo "<--- script-downloader" >> $TEMP_LOG_PATH
+        echo "script-downloader begins with timed line:" >> $TEMP_LOG_PATH
+        cat $LOG_PATH | grep '^\[[[:digit:]]\{4\}-[[:digit:]]\{2\}-[[:digit:]]\{2\}.*\]' | head -n 1 >> $TEMP_LOG_PATH
+        echo "..." >> $TEMP_LOG_PATH
+        echo "script-downloader ends with timed line:" >> $TEMP_LOG_PATH
+        cat $LOG_PATH | grep '^\[[[:digit:]]\{4\}-[[:digit:]]\{2\}-[[:digit:]]\{2\}.*\]' | tail -n 1 >> $TEMP_LOG_PATH
+        echo "---> script-downloader" >> $TEMP_LOG_PATH
         curl -vvv -X POST -H "Content-Type: plain/text" -H "token: $(params.log-publish-token)" \
-          --data-binary "@$COMMON_LOG_PATH" \
+          --data-binary "@$TEMP_LOG_PATH" \
           $DCP_BASE_URL$(params.log-publish-path)
         exit `cat $MAIN_PROCESS_EXIT_CODE_PATH`
       env:
         # Logs
         - name: "LOG_PATH"
-          value: "$(params.shared-vol-path)/$(params.out-log-file-path)"
-        - name: "COMMON_LOG_PATH"
+          value: "$(params.shared-vol-path)/script-downloader-$(params.out-log-file-path)"
+        - name: "TEMP_LOG_PATH"
           value: "$(params.shared-vol-path)/common-$(params.out-log-file-path)"
         - name: "MAIN_PROCESS_EXIT_CODE_PATH"
           value: "$(params.shared-vol-path)/$(params.out-exitcode-file-path)"
