@@ -105,7 +105,6 @@ spec:
           mountPath: $(params.shared-vol-path)
       # onError: continue
       securityContext:
-        fsGroup: 0
         runAsUser: 0
         runAsGroup: 0
       script: |
