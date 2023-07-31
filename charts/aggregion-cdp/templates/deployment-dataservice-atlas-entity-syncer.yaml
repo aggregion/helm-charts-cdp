@@ -54,6 +54,10 @@ spec:
           {{- if .Values.dataservice.probes.atlasEntitySyncer.readinessEnabled }}
           {{- include "cdp.readinessProbe" . | indent 10 }}
           {{- end }}
+      {{- with .Values.dataservice.configAtlasSyncer.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
       {{- with .Values.dataservice.affinity }}
       affinity:
         {{- toYaml . | nindent 8 }}
