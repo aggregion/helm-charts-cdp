@@ -66,8 +66,8 @@ data:
   https_proxy: {{ .Values.common.proxy.httpsProxy | quote }}
   {{- end }}
   {{- if .Values.common.proxy.noProxy }}
-  NO_PROXY: {{ .Values.common.proxy.noProxy | quote }}
-  no_proxy: {{ .Values.common.proxy.noProxy | quote }}
+  NO_PROXY: "{{ .Values.common.proxy.noProxy }},{{ $metadataServiceName | lower }}-svc"
+  no_proxy: "{{ .Values.common.proxy.noProxy }},{{ $metadataServiceName | lower }}-svc"
   {{- end }}
   {{- end }}
 {{- end }}
