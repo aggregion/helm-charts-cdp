@@ -131,8 +131,8 @@ data:
   https_proxy: {{ .Values.common.proxy.httpsProxy | quote }}
   {{- end }}
   {{- if .Values.common.proxy.noProxy }}
-  NO_PROXY: {{ .Values.common.proxy.noProxy | quote }}
-  no_proxy: {{ .Values.common.proxy.noProxy | quote }}
+  NO_PROXY: "{{ .Values.common.proxy.noProxy }},{{ $dataserviceName }},{{ $authserviceName }},{{ $metadataServiceName | lower }}-svc,{{ $backendName }},{{ $backendName }}.{{ .Release.Namespace }}.svc.{{ .Values.clusterDomain }}"
+  no_proxy: "{{ .Values.common.proxy.noProxy }},{{ $dataserviceName }},{{ $authserviceName }},{{ $metadataServiceName | lower }}-svc,{{ $backendName }},{{ $backendName }}.{{ .Release.Namespace }}.svc.{{ .Values.clusterDomain }}"
   {{- end }}
   {{- end }}
 
