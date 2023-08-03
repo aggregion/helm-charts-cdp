@@ -136,18 +136,13 @@ data:
   {{- end }}
   {{- end }}
 
-  DDM_AGREEMENTS_CONFIG: {{ .Values.backend.configs.ddm.extendedAgreementsConfig | toJson | quote }}
   DDM_ADDRESS: {{ .Values.backend.configs.ddm.address | quote }}
   DDM_PROVIDER_ID: {{ .Values.backend.configs.providerInstanceId | quote }}
-  DDM_PRIVATE_KEY: {{ .Values.backend.configs.ddm.privateKey | quote }}
-  DDM_TOKEN_TTL: "60"
   DDM_S3_END_POINT: {{ .Values.backend.configs.ddm.s3.endpoint | quote }}
   DDM_S3_ACCESS_KEY: {{ .Values.backend.configs.ddm.s3.accessKey | quote }}
   DDM_S3_SECRET_KEY: {{ .Values.backend.configs.ddm.s3.secretKey | quote }}
   DDM_S3_BUCKET: {{ .Values.backend.configs.ddm.s3.bucket | quote }}
   DDM_S3_REGION: {{ .Values.backend.configs.ddm.s3.region | quote }}
-  DDM_EXTRACT_AGREEMENTS_ENABLED: {{ .Values.backend.configs.ddm.extractAgreementsEnabled | quote }}
-  DDM_EXTRACT_AGREEMENTS_FILE_PATH: {{ .Values.backend.configs.ddm.extractAgreementsFilePath | quote }}
   DDM_TTL_EXTENDED_AGREEMENTS_PIPELINE: {{ .Values.backend.configs.ddm.ttl.extendedAgreementsPipeline | quote }}
   DDM_CLICKHOUSE: {{ .Values.backend.configs.ddm.clickhouse }}
   DDM_EXTENDED_AGREEMENTS_TABLE: {{ .Values.backend.configs.ddm.extendedAgreementsTable }}

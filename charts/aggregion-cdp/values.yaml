@@ -532,51 +532,14 @@ backend:
     metadataServiceToken: token
     ddm:
       address: http://ddm
-      privateKey: |
-        -----BEGIN PRIVATE KEY-----
-        MIGHAgEAMBMGByqGSM49AgEGCCqGSM49AwEHBG0wawIBAQQg5jYg/ijPfDUdV2XT
-        8Tb4UYxOkAZCyJirt4QRnkNgrOGhRANCAARWJqTWaQevhY+8T3ryqzDR46lce3j0
-        J0IrrMF6TsAKBXHv7mfNj3bTSaHK+YqPmkXBWi5IzkB5YzHwAo9pixU1
-        -----END PRIVATE KEY-----
       s3:
         endpoint: "http://minio"
         accessKey: "some access key"
         secretKey: "some secret key"
         bucket: "some bucket"
         region: "us-east-1"
-      extractAgreementsEnabled: false
-      extractAgreementsFilePath: /tmp/extended-agreements.tsv
-      clickhouse: test # clickhouse instance name
+      clickhouse: test # one of keys in the ddm.config.clickhouse_instances
       extendedAgreementsTable: extended_agreements
-      extendedAgreementsConfig:
-        participants:
-          - provider: provider1
-            datasetName: datasetId
-            fields:
-              - name: passport_field
-                matchingAttribute: passport
-              - name: phone_field
-                matchingAttribute: phone
-            agreementField:
-              name: agreement_field_name
-              matchingAttribute: agreement
-          - provider: provider2
-            datasetName: datasetId
-            fields:
-              - name: passport_field
-                matchingAttribute: passport
-              - name: phone_field
-                matchingAttribute: phone
-            agreementField:
-              name: agreement_field_name
-              matchingAttribute: agreement
-        rules:
-          - participants:
-              - provider1
-              - provider2
-            columnTuples:
-              - - phone
-              - - passport
       ttl:
         extendedAgreementsPipeline: 7200
 
