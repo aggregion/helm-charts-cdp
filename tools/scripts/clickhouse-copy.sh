@@ -1,0 +1,79 @@
+#!/bin/bash
+
+if [[ -z $SRC_URL ]];
+then
+  echo "Environment variable SRC_URL is required"
+  exit 1;
+fi
+
+if [[ -z $DST_URL ]];
+then
+  echo "Environment variable DST_URL is required"
+  exit 1;
+fi
+
+if [[ -z $SRC_DB ]];
+then
+  echo "Environment variable SRC_URL is required"
+  exit 1;
+fi
+
+if [[ -z $DST_DB ]];
+then
+  echo "Environment variable DST_URL is required"
+  exit 1;
+fi
+
+FORMAT=Arrow
+
+SRC_URL="$SRC_URL/?database=$SRC_DB"
+DST_URL="$DST_URL/?database=$DST_DB"
+
+src_tables=$(echo "SHOW TABLES" | curl $SRC_URL -d @- -s)
+dst_tables=$(echo "SHOW TABLES" | curl $DST_URL -d @- -s)
+
+for table in $src_tables; do
+  echo "start $table";
+
+  # --- define SELECT query
+  src_select_sql="SELECT%20*%20FROM%20$table%20FORMAT%20$FORMAT";
+  echo "$src_select_sql";
+  # ---
+
+  # --- define CREATE TABLE query
+  get_src_create_table_sql="SHOW CREATE TABLE $table";
+  echo $get_src_create_table_sql;
+  # ---
+
+  # --- change CREATE TABLE query for cluster mode
+  src_create_table_sql=$(echo "$get_src_create_table_sql" | curl $SRC_URL -d @- -s | sed 's/\\n/ /g' | sed "s/$SRC_DB\\.$table/$DST_DB\\.$table/g")
+  if [[ ! -z $DST_CLUSTER_NAME ]];
+  then
+    src_create_table_sql=$(echo "$src_create_table_sql" | sed 's/ENGINE = MergeTree/ENGINE = ReplicatedMergeTree/');
+  fi;
+
+  echo $src_create_table_sql;
+  # ---
+
+  # --- create table
+  create_table_result=$(echo "$src_create_table_sql" | curl "$DST_URL" -d @- -s)
+  if grep -q 'TABLE_ALREADY_EXISTS' <<< "$create_table_result";
+  then
+    echo "Table $table already exists"
+    echo "finish $table";
+    echo "---";
+    continue;
+  fi;
+  # ---
+
+  # --- insert into destination table from source table
+  curl "$SRC_URL&query=$src_select_sql" -o ./$table.arrow
+  curl -i -X POST -T $table.arrow "$DST_URL&query=INSERT%20INTO%20$table%20FORMAT%20$FORMAT"
+  rm -f ./$table.arrow
+  # ---
+
+  echo "finish $table";
+  echo "---";
+  echo;
+  exit 0;
+done
