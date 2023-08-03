@@ -885,6 +885,7 @@ enclave:
     lasPodSecurityContext: {}
     lasSecurityContext: {}
     heapSize: "2G"
+  useCommonProxy: false
   imageServer:
     repository: registry.aggregion.com/enclave-server-nodejs
     pullPolicy: IfNotPresent
