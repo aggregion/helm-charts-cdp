@@ -7,61 +7,63 @@ atlas:
     bearer:
       clientId: atlas
       clientSecret: atlasclientsecret
-      tokenUrl: https://keycloak/realms/aggregion/protocol/openid-connect/token # CHANGEIT3
+      tokenUrl: https://keycloak/realms/aggregion/protocol/openid-connect/token # CHANGEIT
     type: basic
-  baseUrl: http://atlas:21000 # CHANGEIT3
+  baseUrl: http://atlas:21000 # CHANGEIT
 authservice:
   enabled: true
   config:
     jwtSecretKey: "$AUTH_SERVICE_JWT_SECRET_KEY" # GENERATED
     logLevel: info
-    mongoDbUri: mongodb://externals-mongo:27017/auth-service
+    mongoDbUri: mongodb://aggregion-externals-mongo-externals$URL_SUFFIX.$CDP_NS.svc.$CLUSTER_DOMAIN:27017/auth-service
 backend:
   configs:
-    accountName: "$ACCOUNT_ID" # CHANGEIT1
-    baseUrl: http://app.beeline.training.aggregion.com
-    clickhouseDb: somedatabase # CHANGEIT3
-    clickhouseHost: 127.0.0.1 # CHANGEIT3
-    clickhousePassword: somepass # CHANGEIT3
-    clickhousePort: 8123 # CHANGEIT3
-    clickhouseUser: ekjrkaBHEKFQPblerufh # CHANGEIT3
-    datalabApiUrl: http://aggregion-dc-dc-dc.dc.svc.cluster.local:8080 # CHANGEIT3
-    datalabAuthUrl: http://aggregion-cdp-backend-cdp.namespace.svc.cluster.local:8080/auth/datalab/vm/check-request # CHANGEIT3
+    accountName: "$ACCOUNT_ID"
+    baseUrl: $BASE_FRONT_URL_SCHEMA://$BASE_FRONT_DOMAIN
+    clickhouseDb: somedatabase # CHANGEIT
+    clickhouseHost: 127.0.0.1 # CHANGEIT
+    clickhousePassword: somepass # CHANGEIT
+    clickhousePort: 8123 # CHANGEIT
+    clickhouseUser: ekjrkaBHEKFQPblerufh # CHANGEIT
+    datalabApiUrl: http://aggregion-dc-dc-dc.$DC_NS.svc.$CLUSTER_DOMAIN:8080
+    datalabAuthUrl: http://aggregion-cdp-backend-cdp$URL_SUFFIX.$CDP_NS.svc.$CLUSTER_DOMAIN:8080/auth/datalab/vm/check-request
     datalabCpuLimit: "8"
-    datalabDmpNamespace: namespace # CHANGEIT3
+    datalabDmpNamespace: $CDP_NS
     datalabMemoryLimitGb: "64"
     datalabNamespace: datalab
-    datalabOverwriteDomain: app.beeline.training.aggregion.com
+    datalabOverwriteDomain: $BASE_FRONT_DOMAIN
     datalabPassword: admin
     datalabPlatformId: platform
-    datalabWebhookUrl: http://aggregion-cdp-backend-cdp-stage1.namespace.svc.cluster.local:8080/webhooks # CHANGEIT3
-    dmpSecret: "$BACKEND_CONFIGS_DMP_SECRET" # GENERATED3
-    enclaveEndpoint: http://aggregion-cdp-enclave-cdp.namespace.svc.cluster.local:8010 # CHANGEIT3
+    datalabWebhookUrl: http://aggregion-cdp-backend-cdp$URL_SUFFIX.$CDP_NS.svc.$CLUSTER_DOMAIN:8080/webhooks
+    dmpSecret: "$BACKEND_CONFIGS_DMP_SECRET" # GENERATED
+    enclaveEndpoint: http://aggregion-cdp-enclave-cdp$URL_SUFFIX.$CDP_NS.svc.$CLUSTER_DOMAIN:8010
     eosDecryptPk: |-
       $PRIVATE_KEY_6S
-    eosNodeUrl: http://testnet.blockchain.dmp.aggregion.com:9999 # CHANGEIT3
+    eosNodeUrl: http://testnet.blockchain.dmp.aggregion.com:9999 # CHANGEIT
     eosWalletOwnerOrgId: "$ACCOUNT_ID"
-    eosWalletOwnerPk: EOS_PRIVATE_KEY # CHANGEIT3
-    eosWalletOwnerPub: EOS_PUBLIC_KEY # CHANGEIT3
+    eosWalletOwnerPk: $EOS_WALLET_PRIVATE_KEY
+    eosWalletOwnerPub: $EOS_WALLET_PUBLIC_KEY
     jwtSecret: "$BACKEND_CONFIGS_JWT_SECRET" # GENERATED
-    metadataSeedApiUrl: http://cdp-metadataseed.namespace.svc.cluster.local # CHANGEIT3
+    metadataSeedApiUrl: http://aggregion-cdp-metadataseed-cdp$URL_SUFFIX.$CDP_NS.svc.$CLUSTER_DOMAIN
     migrationEnabled: true
-    mongoUrl: mongodb://externals-mongo.namespace.svc.cluster.local:27017/dmpdemo # CHANGEIT3
+    mongoUrl: mongodb://aggregion-externals-mongo-externals$URL_SUFFIX.$CDP_NS.svc.$CLUSTER_DOMAIN:27017/dmp
+    metrics:
+      isEnabled: false
     pipelineRunner:
       debugMode: false
       pipelines:
         cleanroom:
           namespace: pipelines
-          pipelineName: debug-cleanroom-pipelines # CHANGEIT3
+          pipelineName: debug-cleanroom-pipelines # CHANGEIT
           pvcSize: 20Gi
-          serviceAccountName: pipeline-services-runner-sa # CHANGEIT3
+          serviceAccountName: pipeline-services-runner-sa # CHANGEITs
           statusQueue: pipeline_cleanroom_event_status
           storageClassName: longhorn
           timeout: 24h0m0s
     providerInstanceId: "$ACCOUNT_ID"
     providerName: "$ACCOUNT_ID"
-    rabbitmqUrl: amqp://externals-rabbit.namespace.svc.cluster.local:5672 # CHANGEIT3
-    redisHost: externals-redis.namespace.svc.cluster.local # CHANGEIT3
+    rabbitmqUrl: amqp://aggregion-externals-rabbit-externals$URL_SUFFIX.$CDP_NS.svc.$CLUSTER_DOMAIN:5672
+    redisHost: aggregion-externals-redis-externals$URL_SUFFIX.$CDP_NS.svc.$CLUSTER_DOMAIN
     redisPassword: ""
     redisPort: 6379
     redisPrefix: 'agg:'
@@ -73,24 +75,24 @@ backend:
     servicePanelSegmentUploader: false
     serviceSegmentsEnabled: true
     webhookTokenExpirationTime: 3600000
-    metadataServiceToken: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.ewogICJ0eXBlIjogIiIsCiAgInNlcnZpY2UiOiAiYmFja2VuZC1hcGkiLAogICJpYXQiOiAxNjc5MzIwMDgwLAogICJpc3MiOiAiYWdncmVnaW9uIgp9.DTFsatiLLK9zC-0txcdJUpAu90L16NqPiszHSQkqAF4 # CHANGEIT2
+    metadataServiceToken: NEED_GENERATING
 cleos:
   enabled: false
 dataservice:
   config:
-    accessToken: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0eXBlIjoiRGF0YSBBY2Nlc3MgVG9rZW4gZm9yIHRoZSBhdXRob3JpemF0aW9uIGluIHRoZSBsb2NhbCBwcm92aWRlciBlbnZpcm9ubWVudCIsImlhdCI6MTY0NDc0MTkzMywiaXNzIjoic3RhZ2UxIn0.ZoGn0GHP5KRpsM47dA_tA7sFRqb8uu4YQFTg51JDkEI # CHANGEIT2
+    accessToken: NEED_GENERATING
     bcmqPollingInterval: 200
-    endpoint: http://cdp-dataservice-cdp.namespace.svc.cluster.local/api # CHANGEIT3
+    endpoint: http://aggregion-cdp-dataservice-cdp$URL_SUFFIX.$CDP_NS.svc.$CLUSTER_DOMAIN/api
     logLevel: trace
     logPrettyPrint: false
-    mongoDbUri: mongodb://externals-mongo-externals.namespace.svc.cluster.local:27017/ds-api # CHANGEIT3
+    mongoDbUri: mongodb://aggregion-externals-mongo-externals$URL_SUFFIX.$CDP_NS.svc.$CLUSTER_DOMAIN:27017/ds
     mongoDebug: false
     nodeEnv: production
     port: 9045
-    rabbitmqUri: amqp://externals-rabbit-externals.namespace.svc.cluster.local:5672 # CHANGEIT3
+    rabbitmqUri: amqp://aggregion-externals-rabbit-externals$URL_SUFFIX.$CDP_NS.svc.$CLUSTER_DOMAIN:5672
     tokenIssuer: "$ACCOUNT_ID"
     tokenSecretKey: "$DATASERVICE_CONFIG_TOKENSECRETKEY" # GENERATED
-    metadataServiceToken: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.ewogICJ0eXBlIjogIiIsCiAgInNlcnZpY2UiOiAiZGItbWV0YWRhdGEtc3luYyIsCiAgImlhdCI6IDE2NzkzMTk4MTUsCiAgImlzcyI6ICJhZ2dyZWdpb24iCn0.azuGQRZ9Kls_mfkvML_QDDkgnDn3rWJ44YV6fA4A1GU # CHANGEIT2
+    metadataServiceToken: NEED_GENERATING
   configAtlasSyncer:
     enabled: true
   enabled: true
@@ -124,8 +126,8 @@ emailservice:
     readinessEnabled: true
 enclave:
   configs:
-    dataserviceBaseURL: http://aggregion-cdp-dataservice-cdp-stage1.namespace.svc.cluster.local # CHANGEIT3
-    dataserviceToken: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0eXBlIjoiZW5jbGF2ZSIsInNlcnZpY2UiOiJlbmNsYXZlIiwiaWF0IjoxNjQ0NzQxOTMzLCJpc3MiOiJzdGFnZTEifQ.Ed0VKbh9jsByPKcPO5dmZ_0EH3viLFhyeADMhY20_cw # CHANGEIT2
+    dataserviceBaseURL: http://aggregion-cdp-dataservice-cdp$URL_SUFFIX.$CDP_NS.svc.$CLUSTER_DOMAIN
+    dataserviceToken: NEED_GENERATING
     workerHeapSizeMb: 64000
   enabled: true
   imageServices:
@@ -140,23 +142,23 @@ enclave:
       nginx.ingress.kubernetes.io/proxy-send-timeout: "3600"
     enabled: true
     hosts:
-      - host: enclave.beeline.training.aggregion.com # CHANGEIT3
+      - host: enclave.$BASE_FRONT_DOMAIN
         paths:
           - /
     tls:
       - hosts:
-          - enclave.beeline.training.aggregion.com # CHANGEIT3
-        secretName: ingress-beeline-training-aggregion-com # CHANGEIT3
+          - enclave.$BASE_FRONT_DOMAIN
+        secretName: enclave-front-tls # CHANGEIT
 frontend:
   ingress:
     annotations:
-      cert-manager.io/cluster-issuer: letsencrypt-prod
+      nginx.ingress.kubernetes.io/proxy-body-size: 128000m
     enabled: true
     hosts:
-      - host: app.beeline.training.aggregion.com
+      - host: $BASE_FRONT_DOMAIN
     tls:
       - hosts:
-          - app.beeline.training.aggregion.com
+          - $BASE_FRONT_DOMAIN
         paths:
           backend:
             service:
@@ -164,14 +166,14 @@ frontend:
               port:
                 name: httpapi
           pathType: Prefix
-        secretName: ingress-dcp-cert # CHANGEIT3
+        secretName: front-tls # CHANGEIT
 gatekeeper:
   config:
-    clientId: dcp # CHANGEIT3
-    clientSecret: i7gjw338A51BPFsSNck9P10lQxhqHn4O # CHANGEIT3
-    discoveryUrl: https://kc19.beeline.training.aggregion.com/realms/stage1/.well-known/openid-configuration
-    encryptionKey: "$GK_CONFIG_ENCRYPTION_KEY"
-    redirectionUrl: https://app.beeline.training.aggregion.com
+    clientId: dcp # CHANGEIT
+    clientSecret: i7gj...Hn4O # CHANGEIT
+    discoveryUrl: https://kc19.$BASE_FRONT_DOMAIN/realms/aggregion/.well-known/openid-configuration
+    encryptionKey: $GK_CONFIG_ENCRYPTION_KEY
+    redirectionUrl: $BASE_FRONT_URL_SCHEMA://$BASE_FRONT_DOMAIN
     signInPage: ""
     storeUrl: ""
     verbose: true
@@ -180,39 +182,37 @@ gatekeeper:
     repository: registry.aggregion.com/gatekeeper
     tag: 1.4.2
 imagePullSecrets:
-  - name: aggregionregistry # CHANGEIT3
+  - name: aggregionregistry # CHANGEIT
 metadataSeed:
   enabled: true
   config:
-    dmpBackendBaseUrl: "http://dmpbackend" # CHANGEIT3
+    dmpBackendBaseUrl: http://aggregion-cdp-backend-cdp$URL_SUFFIX.$CDP_NS.svc.$CLUSTER_DOMAIN:8080
     nodeTlsRejectUnauthorized: true
 oidcprovider:
   config:
     clientPostLogoutRedirectUris:
-      - https://kc19.beeline.training.aggregion.com/realms/stage1/broker/aggregion-oidc/endpoint/logout_response
+      - https://kc19.$BASE_FRONT_DOMAIN/realms/aggregion/broker/aggregion-oidc/endpoint/logout_response
     clientRedirectUris:
-      - https://kc19.beeline.training.aggregion.com/realms/stage1/broker/aggregion-oidc/endpoint
+      - https://kc19.$BASE_FRONT_DOMAIN/realms/aggregion/broker/aggregion-oidc/endpoint
     logLevel: info
-    successSignupRedirectUri: https://app.beeline.training.aggregion.com
+    successSignupRedirectUri: $BASE_FRONT_URL_SCHEMA://$BASE_FRONT_DOMAIN
     ttl:
       accessToken: 1000000
   enabled: true
   ingress:
-    annotations:
-      cert-manager.io/cluster-issuer: letsencrypt-prod # CHANGEIT3
     enabled: true
     hosts:
-      - host: auth.beeline.training.aggregion.com # CHANGEIT3
+      - host: auth.$BASE_FRONT_DOMAIN
     tls:
       - hosts:
-          - auth.beeline.training.aggregion.com # CHANGEIT3
-        secretName: auth-tls # CHANGEIT3
+          - auth.$BASE_FRONT_DOMAIN
+        secretName: auth-front-tls # CHANGEIT
   probes:
     livenessEnabled: true
     readinessEnabled: true
 providerLinks:
-  - name: "$ACCOUNT_ID"
-    url: http://cdp-enclave.namespace.svc.cluster.local:8010 # CHANGEIT3
+  - name: $ACCOUNT_ID
+    url: http://aggregion-cdp-enclave-cdp$URL_SUFFIX.$CDP_NS.svc.$CLUSTER_DOMAIN:8010
 providers:
   - "$ACCOUNT_ID"
 providerNames:
@@ -230,16 +230,16 @@ metadataService:
     livenessEnabled: false
     readinessEnabled: false
   config:
-    logLevel: "trace"
-    dmpBackendBaseUrl: "http://cdp-backend.namespace.svc.cluster.local:8080/" # CHANGEIT3
-    jwtSecret: "$MDS_CONFIG_JWT_SECRET" # GENERATED
-    postgres:
-      host: "externals-postgres.namespace.svc.cluster.local" # CHANGEIT3
-      logging: true
     amqp:
-      url: "amqp://externals-rabbit.namespace.svc.cluster.local:5672" # CHANGEIT3
+      url: amqp://aggregion-externals-rabbit-externals$URL_SUFFIX.$CDP_NS.svc.$CLUSTER_DOMAIN:5672
+    dmpBackendBaseUrl: http://aggregion-cdp-backend-cdp$URL_SUFFIX.$CDP_NS.svc.$CLUSTER_DOMAIN:8080/
+    jwtSecret: $MDS_CONFIG_JWT_SECRET # GENERATED
+    logLevel: trace
     metrics:
       enabled: true
+    postgres:
+      host: aggregion-externals-postgres-externals$URL_SUFFIX.$CDP_NS.svc.$CLUSTER_DOMAIN
+      logging: true
   cronjob:
     enabled: true
 dbMetadataSync:
@@ -249,18 +249,18 @@ dbMetadataSync:
     readinessEnabled: false
   config:
     logLevel: "trace"
-    metadataServiceToken: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.ewogICJ0eXBlIjogIiIsCiAgInNlcnZpY2UiOiAiZGItbWV0YWRhdGEtc3luYyIsCiAgImlhdCI6IDE2NzkzMTk4MTUsCiAgImlzcyI6ICJhZ2dyZWdpb24iCn0.azuGQRZ9Kls_mfkvML_QDDkgnDn3rWJ44YV6fA4A1GU # CHANGEIT2
+    metadataServiceToken: NEED_GENERATING
     instances:
       - name: ch
         rdbmsType: clickhouse
         connectionOptions:
-          hostname: 127.0.0.1 # CHANGEIT3
+          hostname: 127.0.0.1 # CHANGEIT
           port: 8123
         credentials:
-          username: "someuser" # CHANGEIT3
-          password: "somepass" # CHANGEIT3
+          username: "someuser" # CHANGEIT
+          password: "somepass" # CHANGEIT
         databases:
-          - name: databasename # CHANGEIT3
+          - name: databasename # CHANGEIT
     metrics:
       enabled: true
   cronjob:

@@ -70,7 +70,8 @@ backend:
     datalabWebhookUrl: http://aggregion-cdp-backend-cdp$URL_SUFFIX.$CDP_NS.svc.$CLUSTER_DOMAIN:8080/webhooks
     dmpSecret: $BACKEND_CONFIGS_DMP_SECRET # GENERATED
     enclaveEndpoint: http://aggregion-cdp-enclave-cdp$URL_SUFFIX.$CDP_NS.svc.$CLUSTER_DOMAIN:8010
-    eosDecryptPk: $PRIVATE_KEY_6S
+    eosDecryptPk: |-
+      $PRIVATE_KEY_6S
     eosNodeUrl: http://testnet.blockchain.dmp.aggregion.com:9999 # CHANGEIT
     eosWalletOwnerOrgId: $ACCOUNT_ID
     eosWalletOwnerPk: $EOS_WALLET_PRIVATE_KEY
@@ -89,7 +90,7 @@ backend:
     metadataSeedApiUrl: http://aggregion-cdp-metadataseed-cdp$URL_SUFFIX.$CDP_NS.svc.$CLUSTER_DOMAIN
     metadataServiceToken: eyJhbG...QkqAF4
     metrics:
-      isenabled: false
+      isEnabled: false
     migrationEnabled: true
     mongoUrl: mongodb://aggregion-externals-mongo-externals$URL_SUFFIX.$CDP_NS.svc.$CLUSTER_DOMAIN:27017/dmp
     pipelineRunner:
@@ -160,7 +161,7 @@ cleos:
   enabled: false
 dataservice:
   config:
-    accessToken: eyJhb...1JDkEI
+    accessToken: NEED_GENERATING
     appName: dataservice-api
     bcmqMaxAllowedErrorCount: 50
     bcmqPollingInterval: 1000
@@ -169,7 +170,7 @@ dataservice:
     endpoint: http://aggregion-cdp-dataservice-cdp$URL_SUFFIX.$CDP_NS.svc.$CLUSTER_DOMAIN/api
     logLevel: trace
     logPrettyPrint: false
-    metadataServiceToken: eyJhbG...4A1GU
+    metadataServiceToken: NEED_GENERATING
     mongoDbUri: mongodb://aggregion-externals-mongo-externals$URL_SUFFIX.$CDP_NS.svc.$CLUSTER_DOMAIN:27017/ds
     mongoDbUriTest: ""
     mongoDebug: false
@@ -280,7 +281,7 @@ enclave:
   affinity: {}
   configs:
     dataserviceBaseURL: http://aggregion-cdp-dataservice-cdp$URL_SUFFIX.$CDP_NS.svc.$CLUSTER_DOMAIN
-    dataserviceToken: eyJhbGc...hY20_cw # CHANGEIT
+    dataserviceToken: NEED_GENERATING
     dmpBaseURL: http://aggregion-cdp-backend-cdp$URL_SUFFIX.$CDP_NS.svc.$CLUSTER_DOMAIN:8080/enclave
     nodeTlsRejectUnauthorized: false
     prettyLogs: "false"
@@ -419,4 +420,4 @@ providerNames:
     en: Retail network # CHANGEIT
     ru: Розничная сеть # CHANGEIT
 providers:
-  - $ACCOUNT_ID
+  - "$ACCOUNT_ID"
