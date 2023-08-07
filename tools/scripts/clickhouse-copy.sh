@@ -52,12 +52,8 @@ for table in $src_tables; do
   if [[ ! -z $DST_CLUSTER_NAME ]];
   then
     src_create_table_sql=$(echo "$src_create_table_sql" | sed "s/$DST_DB\\.$table/$DST_DB\\.$table ON CLUSTER $DST_CLUSTER_NAME/g");
-    if grep -q 'ENGINE = Memory' <<< "$create_table_result";
-    then
-      src_create_table_sql=$(echo "$src_create_table_sql" | sed 's/ENGINE = Memory/ENGINE = ReplicatedMergeTree/');
-    else
-      src_create_table_sql=$(echo "$src_create_table_sql" | sed 's/ENGINE = MergeTree/ENGINE = ReplicatedMergeTree/');
-    fi;
+    src_create_table_sql=$(echo "$src_create_table_sql" | sed 's/ENGINE = Memory/ENGINE = ReplicatedMergeTree/');
+    src_create_table_sql=$(echo "$src_create_table_sql" | sed 's/ENGINE = MergeTree/ENGINE = ReplicatedMergeTree/');
   fi;
 
   echo $src_create_table_sql;
