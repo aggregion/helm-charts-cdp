@@ -49,6 +49,7 @@ for table in $src_tables; do
   src_create_table_sql=$(echo "$get_src_create_table_sql" | curl $SRC_URL -d @- -s | sed 's/\\n/ /g' | sed "s/$SRC_DB\\.$table/$DST_DB\\.$table/g")
   if [[ ! -z $DST_CLUSTER_NAME ]];
   then
+    src_create_table_sql=$(echo "$src_create_table_sql" | sed "s/$DST_DB\\.$table/$DST_DB\\.$table ON CLUSTER $DST_CLUSTER_NAME/g");
     src_create_table_sql=$(echo "$src_create_table_sql" | sed 's/ENGINE = MergeTree/ENGINE = ReplicatedMergeTree/');
   fi;
 
@@ -66,6 +67,8 @@ for table in $src_tables; do
   fi;
   # ---
 
+  sleep 11;
+
   # --- insert into destination table from source table
   curl "$SRC_URL&query=$src_select_sql" -o ./$table.arrow
   curl -i -X POST -T $table.arrow "$DST_URL&query=INSERT%20INTO%20$table%20FORMAT%20$FORMAT"
@@ -75,5 +78,4 @@ for table in $src_tables; do
   echo "finish $table";
   echo "---";
   echo;
-  exit 0;
 done
