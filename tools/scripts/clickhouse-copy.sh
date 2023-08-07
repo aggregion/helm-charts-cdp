@@ -58,9 +58,19 @@ for table in $src_tables; do
 
   # --- create table
   create_table_result=$(echo "$src_create_table_sql" | curl "$DST_URL" -d @- -s)
-  if grep -q 'TABLE_ALREADY_EXISTS' <<< "$create_table_result";
+  if grep -q '_ALREADY_EXISTS' <<< "$create_table_result";
   then
     echo "Table $table already exists"
+    echo "finish $table";
+    echo "---";
+    continue;
+  fi;
+  # ---
+
+  # --- check TABLE is VIEW
+  if grep -q 'CREATE VIEW' <<< "$create_table_result";
+  then
+    echo "This is VIEW"
     echo "finish $table";
     echo "---";
     continue;
