@@ -46,7 +46,7 @@ for table in $src_tables; do
   # ---
 
   # --- change CREATE TABLE query for cluster mode
-  src_create_table_sql=$(echo "$get_src_create_table_sql" | curl $SRC_URL -d @- -s | sed 's/\\n/ /g' | sed "s/$SRC_DB\\.$table/$DST_DB\\.$table/g")
+  src_create_table_sql=$(echo "$get_src_create_table_sql" | curl $SRC_URL -d @- -s | sed 's/\\n/ /g' | sed "s/$SRC_DB\\./$DST_DB\\./g")
   if [[ ! -z $DST_CLUSTER_NAME ]];
   then
     src_create_table_sql=$(echo "$src_create_table_sql" | sed "s/$DST_DB\\.$table/$DST_DB\\.$table ON CLUSTER $DST_CLUSTER_NAME/g");
@@ -67,7 +67,7 @@ for table in $src_tables; do
   fi;
   # ---
 
-  # --- check TABLE is VIEW
+  # --- check if TABLE is VIEW then need to skeep
   if grep -q 'CREATE VIEW' <<< "$create_table_result";
   then
     echo "This is VIEW"
