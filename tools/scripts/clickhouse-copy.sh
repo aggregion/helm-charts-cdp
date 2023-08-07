@@ -26,7 +26,7 @@ fi
 
 TIMEOUT_AFTER_INSERT=60
 
-FORMAT=Arrow
+FORMAT=Parquet
 
 SRC_URL="$SRC_URL/?database=$SRC_DB"
 DST_URL="$DST_URL/?database=$DST_DB"
@@ -87,9 +87,9 @@ for table in $src_tables; do
   sleep 11;
 
   # --- insert into destination table from source table
-  curl "$SRC_URL&query=$src_select_sql" -o ./$table.arrow
-  curl -i -X POST -T $table.arrow "$DST_URL&query=INSERT%20INTO%20$table%20FORMAT%20$FORMAT"
-  rm -f ./$table.arrow
+  curl "$SRC_URL&query=$src_select_sql" -o ./$table.$FORMAT
+  curl -i -X POST -T $table.$FORMAT "$DST_URL&query=INSERT%20INTO%20$table%20FORMAT%20$FORMAT"
+  rm -f ./$table.$FORMAT
   # ---
 
   echo "finish $table";
