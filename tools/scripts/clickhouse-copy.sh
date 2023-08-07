@@ -24,6 +24,8 @@ then
   exit 1;
 fi
 
+TIMEOUT_AFTER_INSERT=60
+
 FORMAT=Arrow
 
 SRC_URL="$SRC_URL/?database=$SRC_DB"
@@ -91,6 +93,12 @@ for table in $src_tables; do
   # ---
 
   echo "finish $table";
+  echo "---";
+  echo;
+
+  echo "sleep $TIMEOUT_AFTER_INSERT secs"
+  sleep $TIMEOUT_AFTER_INSERT;
+
   echo "---";
   echo;
 done
