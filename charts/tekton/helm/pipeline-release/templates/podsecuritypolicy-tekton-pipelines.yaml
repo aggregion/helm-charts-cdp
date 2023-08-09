@@ -1,8 +1,4 @@
-{{- if semverCompare ">=1.25-0" .Capabilities.KubeVersion.GitVersion -}}
-apiVersion: policy/v1
-{{- else -}}
-apiVersion: policy/v1beta1
-{{- end }}
+{{- if semverCompare "<1.25-0" .Capabilities.KubeVersion.GitVersion -}}
 kind: PodSecurityPolicy
 metadata:
   name: tekton-pipelines
@@ -45,3 +41,5 @@ spec:
     ranges:
       - min: 1
         max: 65535
+apiVersion: policy/v1beta1
+{{- end }}
