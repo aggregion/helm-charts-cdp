@@ -1,4 +1,8 @@
+{{- if semverCompare ">=1.25-0" .Capabilities.KubeVersion.GitVersion -}}
+apiVersion: policy/v1
+{{- else -}}
 apiVersion: policy/v1beta1
+{{- end }}
 kind: PodSecurityPolicy
 metadata:
   name: tekton-pipelines
