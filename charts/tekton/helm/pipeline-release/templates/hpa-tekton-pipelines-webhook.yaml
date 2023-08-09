@@ -1,8 +1,5 @@
 {{- if semverCompare "<1.25-0" .Capabilities.KubeVersion.GitVersion -}}
 apiVersion: autoscaling/v2beta1
-{{- else -}}
-apiVersion: autoscaling/v2
-{{- end }}
 kind: HorizontalPodAutoscaler
 metadata:
   name: tekton-pipelines-webhook
@@ -28,3 +25,4 @@ spec:
       resource:
         name: cpu
         targetAverageUtilization: 100
+{{- end }}
