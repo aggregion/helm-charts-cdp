@@ -17,7 +17,7 @@ data:
       enabled: true
 
     tmp_storage:
-      base_dir: /tmp/
+      base_dir: {{ .Values.config.tmpPath }}
 
     data_cache_factory:
       type: disk
