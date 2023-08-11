@@ -29,6 +29,12 @@ serviceAccount:
   annotations: {}
   name: "default"
 
+blockchainCommon:
+  smartContracts:
+    base: aggregion
+    catalogs: catalogs
+    users: dmpusers
+
 livenessProbe:
   enabled: true
   livenessPath: /healthcheck/liveness
