@@ -12,114 +12,111 @@ metadata:
   labels:
     {{- include "cdp.backend.labels" . | nindent 4 }}
 data:
-  API_ENDPOINT: "http://{{ $backendName }}:{{ .Values.backend.service.api.port }}/graphql"
-  REACT_APP_CURRENCY: "{{ .Values.frontend.configs.currency }}"
-  {{- if .Values.oidcprovider.enabled }}
-  ENABLE_USER_INVITATION_FEATURE: "true"
-  {{- end }}
-  ATLAS_URL: "{{ .Values.backend.configs.atlasUrl }}"
-  FILES_ENDPOINT: "http://{{ $backendName }}:{{ .Values.backend.service.api.port }}/"
-  SELF_BASE_URL: "http://{{ $backendName }}.{{ .Release.Namespace }}.svc.{{ .Values.clusterDomain }}:{{ .Values.backend.service.api.port }}"
-  SERVER_PORT: "{{ .Values.backend.configs.listenPort }}"
-  LOG_LEVEL: "{{ .Values.backend.configs.logLevel }}"
   ALARM_NOTIFICATION_EMAIL: "{{ .Values.backend.configs.alarmEmail }}"
-  CLICKHOUSE_HOST: "{{ .Values.backend.configs.clickhouseHost }}"
-  CLICKHOUSE_PORT: "{{ .Values.backend.configs.clickhousePort }}"
-  CLICKHOUSE_DB: "{{ .Values.backend.configs.clickhouseDb }}"
-  CLICKHOUSE_USER: "{{ .Values.backend.configs.clickhouseUser }}"
-  CLICKHOUSE_PASSWORD: "{{ .Values.backend.configs.clickhousePassword }}"
-  CLICKHOUSE_INSTANCE_NAME: {{ (index .Values.dbMetadataSync.config.instances 0).name }}
-  BCMQ_POLLING_INTERVAL: {{ .Values.backend.configs.bcmqPollingInterval | quote }}
+  API_ENDPOINT: "http://{{ $backendName }}:{{ .Values.backend.service.api.port }}/graphql"
+  ATLAS_URL: "{{ .Values.backend.configs.atlasUrl }}"
+  AUTH_SERVICE_CACHE_ENABLED: "{{ .Values.backend.configs.authService.cache.enabled }}"
+  AUTH_SERVICE_CACHE_TTL:  "{{ .Values.backend.configs.authService.cache.ttl }}"
+  AUTH_SERVICE_CONCURRENCY: "{{ .Values.backend.configs.authService.concurrency }}"
+  AUTH_SERVICE_ENDPOINT: "http://{{ $authserviceName }}:{{ .Values.authservice.service.port }}"
+  BASE_URL: "{{ .Values.backend.configs.baseUrl }}"
+  BCMQ_HEALTHCHECK_INTERVAL_MS: {{ .Values.backend.configs.eosHealthcheckIntervalMs | quote }}
+  BCMQ_HEALTHCHECK_TIMEOUT_MS: {{ .Values.backend.configs.eosHealthcheckTimeoutMs | quote }}
   BCMQ_MAX_ALLOWED_ERROR_COUNT: {{ .Values.backend.configs.bcmqMaxAllowedErrorCount | quote }}
+  BCMQ_POLLING_INTERVAL: {{ .Values.backend.configs.bcmqPollingInterval | quote }}
+  CACHE_TTL_MARKETPLACE: "{{ .Values.backend.configs.cacheTtlMarket }}"
+  CACHE_TTL_MATCHING: "{{ .Values.backend.configs.cacheTtlMatching }}"
+  CALC_REPORT_DEFAULT_GOODS_DIRECTORY: "{{ .Values.backend.configs.reportDefaultGoodsDirectory }}"
+  CLICKHOUSE_DB: "{{ .Values.backend.configs.clickhouseDb }}"
+  CLICKHOUSE_HOST: "{{ .Values.backend.configs.clickhouseHost }}"
+  CLICKHOUSE_INSTANCE_NAME: {{ (index .Values.dbMetadataSync.config.instances 0).name }}
+  CLICKHOUSE_PASSWORD: "{{ .Values.backend.configs.clickhousePassword }}"
+  CLICKHOUSE_PORT: "{{ .Values.backend.configs.clickhousePort }}"
+  CLICKHOUSE_USER: "{{ .Values.backend.configs.clickhouseUser }}"
+  CURRENT_PROVIDER_NAME: "{{ .Values.backend.configs.providerName }}"
+  DATA_SERVICE_ENDPOINT: "http://{{ $dataserviceName }}:{{ .Values.dataservice.service.port }}/api/"
+  DATA_SERVICE_TOKEN: "{{ .Values.dataservice.config.accessToken }}"
+  DDM_ADDRESS: {{ .Values.backend.configs.ddm.address | quote }}
+  DDM_CLICKHOUSE: {{ .Values.backend.configs.ddm.clickhouse }}
+  DDM_EXTENDED_AGREEMENTS_TABLE: {{ .Values.backend.configs.ddm.extendedAgreementsTable }}
+  DDM_PROVIDER_ID: {{ .Values.backend.configs.providerInstanceId | quote }}
+  DDM_S3_ACCESS_KEY: {{ .Values.backend.configs.ddm.s3.accessKey | quote }}
+  DDM_S3_BUCKET: {{ .Values.backend.configs.ddm.s3.bucket | quote }}
+  DDM_S3_END_POINT: {{ .Values.backend.configs.ddm.s3.endpoint | quote }}
+  DDM_S3_REGION: {{ .Values.backend.configs.ddm.s3.region | quote }}
+  DDM_S3_SECRET_KEY: {{ .Values.backend.configs.ddm.s3.secretKey | quote }}
+  DDM_TTL_EXTENDED_AGREEMENTS_PIPELINE: {{ .Values.backend.configs.ddm.ttl.extendedAgreementsPipeline | quote }}
+  DEFAULT_DICT_LANGUAGE: "{{ .Values.backend.configs.defaultDictLanguage }}"
+  DEFAULT_LANGUAGE: "{{ .Values.backend.configs.defaultLanguage }}"
+  DEPLOY_CONTROLLER_USE_EXTERNAL_S3: "{{ .Values.backend.configs.dcUseExternalS3 }}"
+  DICTS_BRANDS: "{{ .Values.backend.configs.dictMode }}"
+  DICTS_VENDORS: "{{ .Values.backend.configs.dictMode }}"
+  EMAIL_NOTIFICATIONS: '{{ .Values.backend.configs.email | toJson }}'
+  ENCLAVE_DMP_API_SECRET: "{{ .Values.backend.configs.dmpSecret }}"
+  ENCLAVE_ENDPOINT: "{{ .Values.backend.configs.enclaveEndpoint | default (printf "http://%s:%v" $enclaveName .Values.enclave.service.innerPort) }}"
+  ENCLAVE_KNOWN_PROVIDERS: '{{ .Values.providers | toJson }}'
+  ENCLAVE_LOCAL_PROVIDER_NAME: "{{ .Values.backend.configs.providerName }}"
   EOS_NODE_URL: "{{ .Values.backend.configs.eosNodeUrl }}"
   EOS_WALLET_ORG_ID: "{{ .Values.backend.configs.eosWalletOwnerOrgId }}"
   EOS_WALLET_PUBLIC_KEY: "{{ .Values.backend.configs.eosWalletOwnerPub }}"
-  ENCLAVE_LOCAL_PROVIDER_NAME: "{{ .Values.backend.configs.providerName }}"
-  CURRENT_PROVIDER_NAME: "{{ .Values.backend.configs.providerName }}"
-  PROVIDER_INSTANCE_ID: "{{ .Values.backend.configs.providerInstanceId }}"
-  PROVIDER_NAMES: '{{ .Values.providerNames | toJson }}'
-  INTERACTION_INITIALIZATION_VECTOR: "{{ .Values.backend.configs.interactionIV }}"
-  ENCLAVE_ENDPOINT: "{{ .Values.backend.configs.enclaveEndpoint | default (printf "http://%s:%v" $enclaveName .Values.enclave.service.innerPort) }}"
-  ENCLAVE_DMP_API_SECRET: "{{ .Values.backend.configs.dmpSecret }}"
-  ENCLAVE_KNOWN_PROVIDERS: '{{ .Values.providers | toJson }}'
-  EMAIL_NOTIFICATIONS: '{{ .Values.backend.configs.email | toJson }}'
-  CALC_REPORT_DEFAULT_GOODS_DIRECTORY: "{{ .Values.backend.configs.reportDefaultGoodsDirectory }}"
-  DICTS_BRANDS: "{{ .Values.backend.configs.dictMode }}"
-  DICTS_VENDORS: "{{ .Values.backend.configs.dictMode }}"
-  SUPPORT_EMAIL: "{{ .Values.backend.configs.supportEmail }}"
-  BASE_URL: "{{ .Values.backend.configs.baseUrl }}"
-  DATA_SERVICE_ENDPOINT: "http://{{ $dataserviceName }}:{{ .Values.dataservice.service.port }}/api/"
-  DATA_SERVICE_TOKEN: "{{ .Values.dataservice.config.accessToken }}"
-  AUTH_SERVICE_ENDPOINT: "http://{{ $authserviceName }}:{{ .Values.authservice.service.port }}"
-  AUTH_SERVICE_CONCURRENCY: "{{ .Values.backend.configs.authService.concurrency }}"
-  AUTH_SERVICE_CACHE_ENABLED: "{{ .Values.backend.configs.authService.cache.enabled }}"
-  AUTH_SERVICE_CACHE_TTL:  "{{ .Values.backend.configs.authService.cache.ttl }}"
-  OIDC_PROVIDER_ENDPOINT: "https://{{ .Values.oidcprovider.ingress.hosts | first | values | first }}"
-  DEPLOY_CONTROLLER_USE_EXTERNAL_S3: "{{ .Values.backend.configs.dcUseExternalS3 }}"
-  WEBHOOK_TOKEN_EXPIRATION_TIME: "{{ .Values.backend.configs.webhookTokenExpirationTime }}"
-  METADATA_SEED_API_URL: "{{ .Values.backend.configs.metadataSeedApiUrl }}"
-  CACHE_TTL_MARKETPLACE: "{{ .Values.backend.configs.cacheTtlMarket }}"
-  CACHE_TTL_MATCHING: "{{ .Values.backend.configs.cacheTtlMatching }}"
-  DEFAULT_LANGUAGE: "{{ .Values.backend.configs.defaultLanguage }}"
-  DEFAULT_DICT_LANGUAGE: "{{ .Values.backend.configs.defaultDictLanguage }}"
-  MAX_RUNNING_DATALAB_VMS: "{{ .Values.backend.configs.datalabMaxVms }}"
-  GRAPHQL_PLAYGROUND_ENABLED: "{{ .Values.backend.configs.graphQLPlayground.enabled }}"
-  GITLAB_PERSONAL_ACCESS_TOKEN: "{{ .Values.backend.configs.gitlab.personalAccessToken }}"
+  FEATURES_FRONTEND_DUMPS: {{ .Values.backend.configs.features.frontendDumps | quote }}
+  FEATURES_USER_ROLES_MANAGMENT: {{ .Values.backend.configs.features.userRolesManagment | quote }}
+  FILES_ENDPOINT: "http://{{ $backendName }}:{{ .Values.backend.service.api.port }}/"
   GITLAB_HOST: "{{ .Values.backend.configs.gitlab.host }}"
-  PIPELINE_RUNNER_DEBUG_MODE: "{{ .Values.backend.configs.pipelineRunner.debugMode }}"
-  PIPELINE_RUNNER_QUEUE: "{{ .Values.backend.configs.pipelineRunner.queue }}"
-  PIPELINES_CLEANROOM_NAMESPACE: "{{ .Values.backend.configs.pipelineRunner.pipelines.cleanroom.namespace }}"
-  PIPELINES_CLEANROOM_PVC_SIZE: "{{ .Values.backend.configs.pipelineRunner.pipelines.cleanroom.pvcSize }}"
-  PIPELINES_CLEANROOM_STORAGE_CLASS_NAME: "{{ .Values.backend.configs.pipelineRunner.pipelines.cleanroom.storageClassName }}"
-  PIPELINES_CLEANROOM_SERVICE_ACCOUNT_NAME: "{{ .Values.backend.configs.pipelineRunner.pipelines.cleanroom.serviceAccountName }}"
-  PIPELINES_CLEANROOM_TIMEOUT: "{{ .Values.backend.configs.pipelineRunner.pipelines.cleanroom.timeout }}"
-  PIPELINES_CLEANROOM_NAME: "{{ .Values.backend.configs.pipelineRunner.pipelines.cleanroom.pipelineName }}"
-  PIPELINES_CLEANROOM_RESULT_QUEUE: "{{ .Values.backend.configs.pipelineRunner.pipelines.cleanroom.statusQueue }}"
-  PIPELINES_CLEANROOM_PVC_RECLAIM_POLICY: "{{ .Values.backend.configs.pipelineRunner.pipelines.cleanroom.pvcReclaimPolicy }}"
-  PIPELINE_STOPPER_QUEUE: {{ .Values.backend.configs.pipelineStopper.queue | quote }}
-
-  PIPELINES_DEBUG_HASHER_NAMESPACE: "{{ .Values.backend.configs.pipelineRunner.pipelines.debugHasher.namespace }}"
-  PIPELINES_DEBUG_HASHER_PVC_SIZE: "{{ .Values.backend.configs.pipelineRunner.pipelines.debugHasher.pvcSize }}"
-  PIPELINES_DEBUG_HASHER_STORAGE_CLASS_NAME: "{{ .Values.backend.configs.pipelineRunner.pipelines.debugHasher.storageClassName }}"
-  PIPELINES_DEBUG_HASHER_SERVICE_ACCOUNT_NAME: "{{ .Values.backend.configs.pipelineRunner.pipelines.debugHasher.serviceAccountName }}"
-  PIPELINES_DEBUG_HASHER_TIMEOUT: "{{ .Values.backend.configs.pipelineRunner.pipelines.debugHasher.timeout }}"
-  PIPELINES_DEBUG_HASHER_NAME: "{{ .Values.backend.configs.pipelineRunner.pipelines.debugHasher.pipelineName }}"
-  PIPELINES_DEBUG_HASHER_RESULT_QUEUE: "{{ .Values.backend.configs.pipelineRunner.pipelines.debugHasher.statusQueue }}"
-
-  HEALTHCHECK_PORT: {{ .Values.backend.probes.common.healthcheckPort | quote }}
+  GITLAB_PERSONAL_ACCESS_TOKEN: "{{ .Values.backend.configs.gitlab.personalAccessToken }}"
+  GRAPHQL_PLAYGROUND_ENABLED: "{{ .Values.backend.configs.graphQLPlayground.enabled }}"
   HEALTHCHECK_LIVENESS_PATH: {{ .Values.backend.probes.common.livenessPath | quote }}
+  HEALTHCHECK_PORT: {{ .Values.backend.probes.common.healthcheckPort | quote }}
   HEALTHCHECK_READINESS_PATH: {{ .Values.backend.probes.common.readinessPath | quote }}
   HEALTHCHECK_SHUTDOWN_TIMEOUT_MS: {{ .Values.backend.probes.common.healthcheckShutdownTimeoutMs | quote }}
-  BCMQ_HEALTHCHECK_INTERVAL_MS: {{ .Values.backend.configs.eosHealthcheckIntervalMs | quote }}
-  BCMQ_HEALTHCHECK_TIMEOUT_MS: {{ .Values.backend.configs.eosHealthcheckTimeoutMs | quote }}
-  METRICS_PATH: {{ .Values.backend.configs.metrics.path }}
-  METRICS_ENABLED: {{ and .Values.metrics.enabled .Values.backend.configs.metrics.isEnabled | quote }}
-  {{- if .Values.gatekeeper.enabled }}
-  GATEKEEPER_CLIENT_ID: {{ .Values.gatekeeper.config.clientId | quote }}
-  FEATURES_GET_USER_ROLES_FROM_HEADERS: {{ .Values.backend.configs.features.getUserRolesFromHeaders | quote }}
-  {{- else}}
-  FEATURES_GET_USER_ROLES_FROM_HEADERS: "false"
-  {{- end }}
-  FEATURES_USER_ROLES_MANAGMENT: {{ .Values.backend.configs.features.userRolesManagment | quote }}
-  FEATURES_FRONTEND_DUMPS: {{ .Values.backend.configs.features.frontendDumps | quote }}
-
-  METADATA_SERVICE_URL: "http://{{ $metadataServiceName | lower }}-svc:{{ .Values.metadataService.service.port }}"
+  INTERACTION_INITIALIZATION_VECTOR: "{{ .Values.backend.configs.interactionIV }}"
+  LOG_LEVEL: "{{ .Values.backend.configs.logLevel }}"
+  MAX_RUNNING_DATALAB_VMS: "{{ .Values.backend.configs.datalabMaxVms }}"
+  METADATA_SEED_API_URL: "{{ .Values.backend.configs.metadataSeedApiUrl }}"
   METADATA_SERVICE_TOKEN: {{ .Values.backend.configs.metadataServiceToken | quote }}
+  METADATA_SERVICE_URL: "http://{{ $metadataServiceName | lower }}-svc:{{ .Values.metadataService.service.port }}"
+  METRICS_ENABLED: {{ and .Values.metrics.enabled .Values.backend.configs.metrics.isEnabled | quote }}
+  METRICS_PATH: {{ .Values.backend.configs.metrics.path }}
+  OIDC_PROVIDER_ENDPOINT: "https://{{ .Values.oidcprovider.ingress.hosts | first | values | first }}"
+  PIPELINE_RUNNER_DEBUG_MODE: "{{ .Values.backend.configs.pipelineRunner.debugMode }}"
+  PIPELINE_RUNNER_QUEUE: "{{ .Values.backend.configs.pipelineRunner.queue }}"
+  PIPELINE_STOPPER_QUEUE: {{ .Values.backend.configs.pipelineStopper.queue | quote }}
+  PIPELINES_CLEANROOM_NAME: "{{ .Values.backend.configs.pipelineRunner.pipelines.cleanroom.pipelineName }}"
+  PIPELINES_CLEANROOM_NAMESPACE: "{{ .Values.backend.configs.pipelineRunner.pipelines.cleanroom.namespace }}"
+  PIPELINES_CLEANROOM_PVC_RECLAIM_POLICY: "{{ .Values.backend.configs.pipelineRunner.pipelines.cleanroom.pvcReclaimPolicy }}"
+  PIPELINES_CLEANROOM_PVC_SIZE: "{{ .Values.backend.configs.pipelineRunner.pipelines.cleanroom.pvcSize }}"
+  PIPELINES_CLEANROOM_RESULT_QUEUE: "{{ .Values.backend.configs.pipelineRunner.pipelines.cleanroom.statusQueue }}"
+  PIPELINES_CLEANROOM_SERVICE_ACCOUNT_NAME: "{{ .Values.backend.configs.pipelineRunner.pipelines.cleanroom.serviceAccountName }}"
+  PIPELINES_CLEANROOM_STORAGE_CLASS_NAME: "{{ .Values.backend.configs.pipelineRunner.pipelines.cleanroom.storageClassName }}"
+  PIPELINES_CLEANROOM_TIMEOUT: "{{ .Values.backend.configs.pipelineRunner.pipelines.cleanroom.timeout }}"
+  PIPELINES_DEBUG_HASHER_NAME: "{{ .Values.backend.configs.pipelineRunner.pipelines.debugHasher.pipelineName }}"
+  PIPELINES_DEBUG_HASHER_NAMESPACE: "{{ .Values.backend.configs.pipelineRunner.pipelines.debugHasher.namespace }}"
+  PIPELINES_DEBUG_HASHER_PVC_SIZE: "{{ .Values.backend.configs.pipelineRunner.pipelines.debugHasher.pvcSize }}"
+  PIPELINES_DEBUG_HASHER_RESULT_QUEUE: "{{ .Values.backend.configs.pipelineRunner.pipelines.debugHasher.statusQueue }}"
+  PIPELINES_DEBUG_HASHER_SERVICE_ACCOUNT_NAME: "{{ .Values.backend.configs.pipelineRunner.pipelines.debugHasher.serviceAccountName }}"
+  PIPELINES_DEBUG_HASHER_STORAGE_CLASS_NAME: "{{ .Values.backend.configs.pipelineRunner.pipelines.debugHasher.storageClassName }}"
+  PIPELINES_DEBUG_HASHER_TIMEOUT: "{{ .Values.backend.configs.pipelineRunner.pipelines.debugHasher.timeout }}"
+  PROVIDER_INSTANCE_ID: "{{ .Values.backend.configs.providerInstanceId }}"
+  PROVIDER_NAMES: '{{ .Values.providerNames | toJson }}'
   RABBITMQ_QUEUES_TABLE4SYNC_NAME: {{ .Values.dbMetadataSyncConsumer.config.consumer.queueName | quote }}
-
+  REACT_APP_CURRENCY: "{{ .Values.frontend.configs.currency }}"
+  SELF_BASE_URL: "http://{{ $backendName }}.{{ .Release.Namespace }}.svc.{{ .Values.clusterDomain }}:{{ .Values.backend.service.api.port }}"
+  SERVER_PORT: "{{ .Values.backend.configs.listenPort }}"
+  SUPPORT_EMAIL: "{{ .Values.backend.configs.supportEmail }}"
+  SYSTEM_SETTINGS_ANALYTICS_ENABLED: {{ .Values.backend.configs.systemSettings.analytics.enabled | quote }}
   SYSTEM_SETTINGS_AUDIENCES_ENABLED: {{ .Values.backend.configs.systemSettings.audiences.enabled | quote }}
   SYSTEM_SETTINGS_CAMPAIGNS_ENABLED: {{ .Values.backend.configs.systemSettings.campaigns.enabled | quote }}
   SYSTEM_SETTINGS_COUPONES_ENABLED: {{ .Values.backend.configs.systemSettings.coupones.enabled | quote }}
-  SYSTEM_SETTINGS_SURVEYS_ENABLED: {{ .Values.backend.configs.systemSettings.surveys.enabled | quote }}
-  SYSTEM_SETTINGS_ANALYTICS_ENABLED: {{ .Values.backend.configs.systemSettings.analytics.enabled | quote }}
-  SYSTEM_SETTINGS_MARKETPLACE_ENABLED: {{ .Values.backend.configs.systemSettings.marketplace.enabled | quote }}
+  SYSTEM_SETTINGS_DATA_CATALOGUE_ENABLED: {{ .Values.backend.configs.systemSettings.dataCatalogue.enabled | quote }}
   SYSTEM_SETTINGS_DATA_MARTS_ENABLED: {{ .Values.backend.configs.systemSettings.dataMarts.enabled | quote }}
   SYSTEM_SETTINGS_DATALAB_ENABLED: {{ .Values.backend.configs.systemSettings.datalab.enabled | quote }}
   SYSTEM_SETTINGS_DATALAB_FEATURES_AUDIENCE_DATASETS: {{ and .Values.backend.configs.systemSettings.audiences.enabled .Values.dbMetadataSyncConsumer.enabled .Values.audienceDatasetConsumer.enabled .Values.backend.configs.systemSettings.datalab.enabled | quote }}
   SYSTEM_SETTINGS_GLOSSARY_ENABLED: {{ .Values.backend.configs.systemSettings.glossary.enabled | quote }}
-  SYSTEM_SETTINGS_DATA_CATALOGUE_ENABLED: {{ .Values.backend.configs.systemSettings.dataCatalogue.enabled | quote }}
   SYSTEM_SETTINGS_MANAGE_ORGANIZATIONS_FEATURES_USER_INVITATION: {{ .Values.oidcprovider.enabled | quote }}
   SYSTEM_SETTINGS_MANAGE_ORGANIZATIONS_FEATURES_USER_ROLES_MANAGEMENT: {{ .Values.backend.configs.features.userRolesManagment | quote }}
+  SYSTEM_SETTINGS_MARKETPLACE_ENABLED: {{ .Values.backend.configs.systemSettings.marketplace.enabled | quote }}
+  SYSTEM_SETTINGS_SURVEYS_ENABLED: {{ .Values.backend.configs.systemSettings.surveys.enabled | quote }}
+  WEBHOOK_TOKEN_EXPIRATION_TIME: "{{ .Values.backend.configs.webhookTokenExpirationTime }}"
 
   {{- if .Values.backend.useCommonProxy }}
   {{- if .Values.common.proxy.httpProxy }}
@@ -136,14 +133,14 @@ data:
   {{- end }}
   {{- end }}
 
-  DDM_ADDRESS: {{ .Values.backend.configs.ddm.address | quote }}
-  DDM_PROVIDER_ID: {{ .Values.backend.configs.providerInstanceId | quote }}
-  DDM_S3_END_POINT: {{ .Values.backend.configs.ddm.s3.endpoint | quote }}
-  DDM_S3_ACCESS_KEY: {{ .Values.backend.configs.ddm.s3.accessKey | quote }}
-  DDM_S3_SECRET_KEY: {{ .Values.backend.configs.ddm.s3.secretKey | quote }}
-  DDM_S3_BUCKET: {{ .Values.backend.configs.ddm.s3.bucket | quote }}
-  DDM_S3_REGION: {{ .Values.backend.configs.ddm.s3.region | quote }}
-  DDM_TTL_EXTENDED_AGREEMENTS_PIPELINE: {{ .Values.backend.configs.ddm.ttl.extendedAgreementsPipeline | quote }}
-  DDM_CLICKHOUSE: {{ .Values.backend.configs.ddm.clickhouse }}
-  DDM_EXTENDED_AGREEMENTS_TABLE: {{ .Values.backend.configs.ddm.extendedAgreementsTable }}
+  {{- if .Values.oidcprovider.enabled }}
+  ENABLE_USER_INVITATION_FEATURE: "true"
+  {{- end }}
+
+  {{- if .Values.gatekeeper.enabled }}
+  GATEKEEPER_CLIENT_ID: {{ .Values.gatekeeper.config.clientId | quote }}
+  FEATURES_GET_USER_ROLES_FROM_HEADERS: {{ .Values.backend.configs.features.getUserRolesFromHeaders | quote }}
+  {{- else}}
+  FEATURES_GET_USER_ROLES_FROM_HEADERS: "false"
+  {{- end }}
 {{- end }}
