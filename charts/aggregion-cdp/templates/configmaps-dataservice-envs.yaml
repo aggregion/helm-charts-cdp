@@ -23,6 +23,9 @@ data:
   CLICKHOUSE_IS_MOCKED: {{ .Values.dataservice.config.clickhouseIsMocked | quote }}
   CLICKHOUSE_USE_DIRECT_CONNECTION: {{ .Values.dataservice.config.clickhouseUseDirectConnection | quote }}
   DATASET_LOGS_AVAILABLE_DAYS: {{ .Values.dataservice.config.datasetLogsAvailableDays | quote }}
+  EOS_AGGREGION_CONTRACT_NAME: {{ .Values.blockchainCommon.smartContracts.base }}
+  EOS_CATALOG_CONTRACT_NAME: {{ .Values.blockchainCommon.smartContracts.catalogs }}
+  EOS_USERS_CONTRACT_NAME: {{ .Values.blockchainCommon.smartContracts.users }}
   HEALTHCHECK_LIVENESS_PATH: {{ .Values.dataservice.probes.common.livenessPath | quote }}
   HEALTHCHECK_PORT: {{ .Values.dataservice.probes.common.healthcheckPort | quote }}
   HEALTHCHECK_READINESS_PATH: {{ .Values.dataservice.probes.common.readinessPath | quote }}
