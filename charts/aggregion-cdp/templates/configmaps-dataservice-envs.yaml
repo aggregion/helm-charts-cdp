@@ -12,32 +12,37 @@ data:
   BCMQ_HEALTHCHECK_INTERVAL_MS: {{ .Values.dataservice.config.eosHealthcheckIntervalMs | quote }}
   BCMQ_HEALTHCHECK_TIMEOUT_MS: {{ .Values.dataservice.config.eosHealthcheckTimeoutMs | quote }}
   BCMQ_LIMIT: {{ .Values.dataservice.config.bcmqLimit | quote }}
-  BCMQ_POLLING_INTERVAL: {{ .Values.dataservice.config.bcmqPollingInterval | quote }}
   BCMQ_MAX_ALLOWED_ERROR_COUNT: {{ .Values.dataservice.config.bcmqMaxAllowedErrorCount | quote }}
+  BCMQ_POLLING_INTERVAL: {{ .Values.dataservice.config.bcmqPollingInterval | quote }}
   BLOCKCHAIN_NODE_URL: {{ .Values.backend.configs.eosNodeUrl | quote }}
+  BLOCKCHAIN_USERS_CONTRACT_NAME: {{ .Values.blockchainCommon.smartContracts.users }}
   BLOCKCHAIN_WALLET_ORG_ID: {{ .Values.backend.configs.eosWalletOwnerOrgId | quote }}
   BLOCKCHAIN_WALLET_PUBLIC_KEY: {{ .Values.backend.configs.eosWalletOwnerPub | quote }}
-  BLOCKCHAIN_USERS_CONTRACT_NAME: {{ .Values.blockchainCommon.smartContracts.users }}
-  CLICKHOUSE_IS_MOCKED: {{ .Values.dataservice.config.clickhouseIsMocked | quote }}
-  CLICKHOUSE_USE_DIRECT_CONNECTION: {{ .Values.dataservice.config.clickhouseUseDirectConnection | quote }}
   CLICKHOUSE_DISABLE_ARROW_COMPRESSION: {{ .Values.dataservice.config.clickhouseDisableArrowCompression | quote }}
   CLICKHOUSE_ENABLE_ARROW_STRING_AS_STRING: {{ .Values.dataservice.config.clickhouseEnableArrowStringAsString | quote }}
+  CLICKHOUSE_IS_MOCKED: {{ .Values.dataservice.config.clickhouseIsMocked | quote }}
+  CLICKHOUSE_USE_DIRECT_CONNECTION: {{ .Values.dataservice.config.clickhouseUseDirectConnection | quote }}
   DATASET_LOGS_AVAILABLE_DAYS: {{ .Values.dataservice.config.datasetLogsAvailableDays | quote }}
-  {{- if not .Values.dbMetadataSync.enabled }} # conflict with the same env in "secrets-dataservice-envs.yaml"
-  CREDENTIALS_DECRYPT_KEY: {{ .Values.dataservice.config.credentialsDecryptKey | quote }}
-  {{- end }}
   HEALTHCHECK_LIVENESS_PATH: {{ .Values.dataservice.probes.common.livenessPath | quote }}
   HEALTHCHECK_PORT: {{ .Values.dataservice.probes.common.healthcheckPort | quote }}
   HEALTHCHECK_READINESS_PATH: {{ .Values.dataservice.probes.common.readinessPath | quote }}
   HEALTHCHECK_SHUTDOWN_TIMEOUT_MS: {{ .Values.dataservice.probes.common.healthcheckShutdownTimeoutMs | quote }}
   LOG_LEVEL: {{ .Values.dataservice.config.logLevel | quote }}
   LOG_PRETTY_PRINT: {{ .Values.dataservice.config.logPrettyPrint | quote }}
-  MONGO_DB_URI: {{ .Values.dataservice.config.mongoDbUri | quote }}
+  METADATA_SERVICE_HEALTHCHECK_URL: "http://{{ $metadataServiceName | lower }}-svc:{{ .Values.metadataService.service.port }}/api{{ .Values.readinessProbe.readinessPath }}"
+  METADATA_SERVICE_TOKEN: {{ .Values.dataservice.config.metadataServiceToken | quote }}
+  METADATA_SERVICE_URL: "http://{{ $metadataServiceName | lower }}-svc:{{ .Values.metadataService.service.port }}"
+  METRICS_ENABLED: {{ and .Values.metrics.enabled .Values.dataservice.enabled | quote }}
+  METRICS_PATH: {{ .Values.metrics.path | quote }}
   MONGO_DB_URI_TEST: {{ .Values.dataservice.config.mongoDbUriTest | quote }}
+  MONGO_DB_URI: {{ .Values.dataservice.config.mongoDbUri | quote }}
   MONGO_DEBUG: {{ .Values.dataservice.config.mongoDebug | quote }}
   NODE_ENV: {{ .Values.dataservice.config.nodeEnv | quote }}
   PORT: {{ .Values.dataservice.config.port | quote }}
   PROVIDER_INSTANCE_ID: {{ .Values.backend.configs.providerInstanceId | quote }}
+  QUEUES_DATASETS: {{ .Values.metadataService.config.amqp.queues.dataset | quote }}
+  QUEUES_INSTANCES: {{ .Values.metadataService.config.amqp.queues.instance | quote }}
+  QUEUES_TERMS: {{ .Values.metadataService.config.amqp.queues.term | quote }}
   RABBITMQ_HEARTBEAT_INTERVAL: "30"
   RABBITMQ_RETRY_POLICY_DELAY: "60"
   RABBITMQ_RETRY_POLICY_MAX_ATTEMPTS: "150"
@@ -48,14 +53,10 @@ data:
   TOKEN_SECRET_KEY: {{ .Values.dataservice.config.tokenSecretKey | quote }}
   TRINO_HOST: {{ .Values.dataservice.config.trinoHost | quote }}
   TRINO_PORT: {{ .Values.dataservice.config.trinoPort | quote }}
-  METRICS_ENABLED: {{ and .Values.metrics.enabled .Values.dataservice.enabled | quote }}
-  METRICS_PATH: {{ .Values.metrics.path | quote }}
-  METADATA_SERVICE_URL: "http://{{ $metadataServiceName | lower }}-svc:{{ .Values.metadataService.service.port }}"
-  METADATA_SERVICE_HEALTHCHECK_URL: "http://{{ $metadataServiceName | lower }}-svc:{{ .Values.metadataService.service.port }}/api{{ .Values.readinessProbe.readinessPath }}"
-  METADATA_SERVICE_TOKEN: {{ .Values.dataservice.config.metadataServiceToken | quote }}
-  QUEUES_DATASETS: {{ .Values.metadataService.config.amqp.queues.dataset | quote }}
-  QUEUES_INSTANCES: {{ .Values.metadataService.config.amqp.queues.instance | quote }}
-  QUEUES_TERMS: {{ .Values.metadataService.config.amqp.queues.term | quote }}
+
+  {{- if not .Values.dbMetadataSync.enabled }} # conflict with the same env in "secrets-dataservice-envs.yaml"
+  CREDENTIALS_DECRYPT_KEY: {{ .Values.dataservice.config.credentialsDecryptKey | quote }}
+  {{- end }}
 
   {{- if .Values.dataservice.useCommonProxy }}
   {{- if .Values.common.proxy.httpProxy }}
