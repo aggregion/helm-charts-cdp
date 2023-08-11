@@ -31,9 +31,12 @@ serviceAccount:
 
 blockchainCommon:
   smartContracts:
-    base: aggregion
-    catalogs: catalogs
-    users: dmpusers
+    base:
+      name: aggregion
+    catalogs:
+      name:  catalogs
+    users:
+      name:  dmpusers
 
 livenessProbe:
   enabled: true

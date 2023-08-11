@@ -56,7 +56,10 @@ data:
   ENCLAVE_ENDPOINT: "{{ .Values.backend.configs.enclaveEndpoint | default (printf "http://%s:%v" $enclaveName .Values.enclave.service.innerPort) }}"
   ENCLAVE_KNOWN_PROVIDERS: '{{ .Values.providers | toJson }}'
   ENCLAVE_LOCAL_PROVIDER_NAME: "{{ .Values.backend.configs.providerName }}"
+  EOS_AGGREGION_CONTRACT_NAME: {{ .Values.blockchainCommon.smartContracts.base.name }}
+  EOS_CATALOG_CONTRACT_NAME: {{ .Values.blockchainCommon.smartContracts.catalogs.name }}
   EOS_NODE_URL: "{{ .Values.backend.configs.eosNodeUrl }}"
+  EOS_USERS_CONTRACT_NAME: {{ .Values.blockchainCommon.smartContracts.users.name }}
   EOS_WALLET_ORG_ID: "{{ .Values.backend.configs.eosWalletOwnerOrgId }}"
   EOS_WALLET_PUBLIC_KEY: "{{ .Values.backend.configs.eosWalletOwnerPub }}"
   FEATURES_FRONTEND_DUMPS: {{ .Values.backend.configs.features.frontendDumps | quote }}
