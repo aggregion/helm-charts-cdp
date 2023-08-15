@@ -93,6 +93,7 @@ dataservice:
     tokenIssuer: "$ACCOUNT_ID"
     tokenSecretKey: "$DATASERVICE_CONFIG_TOKENSECRETKEY" # GENERATED
     metadataServiceToken: NEED_GENERATING
+    trinoHost: trino$URL_SUFFIX.$CDP_NS.svc.$CLUSTER_DOMAIN
   configAtlasSyncer:
     enabled: true
   enabled: true
