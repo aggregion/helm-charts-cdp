@@ -2,7 +2,7 @@
 
 cd $(dirname $0)
 
-IMAGES_INFO=$(cat ./images.yaml)
+IMAGES_INFO=$(</dev/stdin)
 IMAGES=$(echo "$IMAGES_INFO" | yq '.[].name')
 # echo "$IMAGES"
 for i in $IMAGES; do
