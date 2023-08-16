@@ -29,4 +29,5 @@ data:
   RABBITMQ_RETRY_POLICY_MAX_ATTEMPTS: {{ 150 | quote }}
   RABBITMQ_RETRY_POLICY_SEQUENCE_ATTEMPTS_NUMBER: {{ 5 | quote }}
   REDIS_URL: "redis://{{ .Values.redis.host }}:{{ .Values.redis.port }}"
+  REDIS_PASSWORD: "{{ .Values.redis.password }}"
 {{- end }}
