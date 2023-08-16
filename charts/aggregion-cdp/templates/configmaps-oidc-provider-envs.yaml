@@ -28,7 +28,11 @@ data:
   LOG_PRETTY_PRINT: {{ .Values.oidcprovider.config.logPrettyPrint | quote }}
   NODE_ENV: {{ .Values.oidcprovider.config.nodeEnv | quote }}
   RABBITMQ_URI: {{ .Values.backend.configs.rabbitmqUrl | quote }}
+  {{- if .Values.backend.configs.redisPassword }}
+  REDIS_URI: "redis://:{{ .Values.backend.configs.redisPassword }}@{{ .Values.backend.configs.redisHost }}:{{ .Values.backend.configs.redisPort }}"
+  {{- else }}
   REDIS_URI: "redis://{{ .Values.backend.configs.redisHost }}:{{ .Values.backend.configs.redisPort }}"
+  {{- end }}
   SUCCESS_SIGNUP_REDIRECT_URI: {{ .Values.oidcprovider.config.successSignupRedirectUri | quote }}
   TTL_ACCESS_TOKEN: {{ .Values.oidcprovider.config.ttl.accessToken | quote }}
   TTL_ID_TOKEN: {{ .Values.oidcprovider.config.ttl.idToken | quote }}
