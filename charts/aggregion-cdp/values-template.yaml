@@ -76,6 +76,13 @@ backend:
     serviceSegmentsEnabled: true
     webhookTokenExpirationTime: 3600000
     metadataServiceToken: NEED_GENERATING
+    ddm:
+      address: ddm-$URL_SUFFIX-manager.$CDP_NS.svc.$CLUSTER_DOMAIN:80
+      s3:
+        endpoint: "http://minio-common.minio.svc.$CLUSTER_DOMAIN:9000" # CHANGEIT
+        accessKey: "CHANGEIT"
+        secretKey: "CHANGEIT"
+        bucket: "CHANGEIT"
 cleos:
   enabled: false
 dataservice:
@@ -266,6 +273,24 @@ dbMetadataSync:
       enabled: true
   cronjob:
     enabled: true
+ddmEventConsumer:
+  enabled: true
+  image:
+    pullPolicy: IfNotPresent
+  probes:
+    livenessEnabled: false
+    readinessEnabled: false
+  config:
+    logLevel: trace
+    metrics:
+      enabled: true
+    consumer:
+      prefetchCount: 1
+      queueName: "ddm-events"
+publishExtendedAgreements:
+  cronjob:
+    enabled: true
+    schedule: "0 */2 * * *"
 metrics:
   enabled: false
   serviceMonitor:
