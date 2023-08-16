@@ -155,10 +155,10 @@ config:
   debugUseParquetCache: false
   debugKeepArtifacts: false
   tmpPath: /opt/ddm-cache/tmp
-#  threadPools:
-#    tokio: 8
-#    rayon: 8
-#    polars: 4
+  threadPools: {}
+    # tokio: 8
+    # rayon: 8
+    # polars: 4
   clickhouseInstances: {}
     # test:
     #   url: http://localhost:8123
