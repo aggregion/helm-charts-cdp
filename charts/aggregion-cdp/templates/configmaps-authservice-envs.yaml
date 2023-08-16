@@ -25,9 +25,9 @@ data:
   PORT: {{ .Values.authservice.config.port | quote }}
   PROVIDER_INSTANCE_ID: {{ .Values.backend.configs.providerInstanceId | quote }}
   {{- if .Values.backend.configs.redisPassword }}
-  REDIS_URI: "redis://:{{ .Values.backend.configs.redisPassword }}@{{ .Values.backend.configs.redisHost }}:{{ .Values.backend.configs.redisPort }}"
+  REDIS_URL: "redis://:{{ .Values.backend.configs.redisPassword }}@{{ .Values.backend.configs.redisHost }}:{{ .Values.backend.configs.redisPort }}"
   {{- else }}
-  REDIS_URI: "redis://{{ .Values.backend.configs.redisHost }}:{{ .Values.backend.configs.redisPort }}"
+  REDIS_URL: "redis://{{ .Values.backend.configs.redisHost }}:{{ .Values.backend.configs.redisPort }}"
   {{- end }}
   METRICS_ENABLED: {{ and .Values.metrics.enabled .Values.authservice.enabled | quote }}
   METRICS_PATH: {{ .Values.metrics.path }}
