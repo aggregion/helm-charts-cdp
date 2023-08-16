@@ -34,6 +34,9 @@ spec:
             {{- toYaml .Values.redis.securityContext | nindent 12 }}
           image: "{{ .Values.redis.image.repository }}:{{ .Values.redis.image.tag | default .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.redis.image.pullPolicy }}
+          {{- if .Values.redis.config.password }}
+          args: ["--requirepass", "{{ .Values.redis.config.password }}"]
+          {{- end }}
           ports:
             - name: service
               containerPort: {{ .Values.redis.listenPort }}
@@ -43,6 +46,19 @@ spec:
               command:
               - sh
               - -c
+              {{- if .Values.redis.config.password }}
+              - |
+                #!/usr/bin/env bash -e
+                set_response=$( redis-cli -a "{{ .Values.redis.config.password }}" set liveness_test_key "SUCCESS" )
+                if [ "$set_response" == "OK" ] ; then
+                  redis-cli -a {{ .Values.redis.config.password }} del liveness_test_key
+                  exit 0
+                fi
+                if [ "$set_response" != "OK" ] ; then
+                  echo "Unable to get keys, something is wrong"
+                  exit 1
+                fi
+              {{- else }}
               - |
                 #!/usr/bin/env bash -e
                 set_response=$( redis-cli set liveness_test_key "SUCCESS" )
@@ -54,12 +70,17 @@ spec:
                   echo "Unable to get keys, something is wrong"
                   exit 1
                 fi
+              {{- end }}
             initialDelaySeconds: 10
             timeoutSeconds: 5
           livenessProbe:
             exec:
               command:
+              {{- if .Values.redis.config.password }}
+              - redis-cli -a {{ .Values.redis.config.password }}
+              {{- else }}
               - redis-cli
+              {{- end }}
               - ping
             initialDelaySeconds: 5
             timeoutSeconds: 5

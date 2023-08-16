@@ -167,6 +167,8 @@ redis:
   nodeSelector: {}
   tolerations: []
   affinity: {}
+  config:
+    password: ""
 
 nats:
   enabled: false
