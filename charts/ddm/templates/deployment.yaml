@@ -126,6 +126,22 @@ spec:
             - name: PORT
               value: {{ .Values.manager.grpcui.port | quote }}
         {{ end }}
+        {{- if .Values.managerUi.enabled }}
+        - name: {{ .Chart.Name }}-manager-ui
+          image: {{ .Chart.Name }}-manager-ui
+          image: "{{ .Values.managerUi.image.repository }}:{{ .Values.managerUi.image.tag }}"
+          ports:
+            - name: ddm-manager-ui
+              containerPort: {{ .Values.managerUi.service.port }}
+              protocol: TCP
+          resources:
+            {{- toYaml .Values.managerUi.resources | nindent 12 }}
+          env:
+            - name: DDM_ADDR
+              value: "127.0.0.1:{{ .Values.server.service.port }}"
+            - name: PORT
+              value: {{ .Values.managerUi.service.port | quote }}
+        {{ end }}
       volumes:
         - name: configs
           configMap:
