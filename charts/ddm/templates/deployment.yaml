@@ -128,8 +128,8 @@ spec:
         {{ end }}
         {{- if .Values.managerUi.enabled }}
         - name: {{ .Chart.Name }}-manager-ui
-          image: {{ .Chart.Name }}-manager-ui
           image: "{{ .Values.managerUi.image.repository }}:{{ .Values.managerUi.image.tag }}"
+          imagePullPolicy: {{ .Values.managerUi.image.pullPolicy }}
           ports:
             - name: ddm-manager-ui
               containerPort: {{ .Values.managerUi.service.port }}
