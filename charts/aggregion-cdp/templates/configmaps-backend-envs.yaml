@@ -38,6 +38,7 @@ data:
   DATA_SERVICE_TOKEN: "{{ .Values.dataservice.config.accessToken }}"
   DDM_ADDRESS: {{ .Values.backend.configs.ddm.address | quote }}
   DDM_CLICKHOUSE: {{ .Values.backend.configs.ddm.clickhouse }}
+  DDM_CLICKHOUSE_CLUSTER_NAME: {{ .Values.backend.configs.ddm.clickhouseClusterName }}
   DDM_EXTENDED_AGREEMENTS_TABLE: {{ .Values.backend.configs.ddm.extendedAgreementsTable }}
   DDM_PROVIDER_ID: {{ .Values.backend.configs.providerInstanceId | quote }}
   DDM_S3_ACCESS_KEY: {{ .Values.backend.configs.ddm.s3.accessKey | quote }}

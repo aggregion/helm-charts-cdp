@@ -34,9 +34,9 @@ blockchainCommon:
     base:
       name: aggregion
     catalogs:
-      name:  catalogs
+      name: catalogs
     users:
-      name:  dmpusers
+      name: dmpusers
 
 livenessProbe:
   enabled: true
@@ -548,6 +548,7 @@ backend:
         bucket: "some bucket"
         region: "us-east-1"
       clickhouse: test # one of keys in the ddm.config.clickhouse_instances
+      clickhouseClusterName: ""
       extendedAgreementsTable: extended_agreements
       ttl:
         extendedAgreementsPipeline: 7200
