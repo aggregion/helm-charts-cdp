@@ -608,6 +608,7 @@ backend:
           list: ['DATA_ANALYST', 'ADMIN']
       Mutation:
         Account:
+          create: ['ADMIN']
           updateGlobalOrgInfo: ['ADMIN']
           setUserRoles: ['ADMIN']
           removeUserRoles: ['ADMIN']
