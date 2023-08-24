@@ -67,7 +67,7 @@ spec:
               - -c
               - |
                 #!/usr/bin/env bash -e
-                set_response=$(mongo test --quiet --eval "db.stats().ok"  -u "{{ .Values.mongo.auth.username }}" -p "{{ .Values.mongo.auth.password }}")
+                set_response=$(mongo admin --quiet --eval "db.stats().ok"  -u "{{ .Values.mongo.auth.username }}" -p "{{ .Values.mongo.auth.password }}")
                 if [ $set_response -eq 1 ] ; then
                   exit 0
                 else
