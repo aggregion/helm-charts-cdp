@@ -36,17 +36,7 @@ data:
   CURRENT_PROVIDER_NAME: "{{ .Values.backend.configs.providerName }}"
   DATA_SERVICE_ENDPOINT: "http://{{ $dataserviceName }}:{{ .Values.dataservice.service.port }}/api/"
   DATA_SERVICE_TOKEN: "{{ .Values.dataservice.config.accessToken }}"
-  DDM_ADDRESS: {{ .Values.backend.configs.ddm.address | quote }}
-  DDM_CLICKHOUSE: {{ .Values.backend.configs.ddm.clickhouse }}
-  DDM_CLICKHOUSE_CLUSTER_NAME: {{ .Values.backend.configs.ddm.clickhouseClusterName | quote }}
-  DDM_EXTENDED_AGREEMENTS_TABLE: {{ .Values.backend.configs.ddm.extendedAgreementsTable }}
   DDM_PROVIDER_ID: {{ .Values.backend.configs.providerInstanceId | quote }}
-  DDM_S3_ACCESS_KEY: {{ .Values.backend.configs.ddm.s3.accessKey | quote }}
-  DDM_S3_BUCKET: {{ .Values.backend.configs.ddm.s3.bucket | quote }}
-  DDM_S3_END_POINT: {{ .Values.backend.configs.ddm.s3.endpoint | quote }}
-  DDM_S3_REGION: {{ .Values.backend.configs.ddm.s3.region | quote }}
-  DDM_S3_SECRET_KEY: {{ .Values.backend.configs.ddm.s3.secretKey | quote }}
-  DDM_TTL_EXTENDED_AGREEMENTS_PIPELINE: {{ .Values.backend.configs.ddm.ttl.extendedAgreementsPipeline | quote }}
   DEFAULT_DICT_LANGUAGE: "{{ .Values.backend.configs.defaultDictLanguage }}"
   DEFAULT_LANGUAGE: "{{ .Values.backend.configs.defaultLanguage }}"
   DEPLOY_CONTROLLER_USE_EXTERNAL_S3: "{{ .Values.backend.configs.dcUseExternalS3 }}"
@@ -121,6 +111,19 @@ data:
   SYSTEM_SETTINGS_MARKETPLACE_ENABLED: {{ .Values.backend.configs.systemSettings.marketplace.enabled | quote }}
   SYSTEM_SETTINGS_SURVEYS_ENABLED: {{ .Values.backend.configs.systemSettings.surveys.enabled | quote }}
   WEBHOOK_TOKEN_EXPIRATION_TIME: "{{ .Values.backend.configs.webhookTokenExpirationTime }}"
+
+  {{- if .Values.backend.configs.ddm }}
+  DDM_ADDRESS: {{ .Values.backend.configs.ddm.address | quote }}
+  DDM_CLICKHOUSE: {{ .Values.backend.configs.ddm.clickhouse }}
+  DDM_CLICKHOUSE_CLUSTER_NAME: {{ .Values.backend.configs.ddm.clickhouseClusterName | quote }}
+  DDM_EXTENDED_AGREEMENTS_TABLE: {{ .Values.backend.configs.ddm.extendedAgreementsTable }}
+  DDM_S3_ACCESS_KEY: {{ .Values.backend.configs.ddm.s3.accessKey | quote }}
+  DDM_S3_BUCKET: {{ .Values.backend.configs.ddm.s3.bucket | quote }}
+  DDM_S3_END_POINT: {{ .Values.backend.configs.ddm.s3.endpoint | quote }}
+  DDM_S3_REGION: {{ .Values.backend.configs.ddm.s3.region | quote }}
+  DDM_S3_SECRET_KEY: {{ .Values.backend.configs.ddm.s3.secretKey | quote }}
+  DDM_TTL_EXTENDED_AGREEMENTS_PIPELINE: {{ .Values.backend.configs.ddm.ttl.extendedAgreementsPipeline | quote }}
+  {{- end }}
 
   {{- if .Values.backend.useCommonProxy }}
   {{- if .Values.common.proxy.httpProxy }}
