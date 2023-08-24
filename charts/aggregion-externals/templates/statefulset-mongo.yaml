@@ -38,16 +38,12 @@ spec:
             - name: service
               containerPort: {{ .Values.mongo.listenPort }}
               protocol: TCP
-          {{- if or .Values.mongo.auth.username .Values.mongo.auth.password }}
+          {{- if and .Values.mongo.auth.username .Values.mongo.auth.password }}
           env:
-            {{- if .Values.mongo.auth.username }}
             - name: MONGO_INITDB_ROOT_USERNAME
-              value: {{ .Values.mongo.auth.username }}
-            {{- end }}
-            {{- if .Values.mongo.auth.password }}
+              value: {{ .Values.mongo.auth.username | quote }}
             - name: MONGO_INITDB_ROOT_PASSWORD
-              value: {{ .Values.mongo.auth.password }}
-            {{- end }}
+              value: {{ .Values.mongo.auth.password | quote }}
           {{- end }}
           livenessProbe:
             exec:
@@ -56,7 +52,7 @@ spec:
               - -c
               - |
                 #!/usr/bin/env bash -e
-                set_response=$(mongo --quiet --eval "rs.status().ok")
+                set_response=$(mongo test --quiet --eval "db.stats().ok" -u "{{ .Values.mongo.auth.username }}" -p "{{ .Values.mongo.auth.password }}")
                 if [ $set_response -eq 0 ] ; then
                   exit 0
                 else
@@ -71,7 +67,7 @@ spec:
               - -c
               - |
                 #!/usr/bin/env bash -e
-                set_response=$(mongo test --quiet --eval "db.stats().ok")
+                set_response=$(mongo test --quiet --eval "db.stats().ok" -u "{{ .Values.mongo.auth.username }}" -p "{{ .Values.mongo.auth.password }}")
                 if [ $set_response -eq 1 ] ; then
                   exit 0
                 else
