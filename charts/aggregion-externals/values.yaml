@@ -65,6 +65,9 @@ mongo:
   nodeSelector: {}
   tolerations: []
   affinity: {}
+  auth:
+    username: ""
+    password: ""
 
 postgres:
   enabled: false

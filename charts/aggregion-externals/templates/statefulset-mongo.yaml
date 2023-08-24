@@ -37,7 +37,18 @@ spec:
           ports:
             - name: service
               containerPort: {{ .Values.mongo.listenPort }}
-              protocol: TCP          
+              protocol: TCP
+          {{- if or .Values.mongo.auth.username .Values.mongo.auth.password }}
+          env:
+            {{- if .Values.mongo.auth.username }}
+            - name: MONGO_INITDB_ROOT_USERNAME
+              value: {{ .Values.mongo.auth.username }}
+            {{- end }}
+            {{- if .Values.mongo.auth.password }}
+            - name: MONGO_INITDB_ROOT_PASSWORD
+              value: {{ .Values.mongo.auth.password }}
+            {{- end }}
+          {{- end }}
           livenessProbe:
             exec:
               command:
@@ -67,7 +78,7 @@ spec:
                   exit 1
                 fi
             initialDelaySeconds: 20
-            timeoutSeconds: 5          
+            timeoutSeconds: 5
           volumeMounts:
             - name: data
               mountPath: /data/db
