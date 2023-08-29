@@ -11,7 +11,7 @@ metadata:
     {{- include "cdp.audienceDatasetConsumer.labels" . | nindent 4 }}
 data:
   APP_NAME: {{ .Values.audienceDatasetConsumer.config.appName | quote }}
-  DATASERVICE_API_URL: "http://{{ $dataserviceName | lower }}:{{ .Values.dataservice.service.port }}/api/"
+  DATASERVICE_API_URL: "http://{{ $dataserviceName | lower }}:{{ .Values.dataservice.service.port }}"
   DATASERVICE_TOKEN: {{ .Values.dataservice.config.accessToken | quote }}
   DMP_BACKEND_URL: "http://{{ $dmpBackendServiceName | lower }}:{{ .Values.backend.service.api.port }}"
   DMP_BACKEND_TOKEN: {{ .Values.backend.configs.dmpSecret | quote }}
