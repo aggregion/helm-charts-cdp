@@ -2,6 +2,7 @@
 {{- $serviceName := include "cdp.audienceDatasetConsumer.fullname" . }}
 {{- $metadataServiceName := include "cdp.metadataService.fullname" . -}}
 {{- $dmpBackendServiceName := include "cdp.backend.fullname" . -}}
+{{- $dataserviceName := include "cdp.dataservice.fullname" . -}}
 apiVersion: v1
 kind: ConfigMap
 metadata:
@@ -10,6 +11,8 @@ metadata:
     {{- include "cdp.audienceDatasetConsumer.labels" . | nindent 4 }}
 data:
   APP_NAME: {{ .Values.audienceDatasetConsumer.config.appName | quote }}
+  DATASERVICE_API_URL: "http://{{ $dataserviceName | lower }}:{{ .Values.dataservice.service.port }}/api/"
+  DATASERVICE_TOKEN: {{ .Values.dataservice.config.accessToken | quote }}
   DMP_BACKEND_URL: "http://{{ $dmpBackendServiceName | lower }}:{{ .Values.backend.service.api.port }}"
   DMP_BACKEND_TOKEN: {{ .Values.backend.configs.dmpSecret | quote }}
   {{- if and .Values.audienceDatasetConsumer.probes.livenessEnabled .Values.livenessProbe.livenessPath }}
