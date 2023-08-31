@@ -24,7 +24,11 @@ spec:
             command:
             - /bin/sh
             - -c
+            {{- if .Values.dataservice.config.atlasEntitySyncer.accessToken }}
+            - "curl --silent http://{{ include "cdp.dataservice.fullname" . }}-aesyncer-svc:{{ .Values.dataservice.serviceAtlasSyncer.port }} -H 'Authorization: {{ .Values.dataservice.config.atlasEntitySyncer.accessToken }}'"
+            {{ else }}
             - "curl --silent http://{{ include "cdp.dataservice.fullname" . }}-aesyncer-svc:{{ .Values.dataservice.serviceAtlasSyncer.port }}"
+            {{- end }}
           restartPolicy: OnFailure
           {{- with .Values.imagePullSecrets }}
           imagePullSecrets:

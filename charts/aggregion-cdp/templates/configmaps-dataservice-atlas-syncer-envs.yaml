@@ -44,4 +44,7 @@ data:
   {{- if not .Values.dataservice.config.atlasEntitySyncer.nodeTlsRejectUnauthorized }}
   NODE_TLS_REJECT_UNAUTHORIZED: "0"
   {{- end }}
+  {{- if .Values.dataservice.config.atlasEntitySyncer.accessToken }}
+  ACCESS_TOKEN: {{ .Values.dataservice.config.atlasEntitySyncer.accessToken | quote }}
+  {{- end }}
 {{- end}}
