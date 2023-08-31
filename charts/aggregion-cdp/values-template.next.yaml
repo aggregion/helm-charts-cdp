@@ -20,11 +20,11 @@ audienceDatasetConsumer:
     livenessEnabled: false
     readinessEnabled: false
 authservice:
+  enabled: true
   config:
-    jwtSecretKey: $AUTH_SERVICE_JWT_SECRET_KEY # GENERATED
+    jwtSecretKey: "$AUTH_SERVICE_JWT_SECRET_KEY" # GENERATED
     logLevel: info
     mongoDbUri: mongodb://aggregion-externals-mongo-externals$URL_SUFFIX.$CDP_NS.svc.$CLUSTER_DOMAIN:27017/auth-service
-  enabled: true
 backend:
   api:
     livenessEnabled: true
@@ -48,7 +48,7 @@ backend:
     livenessEnabled: true
     readinessEnabled: true
   configs:
-    accountName: $ACCOUNT_ID
+    accountName: "$ACCOUNT_ID"
     baseUrl: $BASE_FRONT_URL_SCHEMA://$BASE_FRONT_DOMAIN
     bcmqMaxAllowedErrorCount: 20
     bcmqPollingInterval: 1000
@@ -68,12 +68,12 @@ backend:
     datalabPassword: admin
     datalabPlatformId: platform
     datalabWebhookUrl: http://aggregion-cdp-backend-cdp$URL_SUFFIX.$CDP_NS.svc.$CLUSTER_DOMAIN:8080/webhooks
-    dmpSecret: $BACKEND_CONFIGS_DMP_SECRET # GENERATED
+    dmpSecret: "$BACKEND_CONFIGS_DMP_SECRET" # GENERATED
     enclaveEndpoint: http://aggregion-cdp-enclave-cdp$URL_SUFFIX.$CDP_NS.svc.$CLUSTER_DOMAIN:8010
     eosDecryptPk: |-
       $PRIVATE_KEY_6S
     eosNodeUrl: http://testnet.blockchain.dmp.aggregion.com:9999 # CHANGEIT
-    eosWalletOwnerOrgId: $ACCOUNT_ID
+    eosWalletOwnerOrgId: "$ACCOUNT_ID"
     eosWalletOwnerPk: $EOS_WALLET_PRIVATE_KEY
     eosWalletOwnerPub: $EOS_WALLET_PUBLIC_KEY
     features:
@@ -84,11 +84,11 @@ backend:
       personalAccessToken: CHANGEIT # CHANGEIT
     graphQLPlayground:
       enabled: true
-    jwtSecret: $BACKEND_CONFIGS_JWT_SECRET # GENERATED
+    jwtSecret: "$BACKEND_CONFIGS_JWT_SECRET" # GENERATED
     listenPort: 15432
     logLevel: info
     metadataSeedApiUrl: http://aggregion-cdp-metadataseed-cdp$URL_SUFFIX.$CDP_NS.svc.$CLUSTER_DOMAIN
-    metadataServiceToken: eyJhbG...QkqAF4
+    metadataServiceToken: $METADATA_SERVICE_TOKEN
     metrics:
       isEnabled: false
     migrationEnabled: true
@@ -104,13 +104,13 @@ backend:
           statusQueue: pipeline_cleanroom_event_status
           storageClassName: ""
           timeout: 24h0m0s
-    providerInstanceId: $ACCOUNT_ID
-    providerName: $ACCOUNT_ID
+    providerInstanceId: "$ACCOUNT_ID"
+    providerName: "$ACCOUNT_ID"
     rabbitmqUrl: amqp://aggregion-externals-rabbit-externals$URL_SUFFIX.$CDP_NS.svc.$CLUSTER_DOMAIN:5672
     redisHost: aggregion-externals-redis-externals$URL_SUFFIX.$CDP_NS.svc.$CLUSTER_DOMAIN
     redisPassword: ""
     redisPort: 6379
-    redisPrefix: 'agg:'
+    redisPrefix: "agg:"
     serviceBlockchainUpdaterEnabled: true
     serviceBlockchainUpdaterOldStyle: false
     serviceDatasetUploaderEnabled: false
@@ -177,21 +177,20 @@ dataservice:
     endpoint: http://aggregion-cdp-dataservice-cdp$URL_SUFFIX.$CDP_NS.svc.$CLUSTER_DOMAIN/api
     logLevel: trace
     logPrettyPrint: false
-    metadataServiceToken: NEED_GENERATING
+    metadataServiceToken: $METADATA_SERVICE_TOKEN
     mongoDbUri: mongodb://aggregion-externals-mongo-externals$URL_SUFFIX.$CDP_NS.svc.$CLUSTER_DOMAIN:27017/ds
-    mongoDbUriTest: ""
     mongoDebug: false
     nodeEnv: production
     port: 9045
     rabbitmqUri: amqp://aggregion-externals-rabbit-externals$URL_SUFFIX.$CDP_NS.svc.$CLUSTER_DOMAIN:5672
-    tokenIssuer: $ACCOUNT_ID
-    tokenSecretKey: $DATASERVICE_CONFIG_TOKENSECRETKEY # GENERATED
+    tokenIssuer: "$ACCOUNT_ID"
+    tokenSecretKey: "$DATASERVICE_CONFIG_TOKENSECRETKEY" # GENERATED
     trinoHost: doesnotmatter
     trinoPort: 8080
   configAtlasSyncer:
     atlasBaseUrl: http://doesnotmatter
     cronjob:
-      schedule: '*/15 * * * *'
+      schedule: "*/15 * * * *"
     enabled: false
     password: admin
     rabbitmqUrl: amqp://aggregion-externals-rabbit-externals-prod.agg-prod.svc.cluster.local:5672
@@ -239,6 +238,7 @@ dataservice:
       livenessEnabled: true
       readinessEnabled: true
 dbMetadataSync:
+  enabled: true
   config:
     instances:
       - connectionOptions:
@@ -252,23 +252,9 @@ dbMetadataSync:
         name: ch
         rdbmsType: clickhouse
     logLevel: trace
-    metadataServiceToken: eyJhbGc...fA4A1GU # CHANGEIT
+    metadataServiceToken: "$METADATA_SERVICE_TOKEN" # CHANGEIT
     metrics:
       enabled: true
-  cronjob:
-    enabled: true
-  datasetDatasetSyncer:
-    enabled: true
-  datasetDatasetUpdater:
-    enabled: true
-  datasetInstanceSyncer:
-    enabled: true
-  datasetLogsSyncers:
-    enabled: true
-  enabled: true
-  probes:
-    livenessEnabled: true
-    readinessEnabled: true
 dbMetadataSyncConsumer:
   config:
     consumer:
@@ -297,6 +283,10 @@ enclave:
     tmpHostPath: /tmp
     workerHeapSizeMb: 64000
   enabled: true
+  imageServices:
+    pullPolicy: IfNotPresent
+    repository: registry.aggregion.com/enclave-external-services
+    tag: latest
   ingress:
     annotations:
       kubernetes.io/ingress.class: nginx
@@ -361,16 +351,16 @@ gatekeeper:
     storeUrl: ""
     verbose: true
   enabled: true
+  image:
+    repository: registry.aggregion.com/gatekeeper
+    tag: 1.4.2
 imagePullSecrets:
   - name: aggregionregistry # CHANGEIT
 metadataParams:
   credentials:
-    encryptionKey: $MD_PARAMS_CREDS_ENCRYPTION_KEY # GENERATED
-    iv: $MD_PARAMS_CREDS_IV # GENERATED
+    encryptionKey: "$MD_PARAMS_CREDS_ENCRYPTION_KEY" # GENERATED
+    iv: "$MD_PARAMS_CREDS_IV" # GENERATED
 metadataSeed:
-  config:
-    dmpBackendBaseUrl: http://aggregion-cdp-backend-cdp$URL_SUFFIX.$CDP_NS.svc.$CLUSTER_DOMAIN:8080
-    nodeTlsRejectUnauthorized: true
   enabled: false
 metadataService:
   config:
@@ -386,7 +376,7 @@ metadataService:
       logging: true
   cronjob:
     enabled: true
-    schedule: '*/30 * * * *'
+    schedule: "*/30 * * * *"
   enabled: true
   migrationEnabled: true
   probes:

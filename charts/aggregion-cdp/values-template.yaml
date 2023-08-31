@@ -10,6 +10,15 @@ atlas:
       tokenUrl: https://keycloak/realms/aggregion/protocol/openid-connect/token # CHANGEIT
     type: basic
   baseUrl: http://atlas:21000 # CHANGEIT
+audienceDatasetConsumer:
+  config:
+    logLevel: info
+    metrics:
+      enabled: false
+  enabled: false
+  probes:
+    livenessEnabled: false
+    readinessEnabled: false
 authservice:
   enabled: true
   config:
@@ -17,14 +26,38 @@ authservice:
     logLevel: info
     mongoDbUri: mongodb://aggregion-externals-mongo-externals$URL_SUFFIX.$CDP_NS.svc.$CLUSTER_DOMAIN:27017/auth-service
 backend:
+  api:
+    livenessEnabled: true
+    readinessEnabled: true
+  bcDatasetRequestsUpdater:
+    livenessEnabled: true
+    readinessEnabled: true
+  bcInteractionsUpdater:
+    livenessEnabled: true
+    readinessEnabled: true
+  bcProjectsUpdater:
+    livenessEnabled: true
+    readinessEnabled: true
+  bcScriptsUpdater:
+    livenessEnabled: true
+    readinessEnabled: true
+  blockchainUpdater:
+    livenessEnabled: true
+    readinessEnabled: true
+  cleanroomStatusWatcher:
+    livenessEnabled: true
+    readinessEnabled: true
   configs:
     accountName: "$ACCOUNT_ID"
     baseUrl: $BASE_FRONT_URL_SCHEMA://$BASE_FRONT_DOMAIN
+    bcmqMaxAllowedErrorCount: 20
+    bcmqPollingInterval: 1000
     clickhouseDb: somedatabase # CHANGEIT
     clickhouseHost: 127.0.0.1 # CHANGEIT
     clickhousePassword: somepass # CHANGEIT
     clickhousePort: 8123 # CHANGEIT
-    clickhouseUser: ekjrkaBHEKFQPblerufh # CHANGEIT
+    clickhouseUser: someuser # CHANGEIT
+    dataStorageSize: 10Gi
     datalabApiUrl: http://aggregion-dc-dc-dc.$DC_NS.svc.$CLUSTER_DOMAIN:8080
     datalabAuthUrl: http://aggregion-cdp-backend-cdp$URL_SUFFIX.$CDP_NS.svc.$CLUSTER_DOMAIN:8080/auth/datalab/vm/check-request
     datalabCpuLimit: "8"
@@ -43,12 +76,23 @@ backend:
     eosWalletOwnerOrgId: "$ACCOUNT_ID"
     eosWalletOwnerPk: $EOS_WALLET_PRIVATE_KEY
     eosWalletOwnerPub: $EOS_WALLET_PUBLIC_KEY
+    features:
+      getUserRolesFromHeaders: false
+      userRolesManagment: true
+    gitlab:
+      host: http://gitlab-webservice-default.gitlab.svc.cluster.local:8181 # CHANGEIT
+      personalAccessToken: CHANGEIT # CHANGEIT
+    graphQLPlayground:
+      enabled: true
     jwtSecret: "$BACKEND_CONFIGS_JWT_SECRET" # GENERATED
+    listenPort: 15432
+    logLevel: info
     metadataSeedApiUrl: http://aggregion-cdp-metadataseed-cdp$URL_SUFFIX.$CDP_NS.svc.$CLUSTER_DOMAIN
-    migrationEnabled: true
-    mongoUrl: mongodb://aggregion-externals-mongo-externals$URL_SUFFIX.$CDP_NS.svc.$CLUSTER_DOMAIN:27017/dmp
+    metadataServiceToken: $METADATA_SERVICE_TOKEN
     metrics:
       isEnabled: false
+    migrationEnabled: true
+    mongoUrl: mongodb://aggregion-externals-mongo-externals$URL_SUFFIX.$CDP_NS.svc.$CLUSTER_DOMAIN:27017/dmp
     pipelineRunner:
       debugMode: false
       pipelines:
@@ -56,9 +100,9 @@ backend:
           namespace: pipelines
           pipelineName: debug-cleanroom-pipelines # CHANGEIT
           pvcSize: 20Gi
-          serviceAccountName: pipeline-services-runner-sa # CHANGEITs
+          serviceAccountName: pipeline-services-runner-sa # CHANGEIT
           statusQueue: pipeline_cleanroom_event_status
-          storageClassName: longhorn
+          storageClassName: ""
           timeout: 24h0m0s
     providerInstanceId: "$ACCOUNT_ID"
     providerName: "$ACCOUNT_ID"
@@ -68,14 +112,39 @@ backend:
     redisPort: 6379
     redisPrefix: 'agg:'
     serviceBlockchainUpdaterEnabled: true
-    serviceDatasetUploader: true
+    serviceBlockchainUpdaterOldStyle: false
+    serviceDatasetUploaderEnabled: false
     serviceJobSchedulerEnabled: true
     serviceMatchingStatusResponseWatcherEnabled: true
     serviceMatchingStatusWatcherEnabled: true
-    servicePanelSegmentUploader: false
+    servicePanelSegmentUploaderEnabled: false
+    servicePipelineDebugCleanroomStatusWatcherEnabled: true
+    servicePipelineDebugHasherStatusWatcherEnabled: false
     serviceSegmentsEnabled: true
+    systemSettings:
+      analytics:
+        enabled: false
+      audiences:
+        enabled: false
+      campaigns:
+        enabled: false
+      coupones:
+        enabled: false
+      dataCatalogue:
+        enabled: true
+      dataMarts:
+        enabled: true
+      datalab:
+        enabled: true
+        features:
+          audienceDatasets: true
+      glossary:
+        enabled: true
+      marketplace:
+        enabled: true
+      surveys:
+        enabled: false
     webhookTokenExpirationTime: 3600000
-    metadataServiceToken: NEED_GENERATING
     ddm:
       address: ddm-$URL_SUFFIX-manager.$CDP_NS.svc.$CLUSTER_DOMAIN:80
       s3:
@@ -83,15 +152,32 @@ backend:
         accessKey: "CHANGEIT"
         secretKey: "CHANGEIT"
         bucket: "CHANGEIT"
+  datalabProxy:
+    replicaCount: 1
+  datasetUploader:
+    livenessEnabled: false
+    readinessEnabled: false
+  debugHasherStatusWatcher:
+    livenessEnabled: false
+    readinessEnabled: false
+  enabled: true
+  jobScheduler:
+    livenessEnabled: true
+    readinessEnabled: true
 cleos:
   enabled: false
 dataservice:
   config:
     accessToken: NEED_GENERATING
-    bcmqPollingInterval: 200
+    appName: dataservice-api
+    bcmqMaxAllowedErrorCount: 50
+    bcmqPollingInterval: 1000
+    clickhouseUseDirectConnection: true
+    credentialsDecryptKey: $DATASERVICE_CONFIG_CREDENTIALSDECRYPTKEY # GENERATED
     endpoint: http://aggregion-cdp-dataservice-cdp$URL_SUFFIX.$CDP_NS.svc.$CLUSTER_DOMAIN/api
     logLevel: trace
     logPrettyPrint: false
+    metadataServiceToken: $METADATA_SERVICE_TOKEN
     mongoDbUri: mongodb://aggregion-externals-mongo-externals$URL_SUFFIX.$CDP_NS.svc.$CLUSTER_DOMAIN:27017/ds
     mongoDebug: false
     nodeEnv: production
@@ -99,13 +185,30 @@ dataservice:
     rabbitmqUri: amqp://aggregion-externals-rabbit-externals$URL_SUFFIX.$CDP_NS.svc.$CLUSTER_DOMAIN:5672
     tokenIssuer: "$ACCOUNT_ID"
     tokenSecretKey: "$DATASERVICE_CONFIG_TOKENSECRETKEY" # GENERATED
-    metadataServiceToken: NEED_GENERATING
     trinoHost: trino$URL_SUFFIX.$CDP_NS.svc.$CLUSTER_DOMAIN
   configAtlasSyncer:
+    atlasBaseUrl: http://doesnotmatter
+    cronjob:
+      schedule: '*/15 * * * *'
+    enabled: true
+    password: admin
+    rabbitmqUrl: amqp://aggregion-externals-rabbit-externals-prod.agg-prod.svc.cluster.local:5672
+    username: admin
+  datasetDatasetSyncer:
+    enabled: true
+  datasetDatasetUpdater:
+    enabled: true
+  datasetInstanceSyncer:
+    enabled: true
+  datasetLogsSyncers:
     enabled: true
   enabled: true
   glossaryContainers:
     glossarySyncer:
+      enabled: true
+    glossaryTermSyncer:
+      enabled: true
+    glossaryTermUpdater:
       enabled: true
     glossaryUpdater:
       enabled: true
@@ -119,23 +222,45 @@ dataservice:
     api:
       livenessEnabled: true
       readinessEnabled: true
-  datasetLogsSyncers:
-    enabled: true
-  datasetDatasetSyncer:
-    enabled: true
-  datasetDatasetUpdater:
-    enabled: true
-  datasetInstanceSyncer:
-    enabled: true
+    atlasEntitySyncer:
+      livenessEnabled: true
+      readinessEnabled: true
+    datasetLogs:
+      livenessEnabled: true
+      readinessEnabled: true
+    datasetSyncer:
+      livenessEnabled: true
+      readinessEnabled: true
+    datasetUpdater:
+      livenessEnabled: true
+      readinessEnabled: true
+    glossary:
+      livenessEnabled: true
+      readinessEnabled: true
+    instanceSyncer:
+      livenessEnabled: true
+      readinessEnabled: true
+dbMetadataSync:
+  enabled: false
+dbMetadataSyncConsumer:
+  enabled: false
+
 emailservice:
   enabled: true
   probes:
     livenessEnabled: true
     readinessEnabled: true
 enclave:
+  affinity: {}
   configs:
     dataserviceBaseURL: http://aggregion-cdp-dataservice-cdp$URL_SUFFIX.$CDP_NS.svc.$CLUSTER_DOMAIN
     dataserviceToken: NEED_GENERATING
+    dmpBaseURL: http://aggregion-cdp-backend-cdp$URL_SUFFIX.$CDP_NS.svc.$CLUSTER_DOMAIN:8080/enclave
+    nodeTlsRejectUnauthorized: false
+    prettyLogs: "false"
+    providerSecret: $BACKEND_CONFIGS_DMP_SECRET # GENERATED
+    rabbitmqPrefetch: 2
+    tmpHostPath: /tmp
     workerHeapSizeMb: 64000
   enabled: true
   imageServices:
@@ -157,7 +282,27 @@ enclave:
       - hosts:
           - enclave.$BASE_FRONT_DOMAIN
         secretName: enclave-front-tls # CHANGEIT
+  nameOverride: ""
+  nodeSelector: {}
+  podAnnotations: {}
+  podSecurityContext: {}
+  probes:
+    livenessEnabled: false
+    livenessInitialDelaySeconds: 400
+    readinessEnabled: false
+    readinessInitialDelaySeconds: 400
+  resources:
+    server:
+      limits:
+        memory: 32G
+    services: {}
+  restartPolicy: Always
+  scone:
+    enabled: false
+  securityContext: {}
+  tolerations: []
 frontend:
+  enabled: true
   ingress:
     annotations:
       nginx.ingress.kubernetes.io/proxy-body-size: 128000m
@@ -191,11 +336,22 @@ gatekeeper:
     tag: 1.4.2
 imagePullSecrets:
   - name: aggregionregistry # CHANGEIT
+metadataParams:
+  credentials:
+    encryptionKey: "$MD_PARAMS_CREDS_ENCRYPTION_KEY" # GENERATED
+    iv: "$MD_PARAMS_CREDS_IV" # GENERATED
 metadataSeed:
   enabled: true
   config:
     dmpBackendBaseUrl: http://aggregion-cdp-backend-cdp$URL_SUFFIX.$CDP_NS.svc.$CLUSTER_DOMAIN:8080
     nodeTlsRejectUnauthorized: true
+metadataService:
+  enabled: false
+metrics:
+  enabled: false
+  path: /metrics
+  serviceMonitor:
+    enabled: false
 oidcprovider:
   config:
     clientPostLogoutRedirectUris:
@@ -218,61 +374,6 @@ oidcprovider:
   probes:
     livenessEnabled: true
     readinessEnabled: true
-providerLinks:
-  - name: $ACCOUNT_ID
-    url: http://aggregion-cdp-enclave-cdp$URL_SUFFIX.$CDP_NS.svc.$CLUSTER_DOMAIN:8010
-providers:
-  - "$ACCOUNT_ID"
-providerNames:
-  $ACCOUNT_ID:
-    ru: Розничная сеть
-    en: Retail network
-metadataParams:
-  credentials:
-    encryptionKey: "$MD_PARAMS_CREDS_ENCRYPTION_KEY" # GENERATED
-    iv: "$MD_PARAMS_CREDS_IV" # GENERATED
-metadataService:
-  enabled: false
-  migrationEnabled: false
-  probes:
-    livenessEnabled: false
-    readinessEnabled: false
-  config:
-    amqp:
-      url: amqp://aggregion-externals-rabbit-externals$URL_SUFFIX.$CDP_NS.svc.$CLUSTER_DOMAIN:5672
-    dmpBackendBaseUrl: http://aggregion-cdp-backend-cdp$URL_SUFFIX.$CDP_NS.svc.$CLUSTER_DOMAIN:8080/
-    jwtSecret: $MDS_CONFIG_JWT_SECRET # GENERATED
-    logLevel: trace
-    metrics:
-      enabled: true
-    postgres:
-      host: aggregion-externals-postgres-externals$URL_SUFFIX.$CDP_NS.svc.$CLUSTER_DOMAIN
-      logging: true
-  cronjob:
-    enabled: true
-dbMetadataSync:
-  enabled: false
-  probes:
-    livenessEnabled: false
-    readinessEnabled: false
-  config:
-    logLevel: "trace"
-    metadataServiceToken: NEED_GENERATING
-    instances:
-      - name: ch
-        rdbmsType: clickhouse
-        connectionOptions:
-          hostname: 127.0.0.1 # CHANGEIT
-          port: 8123
-        credentials:
-          username: "someuser" # CHANGEIT
-          password: "somepass" # CHANGEIT
-        databases:
-          - name: databasename # CHANGEIT
-    metrics:
-      enabled: true
-  cronjob:
-    enabled: true
 ddmEventConsumer:
   enabled: true
   image:
@@ -290,8 +391,12 @@ ddmEventConsumer:
 publishExtendedAgreements:
   cronjob:
     enabled: true
-    schedule: "0 */2 * * *"
-metrics:
-  enabled: false
-  serviceMonitor:
-    enabled: false
+providerLinks:
+  - name: $ACCOUNT_ID
+    url: http://aggregion-cdp-enclave-cdp$URL_SUFFIX.$CDP_NS.svc.$CLUSTER_DOMAIN:8010
+providerNames:
+  $ACCOUNT_ID:
+    en: Retail network # CHANGEIT
+    ru: Розничная сеть # CHANGEIT
+providers:
+  - "$ACCOUNT_ID"
