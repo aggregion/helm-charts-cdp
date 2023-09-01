@@ -50,10 +50,10 @@ data:
   {{ $envPrefix }}GFR_IGNORING_STRINGS: "{{ .Values.enclave.configs.gfr.ignoreStrings | toJson }}"
   {{ $envPrefix }}GFR_MEMORY_LIMIT_BYTES: "{{ .Values.enclave.configs.gfr.estimatedMemoryUsage }}"
   {{ $envPrefix }}TASKS_RESULT_TTL: {{ .Values.enclave.configs.tasksResultTtl | quote }}
-  {{ $envPrefix }}MINIO_PART_SIZE: {{ .Values.enclave.configs.minio.partSize }}
-  {{ $envPrefix }}MINIO_RETRY_COUNT: {{ .Values.enclave.configs.minio.retryCount }}
-  {{ $envPrefix }}MINIO_RETRY_INTERVAL: {{ .Values.enclave.configs.minio.retryInterval }}
-  {{ $envPrefix }}MINIO_RETRY_MULTIPLIER: {{ .Values.enclave.configs.minio.retryIntervalMultiplier }}
+  {{ $envPrefix }}MINIO_PART_SIZE: {{ .Values.enclave.configs.minio.partSize | quote }}
+  {{ $envPrefix }}MINIO_RETRY_COUNT: {{ .Values.enclave.configs.minio.retryCount | quote }}
+  {{ $envPrefix }}MINIO_RETRY_INTERVAL: {{ .Values.enclave.configs.minio.retryInterval | quote }}
+  {{ $envPrefix }}MINIO_RETRY_MULTIPLIER: {{ .Values.enclave.configs.minio.retryIntervalMultiplier | quote }}
   {{- if not .Values.enclave.configs.nodeTlsRejectUnauthorized }}
   {{ $envPrefix }}NODE_TLS_REJECT_UNAUTHORIZED: "0"
   {{- end }}
