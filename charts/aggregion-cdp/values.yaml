@@ -910,6 +910,11 @@ enclave:
     rabbitmqPrefetch: 1
     tmpHostPath: /tmp/enclave
     tasksResultTtl: 7200 # in seconds
+    minio:
+      retryCount: 3
+      retryInterval: 30000
+      retryIntervalMultiplier: 5
+      partSize: 5242880
   restartPolicy: Always
   nameOverride: ""
   fullnameOverride: ""
