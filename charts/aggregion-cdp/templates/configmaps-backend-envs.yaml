@@ -114,7 +114,8 @@ data:
 
   {{- if .Values.backend.configs.ddm }}
   DDM_ADDRESS: {{ .Values.backend.configs.ddm.address | quote }}
-  DDM_CLICKHOUSE: {{ .Values.backend.configs.ddm.clickhouse }}
+  DDM_CLICKHOUSE: {{ .Values.backend.configs.ddm.clickhouseInstanceName }}
+  DDM_CLICKHOUSE_DATABASE: {{ .Values.backend.configs.ddm.clickhouseDatabaseName }}
   DDM_CLICKHOUSE_CLUSTER_NAME: {{ .Values.backend.configs.ddm.clickhouseClusterName | quote }}
   DDM_EXTENDED_AGREEMENTS_TABLE: {{ .Values.backend.configs.ddm.extendedAgreementsTable }}
   DDM_S3_ACCESS_KEY: {{ .Values.backend.configs.ddm.s3.accessKey | quote }}

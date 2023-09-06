@@ -547,7 +547,8 @@ backend:
         secretKey: "some secret key"
         bucket: "some bucket"
         region: "us-east-1"
-      clickhouse: test # one of keys in the ddm.config.clickhouse_instances
+      clickhouseInstanceName: test # instance source name from metadata service
+      clickhouseDatabaseName: database-name # agreements database source name from metadata service
       clickhouseClusterName: ""
       extendedAgreementsTable: extended_agreements
       ttl:
