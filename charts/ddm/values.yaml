@@ -144,12 +144,18 @@ config:
     # tokio: 8
     # rayon: 8
     # polars: 4
-  clickhouseInstances: {}
-    # test:
-    #   url: http://localhost:8123
-    #   database: default
-    #   user: user
-    #   password: password
+  clickhouseRepository: {}
+    # type: metadata_service
+    # params:
+    #   endpoint: <url_to_metadataservice>
+    #   access_token: <metadataservice_token>
+    #   decryption_key: <base64_key>
+    #   decryption_iv: <base64_iv>
+    # type: config
+    # params:
+    #   test:
+    #     url: http://localhost:8123
+    #     database: default
   server: # EXTERNAL
     bindAddr: "0.0.0.0"
     countTraffic: true
