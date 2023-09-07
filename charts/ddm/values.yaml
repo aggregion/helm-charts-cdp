@@ -37,6 +37,7 @@ securityContext: {}
   # readOnlyRootFilesystem: true
   # runAsNonRoot: true
   # runAsUser: 1000
+  # allowPrivilegeEscalation: false
 
 ingress:
   enabled: false
@@ -74,42 +75,26 @@ tolerations: []
 affinity: {}
 terminationGracePeriodSeconds: 140
 
+busybox:
+  image:
+    repository: registry.aggregion.com/busybox
+    pullPolicy: IfNotPresent
+    tag: latest
+sgx:
+  enabled: false
+  device: /dev/sgx
+  aesmdSocket: /var/run/aesmd/aesm.socket
+
 server: # EXTERNAL
   service:
     type: ClusterIP
     port: 40001
-  grpcui:
-    enabled: false
-    port: 40002
-    resources:
-      limits:
-        cpu: 200m
-        memory: 256Mi
-      requests:
-        cpu: 100m
-        memory: 128Mi
-    image:
-      repository: registry.aggregion.com/ddm-grpcui
-      pullPolicy: Always
-      tag: latest
+
 manager: # INTERNAL
   service:
     type: ClusterIP
     port: 50001
-  grpcui:
-    enabled: false
-    port: 50002
-    resources:
-      limits:
-        cpu: 200m
-        memory: 256Mi
-      requests:
-        cpu: 100m
-        memory: 128Mi
-    image:
-      repository: registry.aggregion.com/ddm-grpcui
-      pullPolicy: Always
-      tag: latest
+
 managerUi:
   enabled: false
   resources:
@@ -154,7 +139,7 @@ config:
   logLevel: info
   debugUseParquetCache: false
   debugKeepArtifacts: false
-  tmpPath: /opt/ddm-cache/tmp
+  tmpPath: /tmp/ddm-tmp
   threadPools: {}
     # tokio: 8
     # rayon: 8
@@ -173,10 +158,9 @@ config:
     countTraffic: true
   dataCacheFactory:
     params:
-      baseDir: /opt/ddm-cache
+      baseDir: /occlum/run/mount/__ROOT
       hostPath: /opt/ddm-cache
-  configsPath: /opt/ddm
-  secretsPath: /opt/ddm-secrets
+  configsPath: /etc/ddm
   taskExecutors:
     acquire_data:
       type: dataservice
