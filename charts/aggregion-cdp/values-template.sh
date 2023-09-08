@@ -1,12 +1,16 @@
 #!/bin/bash
 
+# echo "" | bash charts/aggregion-cdp/values-template.sh > cdp_local_values_v1.yaml
+
 cd $(dirname $0)
 
 export LC_ALL=C
 export TEMPLATE_FILENAME=${TEMPLATE_FILENAME:-values-template.yaml}
 export KEYS_ABS_DIR="${KEYS_ABS_DIR:-.}"
-export PRIVATE_KEY_ABS_PATH="$KEYS_ABS_DIR/private.pem"
-export PUBLIC_KEY_ABS_PATH="$KEYS_ABS_DIR/public.pem"
+export PRIVATE_KEY_FILENAME=private.pem
+export PUBLIC_KEY_FILENAME=public.pem
+export PRIVATE_KEY_ABS_PATH="$KEYS_ABS_DIR/$PRIVATE_KEY_FILENAME"
+export PUBLIC_KEY_ABS_PATH="$KEYS_ABS_DIR/$PUBLIC_KEY_FILENAME"
 export CLUSTER_DOMAIN="${CLUSTER_DOMAIN:-cluster.local}"
 export URL_SUFFIX="${URL_SUFFIX:--prod}"
 export BASE_FRONT_DOMAIN="${BASE_FRONT_DOMAIN:-app.aggregion.com}"
