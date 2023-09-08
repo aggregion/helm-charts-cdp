@@ -147,7 +147,7 @@ config:
   clickhouseRepository: {}
     # type: metadata_service
     # params:
-    #   endpoint: <url_to_metadataservice>
+    #   endpoint: <url_to_metadataservice> # root endpoint without trailing slash
     #   access_token: <metadataservice_token>
     #   decryption_key: <base64_key>
     #   decryption_iv: <base64_iv>
