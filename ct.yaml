@@ -1,5 +1,10 @@
 chart-dirs:
   - charts
+excluded-charts:
+  - gitlab-old
+  - gitlab-v6.2.2
+  - tekton
+  - backupjobs
 all: true
 validate-maintainers: false
 validate-chart-schema: false
