@@ -40,7 +40,11 @@ spec:
           command:
             - /bin/sh
             - '-c'
-            - SOLR_HOST=$(hostname).{{ $solrName }}.{{ .Release.Namespace }}.svc.{{ .Values.clusterDomain }} solr-foreground
+            - |
+              {{- if .Values.solr.enabled }}
+              bin/solr auth enable -type basicAuth -credentials "{{ .Values.solr.auth.user }}:{{ .Values.solr.auth.password }}" -z $ZK_HOST -blockUnknown true
+              {{- end }}
+              SOLR_HOST=$(hostname).{{ $solrName }}.{{ .Release.Namespace }}.svc.{{ .Values.clusterDomain }} solr-foreground
           imagePullPolicy: {{ .Values.solr.image.pullPolicy }}
           ports:
             - name: client
@@ -54,11 +58,21 @@ spec:
             {{- toYaml .Values.solr.resources | nindent 12 }}
           env: # need refactoring
             - name: SOLR_OPTS
+              {{- if .Values.solr.auth.enabled }}
+              value: '-Dsolr.autoSoftCommit.maxTime=100 -Dsolr.httpclient.builder.factory=org.apache.solr.client.solrj.impl.PreemptiveBasicAuthClientBuilderFactory -Dsolr.httpclient.config.httpBasicAuthUser={{ .Values.solr.auth.user }} -Dsolr.httpclient.config.httpBasicAuthPassword={{ .Values.solr.auth.password }}'
+              {{- else }}
               value: '-Dsolr.autoSoftCommit.maxTime=100'
+              {{- end }}
             - name: ZK_CREATE_CHROOT
               value: 'true'
             - name: ZK_HOST
               value: "{{ $zookeeperName }}-0.{{ $zookeeperName }}.{{ .Release.Namespace }}.svc.{{ .Values.clusterDomain }},{{ $zookeeperName }}-1.{{ $zookeeperName }}.{{ .Release.Namespace }}.svc.{{ .Values.clusterDomain }},{{ $zookeeperName }}-2.{{ $zookeeperName }}.{{ .Release.Namespace }}.svc.{{ .Values.clusterDomain }}/solr"
+            {{- if .Values.solr.auth.enabled }}
+            - name: SOLR_AUTH_TYPE
+              value: basic
+            - name: SOLR_AUTHENTICATION_OPTS
+              value: -Dbasicauth={{ .Values.solr.auth.user }}:{{ .Values.solr.auth.password }}
+            {{- end }}
       initContainers:
         - name: wait-for-zookeeper
           image: "{{ .Values.busybox.image.repository }}:{{ .Values.busybox.image.tag }}"

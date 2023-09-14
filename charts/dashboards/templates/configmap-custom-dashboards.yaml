@@ -6,11 +6,12 @@ kind: ConfigMapList
 items:
 {{- range $path, $fileContents := $files }}
 {{- $dashboardName := regexReplaceAll "(^.*/)(.*)\\.json$" $path "${2}" }}
-# file starts here 
+# file starts here
 - apiVersion: v1
   kind: ConfigMap
   metadata:
-    name: {{ printf "%s-%s" (include "kube-prometheus-stack.fullname" $) $dashboardName | trunc 63 | trimSuffix "-" }}
+    name: custom-dashboards
+    # {{ printf "%s-%s" (include "kube-prometheus-stack.fullname" $) $dashboardName | trunc 63 | trimSuffix "-" }}
     namespace: {{ template "kube-prometheus-stack.namespace" $ }}
     labels:
       {{- if $.Values.grafana.sidecar.dashboards.label }}
@@ -20,7 +21,7 @@ items:
 {{ include "kube-prometheus-stack.labels" $ | indent 6 }}
   data:
     {{ $dashboardName }}.json: {{ $.Files.Get $path | toJson }}
-# file finishes here 
+# file finishes here
 {{- end }}
 {{- end }}
 {{- end }}

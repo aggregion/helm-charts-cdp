@@ -48,16 +48,32 @@ spec:
             - name: data
               mountPath: /var/lib/cassandra
               # subPath: cassandra-data
+            - name: confdata
+              mountPath: /etc/cassandra
           resources:
             {{- toYaml .Values.cassandra.resources | nindent 12 }}
           env: # need refactoring
             - name: CASSANDRA_START_RPC
               value: "true"
+      initContainers:
+        - name: change-authenticator
+          image: "{{ .Values.cassandra.image.repository }}:{{ .Values.cassandra.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.cassandra.image.pullPolicy }}
+          command:
+            - '/bin/sh'
+            - '-c'
+            - |
+              cp -a /etc/cassandra/. /etc/cassandra2 && sed -i 's/^authenticator\: AllowAllAuthenticator/authenticator\: PasswordAuthenticator/g' /etc/cassandra2/cassandra.yaml
+          volumeMounts:
+          - mountPath: /etc/cassandra2
+            name: confdata
       restartPolicy: {{ .Values.cassandra.restartPolicy }}
       volumes:
         - name: data
           persistentVolumeClaim:
             claimName: "{{ $cassandraName }}-claim"
+        - name: confdata
+          emptyDir: {}
       {{- with .Values.cassandra.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}

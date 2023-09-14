@@ -13,6 +13,11 @@ serviceAccount:
 
 atlas:
   enabled: true
+  cassandra:
+    auth:
+      enabled: false
+      username: cassandra
+      password: cassandra
   nameOverride: ""
   fullnameOverride: ""
   restartPolicy: Always
@@ -141,13 +146,17 @@ kafkaInit:
     repository: "busybox"
     pullPolicy: IfNotPresent
     tag: "latest"
-  command: "[\"sh\", \"-c\", \"mkdir -p /bitnami && chown -R 1001:0 /bitnami\"]"
+  command: '["sh", "-c", "mkdir -p /bitnami && chown -R 1001:0 /bitnami"]'
   resources:
     limits:
       cpu: "0.05"
       memory: 200Mi
 
 solr:
+  auth:
+    enabled: false
+    user: admin
+    password: password
   enabled: true
   nameOverride: ""
   fullnameOverride: ""
@@ -182,7 +191,7 @@ solrInit:
     repository: "busybox"
     pullPolicy: IfNotPresent
     tag: "latest"
-  command: "[\"sh\", \"-c\", \"mkdir -p /vol-path && chown -R 8983:8983 /vol-path\"]"
+  command: '["sh", "-c", "mkdir -p /vol-path && chown -R 8983:8983 /vol-path"]'
   resources:
     limits:
       cpu: "0.05"

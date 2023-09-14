@@ -101,10 +101,27 @@ spec:
               value: "{{ $solrName }}-0.{{ $solrName }}.{{ .Release.Namespace }}.svc.{{ .Values.clusterDomain }}"
             - name: ZK_HOST
               value: "{{ $zookeeperName }}-0.{{ $zookeeperName }}.{{ .Release.Namespace }}.svc.{{ .Values.clusterDomain }},{{ $zookeeperName }}-1.{{ $zookeeperName }}.{{ .Release.Namespace }}.svc.{{ .Values.clusterDomain }},{{ $zookeeperName }}-2.{{ $zookeeperName }}.{{ .Release.Namespace }}.svc.{{ .Values.clusterDomain }}/solr"
+        {{- if .Values.atlas.cassandra.auth.enabled }}
+        - name: cassandra-authenticator
+          image: "{{ .Values.atlas.image.repository }}:{{ .Values.atlas.image.tag }}"
+          imagePullPolicy: {{ .Values.atlas.image.pullPolicy }}
+          command:
+            - '/bin/sh'
+            - '-c'
+            - |
+              cp -a conf/. /tmp2
+              if [ ! $(grep ^atlas.graph.storage.username /tmp2/atlas-application.properties.template) ]; then
+                echo "atlas.graph.storage.username={{ .Values.atlas.cassandra.auth.username }}" >> /tmp2/atlas-application.properties.template
+                echo "atlas.graph.storage.password={{ .Values.atlas.cassandra.auth.password }}" >> /tmp2/atlas-application.properties.template
+              fi
+          volumeMounts:
+            - mountPath: /tmp2
+              name: atlasconfdata
           resources: { }
           terminationMessagePath: /dev/termination-log
           terminationMessagePolicy: File
           imagePullPolicy: IfNotPresent
+        {{- end }}
       containers:
         - name: "atlas"
           securityContext:
@@ -118,6 +135,8 @@ spec:
           volumeMounts:
             - name: data
               mountPath: /opt/atlas/data
+            - name: atlasconfdata
+              mountPath: /opt/apache-atlas-3.0.0-SNAPSHOT/conf
           resources:
             {{- toYaml .Values.atlas.resources | nindent 12 }}
           env: # need refactoring
@@ -195,6 +214,8 @@ spec:
         - name: data
           emptyDir: {}
         - name: solr-configs
+          emptyDir: {}
+        - name: atlasconfdata
           emptyDir: {}
         - name: atlas-secret
           secret:
