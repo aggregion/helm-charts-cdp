@@ -55,7 +55,7 @@ spec:
           env: # need refactoring
             - name: CASSANDRA_START_RPC
               value: "true"
-      {{- .Values.atlas.cassandra.auth.enabled }}
+      {{- if .Values.atlas.cassandra.auth.enabled }}
       initContainers:
         - name: change-authenticator
           image: "{{ .Values.cassandra.image.repository }}:{{ .Values.cassandra.image.tag | default .Chart.AppVersion }}"
