@@ -48,8 +48,10 @@ spec:
             - name: data
               mountPath: /var/lib/cassandra
               # subPath: cassandra-data
+            {{- if .Values.atlas.cassandra.auth.enabled }}
             - name: confdata
               mountPath: /etc/cassandra
+            {{- end }}
           resources:
             {{- toYaml .Values.cassandra.resources | nindent 12 }}
           env: # need refactoring
