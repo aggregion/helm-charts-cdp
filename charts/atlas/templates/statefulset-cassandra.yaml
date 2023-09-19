@@ -74,8 +74,10 @@ spec:
         - name: data
           persistentVolumeClaim:
             claimName: "{{ $cassandraName }}-claim"
+        {{- .Values.atlas.cassandra.auth.enabled }}
         - name: confdata
           emptyDir: {}
+        {{- end }}
       {{- with .Values.cassandra.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
