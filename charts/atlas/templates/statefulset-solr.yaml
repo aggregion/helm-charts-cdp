@@ -41,7 +41,7 @@ spec:
             - /bin/sh
             - '-c'
             - |
-              {{- if .Values.solr.enabled }}
+              {{- if .Values.solr.auth.enabled }}
               bin/solr auth enable -type basicAuth -credentials "{{ .Values.solr.auth.user }}:{{ .Values.solr.auth.password }}" -z $ZK_HOST -blockUnknown true
               {{- end }}
               SOLR_HOST=$(hostname).{{ $solrName }}.{{ .Release.Namespace }}.svc.{{ .Values.clusterDomain }} solr-foreground
