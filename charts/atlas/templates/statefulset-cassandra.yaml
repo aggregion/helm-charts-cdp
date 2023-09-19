@@ -74,7 +74,7 @@ spec:
         - name: data
           persistentVolumeClaim:
             claimName: "{{ $cassandraName }}-claim"
-        {{- .Values.atlas.cassandra.auth.enabled }}
+        {{- if .Values.atlas.cassandra.auth.enabled }}
         - name: confdata
           emptyDir: {}
         {{- end }}
