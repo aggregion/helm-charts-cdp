@@ -14,7 +14,6 @@ metadata:
     {{- include "exts.atlas.selectorLabels" . | nindent 4 }}
   {{- with .Values.atlas.ingress.annotations }}
   annotations:
-    # kubernetes.io/ingress.class: {{ .Values.atlas.ingress.class }}
     {{- toYaml . | nindent 4 }}
   {{- end }}
 spec:

@@ -135,8 +135,10 @@ spec:
           volumeMounts:
             - name: data
               mountPath: /opt/atlas/data
+            {{- if .Values.atlas.cassandra.auth.enabled }}
             - name: atlasconfdata
               mountPath: /opt/apache-atlas-3.0.0-SNAPSHOT/conf
+            {{- end }}
           resources:
             {{- toYaml .Values.atlas.resources | nindent 12 }}
           env: # need refactoring
@@ -215,8 +217,10 @@ spec:
           emptyDir: {}
         - name: solr-configs
           emptyDir: {}
+        {{- if .Values.atlas.cassandra.auth.enabled }}
         - name: atlasconfdata
           emptyDir: {}
+        {{- end }}
         - name: atlas-secret
           secret:
             secretName: atlas-secret
