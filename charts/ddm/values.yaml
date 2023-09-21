@@ -155,16 +155,16 @@ config:
   clickhouseInstances: null
   clickhouseRepository: {}
   # type: metadata_service
-    # params:
-    #   endpoint: <url_to_metadataservice> # root endpoint without trailing slash
-    #   access_token: <metadataservice_token>
-    #   decryption_key: <base64_key>
-    #   decryption_iv: <base64_iv>
-    # type: config
-    # params:
-    #   test:
-    #     url: http://localhost:8123
-    #     database: default
+  # params:
+  #   endpoint: <url_to_metadataservice> # root endpoint without trailing slash
+  #   access_token: <metadataservice_token>
+  #   decryption_key: <base64_key>
+  #   decryption_iv: <base64_iv>
+  # type: config
+  # params:
+  #   test:
+  #     url: http://localhost:8123
+  #     database: default
 
   concurrencyLimits: []
   # - task_types:
@@ -179,36 +179,16 @@ config:
   git:
     - host: github.com
       auth:
-        type: ssh_key
-        # read about this here: https://docs.gitlab.com/ee/user/ssh.html#generate-an-ssh-key-pair
-        value: |
-          -----BEGIN OPENSSH PRIVATE KEY-----
-          b3BlbnNzaC1rZXktdjEAAAAABG5vbmUAAAAEbm9uZQAAAAAAAAABAAABFwAAAAdzc2gtcn
-          NhAAAAAwEAAQAAAQEAzw1i2zo5IRoI9fE6CVMC6zHKSdCnOiY4HqXf2TJa64bP1dZjC2/C
-          GZHG0HLeMBdax7QpdvchkZar7FdIfzcxcOS04Fo3QJDFAUjKEgEBDSf+JiKTtk5N1BW68U
-          U0GEwvxAH3bfVs5Q31st3kp+0H5/pbEssRjgJXtxlafK81Bvl375ovwvjbQ8ni1w6fQJNl
-          gLyEDBsqszCDepJqQSPIv5frrR4vGEOBeoIpmWTV1BLuDPnYn6MGk2z0SAVqrj+4mFkIIQ
-          cVbBIDEGFwN+xlEYPNb07k5tTJxmbLz/fEO+BpDLjv52VD7d4nqSaLjEOZ4aW7WLvqe8hu
-          TijWT38JKQAAA8AN6vW0Der1tAAAAAdzc2gtcnNhAAABAQDPDWLbOjkhGgj18ToJUwLrMc
-          pJ0Kc6Jjgepd/ZMlrrhs/V1mMLb8IZkcbQct4wF1rHtCl29yGRlqvsV0h/NzFw5LTgWjdA
-          kMUBSMoSAQENJ/4mIpO2Tk3UFbrxRTQYTC/EAfdt9WzlDfWy3eSn7Qfn+lsSyxGOAle3GV
-          p8rzUG+Xfvmi/C+NtDyeLXDp9Ak2WAvIQMGyqzMIN6kmpBI8i/l+utHi8YQ4F6gimZZNXU
-          Eu4M+difowaTbPRIBWquP7iYWQghBxVsEgMQYXA37GURg81vTuTm1MnGZsvP98Q74GkMuO
-          /nZUPt3iepJouMQ5nhpbtYu+p7yG5OKNZPfwkpAAAAAwEAAQAAAQAlsm45M9SK7k6LWKwU
-          XoS9hYcrAU4xDBxTmCe1R7G+CAF3EV1fC63vMddcxE0nvFjO20JhYoU+GIycrxeH8eiSgV
-          FdN4+vtavom/QOaxhh6NIg51K1cnRBFOPAYbUmZ1ia+zCtWG3HFk+RjUzANiumVLKYLVi4
-          3jxSHc+Xu96Psi+eaeSMhizV912ZRzRDeeOKwyO7Iz5ffNm0A7gryg7pRXLfSsj4MjFW6j
-          H5pAPf/WIUP4yAtQPRpUTX6yDzQHS3+lPjlrt21lqmmMwnQT+77GCXKVG8ns4zd1gEGd6Z
-          4g1DEPAftUAGi8iAIYAvS7bzDp6wHtYZiw1D3lCKIxPBAAAAgQCfe7O9Lm7RTm/xVhmnnD
-          Nk30312BkgkAPNUqI7Hs6EguC0Ko/DKCEv1tUIjyn7t4CTUpKa3vQ3cpdCDwfIUgRf/uVP
-          S0EONwI4ISCSVMIdACNr+udxXSROKJ5kyVnS5HtVIFxVB5dvM7FkOG7VwPcdNUyflNVKvH
-          FPNcJqeLT7JAAAAIEA/n/koUkm+gqBhZZhAsduRUO1LZhYdEDvOm+nFWRaJ3Xq3RhClcOx
-          vEOrujzUNr0wkg2VI8hFK8HU9vHMQQfLUCeerj33QyMs8zwPJAnoMxM3lufI/aDGMUC3Zm
-          G6+CfYNH7hLptpTZkJ+Ou9Di2DlIIOyA9mxLKB4msDooMqhH0AAACBANBF4fKTVe1SQHpq
-          4ltzQ1sCyRChyCw31BjhGDYQUUDBTQWN9Oj+KsD8O5jm3Q3h6BCc7F8EIcUMnUHLoAq0Pd
-          PKmf/+H+PYFrgv5yK6TSnmseX0YyCPP+GteOlu4jMRL51m1V6XIfxtznP/iTx5L0fo9Ab3
-          V5a3fHd8Qa+KV9MdAAAAA2RkbQECAwQFBgc=
-          -----END OPENSSH PRIVATE KEY-----
+        type: token
+        value: "git personal access token should be defined here"
+#        type: ssh_key
+#        # read about this here: https://docs.gitlab.com/ee/user/ssh.html#generate-an-ssh-key-pair
+#        value: |
+#          -----BEGIN OPENSSH PRIVATE KEY-----
+#          b3BlbnNzaC1rZXktdjEAAAAABG5vbmUAAAAEbm9uZQAAAAAAAAABAAABFwAAAAdzc2gtcn
+#          NhAAAAAwEAAQAAAQEAzw1i2zo5IRoI9fE6CVMC6zHKSdCnOiY4HqXf2TJa64bP1dZjC2/C
+
+
   server: # EXTERNAL
     bindAddr: "0.0.0.0"
     countTraffic: true
