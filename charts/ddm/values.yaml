@@ -146,6 +146,18 @@ config:
     # polars: 4
   clickhouseInstances: null
   clickhouseRepository: {}
+  # type: metadata_service
+    # params:
+    #   endpoint: <url_to_metadataservice> # root endpoint without trailing slash
+    #   access_token: <metadataservice_token>
+    #   decryption_key: <base64_key>
+    #   decryption_iv: <base64_iv>
+    # type: config
+    # params:
+    #   test:
+    #     url: http://localhost:8123
+    #     database: default
+
   git:
     - host: github.com
       auth:
@@ -179,18 +191,6 @@ config:
           PKmf/+H+PYFrgv5yK6TSnmseX0YyCPP+GteOlu4jMRL51m1V6XIfxtznP/iTx5L0fo9Ab3
           V5a3fHd8Qa+KV9MdAAAAA2RkbQECAwQFBgc=
           -----END OPENSSH PRIVATE KEY-----
-
-    # type: metadata_service
-    # params:
-    #   endpoint: <url_to_metadataservice> # root endpoint without trailing slash
-    #   access_token: <metadataservice_token>
-    #   decryption_key: <base64_key>
-    #   decryption_iv: <base64_iv>
-    # type: config
-    # params:
-    #   test:
-    #     url: http://localhost:8123
-    #     database: default
   server: # EXTERNAL
     bindAddr: "0.0.0.0"
     countTraffic: true
