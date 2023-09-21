@@ -158,6 +158,16 @@ config:
     #     url: http://localhost:8123
     #     database: default
 
+  concurrencyLimits: []
+  # - task_types:
+  #     - transform
+  #     - join_by_tuples
+  #     - join
+  #   limit: 5
+  # - task_types:
+  #     - acquire_data_clickhouse
+  #     - acquire_data
+  #   limit: 10
   git:
     - host: github.com
       auth:
