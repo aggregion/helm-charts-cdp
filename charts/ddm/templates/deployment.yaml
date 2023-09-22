@@ -94,6 +94,7 @@ spec:
               - "{{ .Values.manager.service.port }}"
             timeoutSeconds: 3
             initialDelaySeconds: 5
+            failureThreshold: {{ .Values.probes.liveness.failureThreshold }}
             periodSeconds: 15
           {{- end }}
           {{- if .Values.probes.readyness.enabled }}
@@ -106,6 +107,7 @@ spec:
               - "{{ .Values.manager.service.port }}"
             timeoutSeconds: 3
             initialDelaySeconds: 5
+            failureThreshold: {{ .Values.probes.readyness.failureThreshold }}
             periodSeconds: 15
           {{- end }}
           resources:

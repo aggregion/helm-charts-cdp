@@ -42,8 +42,10 @@ securityContext: {}
 probes:
   liveness:
     enabled: false
+    failureThreshold: 100
   readyness:
     enabled: false
+    failureThreshold: 100
 
 ingress:
   enabled: false
