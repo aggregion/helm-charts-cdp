@@ -84,14 +84,30 @@ spec:
             - mountPath: "{{ .Values.sgx.aesmdSocket }}"
               name: aesmd
             {{- end }}
-          # livenessProbe:
-          #   httpGet:
-          #     path: /
-          #     port: http
-          # readinessProbe:
-          #   httpGet:
-          #     path: /
-          #     port: http
+          {{- if .Values.probes.liveness.enabled }}
+          livenessProbe:
+            exec:
+              command:
+              - nc
+              - -vz
+              - 127.0.0.1
+              - {{ .Values.manager.service.port }}
+            timeoutSeconds: 3
+            initialDelaySeconds: 5
+            periodSeconds: 15
+          {{- end }}
+          {{- if .Values.probes.readyness.enabled }}
+          readinessProbe:
+            exec:
+              command:
+              - nc
+              - -vz
+              - 127.0.0.1
+              - {{ .Values.manager.service.port }}
+            timeoutSeconds: 3
+            initialDelaySeconds: 5
+            periodSeconds: 15
+          {{- end }}
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
           env:

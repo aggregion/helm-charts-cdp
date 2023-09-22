@@ -39,6 +39,12 @@ securityContext: {}
   # runAsUser: 1000
   # allowPrivilegeEscalation: false
 
+probes:
+  liveness:
+    enabled: false
+  readyness:
+    enabled: false
+
 ingress:
   enabled: false
   className: ""
