@@ -87,11 +87,7 @@ spec:
           {{- if .Values.probes.liveness.enabled }}
           livenessProbe:
             exec:
-              command:
-              - nc
-              - -vz
-              - 127.0.0.1
-              - {{ .Values.manager.service.port }}
+              command: nc -vz 127.0.0.1 {{ .Values.manager.service.port }}
             timeoutSeconds: 3
             initialDelaySeconds: 5
             periodSeconds: 15
@@ -99,11 +95,7 @@ spec:
           {{- if .Values.probes.readyness.enabled }}
           readinessProbe:
             exec:
-              command:
-              - nc
-              - -vz
-              - 127.0.0.1
-              - {{ .Values.manager.service.port }}
+              command: nc -vz 127.0.0.1 {{ .Values.manager.service.port }}
             timeoutSeconds: 3
             initialDelaySeconds: 5
             periodSeconds: 15
