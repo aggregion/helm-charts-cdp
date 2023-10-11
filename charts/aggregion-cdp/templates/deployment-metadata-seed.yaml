@@ -85,6 +85,10 @@ spec:
             - name: NODE_TLS_REJECT_UNAUTHORIZED
               value: "0"
             {{- end }}
+            {{- if .Values.metadataSeed.config.accessToken }}
+            - name: ACCESS_TOKEN
+              value: {{ .Values.metadataSeed.config.accessToken | quote }}
+            {{- end }}
           resources:
             {{- toYaml .Values.backend.resources.metadataSeedApi | nindent 12 }}
           {{- if .Values.metadataSeed.probes.metadataSeed.livenessEnabled }}

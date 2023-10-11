@@ -151,4 +151,7 @@ data:
   {{- else}}
   FEATURES_GET_USER_ROLES_FROM_HEADERS: "false"
   {{- end }}
+  {{- if .Values.metadataSeed.config.accessToken }}
+  METADATA_SEED_ACCESS_TOKEN: {{ .Values.metadataSeed.config.accessToken | quote }}
+  {{- end }}
 {{- end }}
