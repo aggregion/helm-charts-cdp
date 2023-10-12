@@ -590,7 +590,7 @@ backend:
         Job:
           list: ['TEAMLEAD', 'DATA_RESEARCHER', 'ADMIN']
         DatasetMatchingGroup:
-          get: ['TEAMLEAD', 'DATA_RESEARCHER']
+          get: ['TEAMLEAD', 'DATA_RESEARCHER', 'ADMIN']
           list: ['TEAMLEAD', 'DATA_RESEARCHER', 'ADMIN']
           checkDatasetsForMatching: ['TEAMLEAD', 'DATA_RESEARCHER']
         MetadataField:
@@ -614,6 +614,7 @@ backend:
       Mutation:
         Account:
           create: ['ADMIN']
+          merge: ['ADMIN']
           updateGlobalOrgInfo: ['ADMIN']
           setUserRoles: ['ADMIN']
           removeUserRoles: ['ADMIN']
@@ -635,7 +636,7 @@ backend:
         DataLabVM:
           create: ['TEAMLEAD']
           merge: ['TEAMLEAD']
-          runDataLabVM: ['DATA_RESEARCHER', 'TEAMLEAD']
+          runDataLabVM: ['TEAMLEAD', 'ADMIN']
           stopDataLabVM: ['TEAMLEAD', 'ADMIN']
         DatasetRequest:
           create: ['TEAMLEAD', 'DATA_RESEARCHER']
@@ -683,10 +684,10 @@ backend:
           changeStatus: ['TEAMLEAD', 'DATA_RESEARCHER']
           hide: ['TEAMLEAD', 'DATA_RESEARCHER', 'ADMIN']
           unhide: ['TEAMLEAD', 'DATA_RESEARCHER', 'ADMIN']
-          runMatching: ['TEAMLEAD', 'DATA_RESEARCHER', 'ADMIN']
+          runMatching: ['TEAMLEAD', 'DATA_RESEARCHER']
           stopMatching: ['TEAMLEAD', 'DATA_RESEARCHER', 'ADMIN']
           runUpload: ['TEAMLEAD', 'DATA_RESEARCHER']
-          stopUpload: ['TEAMLEAD', 'DATA_RESEARCHER']
+          stopUpload: ['TEAMLEAD', 'DATA_RESEARCHER', 'ADMIN']
         MetadataSeed:
           seedExcelData: ['DATA_ANALYST', 'DATA_STEWARD']
         JobSetting:
