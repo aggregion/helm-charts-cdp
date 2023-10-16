@@ -550,6 +550,9 @@ backend:
       clickhouseInstanceName: test # instance source name from metadata service
       clickhouseDatabaseName: database-name # agreements database source name from metadata service
       clickhouseClusterName: ""
+      clickhouseMigrationInstanceName: "" # instance source name from metadata service, required only for mongodb migration
+      clickhouseMigrationDatabaseName: "" # agreements database source name from metadata service, required only for mongodb migration
+      clickhouseMigrationClusterName: "" # required only for mongodb migration, can be empty string if there is no cluster name
       extendedAgreementsTable: extended_agreements
       ttl:
         extendedAgreementsPipeline: 7200
