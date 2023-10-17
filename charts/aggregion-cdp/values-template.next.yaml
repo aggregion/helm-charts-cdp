@@ -193,7 +193,7 @@ dataservice:
       schedule: "*/15 * * * *"
     enabled: false
     password: admin
-    rabbitmqUrl: amqp://aggregion-externals-rabbit-externals-prod.agg-prod.svc.cluster.local:5672
+    rabbitmqUrl: amqp://aggregion-externals-rabbit-externals$URL_SUFFIX.$CDP_NS.svc.$CLUSTER_DOMAIN:5672
     username: admin
   datasetDatasetSyncer:
     enabled: true
