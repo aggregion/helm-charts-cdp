@@ -1,5 +1,9 @@
 name: release-chart
 
+permissions:
+  pages: write
+  actions: read
+
 on:
   push:
     branches:
