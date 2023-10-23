@@ -137,6 +137,16 @@ spec:
             - name: DEBUG_KEEP_ARTIFACTS
               value: "1"
             {{ end }}
+            {{- if .Values.config.clickhouseForceConvertToTSV }}
+            - name: CLICKHOUSE_FORCE_CONVERT_TO_TSV
+              value: 1
+            {{- end }}
+            {{- if sgx.enabled }}
+            - name: OCCLUM_LOG_LEVEL
+              value: {{ .Values.config.occlumLogLevel }}
+            - name: _RJEM_MALLOC_CONF
+              value: {{ .Values.config.rjemMallocConf }}
+            {{- end }}
         {{- if .Values.managerUi.enabled }}
         - name: {{ .Chart.Name }}-manager-ui
           image: "{{ .Values.managerUi.image.repository }}:{{ .Values.managerUi.image.tag }}"
