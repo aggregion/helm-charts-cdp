@@ -141,7 +141,7 @@ spec:
             - name: CLICKHOUSE_FORCE_CONVERT_TO_TSV
               value: 1
             {{- end }}
-            {{- if sgx.enabled }}
+            {{- if .Values.sgx.enabled }}
             - name: OCCLUM_LOG_LEVEL
               value: {{ .Values.config.occlumLogLevel }}
             - name: _RJEM_MALLOC_CONF
