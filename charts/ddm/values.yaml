@@ -154,9 +154,12 @@ podTemplateSpec:
 
 config:
   logLevel: info
+  occlumLogLevel: info
   debugUseParquetCache: false
   debugKeepArtifacts: false
   tmpPath: /tmp/ddm-tmp
+  clickhouseForceConvertToTSV: false
+  rjemMallocConf: retain:false,background_thread:true
   threadPools: {}
   # tokio: 8
   # rayon: 8
