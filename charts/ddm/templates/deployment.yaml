@@ -151,7 +151,7 @@ spec:
             {{ end }}
             {{- if .Values.config.clickhouseForceConvertToTSV }}
             - name: CLICKHOUSE_FORCE_CONVERT_TO_TSV
-              value: 1
+              value: "1"
             {{- end }}
             {{- if .Values.sgx.enabled }}
             - name: OCCLUM_LOG_LEVEL
