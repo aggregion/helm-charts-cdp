@@ -93,14 +93,9 @@ sgx:
   k8sPlugin:
     enabled: false
     resources:
-      limits:
-        sgx.intel.com/enclave: 1
-        sgx.intel.com/epc: 1Gi
-        sgx.intel.com/provision: 1
-      requests:
-        sgx.intel.com/enclave: 1
-        sgx.intel.com/epc: 512Mi
-        sgx.intel.com/provision: 1
+      sgx.intel.com/enclave: 1
+      sgx.intel.com/epc: 512Mi
+      sgx.intel.com/provision: 1
 
 server: # EXTERNAL
   service:
