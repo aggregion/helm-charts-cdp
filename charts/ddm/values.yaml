@@ -89,7 +89,7 @@ busybox:
 sgx:
   enabled: false
   device: /dev/sgx
-  aesmdSocket: /var/run/aesmd/aesm.socket
+  aesmdSocketDir: /var/run/aesmd
   k8sPlugin:
     enabled: false
     resources:

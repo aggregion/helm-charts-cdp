@@ -64,7 +64,7 @@ spec:
           image: "{{ .Values.aesmd.image.repository }}:{{ .Values.aesmd.image.tag }}"
           imagePullPolicy: {{ .Values.aesmd.image.pullPolicy }}
           volumeMounts:
-            - mountPath: "{{ .Values.sgx.aesmdSocket }}"
+            - mountPath: "{{ .Values.sgx.aesmdSocketDir }}"
               name: aesmd
         {{- end }}
         - name: {{ .Chart.Name }}
@@ -93,7 +93,7 @@ spec:
             - mountPath: {{ .Values.config.dataCacheFactory.params.baseDir }}
               name: data-cache
             {{- if .Values.sgx.enabled }}
-            - mountPath: "{{ .Values.sgx.aesmdSocket }}"
+            - mountPath: "{{ .Values.sgx.aesmdSocketDir }}"
               name: aesmd
             {{- end }}
           {{- if .Values.probes.liveness.enabled }}
@@ -204,7 +204,7 @@ spec:
           emptyDir: {}
         {{- else }}
           hostPath:
-            path: "{{ .Values.sgx.aesmdSocket }}"
+            path: "{{ .Values.sgx.aesmdSocketDir }}"
         {{- end }}
         {{- end }}
       {{- with .Values.nodeSelector }}
