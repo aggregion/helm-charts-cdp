@@ -56,13 +56,10 @@ spec:
               ls -la /opt/local-secrets/
       containers:
         - name: {{ .Chart.Name }}
+          {{- if and .Values.sgx.enabled (not .Values.sgx.k8sPlugin.enabled) }}
           securityContext:
-            {{- toYaml .Values.securityContext | nindent 12 }}
-            {{- if .Values.sgx.enabled }}
-            {{- if not .Values.sgx.k8sPlugin.enabled }}
             privileged: true
-            {{- end }}
-            {{- end }}
+          {{- end }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           {{- if not .Values.sgx.enabled }}
@@ -181,12 +178,10 @@ spec:
         {{ end }}
         {{- if .Values.aesmd.enabled }}
         - name: {{ .Chart.Name }}-aesmd
+          {{- if and .Values.sgx.enabled (not .Values.sgx.k8sPlugin.enabled) }}
           securityContext:
-            {{- if .Values.sgx.enabled }}
-            {{- if not .Values.sgx.k8sPlugin.enabled }}
             privileged: true
-            {{- end }}
-            {{- end }}
+          {{- end }}
           image: "{{ .Values.aesmd.image.repository }}:{{ .Values.aesmd.image.tag }}"
           imagePullPolicy: {{ .Values.aesmd.image.pullPolicy }}
           volumeMounts:
