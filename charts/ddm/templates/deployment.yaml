@@ -161,7 +161,7 @@ spec:
             {{- end }}
             {{- if .Values.config.taskConcurrencyLimit }}
             - name: TASK_CONCURRENCY_LIMIT
-              value: {{ .Values.config.taskConcurrencyLimit }}
+              value: {{ .Values.config.taskConcurrencyLimit | quote }}
             {{- end }}
         {{- if .Values.managerUi.enabled }}
         - name: {{ .Chart.Name }}-manager-ui
