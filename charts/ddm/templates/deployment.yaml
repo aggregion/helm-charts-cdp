@@ -58,6 +58,12 @@ spec:
         - name: {{ .Chart.Name }}
           securityContext:
             {{- toYaml .Values.securityContext | nindent 12 }}
+            {{- if .Values.sgx.enabled }}
+            {{- if not .Values.sgx.k8sPlugin.enabled }}
+            allowPrivilegeEscalation: true
+            privileged: true
+            {{- end }}
+            {{- end }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           {{- if not .Values.sgx.enabled }}
@@ -111,7 +117,16 @@ spec:
             periodSeconds: 15
           {{- end }}
           resources:
-            {{- toYaml .Values.resources | nindent 12 }}
+            limits:
+              {{- toYaml .Values.resources.limits | nindent 14 }}
+              {{- if and .Values.sgx.enabled .Values.sgx.k8sPlugin.enabled }}
+              {{- toYaml .Values.sgx.k8sPlugin.resources.limits | nindent 14 }}
+              {{- end }}
+            requests:
+              {{- toYaml .Values.resources.requests | nindent 14 }}
+              {{- if and .Values.sgx.enabled .Values.sgx.k8sPlugin.enabled }}
+              {{- toYaml .Values.sgx.k8sPlugin.resources.requests | nindent 14 }}
+              {{- end }}
           env:
             - name: LOG_LEVEL
               value: {{ .Values.config.logLevel }}

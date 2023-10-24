@@ -28,16 +28,16 @@ updateStrategy:
   type: Recreate
 
 podSecurityContext: {}
-  # fsGroup: 2000
+# fsGroup: 2000
 
 securityContext: {}
-  # capabilities:
-  #   drop:
-  #   - ALL
-  # readOnlyRootFilesystem: true
-  # runAsNonRoot: true
-  # runAsUser: 1000
-  # allowPrivilegeEscalation: false
+# capabilities:
+#   drop:
+#   - ALL
+# readOnlyRootFilesystem: true
+# runAsNonRoot: true
+# runAsUser: 1000
+# allowPrivilegeEscalation: false
 
 probes:
   liveness:
@@ -54,19 +54,17 @@ ingress:
     nginx.ingress.kubernetes.io/ssl-redirect: "true"
     nginx.ingress.kubernetes.io/backend-protocol: "GRPC"
   hosts:
-    - host: chart-example.local
-      paths:
-        - path: /
-          pathType: ImplementationSpecific
+  - host: chart-example.local
+    paths:
+    - path: /
+      pathType: ImplementationSpecific
   tls: []
   #  - secretName: chart-example-tls
   #    hosts:
   #      - chart-example.local
 
 resources:
-#  limits:
-#    cpu: 1000m
-#    memory: 1024Mi
+  limits: {}
   requests:
     cpu: 500m
     memory: 1024Mi
@@ -92,6 +90,17 @@ sgx:
   enabled: false
   device: /dev/sgx
   aesmdSocket: /var/run/aesmd/aesm.socket
+  k8sPlugin:
+    enabled: false
+    resources:
+      limits:
+        sgx.intel.com/enclave: 1
+        sgx.intel.com/epc: 1Gi
+        sgx.intel.com/provision: 1
+      requests:
+        sgx.intel.com/enclave: 1
+        sgx.intel.com/epc: 512Mi
+        sgx.intel.com/provision: 1
 
 server: # EXTERNAL
   service:
@@ -124,10 +133,10 @@ managerUi:
     className: ""
     annotations: {}
     hosts:
-      - host: chart-example.local
-        paths:
-          - path: /
-            pathType: ImplementationSpecific
+    - host: chart-example.local
+      paths:
+      - path: /
+        pathType: ImplementationSpecific
     tls: []
     #  - secretName: chart-example-tls
     #    hosts:
@@ -149,9 +158,9 @@ config:
   debugKeepArtifacts: false
   tmpPath: /tmp/ddm-tmp
   threadPools: {}
-    # tokio: 8
-    # rayon: 8
-    # polars: 4
+  # tokio: 8
+  # rayon: 8
+  # polars: 4
   clickhouseInstances: null
   clickhouseRepository: {}
   # type: metadata_service
@@ -177,16 +186,16 @@ config:
   #     - acquire_data
   #   limit: 10
   git:
-    - host: github.com
-      auth:
-        type: token
-        value: "git personal access token should be defined here"
-#        type: ssh_key
-#        # read about this here: https://docs.gitlab.com/ee/user/ssh.html#generate-an-ssh-key-pair
-#        value: |
-#          -----BEGIN OPENSSH PRIVATE KEY-----
-#          b3BlbnNzaC1rZXktdjEAAAAABG5vbmUAAAAEbm9uZQAAAAAAAAABAAABFwAAAAdzc2gtcn
-#          NhAAAAAwEAAQAAAQEAzw1i2zo5IRoI9fE6CVMC6zHKSdCnOiY4HqXf2TJa64bP1dZjC2/C
+  - host: github.com
+    auth:
+      type: token
+      value: "git personal access token should be defined here"
+      #        type: ssh_key
+      #        # read about this here: https://docs.gitlab.com/ee/user/ssh.html#generate-an-ssh-key-pair
+      #        value: |
+      #          -----BEGIN OPENSSH PRIVATE KEY-----
+      #          b3BlbnNzaC1rZXktdjEAAAAABG5vbmUAAAAEbm9uZQAAAAAAAAABAAABFwAAAAdzc2gtcn
+      #          NhAAAAAwEAAQAAAQEAzw1i2zo5IRoI9fE6CVMC6zHKSdCnOiY4HqXf2TJa64bP1dZjC2/C
 
 
   server: # EXTERNAL
@@ -231,21 +240,21 @@ ecosystem:
     provider_1:
       name: "Provider 1"
       authorized_keys:
-        # openssl ec -in private.pem -pubout -out public.pem
-        - |
-          -----BEGIN PUBLIC KEY-----
-          MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEViak1mkHr4WPvE968qsw0eOpXHt4
-          9CdCK6zBek7ACgVx7+5nzY9200mhyvmKj5pFwVouSM5AeWMx8AKPaYsVNQ==
-          -----END PUBLIC KEY-----
+      # openssl ec -in private.pem -pubout -out public.pem
+      - |
+        -----BEGIN PUBLIC KEY-----
+        MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEViak1mkHr4WPvE968qsw0eOpXHt4
+        9CdCK6zBek7ACgVx7+5nzY9200mhyvmKj5pFwVouSM5AeWMx8AKPaYsVNQ==
+        -----END PUBLIC KEY-----
       grpc_url: "http://localhost:50001"
     provider_2:
       name: "Provider 2"
       authorized_keys:
-        - |
-          -----BEGIN PUBLIC KEY-----
-          MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEzJXukX4RIXJl1TtTaSIFyY8dDIx+
-          BZY/0nlYTPSYQQwqv/bOl8XUqaQje1GElA5Vl6JMIA60viDHPIplxEkXtg==
-          -----END PUBLIC KEY-----
+      - |
+        -----BEGIN PUBLIC KEY-----
+        MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEzJXukX4RIXJl1TtTaSIFyY8dDIx+
+        BZY/0nlYTPSYQQwqv/bOl8XUqaQje1GElA5Vl6JMIA60viDHPIplxEkXtg==
+        -----END PUBLIC KEY-----
       grpc_url: "http://localhost:50002"
 
 wallet:
