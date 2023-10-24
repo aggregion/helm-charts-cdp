@@ -96,6 +96,12 @@ sgx:
       sgx.intel.com/enclave: 1
       sgx.intel.com/epc: 512Mi
       sgx.intel.com/provision: 1
+aesmd:
+  enabled: false
+  image:
+    repository: registry.aggregion.com/oasisprotocol/aesmd
+    tag: master
+    pullPolicy: IfNotPresent
 
 server: # EXTERNAL
   service:

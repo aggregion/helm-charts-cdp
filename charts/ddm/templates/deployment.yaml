@@ -60,7 +60,6 @@ spec:
             {{- toYaml .Values.securityContext | nindent 12 }}
             {{- if .Values.sgx.enabled }}
             {{- if not .Values.sgx.k8sPlugin.enabled }}
-            allowPrivilegeEscalation: true
             privileged: true
             {{- end }}
             {{- end }}
@@ -85,8 +84,6 @@ spec:
             - mountPath: {{ .Values.config.dataCacheFactory.params.baseDir }}
               name: data-cache
             {{- if .Values.sgx.enabled }}
-            # - mountPath: "{{ .Values.sgx.device }}"
-            #   name: dev-sgx
             - mountPath: "{{ .Values.sgx.aesmdSocket }}"
               name: aesmd
             {{- end }}
@@ -178,6 +175,20 @@ spec:
             - name: PORT
               value: {{ .Values.managerUi.service.port | quote }}
         {{ end }}
+        {{- if .Values.aesmd.enabled }}
+        - name: {{ .Chart.Name }}-aesmd
+          securityContext:
+            {{- if .Values.sgx.enabled }}
+            {{- if not .Values.sgx.k8sPlugin.enabled }}
+            privileged: true
+            {{- end }}
+            {{- end }}
+          image: "{{ .Values.aesmd.image.repository }}:{{ .Values.aesmd.image.tag }}"
+          imagePullPolicy: {{ .Values.aesmd.image.pullPolicy }}
+          volumeMounts:
+            - mountPath: "{{ .Values.sgx.aesmdSocket }}"
+              name: aesmd
+        {{- end }}
       volumes:
         - name: secrets
           secret:
@@ -189,12 +200,13 @@ spec:
             path: "{{ .Values.config.dataCacheFactory.params.hostPath }}"
             type: DirectoryOrCreate
         {{- if .Values.sgx.enabled }}
-        # - name: dev-sgx
-        #   hostPath:
-        #     path: "{{ .Values.sgx.device }}"
         - name: aesmd
+        {{- if .Values.aesmd.enabled }}
+          emptyDir: {}
+        {{- else }}
           hostPath:
             path: "{{ .Values.sgx.aesmdSocket }}"
+        {{- end }}
         {{- end }}
       {{- with .Values.nodeSelector }}
       nodeSelector:
