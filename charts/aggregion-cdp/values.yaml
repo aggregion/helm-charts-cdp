@@ -556,6 +556,9 @@ backend:
       extendedAgreementsTable: extended_agreements
       ttl:
         extendedAgreementsPipeline: 7200
+      checkout:
+        type: "ServiceHttpRequest" # supported values: "GitCheckout" | "ServiceHttpRequest"
+        serviceName: "repo_bundler" # this value is matter if type=ServiceHttpRequest then the value should be the same as the corresponding key-name in the ddm config
 
     userRolesMap:
       Query:
