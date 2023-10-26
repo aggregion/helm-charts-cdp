@@ -107,8 +107,8 @@ repoBundler:
   enabled: true
   image:
     repository: registry.aggregion.com/repo-bundler
-    tag: "0.1.0"
-    pullPolicy: IfNotPresent
+    tag: master
+    pullPolicy: Always
   resources:
     limits: {}
     requests:
