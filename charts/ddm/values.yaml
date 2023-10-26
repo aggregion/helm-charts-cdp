@@ -103,6 +103,35 @@ aesmd:
     tag: master
     pullPolicy: IfNotPresent
 
+repoBundler:
+  enabled: true
+  image:
+    repository: registry.aggregion.com/repo-bundler
+    tag: "0.1.0"
+    pullPolicy: IfNotPresent
+  resources:
+    limits: {}
+    requests:
+      cpu: 100m
+      memory: 128Mi
+  config:
+    configPath: /opt # without trailing slash
+    port: 8001
+    gitHosts: {}
+    # github.com:
+    #   # optional
+    #   auth:
+    #     type: token # also available ssh_key
+    #     value: ""
+    #     # type: ssh_key
+    #     # # read about this here: https://docs.gitlab.com/ee/user/ssh.html#generate-an-ssh-key-pair
+    #     # value: |
+    #     #   -----BEGIN OPENSSH PRIVATE KEY-----
+    #     #   b3BlbnNzaC1rZXktdjEAAAAABG5vbmUAAAAEbm9uZQAAAAAAAAABAAABFwAAAAdzc2gtcn
+    #     #   NhAAAAAwEAAQAAAQEAzw1i2zo5IRoI9fE6CVMC6zHKSdCnOiY4HqXf2TJa64bP1dZjC2/C
+    #   # optional
+    #   check_certificate: true
+
 server: # EXTERNAL
   service:
     type: ClusterIP
@@ -190,18 +219,6 @@ config:
   #     - acquire_data_clickhouse
   #     - acquire_data
   #   limit: 10
-  git:
-  - host: github.com
-    auth:
-      type: token
-      value: "git personal access token should be defined here"
-      #        type: ssh_key
-      #        # read about this here: https://docs.gitlab.com/ee/user/ssh.html#generate-an-ssh-key-pair
-      #        value: |
-      #          -----BEGIN OPENSSH PRIVATE KEY-----
-      #          b3BlbnNzaC1rZXktdjEAAAAABG5vbmUAAAAEbm9uZQAAAAAAAAABAAABFwAAAAdzc2gtcn
-      #          NhAAAAAwEAAQAAAQEAzw1i2zo5IRoI9fE6CVMC6zHKSdCnOiY4HqXf2TJa64bP1dZjC2/C
-
 
   server: # EXTERNAL
     bindAddr: "0.0.0.0"
@@ -215,6 +232,14 @@ config:
       hostPath: /opt/ddm-cache
   configsPath: /etc/ddm
   taskExecutors:
+    services:
+      # service name
+      repo_bundler:
+        # Service base url
+        url: http://localhost:8001
+        # optional headers
+        headers: {}
+        #   Authorization: Bearer <token>
     acquire_data:
       type: dataservice
       params:

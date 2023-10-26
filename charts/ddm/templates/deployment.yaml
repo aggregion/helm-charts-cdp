@@ -44,7 +44,7 @@ spec:
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
           volumeMounts:
             - mountPath: /opt/original-secrets
-              name: secrets
+              name: ddm-secrets
               readOnly: true
             - mountPath: /opt/local-secrets
               name: local-secrets
@@ -188,10 +188,24 @@ spec:
             - mountPath: "{{ .Values.sgx.aesmdSocketDir }}"
               name: aesmd
         {{- end }}
+        {{- if .Values.repoBundler.enabled }}
+        - name: {{ .Chart.Name }}-repo-bundler
+          image: "{{ .Values.repoBundler.image.repository }}:{{ .Values.repoBundler.image.tag }}"
+          imagePullPolicy: {{ .Values.repoBundler.image.pullPolicy }}
+          volumeMounts:
+            - mountPath: "{{ .Values.repoBundler.config.configPath }}"
+              name: repo-bundler-secrets
+          env:
+            - name: CONFIG_FILE
+              value: "{{ .Values.repoBundler.config.configPath }}/config.yaml"
+        {{- end }}
       volumes:
-        - name: secrets
+        - name: ddm-secrets
           secret:
-            secretName: {{ $name }}-secrets
+            secretName: {{ $name }}-ddm
+        - name: repo-bundler-secrets
+          secret:
+            secretName: {{ $name }}-repo-bundler
         - name: local-secrets
           emptyDir: {}
         - name: data-cache
