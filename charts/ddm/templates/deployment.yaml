@@ -55,18 +55,6 @@ spec:
               cp -L /opt/original-secrets/*.yaml /opt/local-secrets/
               ls -la /opt/local-secrets/
       containers:
-        {{- if .Values.aesmd.enabled }}
-        - name: {{ .Chart.Name }}-aesmd
-          {{- if and .Values.sgx.enabled (not .Values.sgx.k8sPlugin.enabled) }}
-          securityContext:
-            privileged: true
-          {{- end }}
-          image: "{{ .Values.aesmd.image.repository }}:{{ .Values.aesmd.image.tag }}"
-          imagePullPolicy: {{ .Values.aesmd.image.pullPolicy }}
-          volumeMounts:
-            - mountPath: "{{ .Values.sgx.aesmdSocketDir }}"
-              name: aesmd
-        {{- end }}
         - name: {{ .Chart.Name }}
           {{- if and .Values.sgx.enabled (not .Values.sgx.k8sPlugin.enabled) }}
           securityContext:
@@ -188,6 +176,18 @@ spec:
             - name: PORT
               value: {{ .Values.managerUi.service.port | quote }}
         {{ end }}
+        {{- if .Values.aesmd.enabled }}
+        - name: {{ .Chart.Name }}-aesmd
+          {{- if and .Values.sgx.enabled (not .Values.sgx.k8sPlugin.enabled) }}
+          securityContext:
+            privileged: true
+          {{- end }}
+          image: "{{ .Values.aesmd.image.repository }}:{{ .Values.aesmd.image.tag }}"
+          imagePullPolicy: {{ .Values.aesmd.image.pullPolicy }}
+          volumeMounts:
+            - mountPath: "{{ .Values.sgx.aesmdSocketDir }}"
+              name: aesmd
+        {{- end }}
       volumes:
         - name: secrets
           secret:
