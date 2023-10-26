@@ -118,7 +118,7 @@ repoBundler:
     configPath: /opt # without trailing slash
     port: 8001
     gitHosts: {}
-    # github.com:
+    # - host: github.com
     #   # optional
     #   auth:
     #     type: token # also available ssh_key
@@ -262,6 +262,7 @@ config:
     concat:
       type: default
   eventExporters: []
+  git: []
 
 ecosystem:
   name: "Test Ecosystem"
