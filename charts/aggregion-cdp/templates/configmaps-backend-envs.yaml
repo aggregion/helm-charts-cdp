@@ -129,6 +129,8 @@ data:
   DDM_S3_REGION: {{ .Values.backend.configs.ddm.s3.region | quote }}
   DDM_S3_SECRET_KEY: {{ .Values.backend.configs.ddm.s3.secretKey | quote }}
   DDM_TTL_EXTENDED_AGREEMENTS_PIPELINE: {{ .Values.backend.configs.ddm.ttl.extendedAgreementsPipeline | quote }}
+  DDM_CHECKOUT_TYPE: {{ .Values.backend.configs.ddm.checkout.type | quote }}
+  DDM_CHECKOUT_SERVICE_NAME: {{ .Values.backend.configs.ddm.checkout.serviceName | quote }}
   {{- end }}
 
   {{- if .Values.backend.useCommonProxy }}
