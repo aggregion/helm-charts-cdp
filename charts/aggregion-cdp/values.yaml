@@ -3,7 +3,7 @@
 # Declare variables to be passed into your templates.
 
 imagePullSecrets:
-  - name: aggregionregistry
+- name: aggregionregistry
 
 # all available providers
 providers: ["demo"]
@@ -12,9 +12,9 @@ providerNames:
     ru: "Розничная сеть"
     en: "Retail"
 providerLinks:
-    # this config url is used for accessing to another enclaves
-  - name: demo
-    url: http://demo
+# this config url is used for accessing to another enclaves
+- name: demo
+  url: http://demo
 metadataParams:
   credentials:
     encryptionKey: "it should be key as string with 32b size..."
@@ -177,12 +177,12 @@ frontend:
   podAnnotations: {}
   podSecurityContext: {}
   securityContext: {}
-    # capabilities:
-    #   drop:
-    #   - ALL
-    # readOnlyRootFilesystem: true
-    # runAsNonRoot: true
-    # runAsUser: 1000
+  # capabilities:
+  #   drop:
+  #   - ALL
+  # readOnlyRootFilesystem: true
+  # runAsNonRoot: true
+  # runAsUser: 1000
   configs:
     listenPort: 5000
     currency: RUB
@@ -199,7 +199,7 @@ frontend:
       nginx.ingress.kubernetes.io/limit-rps: "1000"
       nginx.ingress.kubernetes.io/limit-rpm: "60000"
     hosts:
-      - host: demo.local
+    - host: demo.local
     tls: []
     #  - secretName: chart-example-tls
     #    hosts:
@@ -645,36 +645,36 @@ backend:
           create: ['TEAMLEAD', 'DATA_RESEARCHER']
           merge: ['TEAMLEAD', 'DATA_RESEARCHER']
           changeStatus:
-            - if:
-                args:
-                  status: "review"
-              then: ['TEAMLEAD', 'DATA_RESEARCHER']
-            - if:
-                args:
-                  status: "approved"
-              then: ['DATA_STEWARD', 'DATA_ASSET_OWNER']
-            - if:
-                args:
-                  status: "rejected"
-              then: ['DATA_STEWARD', 'DATA_ASSET_OWNER']
+          - if:
+              args:
+                status: "review"
+            then: ['TEAMLEAD', 'DATA_RESEARCHER']
+          - if:
+              args:
+                status: "approved"
+            then: ['DATA_STEWARD', 'DATA_ASSET_OWNER']
+          - if:
+              args:
+                status: "rejected"
+            then: ['DATA_STEWARD', 'DATA_ASSET_OWNER']
           createAndMoveToReview: ['TEAMLEAD', 'DATA_RESEARCHER']
           upload: ['TEAMLEAD', 'DATA_RESEARCHER']
         Script:
           create: ['DATA_RESEARCHER', 'TEAMLEAD']
           merge: ['DATA_RESEARCHER', 'TEAMLEAD']
           changeStatus:
-            - if:
-                args:
-                  status: 'ready4review'
-              then: ['TEAMLEAD']
-            - if:
-                args:
-                  status: 'approved'
-              then: ['DATA_STEWARD', 'DATA_ASSET_OWNER']
-            - if:
-                args:
-                  status: 'rejected'
-              then: ['DATA_STEWARD', 'DATA_ASSET_OWNER']
+          - if:
+              args:
+                status: 'ready4review'
+            then: ['TEAMLEAD']
+          - if:
+              args:
+                status: 'approved'
+            then: ['DATA_STEWARD', 'DATA_ASSET_OWNER']
+          - if:
+              args:
+                status: 'rejected'
+            then: ['DATA_STEWARD', 'DATA_ASSET_OWNER']
           makeReview: ['DATA_STEWARD', 'DATA_ASSET_OWNER']
         GlossaryTerm:
           bookmark: ['GLOSSARY_RESEARCHER']
@@ -697,18 +697,18 @@ backend:
           create: ['TEAMLEAD', 'DATA_RESEARCHER']
           merge: ['TEAMLEAD', 'DATA_RESEARCHER']
           changeStatus:
-            - if:
-                args:
-                  status: 'waiting'
-              then: ['TEAMLEAD']
-            - if:
-                args:
-                  status: 'debug'
-              then: ['TEAMLEAD', 'DATA_RESEARCHER']
-            - if:
-                args:
-                  status: 'ready4review'
-              then: ['TEAMLEAD', 'DATA_RESEARCHER']
+          - if:
+              args:
+                status: 'waiting'
+            then: ['TEAMLEAD']
+          - if:
+              args:
+                status: 'debug'
+            then: ['TEAMLEAD', 'DATA_RESEARCHER']
+          - if:
+              args:
+                status: 'ready4review'
+            then: ['TEAMLEAD', 'DATA_RESEARCHER']
           setSchedule: ['TEAMLEAD']
         Job:
           debug: ['TEAMLEAD', 'DATA_RESEARCHER']
@@ -734,12 +734,12 @@ backend:
   podAnnotations: {}
   podSecurityContext: {}
   securityContext: {}
-    # capabilities:
-    #   drop:
-    #   - ALL
-    # readOnlyRootFilesystem: true
-    # runAsNonRoot: true
-    # runAsUser: 1000
+  # capabilities:
+  #   drop:
+  #   - ALL
+  # readOnlyRootFilesystem: true
+  # runAsNonRoot: true
+  # runAsUser: 1000
   service:
     api:
       type: ClusterIP
@@ -749,7 +749,7 @@ backend:
       port: 8080
   pvc:
     accessModes:
-      - ReadWriteOnce
+    - ReadWriteOnce
 
   updateStrategy:
     type: Recreate
@@ -934,12 +934,12 @@ enclave:
     type: Recreate
   podSecurityContext: {}
   securityContext: {}
-    # capabilities:
-    #   drop:
-    #   - ALL
-    # readOnlyRootFilesystem: true
-    # runAsNonRoot: true
-    # runAsUser: 1000
+  # capabilities:
+  #   drop:
+  #   - ALL
+  # readOnlyRootFilesystem: true
+  # runAsNonRoot: true
+  # runAsUser: 1000
   service:
     type: ClusterIP
     port: 8321
@@ -954,31 +954,31 @@ enclave:
       nginx.ingress.kubernetes.io/proxy-send-timeout: "3600"
       nginx.ingress.kubernetes.io/use-regex: "true"
     hosts:
-      - host: enclave.local
-        paths:
-          - "/"
+    - host: enclave.local
+      paths:
+      - "/"
     tls: []
     #  - secretName: chart-example-tls
     #    hosts:
     #      - enclave.local
   resources:
     server: {}
-      # if use azure (AKS)
-      # limits:
-      #   kubernetes.azure.com/sgx_epc_mem_in_MiB: 16
+    # if use azure (AKS)
+    # limits:
+    #   kubernetes.azure.com/sgx_epc_mem_in_MiB: 16
 
     services: {}
     las: {}
-      # limits:
-      #   cpu: 100m
-      #   memory: 128Mi
-      # requests:
-      #   cpu: 100m
-      #   memory: 128Mi
+    # limits:
+    #   cpu: 100m
+    #   memory: 128Mi
+    # requests:
+    #   cpu: 100m
+    #   memory: 128Mi
 
-      # if use azure (AKS)
-      # limits:
-      #   kubernetes.azure.com/sgx_epc_mem_in_MiB: 16
+    # if use azure (AKS)
+    # limits:
+    #   kubernetes.azure.com/sgx_epc_mem_in_MiB: 16
   nodeSelector: {}
   tolerations: []
   affinity: {}
@@ -1088,6 +1088,8 @@ dataservice:
     clickhouseIsMocked: false # since 2021-12-13
     clickhouseDisableArrowCompression: false # valid values: true, 1, false, 0
     clickhouseEnableArrowStringAsString: false # valid values: true, 1, false, 0
+    clickhouseRequestHeaderTimeout: 30
+    clickhouseRequestBodyTimeout: 30
     eosHealthcheckTimeoutMs: 1000
     eosHealthcheckIntervalMs: 10000
     # metadataServiceEndpoint: "http://aggregion-cdp-dataservice-mds/healthcheck" # DEPRECATED
@@ -1274,7 +1276,7 @@ oidcprovider:
       nginx.ingress.kubernetes.io/limit-rpm: "60000"
     # hosts for ingress rules
     hosts:
-      - host: auth.local
+    - host: auth.local
     # ingress tls
     tls: []
   # cofiguration of liveness, readiness probes
@@ -1296,14 +1298,14 @@ oidcprovider:
     clientScopes: "openid profile"
     # supported client redirect uris of an external client
     clientRedirectUris:
-      - "http://localhost:8080/auth/realms/master/broker/oidc/endpoint"
+    - "http://localhost:8080/auth/realms/master/broker/oidc/endpoint"
     # supported client post logout redirect uris of an external client
     clientPostLogoutRedirectUris:
-      - "http://localhost:8080/auth/realms/master/broker/oidc/endpoint/logout_response"
+    - "http://localhost:8080/auth/realms/master/broker/oidc/endpoint/logout_response"
     # key list for keygrip (https://github.com/crypto-utils/keygrip)
     cookiesKeys:
-      - 16a6d259dbf8887e76e0702f8af2059dd3092138340b63dbe67db5c866d530ad
-      - 9be003e7425596421b5d4aa07621c93de3a5f3b4e984ae0ec8e4c1ae939555be
+    - 16a6d259dbf8887e76e0702f8af2059dd3092138340b63dbe67db5c866d530ad
+    - 9be003e7425596421b5d4aa07621c93de3a5f3b4e984ae0ec8e4c1ae939555be
     # oidc features
     features:
       # enable RP-Initiated Logout features (https://openid.net/specs/openid-connect-rpinitiated-1_0-final.html)
@@ -1496,19 +1498,19 @@ dbMetadataSync:
     logLevel: info
     metadataServiceToken: token
     instances:
-      - name: instance
-        rdbmsType: clickhouse
-        connectionOptions:
-          hostname: 10.0.2.50
-          port: 18001
-        databases:
-          - name: some-database
-            tables:
-              - table1
-              - table2
-            credentials:
-              username: root
-              password: admin
+    - name: instance
+      rdbmsType: clickhouse
+      connectionOptions:
+        hostname: 10.0.2.50
+        port: 18001
+      databases:
+      - name: some-database
+        tables:
+        - table1
+        - table2
+        credentials:
+          username: root
+          password: admin
     metrics:
       enabled: false
 

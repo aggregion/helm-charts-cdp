@@ -53,6 +53,8 @@ data:
   TOKEN_SECRET_KEY: {{ .Values.dataservice.config.tokenSecretKey | quote }}
   TRINO_HOST: {{ .Values.dataservice.config.trinoHost | quote }}
   TRINO_PORT: {{ .Values.dataservice.config.trinoPort | quote }}
+  CLICKHOUSE_REQUEST_HEADER_TIMEOUT: {{ .Values.dataservice.config.clickhouseRequestHeaderTimeout | quote }}
+  CLICKHOUSE_REQUEST_BODY_TIMEOUT: {{ .Values.dataservice.config.clickhouseRequestBodyTimeout | quote }}
 
   {{- if not .Values.dbMetadataSync.enabled }} # conflict with the same env in "secrets-dataservice-envs.yaml"
   CREDENTIALS_DECRYPT_KEY: {{ .Values.dataservice.config.credentialsDecryptKey | quote }}
