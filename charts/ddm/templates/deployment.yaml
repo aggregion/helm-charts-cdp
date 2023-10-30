@@ -160,6 +160,10 @@ spec:
             - name: TASK_CONCURRENCY_LIMIT
               value: {{ .Values.config.taskConcurrencyLimit | quote }}
             {{- end }}
+            {{- if .Values.config.taskMemoryLimit }}
+            - name: TASK_MEMORY_LIMIT
+              value: {{ .Values.config.taskMemoryLimit | quote }}
+            {{- end }}
         {{- if .Values.managerUi.enabled }}
         - name: {{ .Chart.Name }}-manager-ui
           image: "{{ .Values.managerUi.image.repository }}:{{ .Values.managerUi.image.tag }}"
