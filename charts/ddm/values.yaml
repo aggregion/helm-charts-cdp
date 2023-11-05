@@ -57,10 +57,10 @@ ingress:
     nginx.ingress.kubernetes.io/proxy-read-timeout: "7200"
     nginx.ingress.kubernetes.io/proxy-send-timeout: "7200"
   hosts:
-  - host: chart-example.local
-    paths:
-    - path: /
-      pathType: ImplementationSpecific
+    - host: chart-example.local
+      paths:
+        - path: /
+          pathType: ImplementationSpecific
   tls: []
   #  - secretName: chart-example-tls
   #    hosts:
@@ -166,10 +166,10 @@ managerUi:
     className: ""
     annotations: {}
     hosts:
-    - host: chart-example.local
-      paths:
-      - path: /
-        pathType: ImplementationSpecific
+      - host: chart-example.local
+        paths:
+          - path: /
+            pathType: ImplementationSpecific
     tls: []
     #  - secretName: chart-example-tls
     #    hosts:
@@ -212,6 +212,7 @@ config:
   #     database: default
 
   taskConcurrencyLimit: 4
+  taskMemoryLimit: 128GiB
   concurrencyLimits: []
   # - task_types:
   #     - transform
@@ -274,21 +275,21 @@ ecosystem:
     provider_1:
       name: "Provider 1"
       authorized_keys:
-      # openssl ec -in private.pem -pubout -out public.pem
-      - |
-        -----BEGIN PUBLIC KEY-----
-        MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEViak1mkHr4WPvE968qsw0eOpXHt4
-        9CdCK6zBek7ACgVx7+5nzY9200mhyvmKj5pFwVouSM5AeWMx8AKPaYsVNQ==
-        -----END PUBLIC KEY-----
+        # openssl ec -in private.pem -pubout -out public.pem
+        - |
+          -----BEGIN PUBLIC KEY-----
+          MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEViak1mkHr4WPvE968qsw0eOpXHt4
+          9CdCK6zBek7ACgVx7+5nzY9200mhyvmKj5pFwVouSM5AeWMx8AKPaYsVNQ==
+          -----END PUBLIC KEY-----
       grpc_url: "http://localhost:50001"
     provider_2:
       name: "Provider 2"
       authorized_keys:
-      - |
-        -----BEGIN PUBLIC KEY-----
-        MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEzJXukX4RIXJl1TtTaSIFyY8dDIx+
-        BZY/0nlYTPSYQQwqv/bOl8XUqaQje1GElA5Vl6JMIA60viDHPIplxEkXtg==
-        -----END PUBLIC KEY-----
+        - |
+          -----BEGIN PUBLIC KEY-----
+          MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEzJXukX4RIXJl1TtTaSIFyY8dDIx+
+          BZY/0nlYTPSYQQwqv/bOl8XUqaQje1GElA5Vl6JMIA60viDHPIplxEkXtg==
+          -----END PUBLIC KEY-----
       grpc_url: "http://localhost:50002"
 
 wallet:
