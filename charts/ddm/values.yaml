@@ -255,6 +255,7 @@ config:
     join_by_tuples:
       type: default
       params:
+        # valid values "city_hash_64" or "md5"
         hash_type: "city_hash_64"
     filter_bloom:
       type: default
