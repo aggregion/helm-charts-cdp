@@ -2,7 +2,7 @@
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
 imagePullSecrets:
-  - name: aggregionregistry
+- name: aggregionregistry
 
 clusterDomain: cluster.local
 
@@ -13,6 +13,10 @@ serviceAccount:
 
 atlas:
   enabled: true
+  pvcForLogs:
+    enabled: false
+    storageSize: "1Gi"
+    storageClass: ""
   cassandra:
     auth:
       enabled: false
@@ -78,9 +82,9 @@ atlas:
       nginx.ingress.kubernetes.io/proxy-send-timeout: "1800"
       nginx.ingress.kubernetes.io/proxy-read-timeout: "1800"
     hosts:
-      - host: atlas.local
-        paths:
-          - "/"
+    - host: atlas.local
+      paths:
+      - "/"
     tls: []
 
 cassandra:

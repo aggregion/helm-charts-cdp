@@ -139,6 +139,10 @@ spec:
             - name: atlasconfdata
               mountPath: /opt/apache-atlas-3.0.0-SNAPSHOT/conf
             {{- end }}
+            {{- if .Values.atlas.pvcForLogs.enabled }}
+            - name: logs
+              mountPath: /opt/apache-atlas-3.0.0-SNAPSHOT/logs
+            {{- end }}
           resources:
             {{- toYaml .Values.atlas.resources | nindent 12 }}
           env: # need refactoring
@@ -227,6 +231,11 @@ spec:
             items:
               - key: tls.crt
                 path: tls.crt
+        {{- if .Values.atlas.pvcForLogs.enabled }}
+        - name: logs
+          persistentVolumeClaim:
+            claimName: "{{ $atlasName }}-logs"
+        {{- end }}
       {{- with .Values.atlas.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}

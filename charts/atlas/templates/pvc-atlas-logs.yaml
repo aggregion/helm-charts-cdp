@@ -1,0 +1,16 @@
+{{- if .Values.atlas.pvcForLogs.enabled }}
+{{- $atlasName := include "exts.atlas.fullname" . }}
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: "{{ $atlasName }}-logs"
+spec:
+  {{- if .Values.atlas.pvcForLogs.storageClass }}
+  storageClassName: "{{ .Values.atlas.pvcForLogs.storageClass }}"
+  {{- end }}
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: "{{ .Values.atlas.pvcForLogs.storageSize }}"
+{{- end }}
