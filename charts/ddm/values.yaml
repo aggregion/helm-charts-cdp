@@ -294,7 +294,7 @@ ecosystem:
         -----END PUBLIC KEY-----
       grpc_url: "http://localhost:50002"
       # token_duration_secs: 60
-
+      # protocol: http1 # enum[http1, http2, http1_and_http2]
 wallet:
   keys:
     # openssl ecparam -genkey -noout -name prime256v1 | openssl pkcs8 -topk8 -nocrypt -out private.pem
