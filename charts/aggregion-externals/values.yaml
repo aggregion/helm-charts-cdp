@@ -182,6 +182,9 @@ nats:
     repository: "nats"
     pullPolicy: IfNotPresent
     tag: "2.2-alpine3.13"
+  auth:
+    enabled: false
+    token: ""
   service:
     type: ClusterIP
     port: 4222
