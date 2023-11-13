@@ -33,6 +33,13 @@ spec:
             {{- toYaml .Values.nats.securityContext | nindent 12 }}
           image: "{{ .Values.nats.image.repository }}:{{ .Values.nats.image.tag | default .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.nats.image.pullPolicy }}
+          {{- if .Values.nats.auth.enabled }}
+          args:
+            - "--auth"
+            - "{{ .Values.nats.auth.token }}"
+            - "--config"
+            - "/etc/nats/nats-server.conf"
+          {{- end }}
           ports:
             - name: service
               containerPort: {{ .Values.nats.listenPort }}
