@@ -1,4 +1,4 @@
-{{- if .Values.atlas.pvcForLogs.enabled }}
+{{- if and .Values.atlas.enabled .Values.atlas.pvcForLogs.enabled }}
 {{- $atlasName := include "exts.atlas.fullname" . }}
 apiVersion: v1
 kind: PersistentVolumeClaim
