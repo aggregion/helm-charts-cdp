@@ -554,6 +554,7 @@ backend:
       clickhouseMigrationDatabaseName: "" # agreements database source name from metadata service, required only for mongodb migration
       clickhouseMigrationClusterName: "" # required only for mongodb migration, can be empty string if there is no cluster name
       extendedAgreementsTable: extended_agreements
+      extendedAgreementsDatabase: ""
       ttl:
         extendedAgreementsPipeline: 7200
       checkout:

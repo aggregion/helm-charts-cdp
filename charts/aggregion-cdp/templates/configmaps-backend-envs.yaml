@@ -123,6 +123,7 @@ data:
   DDM_MIGRATION_CLICKHOUSE_CLUSTER_NAME: {{ .Values.backend.configs.ddm.clickhouseMigrationClusterName | quote }}
   {{- end }}
   DDM_EXTENDED_AGREEMENTS_TABLE: {{ .Values.backend.configs.ddm.extendedAgreementsTable }}
+  DDM_EXTENDED_AGREEMENTS_DB: {{ .Values.backend.configs.ddm.extendedAgreementsDatabase }}
   DDM_S3_ACCESS_KEY: {{ .Values.backend.configs.ddm.s3.accessKey | quote }}
   DDM_S3_BUCKET: {{ .Values.backend.configs.ddm.s3.bucket | quote }}
   DDM_S3_END_POINT: {{ .Values.backend.configs.ddm.s3.endpoint | quote }}
