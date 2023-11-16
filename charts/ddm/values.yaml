@@ -190,7 +190,7 @@ config:
   occlumLogLevel: info
   debugUseParquetCache: false
   debugKeepArtifacts: false
-  tmpPath: /tmp/ddm-tmp
+  tmpPath: /occlum/run/mount/__ROOT/tmp
   clickhouseForceConvertToTSV: false
   rjemMallocConf: retain:false,background_thread:true
   threadPools: {}
