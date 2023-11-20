@@ -117,6 +117,7 @@ data:
   DDM_CLICKHOUSE: {{ .Values.backend.configs.ddm.clickhouseInstanceName }}
   DDM_CLICKHOUSE_DATABASE: {{ .Values.backend.configs.ddm.clickhouseDatabaseName }}
   DDM_CLICKHOUSE_CLUSTER_NAME: {{ .Values.backend.configs.ddm.clickhouseClusterName | quote }}
+  DDM_DATASETS_CLICKHOUSE_INSTANCE: {{ .Values.backend.configs.ddm.clickhouseInstanceDatasets | quote }}
   {{- if and .Values.backend.configs.migrationEnabled .Values.backend.configs.ddm.clickhouseMigrationInstanceName }}
   DDM_MIGRATION_CLICKHOUSE: {{ .Values.backend.configs.ddm.clickhouseMigrationInstanceName | quote }}
   DDM_MIGRATION_CLICKHOUSE_DATABASE: {{ .Values.backend.configs.ddm.clickhouseMigrationDatabaseName | quote }}
