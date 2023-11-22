@@ -86,6 +86,8 @@ atlas:
       paths:
       - "/"
     tls: []
+  config:
+    jvmHeapOpts: "" # e.g.: "-Xmx1024m"
 
 cassandra:
   enabled: true
