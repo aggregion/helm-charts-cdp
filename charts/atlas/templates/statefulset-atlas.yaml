@@ -195,7 +195,7 @@ spec:
             - name: "janusgraph.graph.replace-instance-if-exists"
               value: "true"
             {{- if .Values.atlas.config.jvmHeapOpts }}
-            - name: "DEFAULT_JVM_HEAP_OPTS"
+            - name: "ATLAS_SERVER_HEAP"
               value: {{ .Values.atlas.config.jvmHeapOpts | quote }}
             {{- end }}
           livenessProbe:
