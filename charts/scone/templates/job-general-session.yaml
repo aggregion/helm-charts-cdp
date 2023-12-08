@@ -1,4 +1,4 @@
-{{- if .Values.cas.generalSession.enabled }}
+{{- if .Values.generalSession.enabled }}
 apiVersion: batch/v1
 kind: Job
 metadata:
@@ -8,10 +8,10 @@ spec:
     spec:
       containers:
       - name: general-session
-        image: "{{ .Values.cas.generalSession.image.repository }}:{{ .Values.cas.generalSession.image.tag }}"
+        image: "{{ .Values.generalSession.image.repository }}:{{ .Values.generalSession.image.tag }}"
         env:
         - name: CAS
-          value: {{ .Values.cas.generalSession.casHost | quote }}
+          value: {{ .Values.generalSession.casHost | quote }}
       restartPolicy: Never
   backoffLimit: 4
 {{- end }}
