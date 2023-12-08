@@ -54,15 +54,16 @@ cas:
     enclavePort: 18765
     ias:
       baseUri: https://api.trustedservices.intel.com/sgx/dev/attestation/v3
-  generalSession:
-    enabled: false
-    casHost: localhost
-    image:
-      repository: registry.aggregion.com/cleanroom/general-session
-      pullPolicy: IfNotPresent
-      tag: "v1.0.0-na"
 
 las: {} # TODO
+
+generalSession:
+  enabled: false
+  casHost: localhost
+  image:
+    repository: registry.aggregion.com/cleanroom/general-session
+    pullPolicy: IfNotPresent
+    tag: "v1.0.0-na"
 
 esp:
   enabled: false

@@ -30,14 +30,6 @@ spec:
         - configMap:
             name: {{ include "scone.cas.fullname" . }}
           name: cas-conf
-      {{- if .Values.cas.generalSession.enabled }}
-      initContainers:
-        - name: general-session
-          image: "{{ .Values.cas.generalSession.image.repository }}:{{ .Values.cas.generalSession.image.tag }}"
-          env:
-            - name: CAS
-              value: {{ .Values.cas.generalSession.casHost | quote }}
-      {{- end }}
       containers:
         - name: las
           securityContext:
