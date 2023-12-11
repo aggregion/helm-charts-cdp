@@ -12,6 +12,8 @@ spec:
         env:
         - name: CAS
           value: {{ .Values.generalSession.casHost | quote }}
+        - name: CAS_ADDR
+          value: {{ .Values.generalSession.casHost | quote }}
       restartPolicy: Never
   backoffLimit: 4
 {{- end }}
