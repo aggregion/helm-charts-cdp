@@ -595,7 +595,7 @@ backend:
         Job:
           list: ['TEAMLEAD', 'DATA_RESEARCHER', 'ADMIN']
         DatasetMatchingGroup:
-          get: ['TEAMLEAD', 'DATA_RESEARCHER', 'ADMIN']
+          get: ['TEAMLEAD', 'DATA_RESEARCHER', 'ADMIN', 'DATA_ASSET_OWNER', 'DATA_STEWARD']
           list: ['TEAMLEAD', 'DATA_RESEARCHER', 'ADMIN']
           checkDatasetsForMatching: ['TEAMLEAD', 'DATA_RESEARCHER']
         MetadataField:
