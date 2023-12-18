@@ -605,11 +605,11 @@ backend:
           get: ['DATA_ANALYST', 'ADMIN']
           list: ['DATA_ANALYST', 'ADMIN']
         MetadataDatabase:
-          get: ['DATA_ANALYST', 'ADMIN']
-          list: ['DATA_ANALYST', 'ADMIN']
+          get: ['DATA_ANALYST', 'ADMIN', 'TEAMLEAD', 'DATA_RESEARCHER']
+          list: ['DATA_ANALYST', 'ADMIN', 'TEAMLEAD', 'DATA_RESEARCHER']
         MetadataInstance:
-          get: ['DATA_ANALYST', 'ADMIN']
-          list: ['DATA_ANALYST', 'ADMIN']
+          get: ['DATA_ANALYST', 'ADMIN', 'TEAMLEAD', 'DATA_RESEARCHER']
+          list: ['DATA_ANALYST', 'ADMIN', 'TEAMLEAD', 'DATA_RESEARCHER']
         MetadataDataset:
           get: ['DATA_ANALYST', 'ADMIN']
           list: ['DATA_ANALYST', 'ADMIN']
