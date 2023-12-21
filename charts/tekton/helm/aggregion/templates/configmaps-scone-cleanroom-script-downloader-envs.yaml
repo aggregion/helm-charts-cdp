@@ -7,4 +7,5 @@ metadata:
 data:
   SCONE_HEAP: "{{ .Values.sconeCleanroom.scriptDownloader.sconeHeap }}"
   SCONE_LOG: "{{ .Values.sconeCleanroom.scriptDownloader.logLevel }}"
+  DDM_ADDR: "{{ .Values.sconeCleanroom.datasetDownloader.config.ddmAddr }}"
 {{- end -}}
