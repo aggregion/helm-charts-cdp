@@ -55,7 +55,12 @@ cas:
     ias:
       baseUri: https://api.trustedservices.intel.com/sgx/dev/attestation/v3
 
-las: {} # TODO
+las:
+  enabled: false
+  image:
+    repository: registry.aggregion.com/sconecuratedimages/aggregion
+    pullPolicy: IfNotPresent
+    tag: "las-no-epid-scone-5.6.0"
 
 generalSession:
   enabled: false
