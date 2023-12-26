@@ -32,10 +32,11 @@ spec:
             name: {{ include "scone.cas.fullname" . }}
           name: cas-conf
       containers:
+        {{- if .Values.las.enabled }}
         - name: las
           securityContext:
             privileged: true
-          image: registry.aggregion.com/sconecuratedimages/aggregion:las-no-epid-scone-5.6.0
+          image: "{{ .Values.las.image.repository }}:{{ .Values.las.image.tag | default .Chart.AppVersion }}"
           command:
             - /bin/sh
             - -c
@@ -62,6 +63,7 @@ spec:
               value: hw
             - name: COLLATERAL_SERVICE
               value: mydomain.com
+        {{- end }}
         - name: {{ .Chart.Name }}
           securityContext:
             {{- toYaml .Values.cas.securityContext | nindent 12 }}
