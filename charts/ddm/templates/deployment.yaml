@@ -26,6 +26,10 @@ spec:
       labels:
         {{- include "ddm.selectorLabels" . | nindent 8 }}
     spec:
+      {{- with .Values.hostAliases }}
+      hostAliases:
+      {{- toYaml . | nindent 6 }}
+      {{- end }}
       dnsPolicy: {{ .Values.podTemplateSpec.dnsPolicy }}
       {{- if .Values.podTemplateSpec.dnsConfig }}
       dnsConfig:
