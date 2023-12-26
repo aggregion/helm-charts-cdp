@@ -16,6 +16,7 @@ spec:
       targetPort: http
       protocol: TCP
       name: http
+  clusterIP: None
   selector:
     {{- include "scone.cas.selectorLabels" . | nindent 4 }}
 {{- end -}}

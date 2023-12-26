@@ -1,12 +1,13 @@
 {{- if .Values.cas.enabled -}}
 apiVersion: apps/v1
-kind: Deployment
+kind: StatefulSet
 metadata:
   name: "{{ include "scone.cas.fullname" . }}"
   labels:
     {{- include "scone.cas.labels" . | nindent 4 }}
 spec:
   replicas: {{ .Values.cas.replicaCount }}
+  serviceName: "{{ include "scone.cas.fullname" . }}-svc"
   selector:
     matchLabels:
       {{- include "scone.cas.selectorLabels" . | nindent 6 }}
@@ -87,14 +88,6 @@ spec:
               {{- if .Values.cas.service.grpc.hostPort }}
               hostPort: {{ .Values.cas.service.grpc.hostPort }}
               {{- end }}
-          # livenessProbe:
-          #   httpGet:
-          #     path: /
-          #     port: http
-          # readinessProbe:
-          #   httpGet:
-          #     path: /
-          #     port: http
           resources:
             {{- toYaml .Values.cas.resources | nindent 12 }}
           volumeMounts:
@@ -148,8 +141,4 @@ spec:
       tolerations:
         {{- toYaml . | nindent 8 }}
       {{- end }}
-  {{- if .Values.cas.updateStrategy }}
-  strategy:
-    {{- toYaml .Values.cas.updateStrategy | nindent 4 }}
-  {{- end }}
 {{- end -}}
