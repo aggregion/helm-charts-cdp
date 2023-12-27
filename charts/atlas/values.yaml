@@ -50,7 +50,10 @@ atlas:
     file: /opt/atlas/data/truststore.jks
     credsFile: /opt/atlas/data/creds.jceks
     password: changeit
-    data: "certificate data"
+    data: |
+      -----BEGIN CERTIFICATE-----
+      ...
+      -----END CERTIFICATE-----
   file:
     enableAuth: true
   keycloak:
