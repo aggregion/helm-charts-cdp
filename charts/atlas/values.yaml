@@ -50,6 +50,7 @@ atlas:
     file: /opt/atlas/data/truststore.jks
     credsFile: /opt/atlas/data/creds.jceks
     password: changeit
+    data: "certificate data"
   file:
     enableAuth: true
   keycloak:
@@ -88,6 +89,7 @@ atlas:
     tls: []
   config:
     jvmHeapOpts: "" # e.g.: "-Xmx1024m"
+
 
 cassandra:
   enabled: true

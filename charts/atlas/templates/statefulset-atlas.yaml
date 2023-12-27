@@ -74,8 +74,10 @@ spec:
             - name: TRUSTSTORE_PASSWORD
               value: "{{ .Values.atlas.truststore.password }}"
           volumeMounts:
+            {{- if and .Values.atlas.keycloak.enableAuth .Values.atlas.truststore.enabled }}
             - name: atlas-secret
               mountPath: /opt/atlas/secret
+            {{- end }}
             - name: data
               mountPath: /opt/atlas/data
         {{- end }}
@@ -231,7 +233,7 @@ spec:
         {{- end }}
         - name: atlas-secret
           secret:
-            secretName: atlas-secret
+            secretName: {{ $atlasName }}-truststore
             items:
               - key: tls.crt
                 path: tls.crt
