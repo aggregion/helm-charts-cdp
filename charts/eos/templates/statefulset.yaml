@@ -106,7 +106,9 @@ spec:
       name: blocks
     spec:
       accessModes: [ "ReadWriteOnce" ]
+      {{- if .Values.storage.blocks.storageClass }}
       storageClassName: "{{ .Values.storage.blocks.storageClass }}"
+      {{- end }}
       resources:
         requests:
           storage: {{ .Values.storage.blocks.size }}
@@ -114,7 +116,9 @@ spec:
       name: config
     spec:
       accessModes: [ "ReadWriteOnce" ]
+      {{- if .Values.storage.config.storageClass }}
       storageClassName: "{{ .Values.storage.config.storageClass }}"
+      {{- end }}
       resources:
         requests:
           storage: {{ .Values.storage.config.size }}
@@ -122,7 +126,9 @@ spec:
       name: data
     spec:
       accessModes: [ "ReadWriteOnce" ]
-      storageClassName: "{{ .Values.storage.data.storageClass }}"
+      {{- if .Values.storage.blocks.storageClass }}
+      storageClassName: "{{ .Values.storage.blocks.storageClass }}"
+      {{- end }}
       resources:
         requests:
           storage: {{ .Values.storage.data.size }}
