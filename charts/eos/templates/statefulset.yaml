@@ -1,11 +1,13 @@
+{{- $fullName := include "eos.fullname" . }}
 apiVersion: apps/v1
-kind: Deployment
+kind: StatefulSet
 metadata:
-  name: {{ include "eos.fullname" . }}
+  name: {{ $fullName }}
   labels:
     {{- include "eos.labels" . | nindent 4 }}
 spec:
   replicas: {{ .Values.replicaCount }}
+  serviceName: "{{ $fullName }}"
   selector:
     matchLabels:
       {{- include "eos.selectorLabels" . | nindent 6 }}
@@ -33,7 +35,10 @@ spec:
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           ports:
             - name: http
-              containerPort: {{ .Values.service.port }}
+              containerPort: 8011
+              protocol: TCP
+            - name: p2p
+              containerPort: 9011
               protocol: TCP
           # livenessProbe:
           #   httpGet:
@@ -43,10 +48,17 @@ spec:
           #   httpGet:
           #     path: /
           #     port: http
+          volumeMounts:
+            - name: data
+              mountPath: {{ .Values.config.mountPath }}/data
+            - name: blocks
+              mountPath: {{ .Values.config.mountPath }}/blocks
+            - name: config
+              mountPath: {{ .Values.config.mountPath }}/config
           command:
           - nodeos
           args:
-          - "--access-control-alow-origin=*"
+          - "--access-control-allow-origin=*"
           - "--http-validate-host=false"
           - "--verbose-http-errors"
           - "--contracts-console"
@@ -104,3 +116,13 @@ spec:
       tolerations:
         {{- toYaml . | nindent 8 }}
       {{- end }}
+      volumes:
+        - name: data
+          persistentVolumeClaim:
+            claimName: "{{ $fullName }}-data"
+        - name: blocks
+          persistentVolumeClaim:
+            claimName: "{{ $fullName }}-blocks"
+        - name: config
+          persistentVolumeClaim:
+            claimName: "{{ $fullName }}-config"

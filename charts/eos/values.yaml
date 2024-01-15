@@ -38,7 +38,19 @@ securityContext: {}
 
 service:
   type: ClusterIP
-  port: 80
+  apiPort: 8888
+  p2pPort: 9011
+
+storage:
+  data:
+    #storageClass:
+    size: 8Gi
+  blocks:
+    #storageClass:
+    size: 16Gi
+  config:
+    #storageClass:
+    size: 1Gi
 
 ingress:
   enabled: false
@@ -78,7 +90,7 @@ config:
   abiSerializerMaxTimeMs: 1200
   enableStaleProduction: false
   httpMaxResponseTimeMs: 1000
-  mountPath: /blobkchain
+  mountPath: /blockchain
   isProducer: false
   maxTransactionTime: 500
   p2pMaxNodesPerHost: 30

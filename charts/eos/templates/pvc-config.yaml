@@ -1,0 +1,14 @@
+{{- $fullName := include "eos.fullname" . }}
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: "{{ $fullName }}-config"
+spec:
+  {{- if .Values.storage.config.storageClass }}
+  storageClassName: "{{ .Values.storage.config.storageClass }}"
+  {{- end }}
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: "{{ .Values.storage.config.size }}"

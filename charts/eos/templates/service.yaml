@@ -7,9 +7,13 @@ metadata:
 spec:
   type: {{ .Values.service.type }}
   ports:
-    - port: {{ .Values.service.port }}
+    - port: {{ .Values.service.apiPort }}
       targetPort: http
       protocol: TCP
       name: http
+    - port: {{ .Values.service.p2pPort }}
+      targetPort: p2p
+      protocol: TCP
+      name: p2p
   selector:
     {{- include "eos.selectorLabels" . | nindent 4 }}
