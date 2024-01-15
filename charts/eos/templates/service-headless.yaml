@@ -1,0 +1,21 @@
+{{- $fullName := include "eos.fullname" . }}
+{{- $serviceName := printf "%s-headless" $fullName -}}
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ $serviceName }}
+  labels:
+    {{- include "eos.labels" . | nindent 4 }}
+spec:
+  clusterIP: None
+  ports:
+    - port: {{ .Values.service.apiPort }}
+      targetPort: http
+      protocol: TCP
+      name: http
+    - port: {{ .Values.service.p2pPort }}
+      targetPort: p2p
+      protocol: TCP
+      name: p2p
+  selector:
+    {{- include "eos.selectorLabels" . | nindent 4 }}

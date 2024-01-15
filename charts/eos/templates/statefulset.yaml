@@ -1,4 +1,15 @@
 {{- $fullName := include "eos.fullname" . }}
+{{- $serviceName := printf "%s-headless" $fullName -}}
+{{- $namespace := .Release.Namespace -}}
+{{- $clusterBaseHost := .Values.clusterBaseHost -}}
+{{- $hostnameSuffix := printf "%s.%s.svc.%s" $serviceName $namespace $clusterBaseHost -}}
+{{- $addresses := list -}}
+{{- range $i := until (.Values.replicaCount | int) }}
+  {{- $podName := printf "%s-%d" $fullName $i -}}
+  {{- $address := printf "%s.%s" $podName $hostnameSuffix -}}
+  {{- $addresses = append $addresses $address -}}
+{{- end }}
+{{- $peers := join " " $addresses }}
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
@@ -55,53 +66,27 @@ spec:
               mountPath: {{ .Values.config.mountPath }}/blocks
             - name: config
               mountPath: {{ .Values.config.mountPath }}/config
-          command:
-          - nodeos
+          command: ["/bin/sh", "-c"]
           args:
-          - "--access-control-allow-origin=*"
-          - "--http-validate-host=false"
-          - "--verbose-http-errors"
-          - "--contracts-console"
-          - "--plugin"
-          - "eosio::chain_plugin"
-          - "--plugin"
-          - "eosio::chain_api_plugin"
-          - "--plugin"
-          - "eosio::http_plugin"
-          {{- if .Values.config.isProducer }}
-          - "--plugin"
-          - "eosio::producer_plugin"
-          - "--plugin"
-          - "eosio::producer_api_plugin"
-          - "--signature-provider"
-          - "{{ .Values.config.signatureProvider }}"
-          {{ range $i, $address := .Values.config.producerNames }}
-          - "--producer-name"
-          - "{{ $address }}"
-          {{- end }}
-          {{- if .Values.config.enableStaleProduction }}
-          - "--enable-stale-production"
-          {{- end }}
-          {{- end }}
-          - "--http-server-address"
-          - "0.0.0.0:8011"
-          - "--http-max-response-time-ms"
-          - "{{ .Values.config.httpMaxResponseTimeMs }}"
-          - "--p2p-listen-endpoint"
-          - "0.0.0.0:9011"
-          - "--p2p-max-nodes-per-host={{ .Values.config.p2pMaxNodesPerHost }}"
-          - "--max-transaction-time={{ .Values.config.maxTransactionTime }}"
-          - "--abi-serializer-max-time-ms={{ .Values.config.abiSerializerMaxTimeMs }}"
-          - "--data-dir"
-          - "{{ .Values.config.mountPath }}/data"
-          - "--blocks-dir"
-          - "{{ .Values.config.mountPath }}/blocks"
-          - "--config-dir"
-          - "{{ .Values.config.mountPath }}/config"
-          {{ range $i, $address := .Values.config.p2pPeerAddresses }}
-          - "--p2p-peer-address"
-          - "{{ $address }}"
-          {{- end }}
+            - >
+              nodeos "--access-control-allow-origin=*" --http-validate-host=false --verbose-http-errors --contracts-console --plugin eosio::chain_plugin --plugin eosio::chain_api_plugin --plugin eosio::http_plugin
+              {{- if .Values.config.isProducer }}
+              --plugin eosio::producer_plugin --plugin eosio::producer_api_plugin --signature-provider "{{ .Values.config.signatureProvider }}"
+              {{ range $i, $address := .Values.config.producerNames }}
+              --producer-name {{ $address }}
+              {{- end }}
+              {{- if .Values.config.enableStaleProduction }}
+              --enable-stale-production
+              {{- end }}
+              {{- end }}
+              --http-server-address 0.0.0.0:8011 --http-max-response-time-ms {{ .Values.config.httpMaxResponseTimeMs }} --p2p-listen-endpoint 0.0.0.0:9011 --p2p-max-nodes-per-host={{ .Values.config.p2pMaxNodesPerHost }} --max-transaction-time={{ .Values.config.maxTransactionTime }} --abi-serializer-max-time-ms={{ .Values.config.abiSerializerMaxTimeMs }}
+              {{- range $i, $address := .Values.config.p2pPeerAddresses }}
+              --p2p-peer-address "{{ $address }}"
+              {{- end }}
+              $(echo -n $(echo -n {{ $peers }} | sed "s/$(hostname).{{ $hostnameSuffix }}//g") | sed "s/\([^ ]*\)/--p2p-peer-address \1/g")
+              --data-dir "{{ .Values.config.mountPath }}/data"
+              --blocks-dir "{{ .Values.config.mountPath }}/blocks"
+              --config-dir "{{ .Values.config.mountPath }}/config"
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
       {{- with .Values.nodeSelector }}
