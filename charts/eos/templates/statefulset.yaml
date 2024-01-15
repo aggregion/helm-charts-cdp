@@ -116,13 +116,28 @@ spec:
       tolerations:
         {{- toYaml . | nindent 8 }}
       {{- end }}
-      volumes:
-        - name: data
-          persistentVolumeClaim:
-            claimName: "{{ $fullName }}-data"
-        - name: blocks
-          persistentVolumeClaim:
-            claimName: "{{ $fullName }}-blocks"
-        - name: config
-          persistentVolumeClaim:
-            claimName: "{{ $fullName }}-config"
+  volumeClaimTemplates:
+  - metadata:
+      name: blocks
+    spec:
+      accessModes: [ "ReadWriteOnce" ]
+      storageClassName: "{{ .Values.storage.blocks.storageClass }}"
+      resources:
+        requests:
+          storage: {{ .Values.storage.blocks.size }}
+  - metadata:
+      name: config
+    spec:
+      accessModes: [ "ReadWriteOnce" ]
+      storageClassName: "{{ .Values.storage.config.storageClass }}"
+      resources:
+        requests:
+          storage: {{ .Values.storage.config.size }}
+  - metadata:
+      name: data
+    spec:
+      accessModes: [ "ReadWriteOnce" ]
+      storageClassName: "{{ .Values.storage.data.storageClass }}"
+      resources:
+        requests:
+          storage: {{ .Values.storage.data.size }}

@@ -43,13 +43,13 @@ service:
 
 storage:
   data:
-    #storageClass:
+    storageClass: null
     size: 8Gi
   blocks:
-    #storageClass:
+    storageClass: null
     size: 16Gi
   config:
-    #storageClass:
+    storageClass: null
     size: 1Gi
 
 ingress:
