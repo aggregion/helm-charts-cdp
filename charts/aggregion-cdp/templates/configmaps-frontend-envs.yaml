@@ -1,0 +1,19 @@
+{{- if .Values.frontend.enabled }}
+{{- $backendName := include "cdp.backend.fullname" . }}
+{{- $frontendName := include "cdp.frontend.fullname" . }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ $frontendName }}-front-config
+  labels:
+    {{- include "cdp.backend.labels" . | nindent 4 }}
+data:
+  API_ENDPOINT: "http://{{ $backendName }}:{{ .Values.backend.service.api.port }}/graphql"
+  ATLAS_URL: {{ .Values.backend.configs.atlasUrl | quote }}
+  DDMUI_URL: {{ .Values.frontend.configs.ddmURL | quote }}
+  FEATURES_USER_ROLES_MANAGMENT: {{ .Values.backend.configs.features.userRolesManagment | quote }}
+  REACT_APP_CURRENCY: {{ .Values.frontend.configs.currency | quote }}
+  SERVER_PORT: {{ .Values.backend.configs.listenPort | quote }}
+  {{- if .Values.oidcprovider.enabled }}
+  ENABLE_USER_INVITATION_FEATURE: "true"
+  {{- end }}
