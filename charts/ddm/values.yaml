@@ -231,9 +231,14 @@ config:
   manager: # INTERNAL
     bindAddr: "0.0.0.0"
     countTraffic: true
-  db:
-    url: sqlite:///occlum/run/db.sqlite
-  dataCacheFactory:
+  db: {}
+  #   url: sqlite:///occlum/run/db.sqlite
+  dataCacheFactory: {}
+  #   params:
+  #     baseDir: /occlum/run/mount/__ROOT
+  #     hostPath: /opt/ddm-cache
+  #     repositoryType: memory
+  dataCache:
     params:
       baseDir: /occlum/run/mount/__ROOT
       hostPath: /opt/ddm-cache

@@ -82,8 +82,13 @@ spec:
           volumeMounts:
             - mountPath: {{ .Values.config.configsPath }}
               name: local-secrets
+            {{- if .Values.config.dataCacheFactory }}
             - mountPath: {{ .Values.config.dataCacheFactory.params.baseDir }}
               name: data-cache
+            {{- else if .Values.config.dataCache }}
+            - mountPath: {{ .Values.config.dataCache.params.baseDir }}
+              name: data-cache
+            {{- end }}
             {{- if .Values.sgx.enabled }}
             - mountPath: "{{ .Values.sgx.aesmdSocketDir }}"
               name: aesmd
@@ -216,10 +221,17 @@ spec:
             secretName: {{ $name }}-repo-bundler
         - name: local-secrets
           emptyDir: {}
+        {{- if .Values.config.dataCacheFactory }}
         - name: data-cache
           hostPath:
             path: "{{ .Values.config.dataCacheFactory.params.hostPath }}"
             type: DirectoryOrCreate
+        {{- else if .Values.config.dataCache }}
+        - name: data-cache
+          hostPath:
+            path: "{{ .Values.config.dataCache.params.hostPath }}"
+            type: DirectoryOrCreate
+        {{- end }}
         {{- if .Values.sgx.enabled }}
         - name: aesmd
         {{- if .Values.aesmd.enabled }}
