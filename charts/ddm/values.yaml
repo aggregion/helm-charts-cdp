@@ -232,7 +232,7 @@ config:
     bindAddr: "0.0.0.0"
     countTraffic: true
   db: {}
-  #   url: sqlite:///occlum/run/db.sqlite?mode=rwc
+  #   url: sqlite:/occlum/run/mount/__ROOT/db.sqlite?mode=rwc
   dataCacheFactory: {}
   #   params:
   #     baseDir: /occlum/run/mount/__ROOT
