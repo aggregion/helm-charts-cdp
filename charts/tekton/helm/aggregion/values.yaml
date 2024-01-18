@@ -25,7 +25,7 @@ debugCleanroom:
   dataserviceUrl: http://dataservice
   dataserviceToken: sometoken
   nodeTlsRejectUnauthorized: true
-  jobTokenViaFile: false
+  jobTokenViaFile: false # supports in cleanroom versions since 2024-01-18
   datasetDownloader:
     image: registry.aggregion.com/cleanroom/dataset-downloader-debug
     imageTag: latest
@@ -64,7 +64,7 @@ sconeCleanroom:
   dataserviceUrl: http://dataservice
   dataserviceToken: sometoken
   nodeTlsRejectUnauthorized: true
-  jobTokenViaFile: false
+  jobTokenViaFile: false # supports in cleanroom versions since 2024-01-18
   commonParams:
     datasetDir: data
     datasetFilename: dataset.tsv
