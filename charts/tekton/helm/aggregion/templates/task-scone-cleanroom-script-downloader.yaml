@@ -47,7 +47,7 @@ spec:
         echo -n "$(params.access-token)" > $JOB_FILE_PATH
       env:
         - name: "JOB_FILE_PATH"
-          value: "$(params.shared-vol-path)"/job-token.b64
+          value: "$(params.shared-vol-path)/job-token.b64"
       {{- end }}
     - name: script-downloader
       image: "{{ .Values.sconeCleanroom.scriptDownloader.image }}:{{ .Values.sconeCleanroom.scriptDownloader.imageTag }}"
@@ -70,7 +70,7 @@ spec:
         # Token for access to datasets
         {{- if .Values.sconeCleanroom.jobTokenViaFile }}
         - name: "JOB_FILE_PATH"
-          value: "$(params.shared-vol-path)"/job-token.b64
+          value: "$(params.shared-vol-path)/job-token.b64"
         {{- else }}
         - name: "JOB"
           value: "$(params.access-token)"
