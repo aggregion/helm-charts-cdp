@@ -31,6 +31,24 @@ spec:
       description: "Shared volume path"
       default: "/cache" # Without trailing slash
   steps:
+    {{- if .Values.sconeCleanroom.jobTokenViaFile }}
+    - name: job-token-creator
+      image: {{ .Values.curl.image }}
+      imagePullPolicy: IfNotPresent
+      volumeMounts:
+        - name: vol
+          mountPath: $(params.shared-vol-path)
+      # onError: continue
+      securityContext:
+        runAsUser: 0
+        runAsGroup: 0
+      script: |
+        #!/bin/sh
+        echo -n "$(params.access-token)" > $JOB_FILE_PATH
+      env:
+        - name: "JOB_FILE_PATH"
+          value: "$(params.shared-vol-path)"/job-token.b64
+      {{- end }}
     - name: script-downloader
       image: "{{ .Values.sconeCleanroom.scriptDownloader.image }}:{{ .Values.sconeCleanroom.scriptDownloader.imageTag }}"
       imagePullPolicy: "{{ .Values.sconeCleanroom.scriptDownloader.imagePullPolicy }}"
@@ -50,8 +68,13 @@ spec:
         - name: "ENCLAVE_SERVICE_BASE_URL"
           value: "$(params.enclave-service-base-url)"
         # Token for access to datasets
+        {{- if .Values.sconeCleanroom.jobTokenViaFile }}
+        - name: "JOB_FILE_PATH"
+          value: "$(params.shared-vol-path)"/job-token.b64
+        {{- else }}
         - name: "JOB"
           value: "$(params.access-token)"
+        {{- end }}
         # For scripts
         - name: "SCRIPTS_DIR"
           value: "$(params.shared-vol-path)/$(params.scripts-dir)"

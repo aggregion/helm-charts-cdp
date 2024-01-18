@@ -3,7 +3,7 @@
 # Declare variables to be passed into your templates.
 
 imagePullSecrets:
-  - name: aggregionregistry
+- name: aggregionregistry
 
 nameOverride: ""
 
@@ -13,7 +13,7 @@ serviceAccount:
   name: "default"
 
 debugHasher:
-  enabled: true
+  enabled: false
 
 curl:
   image: registry.aggregion.com/curl:latest
@@ -25,6 +25,7 @@ debugCleanroom:
   dataserviceUrl: http://dataservice
   dataserviceToken: sometoken
   nodeTlsRejectUnauthorized: true
+  jobTokenViaFile: false
   datasetDownloader:
     image: registry.aggregion.com/cleanroom/dataset-downloader-debug
     imageTag: latest
@@ -63,6 +64,7 @@ sconeCleanroom:
   dataserviceUrl: http://dataservice
   dataserviceToken: sometoken
   nodeTlsRejectUnauthorized: true
+  jobTokenViaFile: false
   commonParams:
     datasetDir: data
     datasetFilename: dataset.tsv
@@ -111,8 +113,8 @@ sconeCleanroom:
     config:
       nodeOptions: "" # --max-old-space-size=8192
     envs: []
-      # - name: CLICKHOUSE_CLUSTER_NAME
-      #   value: "replicated"
+    # - name: CLICKHOUSE_CLUSTER_NAME
+    #   value: "replicated"
   scriptDownloader:
     image: registry.aggregion.com/cleanroom/scripts-downloader-production
     imageTag: 0.6.0

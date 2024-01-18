@@ -54,8 +54,13 @@ spec:
           mountPath: $(params.shared-vol-path)
       env:
         # Token for access to datasets
+        {{- if .Values.debugCleanroom.jobTokenViaFile }}
+        - name: "JOB_FILE_PATH"
+          value: "$(params.shared-vol-path)"/job-token.b64
+        {{- else }}
         - name: "JOB"
           value: "$(params.access-token)"
+        {{- end }}
         # For dataset
         - name: "DATA_DIR"
           value: "$(params.shared-vol-path)/$(params.dataset-dir)"
