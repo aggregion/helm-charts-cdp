@@ -17,3 +17,4 @@ data:
   {{- if .Values.oidcprovider.enabled }}
   ENABLE_USER_INVITATION_FEATURE: "true"
   {{- end }}
+{{- end }}
