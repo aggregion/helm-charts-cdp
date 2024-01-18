@@ -41,7 +41,7 @@ spec:
           imagePullPolicy: {{ .Values.frontend.image.pullPolicy }}
           envFrom:
             - configMapRef:
-                name: "{{ $frontendName }}-config"
+                name: "{{ $frontendName }}-front-config"
           {{- if not .Values.gatekeeper.enabled }}
           ports:
             - name: http
