@@ -26,6 +26,8 @@ serviceAccount:
 
 podAnnotations: {}
 
+terminationGracePeriodSeconds: 120
+
 podSecurityContext: {}
 # fsGroup: 2000
 
