@@ -73,7 +73,7 @@ spec:
               nodeos --access-control-allow-origin=* --http-validate-host=false --verbose-http-errors --contracts-console --plugin eosio::chain_plugin --plugin eosio::chain_api_plugin --plugin eosio::http_plugin --plugin eosio::history_plugin --plugin eosio::history_api_plugin
               {{- if .Values.config.isProducer }}
               --plugin eosio::producer_plugin --plugin eosio::producer_api_plugin --signature-provider "{{ .Values.config.signatureProvider }}"
-              {{ range $i, $address := .Values.config.producerNames }}
+              {{- range $i, $address := .Values.config.producerNames }}
               --producer-name {{ $address }}
               {{- end }}
               {{- if .Values.config.enableStaleProduction }}
