@@ -90,6 +90,7 @@ tolerations: []
 affinity: {}
 
 config:
+  syncFetchSpan: 100
   abiSerializerMaxTimeMs: 1200
   enableStaleProduction: false
   httpMaxResponseTimeMs: 1000

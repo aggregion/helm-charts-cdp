@@ -88,6 +88,7 @@ spec:
               --data-dir "{{ .Values.config.mountPath }}/data"
               --blocks-dir "{{ .Values.config.mountPath }}/blocks"
               --config-dir "{{ .Values.config.mountPath }}/config"
+              --sync-fetch-span {{ .Values.config.syncFetchSpan | default 100 }}
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
           lifecycle:
