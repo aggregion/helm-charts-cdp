@@ -90,6 +90,10 @@ spec:
               --config-dir "{{ .Values.config.mountPath }}/config"
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
+          lifecycle:
+            preStop:
+              exec:
+                command: [ "/bin/sh", "-c", "kill -INT $(pidof nodeos)" ]
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
