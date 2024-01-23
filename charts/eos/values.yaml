@@ -91,6 +91,9 @@ affinity: {}
 
 config:
   validationMode: light
+  chainThreads: 2
+  producerThreads: 2
+  netThreads: 2
   syncFetchSpan: 100
   abiSerializerMaxTimeMs: 1200
   enableStaleProduction: false

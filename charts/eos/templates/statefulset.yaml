@@ -90,6 +90,9 @@ spec:
               --config-dir "{{ .Values.config.mountPath }}/config"
               --sync-fetch-span {{ .Values.config.syncFetchSpan | default 100 }}
               --validation-mode {{ .Values.config.validationMode | default "light" }}
+              --chain-threads {{ .Values.config.chainThreads | default 2 }}
+              --producer-threads {{ .Values.config.producerThreads | default 2 }}
+              --net-threads {{ .Values.config.netThreads | default 2 }}
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
           lifecycle:
