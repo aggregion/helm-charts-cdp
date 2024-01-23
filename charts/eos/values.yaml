@@ -90,6 +90,7 @@ tolerations: []
 affinity: {}
 
 config:
+  validationMode: light
   syncFetchSpan: 100
   abiSerializerMaxTimeMs: 1200
   enableStaleProduction: false
