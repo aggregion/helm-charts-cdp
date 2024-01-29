@@ -1,0 +1,56 @@
+{{- if and .Values.dc.enabled .Values.preInstallHook.enabled -}}
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: "{{ .Release.Name }}-pre-install"
+  labels:
+    app.kubernetes.io/managed-by: {{ .Release.Service | quote }}
+    app.kubernetes.io/instance: {{ .Release.Name | quote }}
+    app.kubernetes.io/version: {{ .Chart.AppVersion }}
+    helm.sh/chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"
+  annotations:
+    "helm.sh/hook": pre-install
+    "helm.sh/hook-weight": "-5"
+    "helm.sh/hook-delete-policy": hook-succeeded
+spec:
+  template:
+    metadata:
+      name: "{{ .Release.Name }}"
+      labels:
+        app.kubernetes.io/managed-by: {{ .Release.Service | quote }}
+        app.kubernetes.io/instance: {{ .Release.Name | quote }}
+        helm.sh/chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"
+    spec:
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      restartPolicy: Never
+      containers:
+        - name: create-pg-schema
+          image: {{ .Values.preInstallHook.config.createPgSchema.image.repository }}:{{ .Values.preInstallHook.config.createPgSchema.image.tag }}
+          imagePullPolicy: {{ .Values.preInstallHook.config.createPgSchema.image.pullPolicy }}
+          env:
+            - name: PGHOST
+              value: "{{ .Values.dc.configs.databaseHost }}"
+            - name: PGPORT
+              value: "{{ .Values.dc.configs.databasePort }}"
+            - name: PGDATABASE
+              value: "{{ .Values.dc.configs.databaseDb }}"
+            - name: PGUSER
+              value: "{{ .Values.dc.configs.databaseUsername }}"
+            - name: PGPASSWORD
+              value: "{{ .Values.dc.configs.databasePassword }}"
+          command: ["psql"]
+          args:
+            - -c
+            - >
+              create schema if not exists auth;
+              create schema if not exists deployer_app;
+              create schema if not exists deployer_datalab;
+              create schema if not exists notification;
+              create schema if not exists platform;
+              create schema if not exists provision;
+              create schema if not exists trigger;
+              create schema if not exists vcsint;
+{{- end }}

@@ -1,0 +1,12 @@
+{{- if .Values.dc.enabled }}
+{{- $dcName := include "dctl.dc.fullname" . }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: "{{ $dcName }}-templates"
+data:
+  {{- range $key, $value := .Values.dc.templates }}
+  {{ $key }}: |
+    {{- $value | nindent 8 }}
+  {{- end }}
+{{- end }}

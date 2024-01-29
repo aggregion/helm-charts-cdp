@@ -1,0 +1,49 @@
+{{- if and .Values.dc.enabled .Values.postUpgradeHook.enabled -}}
+{{- $dcName := include "dctl.dc.fullname" . }}
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: "{{ .Release.Name }}-post-upgrade"
+  labels:
+    app.kubernetes.io/managed-by: {{ .Release.Service | quote }}
+    app.kubernetes.io/instance: {{ .Release.Name | quote }}
+    app.kubernetes.io/version: {{ .Chart.AppVersion }}
+    helm.sh/chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"
+  annotations:
+    "helm.sh/hook": post-install,post-upgrade
+    "helm.sh/hook-weight": "-5"
+    "helm.sh/hook-delete-policy": hook-succeeded
+spec:
+  template:
+    metadata:
+      name: "{{ .Release.Name }}"
+      labels:
+        app.kubernetes.io/managed-by: {{ .Release.Service | quote }}
+        app.kubernetes.io/instance: {{ .Release.Name | quote }}
+        helm.sh/chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"
+    spec:
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      restartPolicy: Never
+      volumes:
+        - name: templates-volume
+          configMap:
+            name: "{{ $dcName }}-templates"
+      containers:
+        - name: load-templates
+          image: {{ .Values.postUpgradeHook.config.loadTemplates.image.repository }}:{{ .Values.postUpgradeHook.config.loadTemplates.image.tag }}
+          imagePullPolicy: {{ .Values.preInstallHook.config.createPgSchema.image.pullPolicy }}
+          volumeMounts:
+            - name: templates-volume
+              mountPath: /templates
+          command: ["deploy-controller"]
+          args:
+            - --dc
+            - "http://{{ .Values.dc.configs.initAdminUsername }}:{{ .Values.dc.configs.initAdminPassword }}@{{ include "dctl.dc.fullname" . }}:8080"
+            - appdatalab
+            - loadtemplates
+            - persist
+            - /templates
+{{- end }}

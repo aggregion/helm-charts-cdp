@@ -1,0 +1,43 @@
+{{- if and .Values.dc.enabled .Values.postInstallHook.enabled -}}
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: "{{ .Release.Name }}-post-install-platform-register"
+  labels:
+    app.kubernetes.io/managed-by: {{ .Release.Service | quote }}
+    app.kubernetes.io/instance: {{ .Release.Name | quote }}
+    app.kubernetes.io/version: {{ .Chart.AppVersion }}
+    helm.sh/chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"
+  annotations:
+    "helm.sh/hook": post-install
+    "helm.sh/hook-weight": "-5"
+    "helm.sh/hook-delete-policy": hook-succeeded
+spec:
+  template:
+    metadata:
+      name: "{{ .Release.Name }}"
+      labels:
+        app.kubernetes.io/managed-by: {{ .Release.Service | quote }}
+        app.kubernetes.io/instance: {{ .Release.Name | quote }}
+        helm.sh/chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"
+    spec:
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      restartPolicy: Never
+      containers:
+        - name: platform-register
+          image: {{ .Values.postInstallHook.config.platformRegister.image.repository }}:{{ .Values.postInstallHook.config.platformRegister.image.tag }}
+          imagePullPolicy: {{ .Values.preInstallHook.config.createPgSchema.image.pullPolicy }}
+          command: ["deploy-controller"]
+          args:
+            - --dc
+            - "http://{{ .Values.dc.configs.initAdminUsername }}:{{ .Values.dc.configs.initAdminPassword }}@{{ include "dctl.dc.fullname" . }}:8080"
+            - platform
+            - register
+            - "{{ .Values.postInstallHook.config.platformRegister.platformName }}"
+            - k8s
+            - "http://{{ include "dctl.agentk8s.fullname" . }}:20100"
+            - "{{ .Values.agentk8s.configs.authJwtSecret }}"
+{{- end }}

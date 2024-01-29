@@ -152,3 +152,589 @@ dc:
       - host: chart-example.local
         paths: []
     tls: []
+
+  templates:
+    datalab.deployment.yaml: |
+        ---
+        apiVersion: v1
+        kind: PersistentVolumeClaim
+        metadata:
+          name: "dlclaim-{{ ns }}"
+          labels:
+            cdp/project: "datalab"
+            datalab/namespace: "{{ ns }}"
+            datalab/component: "datalab"
+        spec:
+          accessModes:
+            - "{{#if datalabStorageAccessMode}}{{ datalabStorageAccessMode }}{{else}}ReadWriteOnce{{/if}}"
+          {{#if datalabStorageClassName}}
+            storageClassName: "{{ datalabStorageClassName }}"
+                                {{/if}}
+          resources:
+            requests:
+              storage: "{{#if datalabStorageSize}}{{ datalabStorageSize }}Gi{{else}}50Gi{{/if}}"
+
+        ---
+        apiVersion: apps/v1
+        kind: Deployment
+        metadata:
+          name: "dl-{{ ns }}"
+          labels:
+            cdp/project: "datalab"
+            datalab/namespace: "{{ ns }}"
+            datalab/component: "datalab"
+        spec:
+          selector:
+            matchLabels:
+              name: "dl-{{ ns }}"
+          strategy:
+            type: "{{#if datalabUpdateStrategy}}{{ datalabUpdateStrategy }}{{else}}Recreate{{/if}}"
+          template:
+            metadata:
+              labels:
+                cdp/project: "datalab"
+                datalab/namespace: "{{ ns }}"
+                datalab/component: "datalab"
+                name: "dl-{{ ns }}"
+            spec:
+              automountServiceAccountToken: false
+              enableServiceLinks: false
+              initContainers:
+                - name: "init-datalab-server"
+                  image: "{{#if datalabImage}}{{ datalabImage }}{{else}}registry.aggregion.com/datalab:latest{{/if}}"
+                  imagePullPolicy: "{{#if datalabImagePullPolicy}}{{ datalabImagePullPolicy }}{{else}}Always{{/if}}"
+                  tty: true
+                  command: ["sh", "-ex", "-c"]
+                  args: # TODO: refactor extra operations
+                    - >
+                      [ -z "$(ls /dest/bin)" ] && cp -rp /bin /dest ;
+                      [ -z "$(ls /dest/sbin)" ] && cp -rp /sbin /dest ;
+                      [ -z "$(ls /dest/etc)" ] && cp -rp /etc /dest ;
+                      [ -z "$(ls /dest/home)" ] && cp -rp /home /dest ;
+                      [ -z "$(ls /dest/lib)" ] && cp -rp /lib /dest ;
+                      [ -z "$(ls /dest/lib64)" ] && cp -rp /lib64 /dest ;
+                      [ -z "$(ls /dest/opt)" ] && cp -rp /opt /dest ;
+                      [ -z "$(ls /dest/root)" ] && cp -rp /root /dest ;
+                      [ -z "$(ls /dest/usr)" ] && cp -rp /usr /dest ;
+                      [ -z "$(ls /dest/var)" ] && cp -rp /var /dest ;
+                      true
+                  volumeMounts: # TODO: refactor extra volumes
+                    - mountPath: /dest/bin
+                      subPath: bin
+                      name: datalabpv
+                    - mountPath: /dest/sbin
+                      subPath: sbin
+                      name: datalabpv
+                    - mountPath: /dest/etc
+                      subPath: etc
+                      name: datalabpv
+                    - mountPath: /dest/home
+                      subPath: home
+                      name: datalabpv
+                    - mountPath: /dest/lib
+                      subPath: lib
+                      name: datalabpv
+                    - mountPath: /dest/lib64
+                      subPath: lib64
+                      name: datalabpv
+                    - mountPath: /dest/opt
+                      subPath: opt
+                      name: datalabpv
+                    - mountPath: /dest/root
+                      subPath: root
+                      name: datalabpv
+                    - mountPath: /dest/usr
+                      subPath: usr
+                      name: datalabpv
+                    - mountPath: /dest/var
+                      subPath: var
+                      name: datalabpv
+              containers:
+                - name: "datalab-server"
+                  image: "{{#if datalabImage}}{{ datalabImage }}{{else}}registry.aggregion.com/datalab:latest{{/if}}"
+                  imagePullPolicy: "{{#if datalabImagePullPolicy}}{{ datalabImagePullPolicy }}{{else}}Always{{/if}}"
+                  tty: true
+                  #          env:
+                  #            - name: AIC
+                  #              value: "{{ datalabAllowInternet }}"
+                  # envFrom:
+                  #   - configMapRef:
+                  #       name: "datalab-config"
+                  resources:
+                    requests:
+                      cpu: "1"
+                      memory: "1Gi"
+                    limits:
+                      cpu: "{{#if datalabCpuLimit}}{{ datalabCpuLimit }}{{else}}2{{/if}}"
+                      memory: "{{#if datalabMemoryLimitGb}}{{ datalabMemoryLimitGb }}{{else}}8{{/if}}Gi"
+                  ports:
+                    - name: "dlport"
+                      containerPort: 6080
+                    - name: "dlports3"
+                      containerPort: 9000
+                  readinessProbe:
+                    tcpSocket:
+                      port: 9000
+                    initialDelaySeconds: 10
+                    periodSeconds: 10
+                    failureThreshold: 20
+                  livenessProbe:
+                    tcpSocket:
+                      port: 6080
+                    initialDelaySeconds: 15
+                    periodSeconds: 15
+                    failureThreshold: 20
+                  startupProbe:
+                    tcpSocket:
+                      port: 9000
+                    initialDelaySeconds: 10
+                    periodSeconds: 5
+                    failureThreshold: 50
+                  securityContext:
+                  #readOnlyRootFilesystem: true
+                  #runAsNonRoot: true
+                  #privileged: false
+                  # capabilities:
+                  #   add:
+                  #     - "SYS_ADMIN"
+                  volumeMounts:
+                    - mountPath: /bin
+                      subPath: bin
+                      name: datalabpv
+                    - mountPath: /sbin
+                      subPath: sbin
+                      name: datalabpv
+                    - mountPath: /etc
+                      subPath: etc
+                      name: datalabpv
+                    - mountPath: /home
+                      subPath: home
+                      name: datalabpv
+                    - mountPath: /lib
+                      subPath: lib
+                      name: datalabpv
+                    - mountPath: /lib32
+                      subPath: lib32
+                      name: datalabpv
+                    - mountPath: /lib64
+                      subPath: lib64
+                      name: datalabpv
+                    - mountPath: /opt
+                      subPath: opt
+                      name: datalabpv
+                    - mountPath: /root
+                      subPath: root
+                      name: datalabpv
+                    - mountPath: /usr
+                      subPath: usr
+                      name: datalabpv
+                    - mountPath: /var
+                      subPath: var
+                      name: datalabpv
+              restartPolicy: Always
+              volumes:
+                - name: datalabpv
+                  persistentVolumeClaim:
+                    claimName: "dlclaim-{{ ns }}"
+              imagePullSecrets:
+                - name: "{{#if datalabImagePullSecretName}}{{ datalabImagePullSecretName }}{{else}}aggregionregistry{{/if}}"
+              {{#if datalabNodeSelector }}
+                nodeSelector:
+                  {{toYaml datalabNodeSelector 8}}
+              {{/if}}
+              {{#if datalabAffinity }}
+                affinity:
+                  {{toYaml datalabAffinity 8}}
+              {{/if}}
+              {{#if datalabTolerations }}
+                tolerations:
+                  {{toYaml datalabTolerations 8}}
+              {{/if}}
+
+        ---
+        apiVersion: apps/v1
+        kind: Deployment
+        metadata:
+          name: "dl-auth-{{ ns }}"
+          labels:
+            cdp/project: "datalab"
+            datalab/namespace: "{{ ns }}"
+            datalab/component: "auth"
+            name: "dl-auth-{{ ns }}"
+        spec:
+          selector:
+            matchLabels:
+              name: "dl-auth-{{ ns }}"
+          template:
+            metadata:
+              labels:
+                cdp/project: "datalab"
+                datalab/namespace: "{{ ns }}"
+                datalab/component: "auth"
+                name: "dl-auth-{{ ns }}"
+            spec:
+              automountServiceAccountToken: false
+              terminationGracePeriodSeconds: 1
+              containers:
+                - name: "datalab-auth-server"
+                  image: "{{#if datalabAuthImage}}{{ datalabAuthImage }}{{else}}registry.aggregion.com/datalab-auth:latest{{/if}}"
+                  imagePullPolicy: "{{#if datalabAuthImagePullPolicy}}{{ datalabAuthImagePullPolicy }}{{else}}Always{{/if}}"
+                  env:
+                    - name: TARGET_SERVER
+                      value: "http://dl-{{ ns }}:6080"
+                    - name: AUTH_SERVER
+                      value: "{{{ datalabAuthUrl }}}"
+                  resources:
+                    requests:
+                      memory: "384Mi"
+                    limits:
+                      memory: "512Mi"
+                  ports:
+                    - name: "dlauthport"
+                      containerPort: 8000
+              imagePullSecrets:
+                - name: "{{#if datalabImagePullSecretName}}{{ datalabImagePullSecretName }}{{else}}aggregionregistry{{/if}}"
+              {{#if datalabNodeSelector }}
+                nodeSelector:
+                  {{toYaml datalabNodeSelector 8 }}
+              {{/if}}
+              {{#if datalabAffinity }}
+                affinity:
+                  {{toYaml datalabAffinity 8 }}
+              {{/if}}
+              {{#if datalabTolerations }}
+                tolerations:
+                  {{toYaml datalabTolerations 8 }}
+              {{/if}}
+
+
+
+    datalab.netpolicy.yaml: |
+        ---
+        kind: NetworkPolicy
+        apiVersion: networking.k8s.io/v1
+        metadata:
+          name: "dl-auth-{{ ns }}"
+          labels:
+            cdp/project: "datalab"
+            datalab/namespace: "{{ ns }}"
+            datalab/component: "auth"
+        spec:
+          podSelector:
+            matchLabels:
+              name: "dl-auth-{{ ns }}"
+          ingress:
+            - from:
+              - namespaceSelector:
+                  matchLabels:
+                    name: "{{#if datalabIngressNamespace}}{{ datalabIngressNamespace }}{{else}}default{{/if}}"
+                podSelector:
+                  matchLabels:
+                    app.kubernetes.io/name: "{{#if datalabIngressType}}{{ datalabIngressType }}{{else}}ingress-nginx{{/if}}"
+        {{#if datalabDmpNamespace}}
+            - from:
+              - namespaceSelector:
+                  matchLabels:
+                    name: "{{ datalabDmpNamespace }}"
+                podSelector:
+                  matchLabels: {}
+        {{/if}}
+          egress:
+            - to:
+              - namespaceSelector:
+                  matchLabels:
+                    name: kube-system
+                podSelector:
+                  matchLabels:
+                    k8s-app: kube-dns
+                ports:
+                  - protocol: TCP
+                    port: 53
+                  - protocol: UDP
+                    port: 53
+        {{#if datalabDmpNamespace}}
+            - to:
+              - namespaceSelector:
+                  matchLabels:
+                    name: "{{ datalabDmpNamespace }}"
+                podSelector:
+                  matchLabels: {}
+        {{/if}}
+            - to:
+               - podSelector:
+                   matchLabels:
+                     name: "dl-{{ ns }}"
+          policyTypes:
+            - Ingress
+            - Egress
+
+        ---
+        kind: NetworkPolicy
+        apiVersion: networking.k8s.io/v1
+        metadata:
+          name: "dl-{{ ns }}"
+          labels:
+            cdp/project: "datalab"
+            datalab/namespace: "{{ ns }}"
+            datalab/component: "datalab"
+        spec:
+          podSelector:
+            matchLabels:
+              name: "dl-{{ ns }}"
+          ingress:
+            - from:
+              - namespaceSelector:
+                  matchLabels:
+                    name: "{{#if datalabIngressNamespace}}{{ datalabIngressNamespace }}{{else}}default{{/if}}"
+                podSelector:
+                  matchLabels:
+                    app.kubernetes.io/name: "{{#if datalabIngressType}}{{ datalabIngressType }}{{else}}ingress-nginx{{/if}}"
+            - from:
+              - podSelector:
+                  matchLabels:
+                    name: "dl-auth-{{ ns }}"
+            {{#if datalabDmpNamespace}}
+            - from:
+              - namespaceSelector:
+                  matchLabels:
+                    name: "{{ datalabDmpNamespace }}"
+                podSelector:
+                  matchLabels: {}
+            {{/if}}
+
+          policyTypes:
+            - Ingress
+            - Egress
+
+        ---
+        kind: NetworkPolicy
+        apiVersion: networking.k8s.io/v1
+        metadata:
+          name: "dl-internet-{{ ns }}"
+          labels:
+            cdp/project: "datalab"
+            datalab/namespace: "{{ ns }}"
+            datalab/component: "datalab"
+        spec:
+          podSelector:
+            matchLabels:
+              name: "dl-{{ ns }}"
+          policyTypes:
+            - Egress
+          egress:
+            - to:
+              - namespaceSelector:
+                  matchLabels:
+                    name: kube-system
+              podSelector:
+                matchLabels:
+                  k8s-app: kube-dns
+              ports:
+                - protocol: TCP
+                  port: 53
+                - protocol: UDP
+                  port: 53
+        #    {{#ifCond datalabAllowInternet '==' 'true'}}
+        #    - to:
+        #      - ipBlock:
+        #          cidr: 0.0.0.0/0
+        #          except:
+        #            - 10.0.0.0/8
+        #            - 192.168.0.0/16
+        #            - 172.16.0.0/20
+        #    {{/ifCond}}
+
+    datalab.specs.yaml: |
+        ---
+        apiVersion: v1
+        kind: Service
+        metadata:
+          name: "dl-{{ ns }}"
+          labels:
+            cdp/project: "datalab"
+            datalab/namespace: "{{ ns }}"
+            datalab/component: "datalab"
+            name: "dl-{{ ns }}"
+        spec:
+          # type: NodePort
+          # externalTrafficPolicy: Local
+          selector:
+            name: "dl-{{ ns }}"
+          ports:
+            - name: dl
+              protocol: TCP
+              port: 6080
+              targetPort: dlport
+            - name: dl-s3
+              protocol: TCP
+              port: 9000
+              targetPort: dlports3
+
+        ---
+        apiVersion: v1
+        kind: Service
+        metadata:
+          name: "dl-auth-{{ ns }}"
+          labels:
+            cdp/project: "datalab"
+            datalab/namespace: "{{ ns }}"
+            datalab/component: "auth"
+            name: "dl-auth-{{ ns }}"
+        spec:
+          # type: NodePort
+          # externalTrafficPolicy: Local
+          selector:
+            name: "dl-auth-{{ ns }}"
+          ports:
+            - name: dl-auth
+              protocol: TCP
+              port: 8000
+              targetPort: dlauthport
+
+    datalab-nginx.ingress.yaml: |
+        {{#if datalabIngress}}
+        ---
+        {{#ifCond k8sversion '>=' '1.22'}}
+        apiVersion: networking.k8s.io/v1
+        {{else}}
+        apiVersion: networking.k8s.io/v1beta1
+        {{/ifCond}}
+        kind: Ingress
+        metadata:
+          name: "dl-vm-{{ ns }}"
+          annotations:
+            kubernetes.io/ingress.class: "{{#if datalabIngressClass}}{{ datalabIngressClass }}{{else}}nginx{{/if}}"
+            {{#ifCond datalabIngressClass '==' 'nginx'}}
+            nginx.ingress.kubernetes.io/proxy-body-size: "8m"
+            nginx.ingress.kubernetes.io/proxy-read-timeout: "360"
+            nginx.ingress.kubernetes.io/proxy-send-timeout: "360"
+            {{/ifCond}}
+          labels:
+            cdp/project: "datalab"
+            datalab/namespace: "{{ ns }}"
+            datalab/component: "datalab"
+        spec:
+          rules:
+            - host: "{{ domain }}"
+              http:
+                paths:
+        {{#ifCond k8sversion '>=' '1.22'}}
+                  - backend:
+                      service:
+                        name: "dl-auth-{{ @root.ns }}"
+                        port:
+                          name: "dl-auth"
+                    path: "/access"
+                    pathType: Prefix
+        {{else}}
+                  - backend:
+                      serviceName: "dl-auth-{{ @root.ns }}"
+                      servicePort: "dl-auth"
+                    path: "/access"
+        {{/ifCond}}
+        {{/if}}
+
+        {{#if datalabS3Ingress}}
+        ---
+        {{#ifCond k8sversion '>=' '1.22'}}
+        apiVersion: networking.k8s.io/v1
+        {{else}}
+        apiVersion: networking.k8s.io/v1beta1
+        {{/ifCond}}
+        kind: Ingress
+        metadata:
+          name: "dl-s3-{{ ns }}"
+          annotations:
+            kubernetes.io/ingress.class: "{{#if datalabIngressClass}}{{ datalabIngressClass }}{{else}}nginx{{/if}}"
+            {{#ifCond datalabIngressClass '==' 'nginx'}}
+            nginx.ingress.kubernetes.io/proxy-body-size: "{{#if datalabIngressS3BodySizeInMb}}{{ datalabIngressS3BodySizeInMb }}m{{else}}0{{/if}}"
+            nginx.ingress.kubernetes.io/proxy-read-timeout: "360"
+            nginx.ingress.kubernetes.io/proxy-send-timeout: "360"
+            {{#if datalabS3WhitelistIps}}
+            nginx.ingress.kubernetes.io/whitelist-source-range: "{{ @root.datalabS3WhitelistIps }}"
+            {{/if}}
+            {{/ifCond}}
+          labels:
+            cdp/project: "datalab"
+            datalab/namespace: "{{ ns }}"
+            datalab/component: "s3"
+        spec:
+          rules:
+            - host: "s3.{{ domain }}"
+              http:
+                paths:
+        {{#ifCond k8sversion '>=' '1.22'}}
+                  - backend:
+                      service:
+                        name: "dl-{{ @root.ns }}"
+                        port:
+                          name: "dl-s3"
+                    path: "/"
+                    pathType: Prefix
+        {{else}}
+                  - backend:
+                      serviceName: "dl-{{ @root.ns }}"
+                      servicePort: "dl-s3"
+                    path: "/"
+        {{/ifCond}}
+        {{/if}}
+
+    global.aggregion-registry.secret.yaml: |
+        apiVersion: v1
+        kind: Secret
+        metadata:
+          name: "{{#if datalabImagePullSecretName}}{{ datalabImagePullSecretName }}{{else}}aggregionregistry{{/if}}"
+          labels:
+            cdp/project: "datalab"
+            datalab/namespace: "common"
+            datalab/component: "registry"
+        data:
+          .dockerconfigjson: "{{#if datalabImagePullSecretInBase64}}{{{ datalabImagePullSecretInBase64 }}}{{else}}ewoJImF1dGhzIjogewoJfSwKCSJIdHRwSGVhZGVycyI6IHsKCQkiVXNlci1BZ2VudCI6ICJEb2NrZXItQ2xpZW50LzE5LjAzLjEzIChsaW51eCkiCgl9Cn0={{/if}}"
+        type: kubernetes.io/dockerconfigjson
+    global.datalab.netpolicy.yaml: |
+        ---
+        kind: NetworkPolicy
+        apiVersion: networking.k8s.io/v1
+        metadata:
+          name: default-deny-all
+          labels:
+            cdp/project: "datalab"
+            datalab/namespace: "common"
+            datalab/component: "default-policy"
+        spec:
+          podSelector:
+            matchLabels: {}
+          policyTypes:
+            - Ingress
+            - Egress
+
+
+
+preInstallHook:
+  enabled: false
+  config:
+    createPgSchema:
+      image:
+        repository: registry.aggregion.com/postgres
+        pullPolicy: IfNotPresent
+        tag: "13"
+
+
+postInstallHook:
+  enabled: false
+  config:
+    platformRegister:
+      image:
+        repository: registry.aggregion.com/deploy-controller-cli
+        pullPolicy: IfNotPresent
+        tag: "0.1.2"
+      platformName: default
+
+postUpgradeHook:
+  enabled: false
+  config:
+    loadTemplates:
+      image:
+        repository: registry.aggregion.com/deploy-controller-cli
+        pullPolicy: IfNotPresent
+        tag: "0.1.2"
