@@ -11,7 +11,9 @@ metadata:
   annotations:
     "helm.sh/hook": post-install
     "helm.sh/hook-weight": "-5"
+    {{- if not .Values.postInstallHook.keepJob }}
     "helm.sh/hook-delete-policy": hook-succeeded
+    {{- end }}
 spec:
   template:
     metadata:

@@ -712,6 +712,7 @@ dc:
 
 preInstallHook:
   enabled: false
+  keepJob: false
   config:
     createPgSchema:
       image:
@@ -722,6 +723,7 @@ preInstallHook:
 
 postInstallHook:
   enabled: false
+  keepJob: false
   config:
     platformRegister:
       image:
@@ -732,6 +734,7 @@ postInstallHook:
 
 postUpgradeHook:
   enabled: false
+  keepJob: false
   config:
     loadTemplates:
       image:

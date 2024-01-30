@@ -12,7 +12,9 @@ metadata:
   annotations:
     "helm.sh/hook": post-install,post-upgrade
     "helm.sh/hook-weight": "-5"
+    {{- if not .Values.postUpgradeHook.keepJob }}
     "helm.sh/hook-delete-policy": hook-succeeded
+    {{- end }}
 spec:
   template:
     metadata:
