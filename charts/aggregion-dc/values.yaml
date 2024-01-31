@@ -414,64 +414,6 @@ dc:
         kind: NetworkPolicy
         apiVersion: networking.k8s.io/v1
         metadata:
-          name: "dl-auth-{{ ns }}"
-          labels:
-            cdp/project: "datalab"
-            datalab/namespace: "{{ ns }}"
-            datalab/component: "auth"
-        spec:
-          podSelector:
-            matchLabels:
-              name: "dl-auth-{{ ns }}"
-          ingress:
-            - from:
-              - namespaceSelector:
-                  matchLabels:
-                    name: "{{#if datalabIngressNamespace}}{{ datalabIngressNamespace }}{{else}}default{{/if}}"
-                podSelector:
-                  matchLabels:
-                    app.kubernetes.io/name: "{{#if datalabIngressType}}{{ datalabIngressType }}{{else}}ingress-nginx{{/if}}"
-        {{#if datalabDmpNamespace}}
-            - from:
-              - namespaceSelector:
-                  matchLabels:
-                    name: "{{ datalabDmpNamespace }}"
-                podSelector:
-                  matchLabels: {}
-        {{/if}}
-          egress:
-            - to:
-              - namespaceSelector:
-                  matchLabels:
-                    name: kube-system
-                podSelector:
-                  matchLabels:
-                    k8s-app: kube-dns
-                ports:
-                  - protocol: TCP
-                    port: 53
-                  - protocol: UDP
-                    port: 53
-        {{#if datalabDmpNamespace}}
-            - to:
-              - namespaceSelector:
-                  matchLabels:
-                    name: "{{ datalabDmpNamespace }}"
-                podSelector:
-                  matchLabels: {}
-        {{/if}}
-            - to:
-               - podSelector:
-                   matchLabels:
-                     name: "dl-{{ ns }}"
-          policyTypes:
-            - Ingress
-            - Egress
-
-        ---
-        kind: NetworkPolicy
-        apiVersion: networking.k8s.io/v1
-        metadata:
           name: "dl-{{ ns }}"
           labels:
             cdp/project: "datalab"
@@ -502,47 +444,22 @@ dc:
                   matchLabels: {}
             {{/if}}
 
+          egress:
+          - to:
+            - namespaceSelector:
+                matchLabels:
+                  name: kube-system
+            podSelector:
+              matchLabels:
+                k8s-app: kube-dns
+            ports:
+              - protocol: TCP
+                port: 53
+              - protocol: UDP
+                port: 53
           policyTypes:
             - Ingress
             - Egress
-
-        ---
-        kind: NetworkPolicy
-        apiVersion: networking.k8s.io/v1
-        metadata:
-          name: "dl-internet-{{ ns }}"
-          labels:
-            cdp/project: "datalab"
-            datalab/namespace: "{{ ns }}"
-            datalab/component: "datalab"
-        spec:
-          podSelector:
-            matchLabels:
-              name: "dl-{{ ns }}"
-          policyTypes:
-            - Egress
-          egress:
-            - to:
-              - namespaceSelector:
-                  matchLabels:
-                    name: kube-system
-              podSelector:
-                matchLabels:
-                  k8s-app: kube-dns
-              ports:
-                - protocol: TCP
-                  port: 53
-                - protocol: UDP
-                  port: 53
-        #    {{#ifCond datalabAllowInternet '==' 'true'}}
-        #    - to:
-        #      - ipBlock:
-        #          cidr: 0.0.0.0/0
-        #          except:
-        #            - 10.0.0.0/8
-        #            - 192.168.0.0/16
-        #            - 172.16.0.0/20
-        #    {{/ifCond}}
 
     datalab.specs.yaml: |
         ---
@@ -691,22 +608,6 @@ dc:
         data:
           .dockerconfigjson: "{{#if datalabImagePullSecretInBase64}}{{{ datalabImagePullSecretInBase64 }}}{{else}}ewoJImF1dGhzIjogewoJfSwKCSJIdHRwSGVhZGVycyI6IHsKCQkiVXNlci1BZ2VudCI6ICJEb2NrZXItQ2xpZW50LzE5LjAzLjEzIChsaW51eCkiCgl9Cn0={{/if}}"
         type: kubernetes.io/dockerconfigjson
-    global.datalab.netpolicy.yaml: |
-        ---
-        kind: NetworkPolicy
-        apiVersion: networking.k8s.io/v1
-        metadata:
-          name: default-deny-all
-          labels:
-            cdp/project: "datalab"
-            datalab/namespace: "common"
-            datalab/component: "default-policy"
-        spec:
-          podSelector:
-            matchLabels: {}
-          policyTypes:
-            - Ingress
-            - Egress
 
 
 
