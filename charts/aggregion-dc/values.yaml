@@ -423,6 +423,8 @@ dc:
           podSelector:
             matchLabels:
               name: "dl-{{ ns }}"
+          ingress: []
+          egress: []
         policyTypes:
           - Ingress
           - Egress
