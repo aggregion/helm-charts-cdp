@@ -425,9 +425,9 @@ dc:
               name: "dl-{{ ns }}"
           ingress: []
           egress: []
-        policyTypes:
-          - Ingress
-          - Egress
+          policyTypes:
+            - Ingress
+            - Egress
         ---
         kind: NetworkPolicy
         apiVersion: networking.k8s.io/v1
