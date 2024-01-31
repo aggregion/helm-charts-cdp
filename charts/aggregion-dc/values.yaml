@@ -420,9 +420,9 @@ dc:
             datalab/namespace: "common"
             datalab/component: "default-policy"
         spec:
-        podSelector:
-          matchLabels:
-            name: "dl-{{ ns }}"
+          podSelector:
+            matchLabels:
+              name: "dl-{{ ns }}"
         policyTypes:
           - Ingress
           - Egress
