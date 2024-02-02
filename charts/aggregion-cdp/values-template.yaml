@@ -339,7 +339,9 @@ enclave:
   resources:
     server:
       limits:
-        memory: 32G
+        memory: 32Gi
+      requests:
+        memory: 500Mi
     services: {}
   restartPolicy: Always
   scone:
