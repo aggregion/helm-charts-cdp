@@ -279,6 +279,10 @@ config:
     concat:
       type: default
   eventExporters: []
+  # - params:
+  #     queue_name: ddm-events
+  #     uri: amqp://rabbit
+  #   type: amqp
   git: []
 
 ecosystem:
