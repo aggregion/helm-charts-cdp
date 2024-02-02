@@ -94,7 +94,7 @@ backend:
     enclaveEndpoint: http://aggregion-cdp-enclave$CDP_SUFFIX$URL_SUFFIX.$CDP_NS.svc.$CLUSTER_DOMAIN:8010
     eosDecryptPk: |-
       $PRIVATE_KEY_6S
-    eosNodeUrl: http://testnet.blockchain.dmp.aggregion.com:9999 # CHANGEIT
+    eosNodeUrl: "$BACKEND_CONFIG_EOSNODEURL" # CHANGEIT
     eosWalletOwnerOrgId: "$ACCOUNT_ID"
     eosWalletOwnerPk: $EOS_WALLET_PRIVATE_KEY
     eosWalletOwnerPub: $EOS_WALLET_PUBLIC_KEY
