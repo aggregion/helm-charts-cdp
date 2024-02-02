@@ -11,21 +11,43 @@ atlas:
     type: basic
   baseUrl: http://atlas:21000 # CHANGEIT
 audienceDatasetConsumer:
+  enabled: true
+  image:
+    repository: registry.aggregion.com/audience-dataset-consumer
+    pullPolicy: IfNotPresent
+    tag: "$IMAGE_CDP_AUDIENCEDATASETCONSUMER_IMAGE_TAG"
   config:
     logLevel: info
     metrics:
       enabled: false
-  enabled: true
   probes:
     livenessEnabled: false
     readinessEnabled: false
 authservice:
   enabled: true
+  image:
+    repository: registry.aggregion.com/auth-service
+    pullPolicy: IfNotPresent
+    tag: "$IMAGE_CDP_AUTHSERVICE_IMAGE_TAG"
   config:
     jwtSecretKey: "$AUTH_SERVICE_JWT_SECRET_KEY" # GENERATED
     logLevel: info
     mongoDbUri: mongodb://aggregion-externals-mongo$EXTERNALS_SUFFIX$URL_SUFFIX.$CDP_NS.svc.$CLUSTER_DOMAIN:27017/auth-service
 backend:
+  image:
+    repository: registry.aggregion.com/dmp-backend
+    pullPolicy: IfNotPresent
+    tag: "$IMAGE_CDP_BACK_IMAGE_TAG"
+  crond:
+    image:
+      repository: "registry.aggregion.com/cron-curl"
+      tag: "$IMAGE_CDP_BACK_CROND_IMAGE_TAG"
+      pullPolicy: IfNotPresent
+  dbseed:
+    image:
+      repository: registry.aggregion.com/dmp-seed
+      tag: "$IMAGE_CDP_BACK_DBSEED_IMAGE_TAG"
+      pullPolicy: IfNotPresent
   api:
     livenessEnabled: true
     readinessEnabled: true
@@ -155,6 +177,10 @@ backend:
   datalabProxy:
     replicaCount: 1
     resolverServiceDomain: "$BACKEND_DATALABPROXY_RESOLVERSERVICEDOMAIN"
+    image:
+      repository: nginx
+      tag: "$IMAGE_CDP_BACK_DATALABPROXY_IMAGE_TAG"
+      pullPolicy: IfNotPresent
   datasetUploader:
     livenessEnabled: false
     readinessEnabled: false
@@ -167,6 +193,10 @@ backend:
     readinessEnabled: true
 cleos:
   enabled: false
+  image:
+    repository: registry.aggregion.com/cleos
+    pullPolicy: IfNotPresent
+    tag: "$IMAGE_CDP_CLEOS_IMAGE_TAG"
 dataservice:
   config:
     accessToken: NEED_GENERATING
@@ -240,6 +270,10 @@ dataservice:
       readinessEnabled: true
 dbMetadataSync:
   enabled: true
+  image:
+    repository: registry.aggregion.com/db-metadata-sync
+    pullPolicy: IfNotPresent
+    tag: "$IMAGE_CDP_DBMETADATASYNC_IMAGE_TAG"
   config:
     instances:
     - connectionOptions:
@@ -257,17 +291,25 @@ dbMetadataSync:
     metrics:
       enabled: true
 dbMetadataSyncConsumer:
+  enabled: true
+  image:
+    repository: registry.aggregion.com/db-metadata-sync-consumer
+    pullPolicy: IfNotPresent
+    tag: "$IMAGE_CDP_DBMETADATASYNCCONSUMER_IMAGE_TAG"
   config:
     consumer:
       prefetchCount: 1
     metrics:
       enabled: false
-  enabled: true
   probes:
     livenessEnabled: false
     readinessEnabled: false
 emailservice:
   enabled: true
+  image:
+    repository: registry.aggregion.com/email-service
+    pullPolicy: IfNotPresent
+    tag: "$IMAGE_CDP_EMAILSERVICE_IMAGE_TAG"
   probes:
     livenessEnabled: true
     readinessEnabled: true
@@ -320,10 +362,18 @@ enclave:
   restartPolicy: Always
   scone:
     enabled: false
+    lasImage:
+      repository: "registry.aggregion.com/sconecuratedimages/aggregion"
+      pullPolicy: "IfNotPresent"
+      tag: "$IMAGE_CDP_ENCLAVE_SCONE_LAS_IMAGE_TAG"
   securityContext: {}
   tolerations: []
 frontend:
   enabled: true
+  image:
+    repository: registry.aggregion.com/dmp-frontend
+    pullPolicy: IfNotPresent
+    tag: "$IMAGE_CDP_FRONT_IMAGE_TAG"
   ingress:
     annotations:
       nginx.ingress.kubernetes.io/proxy-body-size: 128000m
@@ -354,7 +404,7 @@ gatekeeper:
   enabled: true
   image:
     repository: registry.aggregion.com/gatekeeper
-    tag: 1.4.2
+    tag: "$IMAGE_CDP_GK_IMAGE_TAG"
 imagePullSecrets:
 - name: aggregionregistry # CHANGEIT
 metadataParams:
@@ -363,7 +413,17 @@ metadataParams:
     iv: "$MD_PARAMS_CREDS_IV" # GENERATED
 metadataSeed:
   enabled: false
+  image:
+    repository: registry.aggregion.com/metadata-seed
+    tag: "$IMAGE_CDP_METADATASEED_IMAGE_TAG"
+    pullPolicy: IfNotPresent
 metadataService:
+  enabled: true
+  migrationEnabled: true
+  image:
+    repository: registry.aggregion.com/metadata-service
+    pullPolicy: IfNotPresent
+    tag: "$IMAGE_CDP_METADATASERVICE_IMAGE_TAG"
   config:
     amqp:
       url: amqp://aggregion-externals-rabbit$EXTERNALS_SUFFIX$URL_SUFFIX.$CDP_NS.svc.$CLUSTER_DOMAIN:5672
@@ -378,8 +438,6 @@ metadataService:
   cronjob:
     enabled: true
     schedule: "*/30 * * * *"
-  enabled: true
-  migrationEnabled: true
   probes:
     livenessEnabled: true
     readinessEnabled: true
@@ -389,6 +447,10 @@ metrics:
   serviceMonitor:
     enabled: false
 oidcprovider:
+  image:
+    repository: registry.aggregion.com/oidc-provider
+    pullPolicy: IfNotPresent
+    tag: "$IMAGE_CDP_OIDCPROVIDER_IMAGE_TAG"
   config:
     clientPostLogoutRedirectUris:
     - https://kc19.$BASE_FRONT_DOMAIN/realms/aggregion/broker/aggregion-oidc/endpoint/logout_response
@@ -413,7 +475,9 @@ oidcprovider:
 ddmEventConsumer:
   enabled: false
   image:
+    repository: registry.aggregion.com/ddm-event-consumer
     pullPolicy: IfNotPresent
+    tag: "$IMAGE_CDP_DDMEVENTCONSUMER_IMAGE_TAG"
   probes:
     livenessEnabled: false
     readinessEnabled: false
