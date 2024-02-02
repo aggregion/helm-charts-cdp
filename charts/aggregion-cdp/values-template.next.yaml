@@ -10,6 +10,14 @@ atlas:
       tokenUrl: https://keycloak/realms/aggregion/protocol/openid-connect/token # CHANGEIT
     type: basic
   baseUrl: http://atlas:21000 # CHANGEIT
+blockchainCommon:
+  smartContracts:
+    base:
+      name: "$BLOCKCHAIN_COMMON_BASE_CONTRACT"
+    catalogs:
+      name: "$BLOCKCHAIN_COMMON_CATALOGS_CONTRACT"
+    users:
+      name: "$BLOCKCHAIN_COMMON_USERS_CONTRACT"
 audienceDatasetConsumer:
   enabled: true
   image:
