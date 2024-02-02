@@ -24,7 +24,7 @@ authservice:
   config:
     jwtSecretKey: "$AUTH_SERVICE_JWT_SECRET_KEY" # GENERATED
     logLevel: info
-    mongoDbUri: mongodb://aggregion-externals-mongo-externals$URL_SUFFIX.$CDP_NS.svc.$CLUSTER_DOMAIN:27017/auth-service
+    mongoDbUri: mongodb://aggregion-externals-mongo$EXTERNALS_SUFFIX$URL_SUFFIX.$CDP_NS.svc.$CLUSTER_DOMAIN:27017/auth-service
 backend:
   api:
     livenessEnabled: true
@@ -59,7 +59,7 @@ backend:
     clickhouseUser: someuser # CHANGEIT
     dataStorageSize: 10Gi
     datalabApiUrl: http://aggregion-dc-dc-dc.$DC_NS.svc.$CLUSTER_DOMAIN:8080
-    datalabAuthUrl: http://aggregion-cdp-backend-cdp$URL_SUFFIX.$CDP_NS.svc.$CLUSTER_DOMAIN:8080/auth/datalab/vm/check-request
+    datalabAuthUrl: http://aggregion-cdp-backend$CDP_SUFFIX$URL_SUFFIX.$CDP_NS.svc.$CLUSTER_DOMAIN:8080/auth/datalab/vm/check-request
     datalabCpuLimit: "8"
     datalabDmpNamespace: $CDP_NS
     datalabMemoryLimitGb: "64"
@@ -67,9 +67,9 @@ backend:
     datalabOverwriteDomain: $BASE_FRONT_DOMAIN
     datalabPassword: admin
     datalabPlatformId: platform
-    datalabWebhookUrl: http://aggregion-cdp-backend-cdp$URL_SUFFIX.$CDP_NS.svc.$CLUSTER_DOMAIN:8080/webhooks
+    datalabWebhookUrl: http://aggregion-cdp-backend$CDP_SUFFIX$URL_SUFFIX.$CDP_NS.svc.$CLUSTER_DOMAIN:8080/webhooks
     dmpSecret: "$BACKEND_CONFIGS_DMP_SECRET" # GENERATED
-    enclaveEndpoint: http://aggregion-cdp-enclave-cdp$URL_SUFFIX.$CDP_NS.svc.$CLUSTER_DOMAIN:8010
+    enclaveEndpoint: http://aggregion-cdp-enclave$CDP_SUFFIX$URL_SUFFIX.$CDP_NS.svc.$CLUSTER_DOMAIN:8010
     eosDecryptPk: |-
       $PRIVATE_KEY_6S
     eosNodeUrl: http://testnet.blockchain.dmp.aggregion.com:9999 # CHANGEIT
@@ -87,12 +87,12 @@ backend:
     jwtSecret: "$BACKEND_CONFIGS_JWT_SECRET" # GENERATED
     listenPort: 15432
     logLevel: info
-    metadataSeedApiUrl: http://aggregion-cdp-metadataseed-cdp$URL_SUFFIX.$CDP_NS.svc.$CLUSTER_DOMAIN
+    metadataSeedApiUrl: http://aggregion-cdp-metadataseed$CDP_SUFFIX$URL_SUFFIX.$CDP_NS.svc.$CLUSTER_DOMAIN
     metadataServiceToken: NEED_GENERATING
     metrics:
       isEnabled: false
     migrationEnabled: true
-    mongoUrl: mongodb://aggregion-externals-mongo-externals$URL_SUFFIX.$CDP_NS.svc.$CLUSTER_DOMAIN:27017/dmp
+    mongoUrl: mongodb://aggregion-externals-mongo$EXTERNALS_SUFFIX$URL_SUFFIX.$CDP_NS.svc.$CLUSTER_DOMAIN:27017/dmp
     pipelineRunner:
       debugMode: false
       pipelines:
@@ -106,8 +106,8 @@ backend:
           timeout: 24h0m0s
     providerInstanceId: "$ACCOUNT_ID"
     providerName: "$ACCOUNT_ID"
-    rabbitmqUrl: amqp://aggregion-externals-rabbit-externals$URL_SUFFIX.$CDP_NS.svc.$CLUSTER_DOMAIN:5672
-    redisHost: aggregion-externals-redis-externals$URL_SUFFIX.$CDP_NS.svc.$CLUSTER_DOMAIN
+    rabbitmqUrl: amqp://aggregion-externals-rabbit$EXTERNALS_SUFFIX$URL_SUFFIX.$CDP_NS.svc.$CLUSTER_DOMAIN:5672
+    redisHost: aggregion-externals-redis$EXTERNALS_SUFFIX$URL_SUFFIX.$CDP_NS.svc.$CLUSTER_DOMAIN
     redisPassword: ""
     redisPort: 6379
     redisPrefix: "agg:"
@@ -154,6 +154,7 @@ backend:
         bucket: "CHANGEIT"
   datalabProxy:
     replicaCount: 1
+    resolverServiceDomain: "$BACKEND_DATALABPROXY_RESOLVERSERVICEDOMAIN"
   datasetUploader:
     livenessEnabled: false
     readinessEnabled: false
@@ -174,15 +175,15 @@ dataservice:
     bcmqPollingInterval: 1000
     clickhouseUseDirectConnection: true
     credentialsDecryptKey: $DATASERVICE_CONFIG_CREDENTIALSDECRYPTKEY # GENERATED
-    endpoint: http://aggregion-cdp-dataservice-cdp$URL_SUFFIX.$CDP_NS.svc.$CLUSTER_DOMAIN/api
+    endpoint: http://aggregion-cdp-dataservice$CDP_SUFFIX$URL_SUFFIX.$CDP_NS.svc.$CLUSTER_DOMAIN/api
     logLevel: trace
     logPrettyPrint: false
     metadataServiceToken: NEED_GENERATING
-    mongoDbUri: mongodb://aggregion-externals-mongo-externals$URL_SUFFIX.$CDP_NS.svc.$CLUSTER_DOMAIN:27017/ds
+    mongoDbUri: mongodb://aggregion-externals-mongo$EXTERNALS_SUFFIX$URL_SUFFIX.$CDP_NS.svc.$CLUSTER_DOMAIN:27017/ds
     mongoDebug: false
     nodeEnv: production
     port: 9045
-    rabbitmqUri: amqp://aggregion-externals-rabbit-externals$URL_SUFFIX.$CDP_NS.svc.$CLUSTER_DOMAIN:5672
+    rabbitmqUri: amqp://aggregion-externals-rabbit$EXTERNALS_SUFFIX$URL_SUFFIX.$CDP_NS.svc.$CLUSTER_DOMAIN:5672
     tokenIssuer: "$ACCOUNT_ID"
     tokenSecretKey: "$DATASERVICE_CONFIG_TOKENSECRETKEY" # GENERATED
     trinoHost: doesnotmatter
@@ -193,7 +194,7 @@ dataservice:
       schedule: "*/15 * * * *"
     enabled: false
     password: admin
-    rabbitmqUrl: amqp://aggregion-externals-rabbit-externals$URL_SUFFIX.$CDP_NS.svc.$CLUSTER_DOMAIN:5672
+    rabbitmqUrl: amqp://aggregion-externals-rabbit$EXTERNALS_SUFFIX$URL_SUFFIX.$CDP_NS.svc.$CLUSTER_DOMAIN:5672
     username: admin
   datasetDatasetSyncer:
     enabled: true
@@ -241,16 +242,16 @@ dbMetadataSync:
   enabled: true
   config:
     instances:
-      - connectionOptions:
-          hostname: 127.0.0.1 # CHANGEIT
-          port: 8123
-        credentials:
-          password: somepass # CHANGEIT
-          username: someuser # CHANGEIT
-        databases:
-          - name: databasename # CHANGEIT
-        name: ch
-        rdbmsType: clickhouse
+    - connectionOptions:
+        hostname: 127.0.0.1 # CHANGEIT
+        port: 8123
+      credentials:
+        password: somepass # CHANGEIT
+        username: someuser # CHANGEIT
+      databases:
+      - name: databasename # CHANGEIT
+      name: ch
+      rdbmsType: clickhouse
     logLevel: trace
     metadataServiceToken: NEED_GENERATING
     metrics:
@@ -273,9 +274,9 @@ emailservice:
 enclave:
   affinity: {}
   configs:
-    dataserviceBaseURL: http://aggregion-cdp-dataservice-cdp$URL_SUFFIX.$CDP_NS.svc.$CLUSTER_DOMAIN
+    dataserviceBaseURL: http://aggregion-cdp-dataservice$CDP_SUFFIX$URL_SUFFIX.$CDP_NS.svc.$CLUSTER_DOMAIN
     dataserviceToken: NEED_GENERATING
-    dmpBaseURL: http://aggregion-cdp-backend-cdp$URL_SUFFIX.$CDP_NS.svc.$CLUSTER_DOMAIN:8080/enclave
+    dmpBaseURL: http://aggregion-cdp-backend$CDP_SUFFIX$URL_SUFFIX.$CDP_NS.svc.$CLUSTER_DOMAIN:8080/enclave
     nodeTlsRejectUnauthorized: false
     prettyLogs: "false"
     providerSecret: $BACKEND_CONFIGS_DMP_SECRET # GENERATED
@@ -295,13 +296,13 @@ enclave:
       nginx.ingress.kubernetes.io/proxy-send-timeout: "3600"
     enabled: true
     hosts:
-      - host: enclave.$BASE_FRONT_DOMAIN
-        paths:
-          - /
+    - host: enclave.$BASE_FRONT_DOMAIN
+      paths:
+      - /
     tls:
-      - hosts:
-          - enclave.$BASE_FRONT_DOMAIN
-        secretName: enclave-front-tls # CHANGEIT
+    - hosts:
+      - enclave.$BASE_FRONT_DOMAIN
+      secretName: enclave-front-tls # CHANGEIT
   nameOverride: ""
   nodeSelector: {}
   podAnnotations: {}
@@ -328,18 +329,18 @@ frontend:
       nginx.ingress.kubernetes.io/proxy-body-size: 128000m
     enabled: true
     hosts:
-      - host: $BASE_FRONT_DOMAIN
+    - host: $BASE_FRONT_DOMAIN
     tls:
-      - hosts:
-          - $BASE_FRONT_DOMAIN
-        paths:
-          backend:
-            service:
-              name: aggregion-cdp-backend
-              port:
-                name: httpapi
-          pathType: Prefix
-        secretName: front-tls # CHANGEIT
+    - hosts:
+      - $BASE_FRONT_DOMAIN
+      paths:
+        backend:
+          service:
+            name: aggregion-cdp-backend
+            port:
+              name: httpapi
+        pathType: Prefix
+      secretName: front-tls # CHANGEIT
 gatekeeper:
   config:
     clientId: dcp # CHANGEIT
@@ -355,7 +356,7 @@ gatekeeper:
     repository: registry.aggregion.com/gatekeeper
     tag: 1.4.2
 imagePullSecrets:
-  - name: aggregionregistry # CHANGEIT
+- name: aggregionregistry # CHANGEIT
 metadataParams:
   credentials:
     encryptionKey: "$MD_PARAMS_CREDS_ENCRYPTION_KEY" # GENERATED
@@ -365,14 +366,14 @@ metadataSeed:
 metadataService:
   config:
     amqp:
-      url: amqp://aggregion-externals-rabbit-externals$URL_SUFFIX.$CDP_NS.svc.$CLUSTER_DOMAIN:5672
-    dmpBackendBaseUrl: http://aggregion-cdp-backend-cdp$URL_SUFFIX.$CDP_NS.svc.$CLUSTER_DOMAIN:8080/
+      url: amqp://aggregion-externals-rabbit$EXTERNALS_SUFFIX$URL_SUFFIX.$CDP_NS.svc.$CLUSTER_DOMAIN:5672
+    dmpBackendBaseUrl: http://aggregion-cdp-backend$CDP_SUFFIX$URL_SUFFIX.$CDP_NS.svc.$CLUSTER_DOMAIN:8080/
     jwtSecret: $MDS_CONFIG_JWT_SECRET # GENERATED
     logLevel: trace
     metrics:
       enabled: true
     postgres:
-      host: aggregion-externals-postgres-externals$URL_SUFFIX.$CDP_NS.svc.$CLUSTER_DOMAIN
+      host: aggregion-externals-postgres$EXTERNALS_SUFFIX$URL_SUFFIX.$CDP_NS.svc.$CLUSTER_DOMAIN
       logging: true
   cronjob:
     enabled: true
@@ -390,9 +391,9 @@ metrics:
 oidcprovider:
   config:
     clientPostLogoutRedirectUris:
-      - https://kc19.$BASE_FRONT_DOMAIN/realms/aggregion/broker/aggregion-oidc/endpoint/logout_response
+    - https://kc19.$BASE_FRONT_DOMAIN/realms/aggregion/broker/aggregion-oidc/endpoint/logout_response
     clientRedirectUris:
-      - https://kc19.$BASE_FRONT_DOMAIN/realms/aggregion/broker/aggregion-oidc/endpoint
+    - https://kc19.$BASE_FRONT_DOMAIN/realms/aggregion/broker/aggregion-oidc/endpoint
     logLevel: info
     successSignupRedirectUri: $BASE_FRONT_URL_SCHEMA://$BASE_FRONT_DOMAIN
     ttl:
@@ -401,11 +402,11 @@ oidcprovider:
   ingress:
     enabled: true
     hosts:
-      - host: auth.$BASE_FRONT_DOMAIN
+    - host: auth.$BASE_FRONT_DOMAIN
     tls:
-      - hosts:
-          - auth.$BASE_FRONT_DOMAIN
-        secretName: auth-front-tls # CHANGEIT
+    - hosts:
+      - auth.$BASE_FRONT_DOMAIN
+      secretName: auth-front-tls # CHANGEIT
   probes:
     livenessEnabled: true
     readinessEnabled: true
@@ -428,11 +429,11 @@ publishExtendedAgreements:
     enabled: false
     schedule: "0 */2 * * *"
 providerLinks:
-  - name: $ACCOUNT_ID
-    url: http://aggregion-cdp-enclave-cdp$URL_SUFFIX.$CDP_NS.svc.$CLUSTER_DOMAIN:8010
+- name: $ACCOUNT_ID
+  url: http://aggregion-cdp-enclave$CDP_SUFFIX$URL_SUFFIX.$CDP_NS.svc.$CLUSTER_DOMAIN:8010
 providerNames:
   $ACCOUNT_ID:
     en: Retail network # CHANGEIT
     ru: Розничная сеть # CHANGEIT
 providers:
-  - "$ACCOUNT_ID"
+- "$ACCOUNT_ID"

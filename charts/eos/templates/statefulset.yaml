@@ -95,12 +95,26 @@ spec:
               --chain-threads {{ .Values.config.chainThreads | default 2 }}
               --producer-threads {{ .Values.config.producerThreads | default 2 }}
               --net-threads {{ .Values.config.netThreads | default 2 }}
+              {{- if .Values.config.genesis.enabled }}
+              --genesis-json /genesis/config.json
+              {{- end }}
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
           lifecycle:
             preStop:
               exec:
                 command: [ "/bin/sh", "-c", "kill -INT $(pidof nodeos)" ]
+          {{- if .Values.config.genesis.enabled }}
+          volumeMounts:
+            - mountPath: /genesis
+              name: genesis
+          {{- end }}
+      {{- if .Values.config.genesis.enabled }}
+      volumes:
+        - name: genesis
+          configMap:
+            name: {{ $fullName }}-genesis
+      {{- end }}
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
