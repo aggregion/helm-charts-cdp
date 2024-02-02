@@ -414,6 +414,24 @@ dc:
         kind: NetworkPolicy
         apiVersion: networking.k8s.io/v1
         metadata:
+          name: "dl-{{ ns }}-deny-all"
+          labels:
+            cdp/project: "datalab"
+            datalab/namespace: "common"
+            datalab/component: "default-policy"
+        spec:
+          podSelector:
+            matchLabels:
+              name: "dl-{{ ns }}"
+          ingress: []
+          egress: []
+          policyTypes:
+            - Ingress
+            - Egress
+        ---
+        kind: NetworkPolicy
+        apiVersion: networking.k8s.io/v1
+        metadata:
           name: "dl-{{ ns }}"
           labels:
             cdp/project: "datalab"
