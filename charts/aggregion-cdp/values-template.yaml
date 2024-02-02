@@ -154,6 +154,7 @@ backend:
         bucket: "CHANGEIT"
   datalabProxy:
     replicaCount: 1
+    resolverServiceDomain: "$BACKEND_DATALABPROXY_RESOLVERSERVICEDOMAIN"
   datasetUploader:
     livenessEnabled: false
     readinessEnabled: false
@@ -277,13 +278,13 @@ enclave:
       nginx.ingress.kubernetes.io/proxy-send-timeout: "3600"
     enabled: true
     hosts:
-      - host: enclave.$BASE_FRONT_DOMAIN
-        paths:
-          - /
+    - host: enclave.$BASE_FRONT_DOMAIN
+      paths:
+      - /
     tls:
-      - hosts:
-          - enclave.$BASE_FRONT_DOMAIN
-        secretName: enclave-front-tls # CHANGEIT
+    - hosts:
+      - enclave.$BASE_FRONT_DOMAIN
+      secretName: enclave-front-tls # CHANGEIT
   nameOverride: ""
   nodeSelector: {}
   podAnnotations: {}
@@ -310,18 +311,18 @@ frontend:
       nginx.ingress.kubernetes.io/proxy-body-size: 128000m
     enabled: true
     hosts:
-      - host: $BASE_FRONT_DOMAIN
+    - host: $BASE_FRONT_DOMAIN
     tls:
-      - hosts:
-          - $BASE_FRONT_DOMAIN
-        paths:
-          backend:
-            service:
-              name: aggregion-cdp-backend
-              port:
-                name: httpapi
-          pathType: Prefix
-        secretName: front-tls # CHANGEIT
+    - hosts:
+      - $BASE_FRONT_DOMAIN
+      paths:
+        backend:
+          service:
+            name: aggregion-cdp-backend
+            port:
+              name: httpapi
+        pathType: Prefix
+      secretName: front-tls # CHANGEIT
 gatekeeper:
   config:
     clientId: dcp # CHANGEIT
@@ -337,7 +338,7 @@ gatekeeper:
     repository: registry.aggregion.com/gatekeeper
     tag: 1.4.2
 imagePullSecrets:
-  - name: aggregionregistry # CHANGEIT
+- name: aggregionregistry # CHANGEIT
 metadataParams:
   credentials:
     encryptionKey: "$MD_PARAMS_CREDS_ENCRYPTION_KEY" # GENERATED
@@ -357,9 +358,9 @@ metrics:
 oidcprovider:
   config:
     clientPostLogoutRedirectUris:
-      - https://kc19.$BASE_FRONT_DOMAIN/realms/aggregion/broker/aggregion-oidc/endpoint/logout_response
+    - https://kc19.$BASE_FRONT_DOMAIN/realms/aggregion/broker/aggregion-oidc/endpoint/logout_response
     clientRedirectUris:
-      - https://kc19.$BASE_FRONT_DOMAIN/realms/aggregion/broker/aggregion-oidc/endpoint
+    - https://kc19.$BASE_FRONT_DOMAIN/realms/aggregion/broker/aggregion-oidc/endpoint
     logLevel: info
     successSignupRedirectUri: $BASE_FRONT_URL_SCHEMA://$BASE_FRONT_DOMAIN
     ttl:
@@ -368,11 +369,11 @@ oidcprovider:
   ingress:
     enabled: true
     hosts:
-      - host: auth.$BASE_FRONT_DOMAIN
+    - host: auth.$BASE_FRONT_DOMAIN
     tls:
-      - hosts:
-          - auth.$BASE_FRONT_DOMAIN
-        secretName: auth-front-tls # CHANGEIT
+    - hosts:
+      - auth.$BASE_FRONT_DOMAIN
+      secretName: auth-front-tls # CHANGEIT
   probes:
     livenessEnabled: true
     readinessEnabled: true
@@ -394,11 +395,11 @@ publishExtendedAgreements:
   cronjob:
     enabled: true
 providerLinks:
-  - name: $ACCOUNT_ID
-    url: http://aggregion-cdp-enclave-cdp$URL_SUFFIX.$CDP_NS.svc.$CLUSTER_DOMAIN:8010
+- name: $ACCOUNT_ID
+  url: http://aggregion-cdp-enclave-cdp$URL_SUFFIX.$CDP_NS.svc.$CLUSTER_DOMAIN:8010
 providerNames:
   $ACCOUNT_ID:
     en: Retail network # CHANGEIT
     ru: Розничная сеть # CHANGEIT
 providers:
-  - "$ACCOUNT_ID"
+- "$ACCOUNT_ID"
