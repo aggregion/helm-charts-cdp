@@ -165,8 +165,7 @@ atlas:
 frontend:
   enabled: true
   replicaCount: 1
-  annotations:
-    reloader.stakater.com/auto: "true"
+  annotations: {}
   image:
     repository: registry.aggregion.com/dmp-frontend
     pullPolicy: IfNotPresent
@@ -192,8 +191,9 @@ frontend:
     port: 5000
   ingress:
     enabled: true
+    className: nginx
     annotations:
-      kubernetes.io/ingress.class: nginx
+      # kubernetes.io/ingress.class: nginx
       nginx.ingress.kubernetes.io/proxy-body-size: 128000m
       nginx.ingress.kubernetes.io/proxy-read-timeout: "3600"
       nginx.ingress.kubernetes.io/proxy-send-timeout: "3600"
@@ -219,8 +219,7 @@ frontend:
 backend:
   enabled: true
   replicaCount: 1
-  annotations:
-    reloader.stakater.com/auto: "true"
+  annotations: {}
   useCommonProxy: false
   image:
     repository: registry.aggregion.com/dmp-backend
@@ -844,8 +843,7 @@ enclave:
   # should be false when enclave deployed outside of cluster, as standalone instance
   enabled: true
   replicaCount: 1
-  annotations:
-    reloader.stakater.com/auto: "true"
+  annotations: {}
   hostname: "enclave"
   sgx:
     nodeWithSgxSelector: {}
@@ -950,8 +948,9 @@ enclave:
 
   ingress:
     enabled: true
+    className: nginx
     annotations:
-      kubernetes.io/ingress.class: nginx
+      # kubernetes.io/ingress.class: nginx
       nginx.ingress.kubernetes.io/proxy-body-size: 128000m
       nginx.ingress.kubernetes.io/proxy-read-timeout: "3600"
       nginx.ingress.kubernetes.io/proxy-send-timeout: "3600"
@@ -991,8 +990,7 @@ dataservice:
   replicaCount: 1
   nameOverride: ""
   nodeSelector: {}
-  annotations:
-    reloader.stakater.com/auto: "true"
+  annotations: {}
   useCommonProxy: false
   podAnnotations: {}
   restartPolicy: Always
@@ -1171,8 +1169,7 @@ authservice:
   # name to override default pod name
   nameOverride: ""
   # authservice deployment annotations
-  annotations:
-    reloader.stakater.com/auto: "true"
+  annotations: {}
   # authservice pod annotations
   podAnnotations: {}
   # restart policy
@@ -1238,8 +1235,7 @@ oidcprovider:
   # name to override default pod name
   nameOverride: ""
   # oidcprovider deployment annotations
-  annotations:
-    reloader.stakater.com/auto: "true"
+  annotations: {}
   # oidcprovider pod annotations
   podAnnotations: {}
   # restart policy
@@ -1269,9 +1265,10 @@ oidcprovider:
   ingress:
     # enable ingress record generation
     enabled: false
+    className: nginx
     # ingress annotations
     annotations:
-      kubernetes.io/ingress.class: nginx
+      # kubernetes.io/ingress.class: nginx
       nginx.ingress.kubernetes.io/proxy-body-size: 128000m
       nginx.ingress.kubernetes.io/proxy-read-timeout: "3600"
       nginx.ingress.kubernetes.io/proxy-send-timeout: "3600"
@@ -1380,8 +1377,7 @@ emailservice:
   # name to override default pod name
   nameOverride: ""
   # emailservice deployment annotations
-  annotations:
-    reloader.stakater.com/auto: "true"
+  annotations: {}
   image:
     # emailservice image repository
     repository: registry.aggregion.com/email-service
