@@ -71,7 +71,7 @@ backend:
     readinessEnabled: true
   configs:
     accountName: "$ACCOUNT_ID"
-    baseUrl: $BASE_FRONT_URL_SCHEMA://$BASE_FRONT_DOMAIN
+    baseUrl: $BASE_FRONT_URL_SCHEMA://app.$BASE_FRONT_DOMAIN
     bcmqMaxAllowedErrorCount: 20
     bcmqPollingInterval: 1000
     clickhouseDb: somedatabase # CHANGEIT
@@ -86,7 +86,7 @@ backend:
     datalabDmpNamespace: $CDP_NS
     datalabMemoryLimitGb: "64"
     datalabNamespace: datalab
-    datalabOverwriteDomain: $BASE_FRONT_DOMAIN
+    datalabOverwriteDomain: app.$BASE_FRONT_DOMAIN
     datalabPassword: admin
     datalabPlatformId: platform
     datalabWebhookUrl: http://aggregion-cdp-backend$CDP_SUFFIX$URL_SUFFIX.$CDP_NS.svc.$CLUSTER_DOMAIN:8080/webhooks
@@ -361,10 +361,10 @@ frontend:
       nginx.ingress.kubernetes.io/proxy-body-size: 128000m
     enabled: true
     hosts:
-    - host: $BASE_FRONT_DOMAIN
+    - host: app.$BASE_FRONT_DOMAIN
     tls:
     - hosts:
-      - $BASE_FRONT_DOMAIN
+      - app.$BASE_FRONT_DOMAIN
       paths:
         backend:
           service:
@@ -379,7 +379,7 @@ gatekeeper:
     clientSecret: i7gj...Hn4O # CHANGEIT
     discoveryUrl: https://kc19.$BASE_FRONT_DOMAIN/realms/aggregion/.well-known/openid-configuration
     encryptionKey: $GK_CONFIG_ENCRYPTION_KEY
-    redirectionUrl: $BASE_FRONT_URL_SCHEMA://$BASE_FRONT_DOMAIN
+    redirectionUrl: $BASE_FRONT_URL_SCHEMA://app.$BASE_FRONT_DOMAIN
     signInPage: ""
     storeUrl: ""
     verbose: true
@@ -424,7 +424,7 @@ oidcprovider:
     clientRedirectUris:
     - https://kc19.$BASE_FRONT_DOMAIN/realms/aggregion/broker/aggregion-oidc/endpoint
     logLevel: info
-    successSignupRedirectUri: $BASE_FRONT_URL_SCHEMA://$BASE_FRONT_DOMAIN
+    successSignupRedirectUri: $BASE_FRONT_URL_SCHEMA://app.$BASE_FRONT_DOMAIN
     ttl:
       accessToken: 1000000
   enabled: true
