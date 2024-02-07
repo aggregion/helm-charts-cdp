@@ -385,10 +385,10 @@ frontend:
       nginx.ingress.kubernetes.io/proxy-body-size: 128000m
     enabled: true
     hosts:
-    - host: $BASE_FRONT_DOMAIN
+    - host: app.$BASE_FRONT_DOMAIN
     tls:
     - hosts:
-      - $BASE_FRONT_DOMAIN
+      - app.$BASE_FRONT_DOMAIN
       paths:
         backend:
           service:
