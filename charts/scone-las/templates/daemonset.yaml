@@ -27,7 +27,6 @@ spec:
       containers:
         - name: {{ .Chart.Name }}
           securityContext:
-            privileged: true
             {{- toYaml .Values.securityContext | nindent 12 }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
