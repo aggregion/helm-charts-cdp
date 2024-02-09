@@ -463,7 +463,7 @@ oidcprovider:
     clientRedirectUris:
     - https://kc.$BASE_FRONT_DOMAIN/realms/aggregion/broker/aggregion-oidc/endpoint
     logLevel: info
-    successSignupRedirectUri: $BASE_FRONT_URL_SCHEMA://$BASE_FRONT_DOMAIN
+    successSignupRedirectUri: $BASE_FRONT_URL_SCHEMA://app.$BASE_FRONT_DOMAIN
     ttl:
       accessToken: 1000000
   enabled: true
