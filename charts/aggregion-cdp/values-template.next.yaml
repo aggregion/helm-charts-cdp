@@ -400,7 +400,7 @@ frontend:
 gatekeeper:
   config:
     clientId: dcp # CHANGEIT
-    clientSecret: i7gj...Hn4O # CHANGEIT
+    clientSecret: $GATEKEEPER_DCP_CLIENT_SECRET
     discoveryUrl: https://kc19.$BASE_FRONT_DOMAIN/realms/aggregion/.well-known/openid-configuration
     encryptionKey: $GK_CONFIG_ENCRYPTION_KEY
     redirectionUrl: $BASE_FRONT_URL_SCHEMA://$BASE_FRONT_DOMAIN
