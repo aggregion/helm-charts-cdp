@@ -459,9 +459,9 @@ oidcprovider:
     tag: "$IMAGE_CDP_OIDCPROVIDER_IMAGE_TAG"
   config:
     clientPostLogoutRedirectUris:
-    - https://kc19.$BASE_FRONT_DOMAIN/realms/aggregion/broker/aggregion-oidc/endpoint/logout_response
+    - https://kc.$BASE_FRONT_DOMAIN/realms/aggregion/broker/aggregion-oidc/endpoint/logout_response
     clientRedirectUris:
-    - https://kc19.$BASE_FRONT_DOMAIN/realms/aggregion/broker/aggregion-oidc/endpoint
+    - https://kc.$BASE_FRONT_DOMAIN/realms/aggregion/broker/aggregion-oidc/endpoint
     logLevel: info
     successSignupRedirectUri: $BASE_FRONT_URL_SCHEMA://$BASE_FRONT_DOMAIN
     ttl:
