@@ -79,7 +79,7 @@ backend:
     readinessEnabled: true
   configs:
     accountName: "$ACCOUNT_ID"
-    baseUrl: $BASE_FRONT_URL_SCHEMA://$BASE_FRONT_DOMAIN
+    baseUrl: $BASE_FRONT_URL_SCHEMA://app.$BASE_FRONT_DOMAIN
     bcmqMaxAllowedErrorCount: 20
     bcmqPollingInterval: 1000
     clickhouseDb: somedatabase # CHANGEIT
@@ -403,7 +403,7 @@ gatekeeper:
     clientSecret: $GATEKEEPER_DCP_CLIENT_SECRET
     discoveryUrl: https://kc.$BASE_FRONT_DOMAIN/realms/aggregion/.well-known/openid-configuration
     encryptionKey: $GK_CONFIG_ENCRYPTION_KEY
-    redirectionUrl: $BASE_FRONT_URL_SCHEMA://$BASE_FRONT_DOMAIN
+    redirectionUrl: $BASE_FRONT_URL_SCHEMA://app.$BASE_FRONT_DOMAIN
     signInPage: ""
     storeUrl: ""
     verbose: true
