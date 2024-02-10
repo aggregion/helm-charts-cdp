@@ -1,0 +1,84 @@
+workflow:
+  name: '$PIPELINE_TYPE'
+  rules:
+    # Avoid duplicate pipeline when an MR is open
+    - if: '$CI_COMMIT_BRANCH && $CI_OPEN_MERGE_REQUESTS && $CI_PIPELINE_SOURCE == "push"'
+      when: never
+    # No pipeline on auto-deploy branches as a tag will definitely follow
+    - if: '$CI_COMMIT_BRANCH =~ /^[0-9]+-[0-9]+-auto-deploy-[0-9]+$/'
+      when: never
+    # Detect pipeline type
+    ## Scheduled pipelines
+    - if: '$PIPELINE_TYPE == null && $DEPS_PIPELINE == "true" && ($CI_PIPELINE_SOURCE == "schedule" || $CI_PIPELINE_SOURCE == "trigger" || $CI_PIPELINE_SOURCE == "pipeline")'
+      variables:
+        PIPELINE_TYPE: DEPS_IO_VERSION_CHECK_PIPELINE
+    - if: '$PIPELINE_TYPE == null && $KNAPSACK_GENERATE_REPORT == "true" && $CI_PIPELINE_SOURCE == "schedule"'
+      variables:
+        PIPELINE_TYPE: QA_KNAPSACK_UPDATE_PIPELINE
+    - if: '$PIPELINE_TYPE == null && $NIGHTLY == "true" && $CI_PIPELINE_SOURCE == "schedule"'
+      variables:
+        PIPELINE_TYPE: NIGHTLY_PIPELINE
+    ## Trigger pipelines
+    - if: '$PIPELINE_TYPE == null && $CI_PIPELINE_TRIGGERED && $TRIGGER_JOB == "tag_auto_deploy" && $AUTO_DEPLOY_TAG && $REPOSITORY_PAT'
+      variables:
+        PIPELINE_TYPE: AUTO_DEPLOY_TRIGGER_PIPELINE
+    ## Tag pipelines
+    - if: '$PIPELINE_TYPE == null && $CI_PROJECT_PATH == $DEV_PROJECT_PATH && $CI_COMMIT_TAG =~ /^[0-9]+\.[0-9]+\.[0-9]+\+[a-z0-9]{7,}$/'
+      variables:
+        PIPELINE_TYPE: AUTO_DEPLOY_PIPELINE
+    - if: '$PIPELINE_TYPE == null && $CI_PROJECT_PATH == $DEV_PROJECT_PATH && $CI_COMMIT_TAG'
+      variables:
+        PIPELINE_TYPE: RELEASE_PIPELINE
+    ## Docs pipelines
+    - if: '$PIPELINE_TYPE == null && ($CI_COMMIT_BRANCH =~ /(^docs-|-docs$)/ || $CI_MERGE_REQUEST_SOURCE_BRANCH_NAME =~ /(^docs-|-docs$)/)'
+      variables:
+        PIPELINE_TYPE: DOCS_PIPELINE
+    ## MR pipelines
+    - if: '$PIPELINE_TYPE == null && $CI_PROJECT_PATH == $CANONICAL_PROJECT_PATH && $CI_PIPELINE_SOURCE == "merge_request_event"'
+      variables:
+        PIPELINE_TYPE: CANONICAL_MR_PIPELINE
+    - if: '$PIPELINE_TYPE == null && $CI_PROJECT_PATH == $SECURITY_PROJECT_PATH && $CI_PIPELINE_SOURCE == "merge_request_event"'
+      variables:
+        PIPELINE_TYPE: SECURITY_MR_PIPELINE
+    - if: '$PIPELINE_TYPE == null && $CI_PIPELINE_SOURCE == "merge_request_event"'
+      variables:
+        PIPELINE_TYPE: FORK_MR_PIPELINE
+    ## Stable branch pipelines
+    - if: '$PIPELINE_TYPE == null && $CI_PROJECT_PATH == $CANONICAL_PROJECT_PATH && $CI_COMMIT_BRANCH =~ /.*-stable/'
+      variables:
+        PIPELINE_TYPE: CANONICAL_STABLE_BRANCH_PIPELINE
+    - if: '$PIPELINE_TYPE == null && $CI_PROJECT_PATH == $SECURITY_PROJECT_PATH && $CI_COMMIT_BRANCH =~ /.*-stable/'
+      variables:
+        PIPELINE_TYPE: SECURITY_STABLE_BRANCH_PIPELINE
+    - if: '$PIPELINE_TYPE == null && $CI_PROJECT_PATH == $DEV_PROJECT_PATH && $CI_COMMIT_BRANCH =~ /.*-stable/'
+      variables:
+        PIPELINE_TYPE: BUILD_STABLE_BRANCH_PIPELINE
+    ## Default branch pipelines
+    - if: '$PIPELINE_TYPE == null && $CI_PROJECT_PATH == $CANONICAL_PROJECT_PATH && $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH'
+      variables:
+        PIPELINE_TYPE: CANONICAL_DEFAULT_BRANCH_PIPELINE
+    - if: '$PIPELINE_TYPE == null && $CI_PROJECT_PATH == $SECURITY_PROJECT_PATH && $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH'
+      variables:
+        PIPELINE_TYPE: SECURITY_DEFAULT_BRANCH_PIPELINE
+    - if: '$PIPELINE_TYPE == null && $CI_PROJECT_PATH == $DEV_PROJECT_PATH && $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH'
+      variables:
+        PIPELINE_TYPE: BUILD_DEFAULT_BRANCH_PIPELINE
+    ## Feature branch pipelines
+    - if: '$PIPELINE_TYPE == null && $CI_PROJECT_PATH == $CANONICAL_PROJECT_PATH && $CI_COMMIT_BRANCH'
+      variables:
+        PIPELINE_TYPE: CANONICAL_FEATURE_BRANCH_PIPELINE
+    - if: '$PIPELINE_TYPE == null && $CI_PROJECT_PATH == $SECURITY_PROJECT_PATH && $CI_COMMIT_BRANCH'
+      variables:
+        PIPELINE_TYPE: SECURITY_FEATURE_BRANCH_PIPELINE
+    - if: '$PIPELINE_TYPE == null && $CI_PROJECT_PATH == $DEV_PROJECT_PATH && $CI_COMMIT_BRANCH'
+      variables:
+        PIPELINE_TYPE: BUILD_FEATURE_BRANCH_PIPELINE
+    - if: '$PIPELINE_TYPE == null && $CI_COMMIT_BRANCH'
+      variables:
+        PIPELINE_TYPE: FORK_FEATURE_BRANCH_PIPELINE
+    # Support Merge Request pipelines
+    - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
+
+.rule:skip_if_no_cluster:
+  if: '$KUBECONFIG == null'
+  when: never

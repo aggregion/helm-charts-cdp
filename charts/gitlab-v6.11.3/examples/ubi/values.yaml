@@ -1,0 +1,108 @@
+# ubi/values.yaml
+
+certmanager:
+  install: false
+
+postgresql:
+  install: false
+
+redis:
+  install: false
+
+nginx-ingress:
+  controller:
+    image:
+      repository: registry.gitlab.com/gitlab-org/cloud-native/charts/gitlab-ingress-nginx/controller
+      digest: "" #empty to use the tag rather than the digest
+
+prometheus:
+  install: false
+
+gitlab-runner:
+  image:
+    # Replace 'X.Y.Z' with desired GitLab version.
+    # `skopeo` can be used to find available tags:
+    #   skopeo list-tags docker://registry.gitlab.com/gitlab-org/gitlab-runner | jq '.Tags' | grep 'ubi-fips-v'
+    tag: ubi-fips-vX.Y.Z
+
+global:
+  minio:
+    enabled: false
+
+  grafana:
+    enabled: false
+
+  image:
+    pullPolicy: Always  # You can drop this if you're using release tags.
+    tagSuffix: -ubi8
+
+  # See: https://gitlab.com/gitlab-org/charts/gitlab/blob/master/doc/installation/tls.md#option-2-use-your-own-wildcard-certificate
+  ingress:
+    configureCertmanager: false
+    tls:
+      secretName: my-wildcard-cert-secret  # Your wildcard certificate.
+
+  # See: https://gitlab.com/gitlab-org/charts/gitlab/tree/master/doc/advanced/external-db
+  psql:
+    host: postgres.local
+    password:
+      secret: my-postgres-secret  # Your PostgreSQL credentials.
+      key: secret
+    port: 5432
+    database: my-db
+    username: my-username
+
+  # See: https://gitlab.com/gitlab-org/charts/gitlab/tree/master/doc/advanced/external-redis
+  redis:
+    host: redis.local
+    password:
+      # enabled: false
+      secret: my-redis-secret  # Your PostgreSQL credentials.
+      key: secret
+    port: 6379
+
+  # See: https://gitlab.com/gitlab-org/charts/gitlab/tree/master/doc/advanced/external-object-storage
+  registry:
+    bucket: my-registry-storage  # Registry storage bucket.
+
+  appConfig:
+    lfs:
+      bucket: my-lfs-storage  # LFS storage bucket.
+      connection:
+        # See: https://gitlab.com/gitlab-org/charts/gitlab/blob/master/doc/charts/globals.md#connection
+        secret: my-objectstore-lfs-secret # LFS storage secret.
+        key: connection
+    artifacts:
+      bucket: my-artifacts-storage # Artifacts storage bucket.
+      connection:
+        secret: my-objectstore-artifacts-secret # Artifacts storage secret.
+        key: connection
+    uploads:
+      bucket: my-uploads-storage # Uploads storage bucket.
+      connection:
+        secret: my-objectstore-uploads-secret # Uploads storage secret.
+        key: connection
+    packages:
+      bucket: my-packages-storage # Package storage bucket.
+      connection:
+        secret: my-objectstore-packages-secret # Package storage secret.
+        key: connection
+    backups:
+      bucket: my-backup-storage # Backup storage bucket.
+      tmpBucket: my-tmp-storage # Temp storage bucket.
+
+gitlab:
+
+  toolbox:
+    # See: https://gitlab.com/gitlab-org/charts/gitlab/tree/master/doc/advanced/external-object-storage
+    backups:
+      objectStorage:
+        config:
+          secret: my-s3cmd-config # You config for 's3cmd'.
+          key: config
+
+# See: https://gitlab.com/gitlab-org/charts/gitlab/tree/master/doc/advanced/external-object-storage
+registry:
+  storage:
+    secret: my-objectstore-registry-secret # Registry storage secret.
+    key: config

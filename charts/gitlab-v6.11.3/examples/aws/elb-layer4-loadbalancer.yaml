@@ -1,0 +1,80 @@
+# Configure the use of AWS ELB Network Load Balancer (NLB) (Layer 4 Load Balancer)
+#
+# NOTICE: You must deploy the AWS Load Balancer Controller to use this configuration
+# See https://kubernetes-sigs.github.io/aws-load-balancer-controller/v2.4/deploy/installation/
+# for installation details
+#
+# This configuration was tested with AWS Load Balancer Controller v2.4.
+# Future versions may change functionality or configuration that could impact
+# proper operation of this example. This example has not been tested with
+# earlier versions and may not work as intended.
+#
+# Further reading:
+# - AWS Network Load Balancer
+#   https://docs.aws.amazon.com/elasticloadbalancing/latest/network/introduction.html
+# - AWS Network Load Balancing with EKS
+#   https://docs.aws.amazon.com/eks/latest/userguide/network-load-balancing.html
+# - AWS Load Balancer Controller
+#   https://kubernetes-sigs.github.io/aws-load-balancer-controller/v2.4
+# - AWS LB Controller service annotations
+#   https://kubernetes-sigs.github.io/aws-load-balancer-controller/v2.4/guide/service/annotations/
+# - AWS LB Controller NLB TLS Termination
+#   https://kubernetes-sigs.github.io/aws-load-balancer-controller/v2.4/guide/use_cases/nlb_tls_termination/
+# - GitLab SSHD
+#   https://docs.gitlab.com/ee/administration/operations/gitlab_sshd.html
+#
+global:
+  hosts:
+    domain: gitlab.example.com
+  shell:
+    # Configure GitLab Shell's NGINX TCP to expect ProxyProtcol headers
+    tcp:
+      proxyProtocol: true
+  ingress:
+    enabled: true
+    # If terminating TLS at the NLB, set global.ingress.configureCertmanager=false
+    # configureCertmanager: true
+nginx-ingress:
+  controller:
+    service:
+      annotations:
+        ## https://kubernetes-sigs.github.io/aws-load-balancer-controller/v2.4/guide/service/annotations/#lb-type
+        service.beta.kubernetes.io/aws-load-balancer-type: "external"
+        ## https://kubernetes-sigs.github.io/aws-load-balancer-controller/v2.4/guide/service/annotations/#lb-scheme
+        service.beta.kubernetes.io/aws-load-balancer-scheme: internet-facing
+        ## https://kubernetes-sigs.github.io/aws-load-balancer-controller/v2.4/guide/service/annotations/#nlb-target-type
+        service.beta.kubernetes.io/aws-load-balancer-nlb-target-type: "ip"
+        ## https://kubernetes-sigs.github.io/aws-load-balancer-controller/v2.4/guide/service/annotations/#proxy-protocol-v2
+        service.beta.kubernetes.io/aws-load-balancer-proxy-protocol: "*"
+        ## https://kubernetes-sigs.github.io/aws-load-balancer-controller/v2.4/guide/service/annotations/#target-group-attributes
+        service.beta.kubernetes.io/aws-load-balancer-target-group-attributes: "proxy_protocol_v2.enabled=true,preserve_client_ip.enabled=true"
+        ## https://kubernetes-sigs.github.io/aws-load-balancer-controller/v2.4/guide/service/annotations/#healthcheck-port
+        # This is set to port "80" for all target groups - in order to
+        # prevent "broken header" error messages for the PROXY protocol on
+        # port 22
+        service.beta.kubernetes.io/aws-load-balancer-healthcheck-port: "80"
+        ## https://kubernetes-sigs.github.io/aws-load-balancer-controller/v2.4/guide/service/annotations/#ssl-cert
+        # Uncomment and provide a valid ACM ARN if terminating TLS at the NLB and using AWS ACM
+        # service.beta.kubernetes.io/aws-load-balancer-ssl-cert: "arn:aws:acm:..."
+        ## https://kubernetes-sigs.github.io/aws-load-balancer-controller/v2.4/guide/service/annotations/#ssl-ports
+        # Uncomment if terminating TLS at the NLB
+        # service.beta.kubernetes.io/aws-load-balancer-ssl-ports: "443"
+        ## https://kubernetes-sigs.github.io/aws-load-balancer-controller/v2.4/guide/service/annotations/#backend-protocol
+        # Uncomment if terminating TLS at the NLB
+        # service.beta.kubernetes.io/aws-load-balancer-backend-protocol:  "ssl"
+    config:
+      ## https://kubernetes.github.io/ingress-nginx/user-guide/nginx-configuration/configmap/#proxy-real-ip-cidr
+      # Trusted VPC CIDR for the Load Balancer(s) - !! Review for your VPC
+      proxy-real-ip-cidr: 192.168.0.0/16
+      ## https://kubernetes.github.io/ingress-nginx/user-guide/nginx-configuration/configmap/#use-proxy-protocol
+      # Tell NGINX to Expect ProxyProtocol headers
+      use-proxy-protocol: "true"
+gitlab:
+  gitlab-shell:
+    ## https://docs.gitlab.com/ee/administration/operations/gitlab_sshd.html?tab=Helm+chart+%28Kubernetes%29#enable-gitlab-sshd
+    # gitlab-sshd supports ProxyProtocol
+    sshDaemon: gitlab-sshd
+    ## https://docs.gitlab.com/ee/administration/operations/gitlab_sshd.html?tab=Helm+chart+%28Kubernetes%29#proxy-protocol-support
+    config:
+      proxyProtocol: true
+      proxyPolicy: "use"

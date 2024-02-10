@@ -1,0 +1,57 @@
+.internal-ca: &internal-ca gitlab-internal-tls-ca
+.internal-tls: &internal-tls gitlab-internal-tls
+
+global:
+  certificates:
+    customCAs:
+    - secret: *internal-ca
+  workhorse:
+    tls:
+      enabled: true
+  hosts:
+    registry:
+      protocol: https
+  gitaly:
+    tls:
+      enabled: true
+      secretName: *internal-tls
+gitlab:
+  webservice:
+    tls:
+      enabled: true
+      secretName: *internal-tls
+    metrics:
+      tls:
+        enabled: true
+        secretName: *internal-tls
+    workhorse:
+      tls:
+        secretName: *internal-tls
+        verify: true
+        caSecretName: *internal-ca
+      monitoring:
+        ## by default, the Workhorse metrics are not enabled.
+        exporter:
+          enabled: true
+          tls:
+            enabled: true
+  gitlab-exporter:
+    tls:
+      enabled: true
+      secretName: *internal-tls
+  sidekiq:
+    metrics:
+      tls:
+        enabled: true
+        secretName: *internal-tls
+  gitlab-pages:
+    metrics:
+      tls:
+        enabled: true
+        secretName: *internal-tls
+
+registry:
+  tls:
+    enabled: true
+    secretName: *internal-tls
+    caSecretName: *internal-ca

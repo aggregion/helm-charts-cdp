@@ -1,0 +1,272 @@
+#!/bin/bash
+# This script will
+# 1. create an EKS cluster
+# 2. add a context to $HOME/.kube/config
+
+set -e
+
+# MacOS does not support readlink, but it does have perl
+KERNEL_NAME=$(uname -s)
+if [ "${KERNEL_NAME}" = "Darwin" ]; then
+  SCRIPT_PATH=$(perl -e 'use Cwd "abs_path";use File::Basename;print dirname(abs_path(shift))' "$0")
+else
+  SCRIPT_PATH=$(dirname "$(readlink -f "$0")")
+fi
+
+source "${SCRIPT_PATH}/common.sh"
+
+# Set default values
+# Documentation: doc/installation/cloud/eks.md
+cluster_name=${CLUSTER_NAME-gitlab-cluster}
+nodes=${NUM_NODES-2}
+kubernetes_version=${CLUSTER_VERSION-1.21}
+ebs_csi_required_min_version="1.23"
+ebs_csi_role_name="AmazonEKS_EBS_CSI_DriverRole"
+region="${REGION-us-east-2}"
+node_type="${MACHINE_TYPE-m5.xlarge}"
+kubeconfig="${KUBECONFIG:-$HOME/.kube/config}"
+iam_role=
+auto_kubeconfig=0
+eksctl_min_version="0.24.0"
+
+function print_help(){
+  cat <<EOF
+Usage: ${0} ARGS (up|down|list|creds|add_ebs_csi_driver)
+-c NAME - Name of the cluster to use. Defaults to gitlab-cluster
+-n NODES - number of nodes to use. Defaults to 2
+-k VERSION - Kubernetes version to use. Defaults to 1.21
+-r REGION - Region to install the cluster in. Defaults to us-east-2
+-m TYPE - Type of nodes to use. Default m5.xlarge
+
+Arguments available when using the creds subcommand
+-K KUBECONFIG - Use an alternative file, supercedes $KUBECONFIG var
+-R IAM_ROLE - AWS IAM role to assume for authenticator
+-A - save kubeconfig file by cluster name, e.g. $HOME/.kube/eksctl/clusters/<name>
+
+up - create a cluster
+down - delete a cluster
+list - display information about running clusters
+creds - download credentials and install into kubeconfig file
+add_ebs_csi_driver - install AWS EBS CSI Driver add-on
+EOF
+}
+
+function do_up(){
+  local cluster_name="${1}"
+  local nodes="${2}"
+  local kubernetes_version="${3}"
+  local region="${4}"
+  local node_type="${5}"
+
+  eksctl create cluster --name="${cluster_name}" --nodes="${nodes}" --version="${kubernetes_version}" --region="${region}" --node-type="${node_type}"
+  warn_needs_ebs_csi_driver "${cluster_name}"
+}
+
+
+function warn_needs_ebs_csi_driver(){
+  local cluster_name="${1}"
+
+  if [ $(semver_compare "$kubernetes_version" "$ebs_csi_required_min_version") -ne -1 ]; then
+    ebs_csi_version=$(has_ebs_csi_installed "${cluster_name}")
+    if [ "${ebs_csi_version}" == "(NULL)" ]; then
+      echo "EKS Clusters >= ${ebs_csi_required_min_version} need the AWS EBS CSI Driver installed."
+      echo "Please see: https://docs.aws.amazon.com/eks/latest/userguide/ebs-csi.html"
+      echo "Use this script with the add_ebs_csi_driver command to install the driver."
+    fi
+  fi
+}
+
+
+function has_ebs_csi_installed(){
+  local cluster_name="${1}"
+  set +e
+  ebs_csi_version=$(aws eks describe-addon --cluster-name "${cluster_name}" --addon-name aws-ebs-csi-driver --query "addon.addonVersion" --output text 2> /dev/null)
+  status=$?
+  set -e
+  if [ $status -eq 0 ]; then
+    echo "${ebs_csi_version}"
+  elif [ $status -ne 254 ]; then
+    echo "An error occurred while running:"
+    echo "aws eks describe-addon --cluster-name ${cluster_name} --addon-name aws-ebs-csi-driver --query 'addon.addonVersion' --output text"
+    echo "Return code: ${status}"
+    exit $status
+  else
+    echo "(NULL)"
+  fi
+}
+
+function has_ebs_csi_role(){
+  set +e
+  get_role_details=$(aws iam get-role --role-name=${ebs_csi_role_name} 2> /dev/null)
+  status=$?
+  set -e
+  if [ $status -eq 0 ]; then
+    echo "${get_role_details}"
+  elif [ $status -ne 254 ]; then
+    echo "An error occurred while running aws iam get-role --role-name=${ebs_csi_role_name}."
+    echo "Return code: ${status}"
+    exit $status
+  else
+    echo "(NULL)"
+  fi
+}
+
+function aws_caller_account_id(){
+  aws sts get-caller-identity --output text --query Account;
+}
+
+function associate_iam_oidc_provider(){
+  local cluster_name="${1}"
+  local region="${2}"
+
+  echo "Associating IAM OIDC Provider"
+  # doesn't error if already exists, but will show a message
+  eksctl utils associate-iam-oidc-provider --region="${region}" --cluster="${cluster_name}" --approve
+}
+
+
+function do_ebs_csi_driver() {
+  local cluster_name="${1}"
+  local region="${2}"
+  local kubernetes_version="${3}"
+
+  account_id=$(aws_caller_account_id)
+  role_arn="arn:aws:iam::${account_id}:role/${ebs_csi_role_name}"
+
+  ebs_csi_version=$(has_ebs_csi_installed "${cluster_name}")
+  if [ "${ebs_csi_version}" != "(NULL)" ]; then
+    echo "EBS CSI Driver is already installed. Version: ${ebs_csi_version}"
+    exit 1
+  fi
+
+  # this really only fails if there's been a previous failed install
+  ebs_csi_role_details=$(has_ebs_csi_role)
+  if [ "${ebs_csi_role_details}" != "(NULL)" ]; then
+    echo "EBS CSI Driver role already present. Details:"
+    echo "${ebs_csi_role_details}"
+    exit 1
+  fi
+
+  associate_iam_oidc_provider "${cluster_name}" "${region}"
+
+  echo "Creating ebs-csi-controller-sa IAM service account"
+  eksctl create iamserviceaccount --name ebs-csi-controller-sa \
+                                  --namespace kube-system \
+                                  --cluster "${cluster_name}" \
+                                  --attach-policy-arn arn:aws:iam::aws:policy/service-role/AmazonEBSCSIDriverPolicy \
+                                  --approve \
+                                  --role-only \
+                                  --role-name "${ebs_csi_role_name}"
+
+  echo "Installing the aws-ebs-csi-driver add on"
+  eksctl create addon --name aws-ebs-csi-driver --cluster "${cluster_name}" \
+                      --service-account-role-arn "${role_arn}" --force
+
+}
+
+function do_down(){
+  local cluster_name="${1}"
+  local region="${2}"
+
+  eksctl delete cluster --wait --region "${region}" --name ${cluster_name}
+}
+
+function do_list(){
+  local cluster_name="${1}"
+  local region="${2}"
+
+  eksctl get cluster -r "${region}" "${cluster_name}"
+}
+
+function do_creds() {
+  local cluster_name="${1}"
+  local region="${2}"
+  local kubeconfig="${3}"
+  local auto_kubeconfig="${4}"
+  local iam_role="${5}"
+
+  local options=()
+  if [[ -n "${kubeconfig}" ]]; then
+    options+=(--kubeconfig ${kubeconfig})
+  fi
+  if [[ -n "${iam_role}" ]]; then
+    options+=(--authenticator-role-arn ${iam_role})
+  fi
+  if [[ "$auto_kubeconfig" == 1 ]]; then
+    options+=(--auto-kubeconfig)
+  fi
+
+  eksctl utils write-kubeconfig -r "${region}" -c "${cluster_name}" ${options[*]}
+}
+
+while getopts c:n:k:r:m:s:K:R:A opt
+do
+  case "${opt}" in
+    c)
+      cluster_name="${OPTARG}"
+      ;;
+    n)
+      nodes="${OPTARG}"
+      ;;
+    k)
+      kubernetes_version="${OPTARG}"
+      ;;
+    m)
+      node_type="${OPTARG}"
+      ;;
+    r)
+      region="${OPTARG}"
+      ;;
+    K)
+      kubeconfig="${OPTARG}"
+      ;;
+    R)
+      iam_role="${OPTARG}"
+      ;;
+    A)
+      auto_kubeconfig=1
+      ;;
+    [?])
+      print_help
+      exit 1
+      ;;
+  esac
+done
+shift $((OPTIND -1))
+
+# validate that all the tools are installed and eksctl meets min version
+validate_tools eksctl kubectl helm
+eksctl_version=$(eksctl version)
+if [ $(semver_compare "$eksctl_version" "$eksctl_min_version") -eq -1 ]; then
+  echo "eksctl version needs to be at least $eksctl_min_version"
+  echo "Your version is $eksctl_version, please upgrade your version of eksctl"
+  exit 1
+fi
+
+# Ensure we can connect to aws
+if ! eksctl get cluster -v 0 > /dev/null
+then
+  >&2 echo "Cannot connect to AWS. Ensure credentials are configured"
+  exit 1
+fi
+
+case ${1} in
+  up)
+    do_up "${cluster_name}" "${nodes}" "${kubernetes_version}" "${region}" "${node_type}"
+    ;;
+  down)
+    do_down "${cluster_name}" "${region}"
+    ;;
+  list)
+    do_list "${2}" "${region}"
+    ;;
+  creds)
+    do_creds "${cluster_name}" "${region}" "${kubeconfig}" "${auto_kubeconfig}" "${iam_role}"
+    ;;
+  add_ebs_csi_driver)
+    do_ebs_csi_driver "${cluster_name}" "${region}" "${kubernetes_version}"
+    ;;
+  *)
+    print_help
+    exit 1
+esac
