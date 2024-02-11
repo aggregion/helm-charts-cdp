@@ -96,7 +96,7 @@ backend:
     datalabNamespace: datalab
     datalabOverwriteDomain: $BASE_FRONT_DOMAIN
     datalabPassword: admin
-    datalabPlatformId: platform
+    datalabPlatformId: "$CDP_DATALAB_PLATFORM_ID"
     datalabWebhookUrl: http://aggregion-cdp-backend$CDP_SUFFIX.$CDP_NS.svc.$CLUSTER_DOMAIN:8080/webhooks
     dmpSecret: "$BACKEND_CONFIGS_DMP_SECRET" # GENERATED
     enclaveEndpoint: http://aggregion-cdp-enclave$CDP_SUFFIX.$CDP_NS.svc.$CLUSTER_DOMAIN:8010
