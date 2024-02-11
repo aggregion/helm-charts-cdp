@@ -93,7 +93,7 @@ backend:
     datalabCpuLimit: "8"
     datalabDmpNamespace: $CDP_NS
     datalabMemoryLimitGb: "64"
-    datalabNamespace: datalab
+    datalabNamespace: $CDP_DATALAB_NAMESPACE
     datalabOverwriteDomain: app.$BASE_FRONT_DOMAIN
     datalabPassword: admin
     datalabPlatformId: "$CDP_DATALAB_PLATFORM_ID"
