@@ -407,8 +407,6 @@ dc:
                   {{toYaml datalabTolerations 8 }}
               {{/if}}
 
-
-
     datalab.netpolicy.yaml: |
         ---
         kind: NetworkPolicy
@@ -627,8 +625,6 @@ dc:
           .dockerconfigjson: "{{#if datalabImagePullSecretInBase64}}{{{ datalabImagePullSecretInBase64 }}}{{else}}ewoJImF1dGhzIjogewoJfSwKCSJIdHRwSGVhZGVycyI6IHsKCQkiVXNlci1BZ2VudCI6ICJEb2NrZXItQ2xpZW50LzE5LjAzLjEzIChsaW51eCkiCgl9Cn0={{/if}}"
         type: kubernetes.io/dockerconfigjson
 
-
-
 preInstallHook:
   enabled: false
   keepJob: false
@@ -638,7 +634,6 @@ preInstallHook:
         repository: registry.aggregion.com/postgres
         pullPolicy: IfNotPresent
         tag: "13"
-
 
 postInstallHook:
   enabled: false
