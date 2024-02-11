@@ -92,7 +92,7 @@ backend:
     datalabAuthUrl: http://aggregion-cdp-backend$CDP_SUFFIX.$CDP_NS.svc.$CLUSTER_DOMAIN:8080/auth/datalab/vm/check-request
     datalabCpuLimit: "8"
     datalabDmpNamespace: $CDP_NS
-    datalabMemoryLimitGb: "64"
+    datalabMemoryLimitGb: "$CDP_DATALAB_MEMORY_LIMIT_GB"
     datalabNamespace: $CDP_DATALAB_NAMESPACE
     datalabOverwriteDomain: app.$BASE_FRONT_DOMAIN
     datalabPassword: admin
