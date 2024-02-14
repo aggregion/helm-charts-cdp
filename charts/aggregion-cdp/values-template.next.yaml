@@ -110,8 +110,8 @@ backend:
       getUserRolesFromHeaders: false
       userRolesManagment: true
     gitlab:
-      host: http://gitlab-webservice-default.gitlab.svc.cluster.local:8181 # CHANGEIT
-      personalAccessToken: CHANGEIT # CHANGEIT
+      host: $GITLAB_SVC_URL
+      personalAccessToken: "$GITLAB_TOKEN"
     graphQLPlayground:
       enabled: true
     jwtSecret: "$BACKEND_CONFIGS_JWT_SECRET" # GENERATED
