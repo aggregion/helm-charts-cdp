@@ -40,7 +40,7 @@ spec:
         datalab/component: "datalab"
         name: "dl-{{ ns }}"
     spec:
-      {{#if hostAliases}}
+      {{#if datalabHostAliases}}
         hostAliases:
           {{ toYaml hostAliases 10 }}
       {{/if}}
