@@ -48,6 +48,12 @@ datalabNodeSelector - K8S deployment node selector. no defaults.
 datalabAffinity - K8S deployment affinity. no defaults.
 datalabTolerations - K8S deployment Tolerations. no defaults.
 
+datalabHostAliases - Pod.hostAliases. no defaults. Example: ->
+### INGRESS_IP=$(kubectl -n kube-system get svc traefik -oyaml | yq .spec.clusterIP)
+### DATALAB_HOST_ALIASES="[{\"hostnames\":[\"gitlab.gitlab.local\"],\"ip\":\"$INGRESS_IP\"}]"
+### --set-json dc.configs.paramsDefaults.datalabHostAliases="$DATALAB_HOST_ALIASES"
+
+
 ## Values will set up externally by DMP (placed for info only).
 
 datalabDmpNamespace - Reverse link to the namespace where datalab will communicate with dmp. no defaults.
