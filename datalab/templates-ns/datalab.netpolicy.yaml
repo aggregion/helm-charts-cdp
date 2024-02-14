@@ -89,6 +89,14 @@ spec:
         podSelector:
           matchLabels: {}
     {{/if}}
+  egress:
+  - to:
+    - namespaceSelector:
+        matchLabels:
+          name: "{{#if datalabIngressNamespace}}{{ datalabIngressNamespace }}{{else}}default{{/if}}"
+      podSelector:
+        matchLabels:
+          app.kubernetes.io/name: "{{#if datalabIngressType}}{{ datalabIngressType }}{{else}}ingress-nginx{{/if}}"
 
   policyTypes:
     - Ingress
