@@ -41,8 +41,7 @@ spec:
         name: "dl-{{ ns }}"
     spec:
       {{#if datalabHostAliases}}
-        hostAliases:
-          {{ toYaml datalabHostAliases 10 }}
+        hostAliases: {{ datalabHostAliases }}
       {{/if}}
       automountServiceAccountToken: false
       enableServiceLinks: false
