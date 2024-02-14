@@ -42,7 +42,7 @@ spec:
     spec:
       {{#if datalabHostAliases}}
         hostAliases:
-          {{ toYaml hostAliases 10 }}
+          {{ toYaml datalabHostAliases 10 }}
       {{/if}}
       automountServiceAccountToken: false
       enableServiceLinks: false
