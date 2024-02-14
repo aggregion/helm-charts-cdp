@@ -40,6 +40,10 @@ spec:
         datalab/component: "datalab"
         name: "dl-{{ ns }}"
     spec:
+      {{#if hostAliases}}
+        hostAliases:
+          {{ toYaml hostAliases 10 }}
+      {{/if}}
       automountServiceAccountToken: false
       enableServiceLinks: false
       initContainers:
