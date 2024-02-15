@@ -75,8 +75,8 @@ backend:
     livenessEnabled: true
     readinessEnabled: true
   cleanroomStatusWatcher:
-    livenessEnabled: true
-    readinessEnabled: true
+    livenessEnabled: false
+    readinessEnabled: false
   configs:
     accountName: "$ACCOUNT_ID"
     baseUrl: $BASE_FRONT_URL_SCHEMA://app.$BASE_FRONT_DOMAIN
@@ -148,7 +148,7 @@ backend:
     serviceMatchingStatusResponseWatcherEnabled: true
     serviceMatchingStatusWatcherEnabled: true
     servicePanelSegmentUploaderEnabled: false
-    servicePipelineDebugCleanroomStatusWatcherEnabled: true
+    servicePipelineDebugCleanroomStatusWatcherEnabled: false
     servicePipelineDebugHasherStatusWatcherEnabled: false
     serviceSegmentsEnabled: true
     systemSettings:
