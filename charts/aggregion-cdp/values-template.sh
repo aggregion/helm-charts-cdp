@@ -34,7 +34,7 @@ export GATEKEEPER_DCP_CLIENT_SECRET="${GATEKEEPER_DCP_CLIENT_SECRET:-changeit}"
 export CDP_DATALAB_PLATFORM_ID="${CDP_DATALAB_PLATFORM_ID:-selectel}"
 export CDP_DATALAB_NAMESPACE="${CDP_DATALAB_NAMESPACE:-datalab}"
 export CDP_DATALAB_MEMORY_LIMIT_GB="${CDP_DATALAB_MEMORY_LIMIT_GB:-8}"
-export GITLAB_SVC_URL="${GITLAB_SVC_URL:-http://gitlab-webservice-default.gitlab.svc.cluster.local:8181 # CHANGEIT}"
+export GITLAB_SVC_URL="${GITLAB_SVC_URL:-http://gitlab-webservice-default.gitlab.svc.cluster.local:8181#CHANGEIT}"
 export GITLAB_TOKEN="${GITLAB_TOKEN:-CHANGEIT}"
 
 export IMAGE_CDP_GK_IMAGE_TAG="${IMAGE_CDP_GK_IMAGE_TAG:-1.4.2}"
