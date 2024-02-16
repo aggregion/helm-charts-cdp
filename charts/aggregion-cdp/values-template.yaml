@@ -21,7 +21,7 @@ blockchainCommon:
 audienceDatasetConsumer:
   enabled: false
   image:
-    repository: registry.aggregion.com/audience-dataset-consumer
+    repository: "$IMAGE_CDP_AUDIENCEDATASETCONSUMER_IMAGE_REPO"
     pullPolicy: IfNotPresent
     tag: "$IMAGE_CDP_AUDIENCEDATASETCONSUMER_IMAGE_TAG"
   config:
@@ -34,7 +34,7 @@ audienceDatasetConsumer:
 authservice:
   enabled: true
   image:
-    repository: registry.aggregion.com/auth-service
+    repository: "$IMAGE_CDP_AUTHSERVICE_IMAGE_REPO"
     pullPolicy: IfNotPresent
     tag: "$IMAGE_CDP_AUTHSERVICE_IMAGE_TAG"
   config:
@@ -43,17 +43,17 @@ authservice:
     mongoDbUri: mongodb://aggregion-externals-mongo$MONGO_SVC_SUFFIX.$CDP_NS.svc.$CLUSTER_DOMAIN:27017/auth-service
 backend:
   image:
-    repository: registry.aggregion.com/dmp-backend
+    repository: "$IMAGE_CDP_BACK_IMAGE_REPO"
     pullPolicy: IfNotPresent
     tag: "$IMAGE_CDP_BACK_IMAGE_TAG"
   crond:
     image:
-      repository: "registry.aggregion.com/cron-curl"
+      repository: "$IMAGE_CDP_BACK_CROND_IMAGE_REPO"
       tag: "$IMAGE_CDP_BACK_CROND_IMAGE_TAG"
       pullPolicy: IfNotPresent
   dbseed:
     image:
-      repository: registry.aggregion.com/dmp-seed
+      repository: "$IMAGE_CDP_BACK_DBSEED_IMAGE_REPO"
       tag: "$IMAGE_CDP_BACK_DBSEED_IMAGE_TAG"
       pullPolicy: IfNotPresent
   api:
@@ -186,7 +186,7 @@ backend:
     replicaCount: 1
     resolverServiceDomain: "$BACKEND_DATALABPROXY_RESOLVERSERVICEDOMAIN"
     image:
-      repository: nginx
+      repository: "$IMAGE_CDP_BACK_DATALABPROXY_IMAGE_REPO"
       tag: "$IMAGE_CDP_BACK_DATALABPROXY_IMAGE_TAG"
       pullPolicy: IfNotPresent
   datasetUploader:
@@ -202,7 +202,7 @@ backend:
 cleos:
   enabled: false
   image:
-    repository: registry.aggregion.com/cleos
+    repository: "$IMAGE_CDP_CLEOS_IMAGE_REPO"
     pullPolicy: IfNotPresent
     tag: "$IMAGE_CDP_CLEOS_IMAGE_TAG"
 dataservice:
@@ -282,7 +282,7 @@ dataservice:
 dbMetadataSync:
   enabled: false
   image:
-    repository: registry.aggregion.com/db-metadata-sync
+    repository: "$IMAGE_CDP_DBMETADATASYNC_IMAGE_REPO"
     pullPolicy: IfNotPresent
     tag: "$IMAGE_CDP_DBMETADATASYNC_IMAGE_TAG"
   config:
@@ -290,14 +290,14 @@ dbMetadataSync:
 dbMetadataSyncConsumer:
   enabled: false
   image:
-    repository: registry.aggregion.com/db-metadata-sync-consumer
+    repository: "$IMAGE_CDP_DBMETADATASYNCCONSUMER_IMAGE_REPO"
     pullPolicy: IfNotPresent
     tag: "$IMAGE_CDP_DBMETADATASYNCCONSUMER_IMAGE_TAG"
 
 emailservice:
   enabled: true
   image:
-    repository: registry.aggregion.com/email-service
+    repository: "$IMAGE_CDP_EMAILSERVICE_IMAGE_REPO"
     pullPolicy: IfNotPresent
     tag: "$IMAGE_CDP_EMAILSERVICE_IMAGE_TAG"
   probes:
@@ -318,7 +318,7 @@ enclave:
   enabled: true
   imageServices:
     pullPolicy: IfNotPresent
-    repository: registry.aggregion.com/enclave-external-services
+    repository: "$IMAGE_CDP_ENCLAVE_SERVICE_REPO"
     tag: latest
   ingress:
     annotations: {}
@@ -351,7 +351,7 @@ enclave:
   scone:
     enabled: false
     lasImage:
-      repository: "registry.aggregion.com/sconecuratedimages/aggregion"
+      repository: "$IMAGE_CDP_ENCLAVE_SCONE_LAS_IMAGE_REPO"
       pullPolicy: "IfNotPresent"
       tag: "$IMAGE_CDP_ENCLAVE_SCONE_LAS_IMAGE_TAG"
   securityContext: {}
@@ -359,7 +359,7 @@ enclave:
 frontend:
   enabled: true
   image:
-    repository: registry.aggregion.com/dmp-frontend
+    repository: "$IMAGE_CDP_FRONT_IMAGE_REPO"
     pullPolicy: IfNotPresent
     tag: "$IMAGE_CDP_FRONT_IMAGE_TAG"
   ingress:
@@ -391,7 +391,7 @@ gatekeeper:
     verbose: true
   enabled: true
   image:
-    repository: registry.aggregion.com/gatekeeper
+    repository: "$IMAGE_CDP_GK_IMAGE_REPO"
     tag: "$IMAGE_CDP_GK_IMAGE_TAG"
 imagePullSecrets:
 - name: aggregionregistry # CHANGEIT
@@ -402,7 +402,7 @@ metadataParams:
 metadataSeed:
   enabled: true
   image:
-    repository: registry.aggregion.com/metadata-seed
+    repository: "$IMAGE_CDP_METADATASEED_IMAGE_REPO"
     tag: "$IMAGE_CDP_METADATASEED_IMAGE_TAG"
     pullPolicy: IfNotPresent
   config:
@@ -411,7 +411,7 @@ metadataSeed:
 metadataService:
   enabled: false
   image:
-    repository: registry.aggregion.com/metadata-service
+    repository: "$IMAGE_CDP_METADATASERVICE_IMAGE_REPO"
     pullPolicy: IfNotPresent
     tag: "$IMAGE_CDP_METADATASERVICE_IMAGE_TAG"
 metrics:
@@ -421,7 +421,7 @@ metrics:
     enabled: false
 oidcprovider:
   image:
-    repository: registry.aggregion.com/oidc-provider
+    repository: "$IMAGE_CDP_OIDCPROVIDER_IMAGE_REPO"
     pullPolicy: IfNotPresent
     tag: "$IMAGE_CDP_OIDCPROVIDER_IMAGE_TAG"
   config:
@@ -448,7 +448,7 @@ oidcprovider:
 ddmEventConsumer:
   enabled: true
   image:
-    repository: registry.aggregion.com/ddm-event-consumer
+    repository: "$IMAGE_CDP_DDMEVENTCONSUMER_IMAGE_REPO"
     pullPolicy: IfNotPresent
     tag: "$IMAGE_CDP_DDMEVENTCONSUMER_IMAGE_TAG"
   probes:
