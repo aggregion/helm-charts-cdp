@@ -199,6 +199,10 @@ dc:
             spec:
               automountServiceAccountToken: false
               enableServiceLinks: false
+              {{#if datalabHostAliases}}
+              hostAliases:
+        {{ toYaml datalabHostAliases 8 }}
+              {{/if}}
               initContainers:
                 - name: "init-datalab-server"
                   image: "{{#if datalabImage}}{{ datalabImage }}{{else}}registry.aggregion.com/datalab:latest{{/if}}"
