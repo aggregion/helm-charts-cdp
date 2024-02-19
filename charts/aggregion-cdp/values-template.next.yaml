@@ -334,10 +334,14 @@ enclave:
     tmpHostPath: /tmp
     workerHeapSizeMb: 64000
   enabled: true
+  imageServer:
+    repository: "$IMAGE_CDP_ENCLAVE_SERVER_REPO"
+    pullPolicy: IfNotPresent
+    tag: "$IMAGE_CDP_ENCLAVE_SERVER_TAG"
   imageServices:
     pullPolicy: IfNotPresent
     repository: "$IMAGE_CDP_ENCLAVE_SERVICE_REPO"
-    tag: latest
+    tag: "$IMAGE_CDP_ENCLAVE_SERVICE_TAG"
   ingress:
     annotations: {}
     enabled: true
