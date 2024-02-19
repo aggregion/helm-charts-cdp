@@ -41,6 +41,11 @@ authservice:
     jwtSecretKey: "$AUTH_SERVICE_JWT_SECRET_KEY" # GENERATED
     logLevel: info
     mongoDbUri: mongodb://aggregion-externals-mongo$MONGO_SVC_SUFFIX.$CDP_NS.svc.$CLUSTER_DOMAIN:27017/auth-service
+common:
+  curl:
+    repository: "$IMAGE_CDP_COMMON_CURL_REPO"
+    pullPolicy: IfNotPresent
+    tag: "$IMAGE_CDP_COMMON_CURL_TAG"
 backend:
   image:
     repository: "$IMAGE_CDP_BACK_IMAGE_REPO"
@@ -259,8 +264,8 @@ dataservice:
     enabled: true
   imageJobRunner:
     pullPolicy: IfNotPresent
-    repository: curlimages/curl
-    tag: latest
+    repository: "$IMAGE_CDP_DATASERVICE_JOB_RUNNER_REPO"
+    tag: "$IMAGE_CDP_DATASERVICE_JOB_RUNNER_TAG"
   probes:
     api:
       livenessEnabled: true
