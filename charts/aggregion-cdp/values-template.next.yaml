@@ -206,6 +206,10 @@ cleos:
     pullPolicy: IfNotPresent
     tag: "$IMAGE_CDP_CLEOS_IMAGE_TAG"
 dataservice:
+  imageApi:
+    repository: "$IMAGE_CDP_DATASERVICE_API_REPO"
+    pullPolicy: IfNotPresent
+    tag: "$IMAGE_CDP_DATASERVICE_API_TAG"
   config:
     accessToken: NEED_GENERATING
     appName: dataservice-api
