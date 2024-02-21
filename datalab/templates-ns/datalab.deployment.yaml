@@ -54,16 +54,16 @@ spec:
           command: ["sh", "-ex", "-c"]
           args: # TODO: refactor extra operations
             - >
-              [ -z "$(ls /dest/bin)" ] && cp -rp /bin /dest ;
-              [ -z "$(ls /dest/sbin)" ] && cp -rp /sbin /dest ;
-              [ -z "$(ls /dest/etc)" ] && cp -rp /etc /dest ;
-              [ -z "$(ls /dest/home)" ] && cp -rp /home /dest ;
-              [ -z "$(ls /dest/lib)" ] && cp -rp /lib /dest ;
-              [ -z "$(ls /dest/lib64)" ] && cp -rp /lib64 /dest ;
-              [ -z "$(ls /dest/opt)" ] && cp -rp /opt /dest ;
-              [ -z "$(ls /dest/root)" ] && cp -rp /root /dest ;
-              [ -z "$(ls /dest/usr)" ] && cp -rp /usr /dest ;
-              [ -z "$(ls /dest/var)" ] && cp -rp /var /dest ;
+              [ -z "$(ls /dest/bin)" ] && cp -rp /bin/ /dest/ ;
+              [ -z "$(ls /dest/sbin)" ] && cp -rp /sbin/ /dest/ ;
+              [ -z "$(ls /dest/etc)" ] && cp -rp /etc/ /dest/ ;
+              [ -z "$(ls /dest/home)" ] && cp -rp /home/ /dest/ ;
+              [ -z "$(ls /dest/lib)" ] && cp -rp /lib/ /dest/ ;
+              [ -z "$(ls /dest/lib64)" ] && cp -rp /lib64/ /dest/ ;
+              [ -z "$(ls /dest/opt)" ] && cp -rp /opt/ /dest/ ;
+              [ -z "$(ls /dest/root)" ] && cp -rp /root/ /dest/ ;
+              [ -z "$(ls /dest/usr)" ] && cp -rp /usr/ /dest/ ;
+              [ -z "$(ls /dest/var)" ] && cp -rp /var/ /dest/ ;
               true
           volumeMounts: # TODO: refactor extra volumes
             - mountPath: /dest/bin
