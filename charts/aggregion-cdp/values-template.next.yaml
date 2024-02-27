@@ -295,6 +295,9 @@ dbMetadataSync:
     repository: "$IMAGE_CDP_DBMETADATASYNC_IMAGE_REPO"
     pullPolicy: IfNotPresent
     tag: "$IMAGE_CDP_DBMETADATASYNC_IMAGE_TAG"
+  cronjob:
+    enabled: true
+    schedule: "0 * * * *"
   config:
     instances:
     - connectionOptions:
