@@ -22,6 +22,7 @@ clickhouse:
   service:
     type: ClusterIP
     port: 8123
+  envs: []
   listenPort: 8123
   securityContext: {}
   podAnnotations: {}

@@ -38,6 +38,10 @@ spec:
             - name: service
               containerPort: {{ .Values.clickhouse.listenPort }}
               protocol: TCP
+          {{- with .Values.clickhouse.envs }}
+          env:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
           # livenessProbe:
           #   httpGet:
           #     path: /
