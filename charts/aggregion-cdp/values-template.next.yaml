@@ -499,7 +499,7 @@ oidcprovider:
     livenessEnabled: true
     readinessEnabled: true
 ddmEventConsumer:
-  enabled: false
+  enabled: true
   image:
     repository: "$IMAGE_CDP_DDMEVENTCONSUMER_IMAGE_REPO"
     pullPolicy: IfNotPresent
