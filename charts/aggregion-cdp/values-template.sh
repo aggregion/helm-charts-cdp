@@ -37,7 +37,7 @@ export CDP_DATALAB_MEMORY_LIMIT_GB="${CDP_DATALAB_MEMORY_LIMIT_GB:-8}"
 export GITLAB_SVC_URL="${GITLAB_SVC_URL:-http://gitlab-webservice-default.gitlab.svc.cluster.local:8181#CHANGEIT}"
 export GITLAB_TOKEN="${GITLAB_TOKEN:-CHANGEIT}"
 export DDM_RELEASE_NAME=${DDM_RELEASE_NAME:-ddm}
-export DDM_POSTFIX=${DDM_POSTFIX:-prod}
+export DDM_POSTFIX=${DDM_POSTFIX--prod}
 
 export IMAGE_CDP_GK_IMAGE_REPO="${IMAGE_CDP_GK_IMAGE_REPO:-registry.aggregion.com/gatekeeper}"
 export IMAGE_CDP_GK_IMAGE_TAG="${IMAGE_CDP_GK_IMAGE_TAG:-1.4.2}"
