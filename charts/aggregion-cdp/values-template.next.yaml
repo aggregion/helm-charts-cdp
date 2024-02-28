@@ -181,7 +181,7 @@ backend:
         enabled: false
     webhookTokenExpirationTime: 3600000
     ddm:
-      address: $DDM_RELEASE_NAME\manager$DDM_POSTFIX.$CDP_NS.svc.$CLUSTER_DOMAIN:80
+      address: $DDM_RELEASE_NAME-manager$DDM_POSTFIX.$CDP_NS.svc.$CLUSTER_DOMAIN:80
       s3:
         endpoint: "http://minio-common.minio.svc.$CLUSTER_DOMAIN:9000" # CHANGEIT
         accessKey: "CHANGEIT"
