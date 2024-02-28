@@ -183,10 +183,10 @@ backend:
     ddm:
       address: $DDM_RELEASE_NAME-manager$DDM_POSTFIX.$CDP_NS.svc.$CLUSTER_DOMAIN:80
       s3:
-        endpoint: "http://minio-common.minio.svc.$CLUSTER_DOMAIN:9000" # CHANGEIT
-        accessKey: "CHANGEIT"
-        secretKey: "CHANGEIT"
-        bucket: "CHANGEIT"
+        endpoint: "http://$MINIO_RELEASE_NAME.$MINIO_NS.svc.$CLUSTER_DOMAIN:9000"
+        accessKey: "$DDM_MINIO_ACCESS_KEY"
+        secretKey: "$DDM_MINIO_SECRET_KEY"
+        bucket: "$DDM_MINIO_BUCKET"
   datalabProxy:
     replicaCount: 1
     resolverServiceDomain: "$BACKEND_DATALABPROXY_RESOLVERSERVICEDOMAIN"
