@@ -14,7 +14,7 @@ metadata:
     {{- include "cdp.enclave.labels" . | nindent 4 }}
 data:
   {{- if not (.Values.enclave.scone.enabled) }}
-  PROVIDE_NAME: "{{ .Values.backend.configs.providerInstanceId }}"
+  PROVIDE_NAME: "{{ .Values.backend.configs.providerInstanceId }}" # PROVIDE(R)_NAME: it's not a mistake
   PROVIDER_SECRET: "{{ .Values.enclave.configs.providerSecret }}"
   SHARED_SECRET: "{{ .Values.enclave.configs.sharedSecret }}"
   {{- end }}
