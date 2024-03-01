@@ -52,6 +52,9 @@ spec:
             - name: p2p
               containerPort: 9011
               protocol: TCP
+              {{- if .Values.hostPort }}
+              hostPort: {{ .Values.hostPort }}
+              {{- end }}
           # livenessProbe:
           #   httpGet:
           #     path: /
