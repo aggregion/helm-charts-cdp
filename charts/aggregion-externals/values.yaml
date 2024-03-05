@@ -21,9 +21,11 @@ clickhouse:
     tag: "20.8.18.32"
   service:
     type: ClusterIP
-    port: 8123
+    http:
+      port: 8123
+    native:
+      port: 9000
   envs: []
-  listenPort: 8123
   securityContext: {}
   podAnnotations: {}
   podSecurityContext: {}

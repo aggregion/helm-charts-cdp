@@ -9,10 +9,14 @@ metadata:
 spec:
   type: {{ .Values.clickhouse.service.type }}
   ports:
-    - port: {{ .Values.clickhouse.service.port }}
-      targetPort: service
+    - port: {{ .Values.clickhouse.service.http.port }}
+      targetPort: http
       protocol: TCP
-      name: service
+      name: http
+    - port: {{ .Values.clickhouse.service.native.port }}
+      targetPort: native
+      protocol: TCP
+      name: native
   selector:
     {{- include "exts.clickhouse.selectorLabels" . | nindent 4 }}
 {{- end }}

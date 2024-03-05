@@ -35,8 +35,11 @@ spec:
           image: "{{ .Values.clickhouse.image.repository }}:{{ .Values.clickhouse.image.tag | default .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.clickhouse.image.pullPolicy }}
           ports:
-            - name: service
-              containerPort: {{ .Values.clickhouse.listenPort }}
+            - name: http
+              containerPort: {{ .Values.clickhouse.service.http.port }}
+              protocol: TCP
+            - name: native
+              containerPort: {{ .Values.clickhouse.service.native.port }}
               protocol: TCP
           {{- with .Values.clickhouse.envs }}
           env:
