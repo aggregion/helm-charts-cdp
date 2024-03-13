@@ -3,6 +3,11 @@
 # requirements: https://mikefarah.gitbook.io/yq/
 # if you use another version of base64 then you need to set arg `base64 -w 1000000` else just `base64`
 
+BASE64_COMMON_PARAMS=()
+if [[ ! $(base64 --version 2>&1 | grep FreeBSD) ]]; then
+  BASE64_COMMON_PARAMS=(-w 1000000)
+fi
+
 cd $(dirname $0)
 
 VALUES=$(cat -)
@@ -27,7 +32,7 @@ iss: $METADATA_SERVICE_ISSUER
 EOF
 )
 METADATA_SERVICE_PAYLOAD_JSON=$(echo "$METADATA_SERVICE_PAYLOAD" | yq -o j -I 0)
-METADATA_SERVICE_TOKEN=$(bash ./token-generator.sh -s "$METADATA_SERVICE_SECRET" -p "$(echo "$METADATA_SERVICE_PAYLOAD_JSON" | base64 -w 1000000)")
+METADATA_SERVICE_TOKEN=$(bash ./token-generator.sh -s "$METADATA_SERVICE_SECRET" -p "$(echo "$METADATA_SERVICE_PAYLOAD_JSON" | base64 ${BASE64_COMMON_PARAMS[@]})")
 echo "{ \"name\": \".dataservice.config.metadataServiceToken\", \"value\": \"$METADATA_SERVICE_TOKEN\" }"
 echo "{ \"name\": \".dbMetadataSync.config.metadataServiceToken\", \"value\": \"$METADATA_SERVICE_TOKEN\" }"
 
@@ -45,7 +50,7 @@ iat: $NOW
 iss: $METADATA_SERVICE_ISSUER
 EOF
 )
-METADATA_SERVICE_TOKEN=$(bash ./token-generator.sh -s "$METADATA_SERVICE_SECRET" -p "$(echo "$METADATA_SERVICE_PAYLOAD" | yq -o j -I 0 | base64 -w 1000000)")
+METADATA_SERVICE_TOKEN=$(bash ./token-generator.sh -s "$METADATA_SERVICE_SECRET" -p "$(echo "$METADATA_SERVICE_PAYLOAD" | yq -o j -I 0 | base64 ${BASE64_COMMON_PARAMS[@]})")
 echo "{ \"name\": \".backend.configs.metadataServiceToken\", \"value\": \"$METADATA_SERVICE_TOKEN\" }"
 
 # echo '----------------'
@@ -61,7 +66,7 @@ iat: $NOW
 iss: $DATASERVICE_SERVICE_ISSUER
 EOF
 )
-DATASERVICE_SERVICE_PAYLOAD_JSON=$(echo "$DATASERVICE_SERVICE_PAYLOAD" | yq -o j -I 0 | base64 -w 1000000)
+DATASERVICE_SERVICE_PAYLOAD_JSON=$(echo "$DATASERVICE_SERVICE_PAYLOAD" | yq -o j -I 0 | base64 ${BASE64_COMMON_PARAMS[@]})
 DATASERVICE_SERVICE_TOKEN=$(bash ./token-generator.sh -s "$DATASERVICE_SERVICE_SECRET" -p "$DATASERVICE_SERVICE_PAYLOAD_JSON")
 echo "{ \"name\": \".dataservice.config.accessToken\", \"value\": \"$DATASERVICE_SERVICE_TOKEN\" }"
 
@@ -78,7 +83,7 @@ iat: $NOW
 iss: $DATASERVICE_SERVICE_ISSUER
 EOF
 )
-DATASERVICE_SERVICE_PAYLOAD_JSON=$(echo "$DATASERVICE_SERVICE_PAYLOAD" | yq -o j -I 0 | base64 -w 1000000)
+DATASERVICE_SERVICE_PAYLOAD_JSON=$(echo "$DATASERVICE_SERVICE_PAYLOAD" | yq -o j -I 0 | base64 ${BASE64_COMMON_PARAMS[@]})
 DATASERVICE_SERVICE_TOKEN=$(bash ./token-generator.sh -s "$DATASERVICE_SERVICE_SECRET" -p "$DATASERVICE_SERVICE_PAYLOAD_JSON")
 echo "{ \"name\": \".enclave.configs.dataserviceToken\", \"value\": \"$DATASERVICE_SERVICE_TOKEN\" }"
 
